@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content">
+
+    <CheckedTextView
+        android:id="@+id/item_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_marginBottom="3dp"
+        android:layout_marginTop="2dp"
+        android:gravity="center_horizontal"
+        android:textSize="15sp" />
+
+    <!-- android:textColor="@drawable/text_color_selector"-->
+
+    <!--
+    <ImageView
+        android:id="@+id/news_indicate_img"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="-14dip"
+        android:layout_marginTop="4dip"
+        android:layout_toRightOf="@id/item_name"
+        android:src="@drawable/update_hint"
+         android:visibility="gone" />
+     -->
+
+    <TextView
+        android:id="@+id/indicate_isUpdate"
+        android:layout_width="18dp"
+        android:layout_height="18dp"
+        android:layout_marginRight="2dip"
+        android:layout_marginTop="2dip"
+        android:layout_toRightOf="@id/item_name"
+        android:background="@drawable/dot_normal"
+        android:gravity="center"
+        android:text="16"
+        android:textColor="@color/white"
+        android:textSize="12sp"
+        android:visibility="gone" />
+
+
+</RelativeLayout>

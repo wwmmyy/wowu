@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="50dp"
+    android:background="?attr/appbg">
+        <ImageView
+            android:id="@+id/return_back"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="-32dp"
+            android:clickable="true"
+            android:src="@drawable/back_a"
+            android:padding="5dp"
+            android:gravity="center_vertical"  />
+
+        <TextView
+            android:id="@+id/top_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:clickable="true"
+            android:gravity="center_horizontal"
+            android:text="..."
+            android:textColor="#ffffff"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/tx_top_right"
+            android:textColor="#ffffff"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="8dp"
+            android:gravity="center_vertical"
+            android:textSize="14sp" />
+
+    <ImageView
+        android:id="@+id/menu_theme"
+        android:layout_width="70dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="-8dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:gravity="center"
+        android:visibility="gone"
+        android:text="法规 "
+        android:src="@drawable/more"
+        android:textColor="@color/white"
+        android:textSize="20sp"  />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_toLeftOf="@+id/top_title"
+        android:layout_toStartOf="@+id/top_title"
+        android:layout_marginRight="63dp"
+        android:layout_marginEnd="63dp"></RelativeLayout>
+</RelativeLayout>

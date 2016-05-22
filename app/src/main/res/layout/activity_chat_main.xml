@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="fill_parent"
+  android:layout_height="fill_parent"
+  android:background="@color/white" >
+  <!-- android:background="#f0f0e0" -->
+    
+    <RelativeLayout
+        android:id="@+id/rl_layout"
+        android:layout_width="fill_parent"
+        android:layout_height="50dp"
+        android:background="?attr/appbg" >
+
+        <ImageView
+            android:id="@+id/return_back0_sixindetail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="5dip"
+            android:clickable="true"
+            android:padding="1dip"
+            android:src="@drawable/back_a" >
+        </ImageView>
+
+        <TextView
+            android:id="@+id/return_back_sixindetail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="21dip"
+            android:clickable="true"
+            android:padding="1dip"
+            android:text="返回"
+            android:textColor="#ffffff"
+            android:textSize="18sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:clickable="true"
+            android:gravity="center_horizontal"
+            android:text="私信"
+            android:textColor="#ffffff"
+            android:textSize="18sp" />
+    </RelativeLayout>
+    
+        <LinearLayout
+        android:layout_width="fill_parent"
+         android:layout_below="@id/rl_layout"
+        android:layout_height="wrap_content" >
+
+        <ProgressBar
+            android:id="@+id/formclient_pb"
+            style="@android:style/Widget.ProgressBar.Horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="30.0dip"
+            android:max="100"
+            android:visibility="gone" />
+    </LinearLayout>
+	  
+   <RelativeLayout
+        android:id="@+id/rl_bottom"
+        android:layout_width="fill_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/back_color" >
+        
+        <Button
+        android:id="@+id/btn_send"
+        android:layout_width="60dp"
+        android:layout_height="40dp"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="10dp"
+        android:layout_centerVertical="true"
+        android:text="回复" />
+         
+        
+        <EditText
+        android:id="@+id/et_sendmessage"
+        android:layout_width="fill_parent"
+        android:layout_height="40dp"
+        android:layout_toLeftOf="@id/btn_send"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:background="@drawable/edittext1"
+        android:layout_centerVertical="true"
+        android:singleLine="true"
+        android:textSize="18sp"/>
+         
+    </RelativeLayout>
+    
+        
+    <ListView
+    android:id="@+id/listview"
+    android:layout_below="@id/rl_layout"
+    android:layout_above="@id/rl_bottom"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:layout_marginLeft="10.0dip" 
+	android:layout_marginTop="10.0dip" 
+	android:layout_marginRight="10.0dip"
+    android:divider="@null"
+    android:dividerHeight="5dp"
+    android:scrollbars="none"
+    android:cacheColorHint="#00000000"/>
+    
+</RelativeLayout>
