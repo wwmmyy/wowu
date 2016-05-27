@@ -28,8 +28,8 @@ import android.widget.TextView;
 import com.squareup.otto.Bus;
 import com.wuwo.im.config.OneMapOttoBus;
 import com.wuwo.im.config.WowuApp;
-import com.wuwo.im.fragement.Portal_FindFragment;
 import com.wuwo.im.fragement.Portal_ContactFragment;
+import com.wuwo.im.fragement.Portal_FindFragment;
 import com.wuwo.im.fragement.Portal_LocalFragment;
 import com.wuwo.im.fragement.Portal_UserFragment;
 import com.wuwo.im.fragement.Portal_XiaoXiFragment;
@@ -105,6 +105,7 @@ public class MainActivity extends BaseFragementActivity implements MyTabWidget.O
 
 //        启动对话IM功能
 //        chatLogin();
+
 
 
         mSettings = mContext.getSharedPreferences(WowuApp.PREFERENCE_KEY,

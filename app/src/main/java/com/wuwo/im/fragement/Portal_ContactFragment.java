@@ -2,6 +2,7 @@ package com.wuwo.im.fragement;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
@@ -10,6 +11,8 @@ import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.facebook.drawee.view.SimpleDraweeView;
@@ -18,8 +21,8 @@ import com.google.gson.GsonBuilder;
 import com.squareup.okhttp.Request;
 import com.wuwo.im.adapter.CommRecyclerAdapter;
 import com.wuwo.im.adapter.CommRecyclerViewHolder;
-import com.wuwo.im.config.WowuApp;
 import com.wuwo.im.bean.newsMessage;
+import com.wuwo.im.config.WowuApp;
 import com.wuwo.im.util.MyToast;
 import com.wuwo.im.view.PullLoadMoreRecyclerView;
 import com.wuwo.im.view.SearchView;
@@ -40,7 +43,7 @@ import im.wuwo.com.wuwo.R;
  * @author dewyze
  */
 @SuppressLint("ValidFragment")
-public class Portal_ContactFragment extends BaseAppFragment {
+public class Portal_ContactFragment extends BaseAppFragment implements View.OnClickListener {
 
     Activity mContext;
     SharedPreferences mSettings;
@@ -101,6 +104,10 @@ public class Portal_ContactFragment extends BaseAppFragment {
         search_view = (SearchView) view.findViewById(R.id.search_view);
         search_view.setVisibility(View.VISIBLE);
 //       loadData();
+
+        view.findViewById(R.id.tv_contact_add).setOnClickListener(this);
+        view.findViewById(R.id.tv_weixin_add).setOnClickListener(this);
+        view.findViewById(R.id.tv_qq_add).setOnClickListener(this);
 
         search_view.setSearchListener(new SearchView.searchListener() {
             @Override
@@ -203,6 +210,21 @@ public class Portal_ContactFragment extends BaseAppFragment {
     public static final int DOWNLOADED_NEWSMESSAGE = 0;
     public static final int DOWNLOADED_ERROR = 1;
     public static final int REFRESH_DATA = 2;
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.tv_contact_add:
+
+            break;
+            case R.id.tv_weixin_add:
+                showWeiXinShareDialog();
+                break;
+            case R.id.tv_qq_add:
+                showQQShareDialog();
+                break;
+        }
+    }
 
     private static class mHandlerWeak extends Handler {
         private WeakReference<Portal_ContactFragment> activity = null;
@@ -347,6 +369,103 @@ public class Portal_ContactFragment extends BaseAppFragment {
     public boolean loadMore() {
         return false;
     }
+
+
+    private void showWeiXinShareDialog() {
+        View view = mContext.getLayoutInflater().inflate(R.layout.fragement_contact_weixinadd_pop, null);
+        final Dialog dialog = new Dialog(mContext, R.style.transparentFrameWindowStyle);
+        dialog.setContentView(view, new ViewGroup.LayoutParams(android.view.ViewGroup.LayoutParams.FILL_PARENT,
+                android.view.ViewGroup.LayoutParams.WRAP_CONTENT));
+        Window window = dialog.getWindow();
+
+        view.findViewById(R.id.home_member_cancel).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View arg0) {
+                // TODO 自动生成的方法存根
+                dialog.dismiss();
+            }
+        });
+        view.findViewById(R.id.rt_weixin_pyq).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View arg0) {
+                // TODO 自动生成的方法存根
+                dialog.dismiss();
+            }
+        });
+        view.findViewById(R.id.rt_weixin_hy).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View arg0) {
+                // TODO 自动生成的方法存根
+                dialog.dismiss();
+            }
+        });
+
+        // 设置显示动画
+        window.setWindowAnimations(R.style.main_menu_animstyle);
+        WindowManager.LayoutParams wl = window.getAttributes();
+        wl.x = 0;
+        wl.y = mContext.getWindowManager().getDefaultDisplay().getHeight();
+        // 以下这两句是为了保证按钮可以水平满屏
+        wl.width = ViewGroup.LayoutParams.MATCH_PARENT;
+        wl.height = ViewGroup.LayoutParams.WRAP_CONTENT;
+
+        // 设置显示位置
+        dialog.onWindowAttributesChanged(wl);
+        // 设置点击外围解散
+        dialog.setCanceledOnTouchOutside(true);
+        dialog.show();
+    }
+
+
+    private void showQQShareDialog() {
+        View view = mContext.getLayoutInflater().inflate(R.layout.fragement_contact_qqadd_pop, null);
+        final Dialog dialog = new Dialog(mContext, R.style.transparentFrameWindowStyle);
+        dialog.setContentView(view, new ViewGroup.LayoutParams(android.view.ViewGroup.LayoutParams.FILL_PARENT,
+                android.view.ViewGroup.LayoutParams.WRAP_CONTENT));
+        Window window = dialog.getWindow();
+
+        view.findViewById(R.id.home_member_cancel).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View arg0) {
+                // TODO 自动生成的方法存根
+                dialog.dismiss();
+            }
+        });
+        view.findViewById(R.id.rt_qq_kj).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View arg0) {
+                // TODO 自动生成的方法存根
+                dialog.dismiss();
+            }
+        });
+        view.findViewById(R.id.rt_qq_hy).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View arg0) {
+                // TODO 自动生成的方法存根
+                dialog.dismiss();
+            }
+        });
+        // 设置显示动画
+        window.setWindowAnimations(R.style.main_menu_animstyle);
+        WindowManager.LayoutParams wl = window.getAttributes();
+        wl.x = 0;
+        wl.y = mContext.getWindowManager().getDefaultDisplay().getHeight();
+        // 以下这两句是为了保证按钮可以水平满屏
+        wl.width = ViewGroup.LayoutParams.MATCH_PARENT;
+        wl.height = ViewGroup.LayoutParams.WRAP_CONTENT;
+
+        // 设置显示位置
+        dialog.onWindowAttributesChanged(wl);
+        // 设置点击外围解散
+        dialog.setCanceledOnTouchOutside(true);
+        dialog.show();
+    }
+
+
+
+
+
+
 
 
     public String getFragmentName() {
