@@ -26,6 +26,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.squareup.otto.Bus;
+import com.wuwo.im.config.ExitApp;
 import com.wuwo.im.config.OneMapOttoBus;
 import com.wuwo.im.config.WowuApp;
 import com.wuwo.im.fragement.Portal_ContactFragment;
@@ -915,6 +916,7 @@ public class MainActivity extends BaseFragementActivity implements MyTabWidget.O
                     Intent startMain = new Intent(Intent.ACTION_MAIN);
                     startMain.addCategory(Intent.CATEGORY_HOME);
                     startMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    ExitApp.getInstance().exit();
                     startActivity(startMain);
                     System.exit(0);
 

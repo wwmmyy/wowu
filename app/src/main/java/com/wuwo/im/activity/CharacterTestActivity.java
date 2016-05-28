@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.wuwo.im.adapter.CommRecyclerAdapter;
 import com.wuwo.im.adapter.CommRecyclerViewHolder;
 import com.wuwo.im.chat.ChatListActivity;
+import com.wuwo.im.config.ExitApp;
 import com.wuwo.im.view.RecycleViewDivider;
 
 import java.util.Arrays;
@@ -25,6 +26,7 @@ public class CharacterTestActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ExitApp.getInstance().addOpenedActivity(this);
         setContentView(R.layout.activity_character_test);
         initTop();
 

@@ -18,7 +18,8 @@ import im.wuwo.com.wuwo.R;
 public class LoadingActivity extends com.wuwo.im.activity.BaseActivity {
 
     private ImageView iv_start;
-    private Context mcontext=LoadingActivity.this;
+    private Context mContext = LoadingActivity.this;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -64,20 +65,14 @@ public class LoadingActivity extends com.wuwo.im.activity.BaseActivity {
 
             @Override
             public void onAnimationEnd(Animation animation) {
-                if (UtilsTool.checkNet(LoadingActivity.this)) {
-                    SharedPreferences mSettings = getSharedPreferences(  WowuApp.PREFERENCE_KEY, MODE_PRIVATE);
-                    Boolean mFirstTimeSeting = mSettings.getBoolean("mFirstTimeSeting", true);
-                    if (mFirstTimeSeting) {
-                        Intent intent = new Intent(mcontext, WelcomeActivity.class);
-                        startActivity(intent);
-                    } else{
-                        Intent intent2 = new Intent();
-                        intent2.setClass(mcontext, WelcomeActivity.class);//LoginActivity.class
-                        startActivity(intent2);
-                    }
-                } else {
-                    Toast.makeText(LoadingActivity.this, "没有网络连接!", Toast.LENGTH_LONG).show();
+                if (UtilsTool.checkNet(mContext)) {
                     startActivity();
+                } else {
+                    Toast.makeText(mContext, "没有网络连接!", Toast.LENGTH_LONG).show();
+                    Intent intent = new Intent(mContext, MainActivity.class);
+                    startActivity(intent);
+                    overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                    finish();
                 }
             }
 
@@ -87,14 +82,21 @@ public class LoadingActivity extends com.wuwo.im.activity.BaseActivity {
             }
         });
         iv_start.startAnimation(scaleAnim);
-
     }
 
     private void startActivity() {
-        Intent intent = new Intent(LoadingActivity.this, MainActivity.class);
+        Intent intent = null;
+        SharedPreferences settings = this.getSharedPreferences(WowuApp.PREFERENCE_KEY, MODE_PRIVATE);
+        if (settings.getBoolean("firstLogin", true)) {
+            intent = new Intent(mContext, WelcomeActivity.class);
+            SharedPreferences.Editor editor = settings.edit();
+            editor.putBoolean("firstLogin", false);
+            editor.commit();
+        } else {
+            intent = new Intent(mContext, LoginActivity.class);
+        }
         startActivity(intent);
-        overridePendingTransition(android.R.anim.fade_in,
-                android.R.anim.fade_out);
+        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         finish();
     }
 

@@ -16,22 +16,22 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
-import com.wuwo.im.activity.MainActivity;
 import com.wuwo.im.activity.UserDetailActivity;
+import com.wuwo.im.config.ExitApp;
 import com.wuwo.im.config.WowuApp;
 
 import im.wuwo.com.wuwo.R;
 
 /**
-     * 首页 设置 fragment
-     *
-     * @author dewyze
-     */
-    @SuppressLint("ValidFragment")
-    public class Portal_UserFragment extends BaseAppFragment implements View.OnClickListener {
-//    TextView user_setting_ipinfo;
+ * 首页 设置 fragment
+ *
+ * @author dewyze
+ */
+@SuppressLint("ValidFragment")
+public class Portal_UserFragment extends BaseAppFragment implements View.OnClickListener {
+    //    TextView user_setting_ipinfo;
     boolean initState = false;//记录button按钮的初始状态，假入手势是开启状态则初始置为true，同时避免监听响应该事件
-//    SwitchButton show_sogudu_switch;
+    //    SwitchButton show_sogudu_switch;
     Activity mContext;
     SharedPreferences mSettings;
     SharedPreferences.Editor editor;
@@ -57,9 +57,6 @@ import im.wuwo.com.wuwo.R;
     }
 
 
-
-
-
     private void initViews(View view) {
 
 
@@ -81,14 +78,12 @@ import im.wuwo.com.wuwo.R;
         draweeView.setImageURI(Uri.parse("http://www.gog.com.cn/pic/0/10/91/11/10911138_955870.jpg"));
 
 
-
-
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        switch (resultCode){
+        switch (resultCode) {
             case 0:
                 Boolean soguduIsOpen = mSettings.getBoolean("gestureIsOpen", false);
                 break;
@@ -116,14 +111,15 @@ import im.wuwo.com.wuwo.R;
                                         editor.putBoolean("login_auto_check", false);
                                         editor.commit();
 
-                                        Intent intent = new Intent(mContext, MainActivity.class);
-                                        //传递退出所有Activity的Tag对应的布尔值为true
-                                        intent.putExtra(MainActivity.EXIST, true);
-                                        //启动BaseActivity
-                                        startActivity(intent);
-                                        //   finish();
-
+                                        //            彻底退出应用程序，经测试，效果很好
+                                        Intent startMain = new Intent(Intent.ACTION_MAIN);
+                                        startMain.addCategory(Intent.CATEGORY_HOME);
+                                        startMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                        startActivity(startMain);
+                                        ExitApp.getInstance().exit();
+                                        System.exit(0);
                                         dialog.dismiss();
+
                                     }
                                 })
                         .setNegativeButton("取消",
@@ -153,8 +149,8 @@ import im.wuwo.com.wuwo.R;
                 break;
             case R.id.user_info_detail_edit:
             case R.id.user_info_detail:
-            Intent intent2 = new Intent();
-            intent2.setClass(mContext, UserDetailActivity.class);
+                Intent intent2 = new Intent();
+                intent2.setClass(mContext, UserDetailActivity.class);
                 mContext.startActivity(intent2);
                 break;
 //            case R.id.user_setting_ipinfo:
@@ -177,11 +173,8 @@ import im.wuwo.com.wuwo.R;
     }
 
 
-
-
-
-        @Override
-        public String getFragmentName() {
-            return "Portal_UserFragment";
-        }
+    @Override
+    public String getFragmentName() {
+        return "Portal_UserFragment";
+    }
 }

@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 
+import com.wuwo.im.config.ExitApp;
+
 import im.wuwo.com.wuwo.R;
 
 
@@ -17,6 +19,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
+        ExitApp.getInstance().addOpenedActivity(this);
         initView();
     }
 

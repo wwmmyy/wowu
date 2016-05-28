@@ -29,6 +29,7 @@ import android.widget.Toast;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.facebook.imagepipeline.core.ImagePipeline;
+import com.wuwo.im.config.ExitApp;
 import com.wuwo.im.config.WowuApp;
 import com.wuwo.im.util.FormFile;
 import com.wuwo.im.util.MyToast;
@@ -49,10 +50,12 @@ public class RegisterNextActivity extends BaseActivity implements View.OnClickLi
     SharedPreferences mSettings;
     SimpleDraweeView usersetting_userpic;
     Uri uri;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register_next);
+        ExitApp.getInstance().addOpenedActivity(this);
         mSettings = mcontext.getSharedPreferences(WowuApp.PREFERENCE_KEY, MODE_PRIVATE);
         initView();
     }
@@ -63,9 +66,8 @@ public class RegisterNextActivity extends BaseActivity implements View.OnClickLi
         findViewById(R.id.register_finish).setOnClickListener(this);
 
 
-
-        uri=Uri.parse(WowuApp.userImagePath + mSettings.getString("userid", "") + ".jpg");
-        usersetting_userpic = (SimpleDraweeView)findViewById(R.id.usersetting_userpic);
+        uri = Uri.parse(WowuApp.userImagePath + mSettings.getString("userid", "") + ".jpg");
+        usersetting_userpic = (SimpleDraweeView) findViewById(R.id.usersetting_userpic);
         //usersetting_userpic.setImageURI(Uri.parse(WowuApp.userImagePath + mSettings.getString("userid", "") + ".jpg"));
     }
 
@@ -80,11 +82,10 @@ public class RegisterNextActivity extends BaseActivity implements View.OnClickLi
                 break;
             case R.id.register_finish:
 //                MainActivity
-                Intent  temp=new Intent(this,MainActivity.class);
+                Intent temp = new Intent(this, CharacterChooseActivity.class);
                 startActivity(temp);
-
+//                finish();
                 break;
-
 
         }
     }

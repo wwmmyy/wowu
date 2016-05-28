@@ -12,30 +12,33 @@ import android.widget.TextView;
 import com.wuwo.im.adapter.CommRecyclerAdapter;
 import com.wuwo.im.adapter.CommRecyclerViewHolder;
 import com.wuwo.im.chat.ChatListActivity;
+import com.wuwo.im.config.ExitApp;
 
 import java.util.Arrays;
 
 import im.wuwo.com.wuwo.R;
-/**
-*@author 王明远
-*@日期： 2016/5/21 12:24
-*@版权:Copyright    All rights reserved.
-*/
 
-public class CharacterChooseActivity extends BaseActivity {
-    Context mContext=this;
+/**
+ * @author 王明远
+ * @日期： 2016/5/21 12:24
+ * @版权:Copyright All rights reserved.
+ */
+
+public class CharacterChooseActivity extends BaseActivity implements View.OnClickListener {
+    Context mContext = this;
     RecyclerView mRecyclerView;
     CommRecyclerAdapter messageRAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_character_choose);
-
+        ExitApp.getInstance().addOpenedActivity(this);
         initTop();
 
-        String[] data = { "Staggered", "LayoutManager", "GridLayout", "Adapter", "ViewHolder",
+        String[] data = {"Staggered", "LayoutManager", "GridLayout", "Adapter", "ViewHolder",
                 "LinearLayout", "CardView", "ListView", "TextView",
-                "Vertical", "Horizontal", "RecyclerView" };
+                "Vertical", "Horizontal", "RecyclerView"};
 
         initAdapter();
         messageRAdapter.setData(Arrays.asList(data));
@@ -46,7 +49,7 @@ public class CharacterChooseActivity extends BaseActivity {
 //        //如果布局大小一致有利于优化
         mRecyclerView.setHasFixedSize(true);
 
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(mContext,4);
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(mContext, 4);
         gridLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         mRecyclerView.setLayoutManager(gridLayoutManager);
 
@@ -55,21 +58,11 @@ public class CharacterChooseActivity extends BaseActivity {
     }
 
     private void initTop() {
-        ((TextView)findViewById(R.id.top_title)).setText("性格类型选择");
-        findViewById(R.id.return_back).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                CharacterChooseActivity.this.finish();
-            }
-        });
-        findViewById(R.id.bt_jingque).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent2 = new Intent(mContext, CharacterTestActivity.class);
-                startActivity(intent2);
-            }
-        });
-
+        ((TextView) findViewById(R.id.top_title)).setText("性格类型选择");
+        findViewById(R.id.return_back).setOnClickListener(this);
+        findViewById(R.id.bt_jingque).setOnClickListener(this);
+        findViewById(R.id.bt_kuaisu).setOnClickListener(this);
+        findViewById(R.id.choose_sure).setOnClickListener(this);
     }
 
 
@@ -101,5 +94,36 @@ public class CharacterChooseActivity extends BaseActivity {
                 startActivity(intent2);
             }
         });
+    }
+
+    Intent intent2 = null;
+
+    @Override
+    public void onClick(View v) {
+
+        switch (v.getId()) {
+            case R.id.bt_jingque:
+                intent2 = new Intent(mContext, CharacterTestActivity.class);
+                startActivity(intent2);
+                finish();
+                break;
+            case R.id.return_back:
+                CharacterChooseActivity.this.finish();
+                break;
+
+            case R.id.bt_kuaisu:
+                intent2 = new Intent(mContext, MainActivity.class);
+                startActivity(intent2);
+                finish();
+                break;
+
+            case R.id.choose_sure:
+                intent2 = new Intent(mContext, MainActivity.class);
+                startActivity(intent2);
+                finish();
+                break;
+
+
+        }
     }
 }

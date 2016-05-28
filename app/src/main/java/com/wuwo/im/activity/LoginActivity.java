@@ -36,19 +36,19 @@ import java.util.Map;
 
 import im.wuwo.com.wuwo.R;
 
-public class LoginActivity extends Activity implements OnClickListener{
-    
-    Context mContext=LoginActivity.this;
-    private  AutoCompleteTextView imap_login_uername;
-    private  EditText imap_login_password;
+public class LoginActivity extends Activity implements OnClickListener {
+
+    Context mContext = LoginActivity.this;
+    private AutoCompleteTextView imap_login_uername;
+    private EditText imap_login_password;
     private Button imap_login_userlogin;
     private CheckBox login_save_pwd;
-    private  CheckBox login_auto;
+    private CheckBox login_auto;
     private ProgressDialog mdialog;
     SharedPreferences settings;
     SharedPreferences.Editor editor;
     UpdateManager manager;
-    
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         // TODO 自动生成的方法存根
@@ -57,23 +57,23 @@ public class LoginActivity extends Activity implements OnClickListener{
 //        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
 //                WindowManager.LayoutParams.FLAG_FULLSCREEN);// 去掉信息栏
 //        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);//强制为横屏
-        
+
 //      防止键盘自动弹出
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-        
+
         setContentView(R.layout.activity_login_material_design);
-        settings = this.getSharedPreferences( WowuApp.PREFERENCE_KEY, MODE_PRIVATE);
-        editor = settings.edit(); 
-        
+        settings = this.getSharedPreferences(WowuApp.PREFERENCE_KEY, MODE_PRIVATE);
+        editor = settings.edit();
+
 //        Bundle extras = getIntent().getExtras(); 
 //        if(extras!=null){
 //            username_fromserver = extras.getString("username"); 
 //        }
-        
-  
-        initView();   
+
+
+        initView();
 //        validateDevice(); 
-        
+
 //        // 检查文件更新
 //        manager = new UpdateManager(mContext);
 //        manager.checkUpdateMe();
@@ -83,39 +83,37 @@ public class LoginActivity extends Activity implements OnClickListener{
     @SuppressLint("NewApi")
     private void initView() {
         // TODO 自动生成的方法存根
-         imap_login_uername= (AutoCompleteTextView) this.findViewById(R.id.imap_login_uername);
-         imap_login_password= (EditText) this.findViewById(R.id.imap_login_password);
-         imap_login_userlogin= (Button) this.findViewById(R.id.imap_login_userlogin);
-          login_save_pwd= (CheckBox) this.findViewById(R.id.login_save_pwd);
-         login_auto = (CheckBox) this.findViewById(R.id.login_auto);
+        imap_login_uername = (AutoCompleteTextView) this.findViewById(R.id.imap_login_uername);
+        imap_login_password = (EditText) this.findViewById(R.id.imap_login_password);
+        imap_login_userlogin = (Button) this.findViewById(R.id.imap_login_userlogin);
+        login_save_pwd = (CheckBox) this.findViewById(R.id.login_save_pwd);
+        login_auto = (CheckBox) this.findViewById(R.id.login_auto);
 //         TextView login_by_gesture= (TextView) this.findViewById(R.id.login_by_gesture);
-        TextView user_register= (TextView) this.findViewById(R.id.user_register);
-       
+        TextView user_register = (TextView) this.findViewById(R.id.user_register);
+
 //         imap_login_uername.setOnClickListener(this);
 //         imap_login_password.setOnClickListener(this);
-         imap_login_userlogin.setOnClickListener(this);
-         login_save_pwd.setOnClickListener(this);
-         login_auto.setOnClickListener(this);
+        imap_login_userlogin.setOnClickListener(this);
+        login_save_pwd.setOnClickListener(this);
+        login_auto.setOnClickListener(this);
 //         login_by_gesture.setOnClickListener(this);
         user_register.setOnClickListener(this);
-         
-           
-          
-         
+
+
 //         如果是设置保存了密码，则自动注入用户名及密码
-         Boolean login_save_pwd_check = settings.getBoolean("login_save_pwd_check", false);
-         login_save_pwd.setChecked(login_save_pwd_check);
-         Boolean login_auto_check = settings.getBoolean("login_auto_check", false);
-         login_auto.setChecked(login_auto_check);
-         
-         String m_username = settings.getString("loginName", "");
-         String m_password = settings.getString("password", "");
-         imap_login_uername.setText(m_username); 
-         if(login_save_pwd_check){  
-        	 
-             imap_login_password.setText(m_password);
-             if (login_auto_check) {
-             	/*Toast.makeText(mContext, "正在登录...", Toast.LENGTH_SHORT).show();
+        Boolean login_save_pwd_check = settings.getBoolean("login_save_pwd_check", false);
+        login_save_pwd.setChecked(login_save_pwd_check);
+        Boolean login_auto_check = settings.getBoolean("login_auto_check", false);
+        login_auto.setChecked(login_auto_check);
+
+        String m_username = settings.getString("loginName", "");
+        String m_password = settings.getString("password", "");
+        imap_login_uername.setText(m_username);
+        if (login_save_pwd_check) {
+
+            imap_login_password.setText(m_password);
+            if (login_auto_check) {
+                 /*Toast.makeText(mContext, "正在登录...", Toast.LENGTH_SHORT).show();
       			Intent intent = new Intent(LoginActivity.this,HomeActivity.class);
       			startActivity(intent); */   
             	/*mdialog = UtilsTool.initProgressDialog(mContext,"正在登录.....");
@@ -145,12 +143,10 @@ public class LoginActivity extends Activity implements OnClickListener{
 
                 Intent intent = new Intent(LoginActivity.this,HomeActivity.class);
       			startActivity(intent);*/
-      		 }
-         }
-         
-         
+            }
+        }
 
-        
+
 //        imap_login_uername.setText(DistAndroidApp.username);
 //         if(!DistAndroidApp.passwd.endsWith("")){
 //             imap_login_password.setText(DistAndroidApp.passwd);
@@ -173,75 +169,65 @@ public class LoginActivity extends Activity implements OnClickListener{
 //            login_by_text.setVisibility(View.VISIBLE);
 //            
 //        }
-        
-        
-        
-        
+
+
     }
-    
-    
+
+
     @Override
     protected void onDestroy() {
-    	// TODO Auto-generated method stub
+        // TODO Auto-generated method stub
 //    	manager.closeDialog();
-    	super.onDestroy();
+        super.onDestroy();
     }
 
     @Override
     public void onClick(View v) {
         // TODO 自动生成的方法存根
         switch (v.getId()) {
-        case R.id.imap_login_userlogin: 
-            if(imap_login_uername.getText().toString().trim().equals("")
+            case R.id.imap_login_userlogin:
+                if (imap_login_uername.getText().toString().trim().equals("")
 //                    ||imap_login_password.getText().toString().trim().equals("")
-                    ){
-                MyToast.show(mContext, "用户名或密码不能为空", Toast.LENGTH_LONG);
+                        ) {
+                    MyToast.show(mContext, "用户名或密码不能为空", Toast.LENGTH_LONG);
+//                Intent  temp=new Intent(this,CharacterChooseActivity.class);
+//                startActivity(temp);
 
-                Intent  temp=new Intent(this,CharacterChooseActivity.class);
-                startActivity(temp);
-
-            }else{
-                mdialog = UtilsTool.initProgressDialog(mContext,"正在登陆.....");
-                mdialog.show();
+                } else {
+                    mdialog = UtilsTool.initProgressDialog(mContext, "正在登陆.....");
+                    mdialog.show();
 //                UserLoginResult userloginresult = new UserLoginResult();
 //                userloginresult.execute(mdialog, imap_login_uername.getText().toString(), imap_login_password.getText().toString());
 
-                Intent  temp=new Intent(this,MainActivity.class);
-                startActivity(temp);
-             } 
-            break;  
-            
-            
-        case R.id.login_by_gesture:
-            
-            Intent intent2 = new Intent();
-            intent2.setClass(mContext, RegisterActivity.class);
-            startActivity(intent2);
-            finish();
-            break;
-
-            case R.id.user_register:
-
-            Intent intent3 = new Intent();
-            intent3.setClass(mContext, RegisterActivity.class);
-            startActivity(intent3);
-            finish();
+                    Intent temp = new Intent(this, MainActivity.class);
+                    startActivity(temp);
+                    finish();
+                }
+                break;
+            case R.id.login_by_gesture:
+                Intent intent2 = new Intent();
+                intent2.setClass(mContext, RegisterActivity.class);
+                startActivity(intent2);
+//                finish();
                 break;
 
-
+            case R.id.user_register:
+                Intent intent3 = new Intent();
+                intent3.setClass(mContext, RegisterActivity.class);
+                startActivity(intent3);
+//            finish();
+                break;
             default:
-            break;
+                break;
         }
-        
+
     }
-    
-    
+
 
     /**
      * 用户登录结果
-     * @author wmy
-     * 
      *
+     * @author wmy
      */
     class UserLoginResult extends AsyncTask<Object, Void, String> {// 在后台初始化加载在线资源界面
         ProgressDialog dialog;
@@ -254,31 +240,31 @@ public class LoginActivity extends Activity implements OnClickListener{
             dialog = (ProgressDialog) params[0];
             muername = (String) params[1];
             mpassword = (String) params[2];
-            String result=null;
-            
+            String result = null;
+
 //            由于服务端接口采用了oauth token验证，因此必须获取token注入后才能登陆
 //            if(MakeToken.getToken(muername,mpassword)){
-              String url = WowuApp.serverAbsolutePath+"/mobile/app-mobileLogin.action";
-                Map<String, String> map = new HashMap<String, String>();
+            String url = WowuApp.serverAbsolutePath + "/mobile/app-mobileLogin.action";
+            Map<String, String> map = new HashMap<String, String>();
 //                map.put("type", "user");
 //               
-                TelephonyManager tm = (TelephonyManager)getSystemService(Context.TELEPHONY_SERVICE); 
-                map.put("deviceName",  tm.getDeviceSoftwareVersion()+".");
+            TelephonyManager tm = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
+            map.put("deviceName", tm.getDeviceSoftwareVersion() + ".");
 //                System.out.println("获取到的设备名称为：：：：："+tm.getDeviceSoftwareVersion());
-                map.put("loginName", muername);
-                map.put("password", mpassword);
-                 map.put("appType","imeeting");
-                
+            map.put("loginName", muername);
+            map.put("password", mpassword);
+            map.put("appType", "imeeting");
+
 //              为了记录终端用户的登录状态，login表示用户登录， exit表示用户退出
-                map.put("action", "loginaa");
+            map.put("action", "loginaa");
 //                map.put("appidentify", "com.dist.iportal");            
-                try {
-                    result = UtilsTool.getStringFromServer(url, map);
-                } catch (Exception e) {
-                    // TODO 自动生成的 catch 块
-                    e.printStackTrace();
-                    return result;
-                }
+            try {
+                result = UtilsTool.getStringFromServer(url, map);
+            } catch (Exception e) {
+                // TODO 自动生成的 catch 块
+                e.printStackTrace();
+                return result;
+            }
 //            }else{
 //                result ="fail";
 //            }
@@ -292,58 +278,58 @@ public class LoginActivity extends Activity implements OnClickListener{
             if (result == null) {
                 MyToast.show(mContext, "连接服务器异常，无法提交申请", 1);
                 return;
-            } else if (result.equals("fail")){
+            } else if (result.equals("fail")) {
                 MyToast.show(mContext, "连接服务器异常", Toast.LENGTH_LONG);
-            }else {
+            } else {
                 try {
 //                    Log.d("::::::::::::::::::::登陆获取到的验证返回值为：：：：：",result);
                     JSONObject obj = new JSONObject(result);
 //                    int tempresult =Integer.parseInt(obj.optString("result"));                   
-                    int tempresult =-1;
-                    if(!TextUtils.isEmpty(obj.optString("result"))){
-                        tempresult =Integer.parseInt(obj.optString("result"));
+                    int tempresult = -1;
+                    if (!TextUtils.isEmpty(obj.optString("result"))) {
+                        tempresult = Integer.parseInt(obj.optString("result"));
                     }
                     // 返回：0待审核；1正常；2挂失；3禁用；// 登陆成功后，在后台启动服务定期检测设备可用性
                     Intent intent1 = new Intent();
 
                     switch (tempresult) {
 
-                    case 1://说明设备状态正常
-                        
-                        if(obj.optBoolean("state")){//说明用户成功登陆
-                            WowuApp.userName =obj.optString("userName");
-                            WowuApp.userId = obj.optString("userId");//表示设备的用户id
+                        case 1://说明设备状态正常
 
-                            editor.putString("username",   WowuApp.userName);
-                            editor.putString("password",   mpassword);
-                            editor.putString("loginName",   imap_login_uername.getText().toString());
-                            editor.putString("userid", obj.optString("userId"));
-                            editor.putString("userRole", obj.optString("userRole"));
-                            editor.putString("userOrganzation", obj.optString("userOrganzation"));
+                            if (obj.optBoolean("state")) {//说明用户成功登陆
+                                WowuApp.userName = obj.optString("userName");
+                                WowuApp.userId = obj.optString("userId");//表示设备的用户id
+
+                                editor.putString("username", WowuApp.userName);
+                                editor.putString("password", mpassword);
+                                editor.putString("loginName", imap_login_uername.getText().toString());
+                                editor.putString("userid", obj.optString("userId"));
+                                editor.putString("userRole", obj.optString("userRole"));
+                                editor.putString("userOrganzation", obj.optString("userOrganzation"));
 //                          保存密码是否保存勾选状态
-                            editor.putBoolean("login_save_pwd_check", login_save_pwd.isChecked());     
-                            editor.putBoolean("login_auto_check", login_auto.isChecked());
-                            editor.commit();
-                            
+                                editor.putBoolean("login_save_pwd_check", login_save_pwd.isChecked());
+                                editor.putBoolean("login_auto_check", login_auto.isChecked());
+                                editor.commit();
+
 //                            //2跳转到主页面
 //                            intent1.setClass(mContext, HomeActivity.class);
 //                            startActivity(intent1);
 //                            finish();
-                        }else{
-                            Toast.makeText(mContext, "登录名或密码错误，请重新登陆", Toast.LENGTH_LONG).show();
-                            imap_login_uername.setText("");
-                            imap_login_password.setText("");
-                        }
-                        
+                            } else {
+                                Toast.makeText(mContext, "登录名或密码错误，请重新登陆", Toast.LENGTH_LONG).show();
+                                imap_login_uername.setText("");
+                                imap_login_password.setText("");
+                            }
 
-                        break;
+
+                            break;
 
                         default:
 //                        //2跳转到主页面
 //                        intent1.setClass(mContext, DeviceReActivity.class);
 //                        startActivity(intent1);
 //                        finish();
-                        break;
+                            break;
                     }
                 } catch (Exception e) {
                     // TODO 自动生成的 catch 块
@@ -354,9 +340,8 @@ public class LoginActivity extends Activity implements OnClickListener{
 
         }
     }
-      
-    
-    
+
+
     /**
      * @Title: sendToServer
      * @Description:设备状态验证
@@ -414,24 +399,24 @@ public class LoginActivity extends Activity implements OnClickListener{
         @Override
         public void handleMessage(Message msg) {
             switch (msg.what) {
-         
-            case END:
-                
+
+                case END:
+
 //                //2跳转到主页面
 //                Intent intent1 = new Intent();
 //                intent1.setClass(mContext, DeviceReActivity.class);
 //                startActivity(intent1);
 //                finish();
-                break;
+                    break;
 
-            case WRONG:
+                case WRONG:
 //               MyToast.show(mContext, "无法连接到服务器", Toast.LENGTH_LONG);
-                break;
+                    break;
             }
 
             super.handleMessage(msg);
         }
-    }; 
-    
-    
+    };
+
+
 }
