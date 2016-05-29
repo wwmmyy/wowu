@@ -201,6 +201,7 @@ public class LoginActivity extends Activity implements OnClickListener {
 
                     Intent temp = new Intent(this, MainActivity.class);
                     startActivity(temp);
+                    mdialog.dismiss();
                     finish();
                 }
                 break;

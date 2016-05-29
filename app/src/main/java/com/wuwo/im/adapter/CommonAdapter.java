@@ -10,12 +10,12 @@ import java.util.List;
 
 /**
  * http://blog.csdn.net/lmj623565791/article/details/38902805
-* @类名: CommonAdapter 
-* @描述: TODO 
-* @作者: 王明远 
-* @日期: 2015-5-28 下午6:24:09 
-* @修改人: 
- * @修改时间: 
+* @类名: CommonAdapter
+* @描述: TODO
+* @作者: 王明远
+* @日期: 2015-5-28 下午6:24:09
+* @修改人:
+ * @修改时间:
  * @修改内容:
  * @版本: V1.0
  * @版权:Copyright ©  All rights reserved.
@@ -71,7 +71,7 @@ public abstract class CommonAdapter<T> extends BaseAdapter
 		convert(viewHolder, getItem(position));
 		return viewHolder.getConvertView();
 
-	} 
+	}
 
 	public abstract void convert(ViewHolder helper, T item);
 

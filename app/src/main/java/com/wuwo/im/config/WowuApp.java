@@ -29,7 +29,7 @@ public class WowuApp extends Application {
     public static String ACTION_NAME = "deviceLocked";
     SharedPreferences settings;
 
-    public static final String LOG_DIR = Environment.getExternalStorageDirectory().getAbsolutePath() + "/ydbgError";
+    public static final String LOG_DIR = Environment.getExternalStorageDirectory().getAbsolutePath() + "/errorLog";
     public static String serverAbsolutePath = "http://58.246.138.178:8040/gzServices/ServiceProvider.ashx"; // dist
     //此为即时通讯消息推送的服务器端ip及端口
 //    public static String XMPPserverIP = serverIP;  // dist

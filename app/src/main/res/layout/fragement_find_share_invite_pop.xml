@@ -20,7 +20,7 @@
             android:layout_gravity="left|center_vertical"
             android:layout_marginLeft="15dp"
             android:paddingTop="4dp"
-            android:text="F码分享到"
+            android:text="邀请好友参加性格评测"
             android:textSize="16sp"></TextView>
     </RelativeLayout>
 
@@ -57,7 +57,19 @@
             android:textSize="14sp" />
 
         <TextView
-            android:id="@+id/share_f_weixin"
+        android:id="@+id/share_f_weixin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:drawableTop="@drawable/ic_launcher"
+        android:paddingBottom="10dp"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        android:text="微信好友"
+        android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/share_f_sms"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="15dp"
@@ -65,7 +77,8 @@
             android:paddingBottom="10dp"
             android:paddingLeft="8dp"
             android:paddingRight="8dp"
-            android:text="微信好友"
+            android:gravity="center_horizontal"
+            android:text="  信息  "
             android:textSize="14sp" />
     </LinearLayout>
 

@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/app_bg"
+    android:orientation="vertical">
+
+    <include layout="@layout/top_title_bar" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:paddingLeft="10dp"
+        android:background="@color/lightgrey"
+        android:gravity="center_vertical"
+        android:text="问题和意见" />
+
+<!--    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="0dip"
+        android:layout_weight="1.0"
+        android:paddingBottom="20dip">
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:orientation="vertical">-->
+
+            <EditText
+                android:id="@+id/feed_back_edit"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dip"
+                android:layout_marginTop="-1dp"
+                android:background="@drawable/edit_bg_all"
+                android:gravity="top"
+                android:hint="留下你宝贵意见，我们会努力完善"
+                android:minLines="6"
+                android:textSize="15sp" />
+    <!--    </LinearLayout>
+    </ScrollView>-->
+    <TextView
+    android:layout_width="match_parent"
+    android:layout_height="30dp"
+    android:paddingLeft="10dp"
+    android:background="@color/lightgrey"
+    android:gravity="center_vertical"
+    android:text="图片（选填、提供问题截图）" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginTop="5dp"
+        android:orientation="vertical" >
+
+        <GridView
+            android:id="@+id/meeting_pre_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:horizontalSpacing="0dip"
+            android:scaleType="centerCrop"
+            android:numColumns="4" />
+    </LinearLayout>
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:paddingLeft="10dp"
+        android:background="@color/lightgrey"
+        android:gravity="center_vertical"
+        android:text="联系电话" />
+    <EditText
+        android:id="@+id/feed_back_edit3"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:gravity="top"
+        android:hint="选填，便于我们与你联系"
+        android:minLines="3"
+        android:textSize="15sp" />
+
+    <Button
+        android:id="@+id/bt_meeting_submit"
+        android:layout_width="fill_parent"
+        android:layout_height="45dip"
+        android:layout_gravity="center"
+        android:layout_margin="20dip"
+        android:background="@drawable/txtborder_login"
+        android:gravity="center"
+        android:text="确 定"
+        android:textColor="@color/white"
+        android:textSize="22sp" />
+
+</LinearLayout>

@@ -3,6 +3,7 @@ package com.wuwo.im.fragement;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
@@ -19,6 +20,7 @@ import com.facebook.drawee.view.SimpleDraweeView;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.squareup.okhttp.Request;
+import com.wuwo.im.activity.FromContractsActivity;
 import com.wuwo.im.adapter.CommRecyclerAdapter;
 import com.wuwo.im.adapter.CommRecyclerViewHolder;
 import com.wuwo.im.bean.newsMessage;
@@ -215,6 +217,8 @@ public class Portal_ContactFragment extends BaseAppFragment implements View.OnCl
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.tv_contact_add:
+                Intent txl=new Intent(mContext, FromContractsActivity.class);
+                startActivity(txl);
 
             break;
             case R.id.tv_weixin_add:
@@ -245,7 +249,6 @@ public class Portal_ContactFragment extends BaseAppFragment implements View.OnCl
                 case DOWNLOADED_NEWSMESSAGE:
                     if (act.messageRAdapter == null) {
                         act.initAdapter();
-
                         act.messageRAdapter.setData(act.getLoadInfo());
                         act.mPullLoadMoreRecyclerView.setAdapter(act.messageRAdapter);
                     } else {
@@ -370,7 +373,6 @@ public class Portal_ContactFragment extends BaseAppFragment implements View.OnCl
         return false;
     }
 
-
     private void showWeiXinShareDialog() {
         View view = mContext.getLayoutInflater().inflate(R.layout.fragement_contact_weixinadd_pop, null);
         final Dialog dialog = new Dialog(mContext, R.style.transparentFrameWindowStyle);
@@ -461,16 +463,8 @@ public class Portal_ContactFragment extends BaseAppFragment implements View.OnCl
         dialog.show();
     }
 
-
-
-
-
-
-
-
     public String getFragmentName() {
         return "Portal_ContactFragment";
     }
-
 
 }

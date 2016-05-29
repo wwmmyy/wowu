@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/app_bg"
+    android:orientation="vertical">
+
+    <include layout="@layout/top_title_bar" />
+
+
+<!--    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="0dip"
+        android:layout_weight="1.0"
+        android:paddingBottom="20dip">
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:orientation="vertical">-->
+
+            <TextView
+                android:id="@+id/feed_back_edit"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/edit_bg_all"
+                android:gravity="top"
+                android:text="留下你宝贵意见，我们会努力完善留下你宝贵意见，我们会努力完善"
+                android:minLines="10"
+                android:textSize="15sp" />
+<!--
+        </LinearLayout>
+    </ScrollView>-->
+
+
+</LinearLayout>
