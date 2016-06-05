@@ -11,6 +11,7 @@ public abstract class OkHttpRequestBuilder
 {
     protected String url;
     protected Object tag;
+//    protected RequestBody requestBody;
     protected Map<String, String> headers;
     protected Map<String, String> params;
 
@@ -25,6 +26,8 @@ public abstract class OkHttpRequestBuilder
     public abstract OkHttpRequestBuilder headers(Map<String, String> headers);
 
     public abstract OkHttpRequestBuilder addHeader(String key, String val);
+
+//    public abstract OkHttpRequestBuilder addRequestBody(RequestBody requestBody);
 
     public abstract RequestCall build();
 

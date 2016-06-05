@@ -8,9 +8,9 @@ import android.view.View;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.wuwo.im.activity.UserInfoEditActivity;
 import com.wuwo.im.adapter.CommRecyclerAdapter;
 import com.wuwo.im.adapter.CommRecyclerViewHolder;
-import com.wuwo.im.chat.ChatListActivity;
 import com.wuwo.im.bean.newsMessage;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.builder.PostFormBuilder;
@@ -100,7 +100,7 @@ public class Portal_LocalFragment extends BasePortal_TabFragment {
             public void onItemClick(View view, int position) {
 
 
-                Intent intent2 = new Intent(mContext, ChatListActivity.class);
+                Intent intent2 = new Intent(mContext, UserInfoEditActivity.class);
                 //        intent2.putExtra("content", newsMessagelist.get(tempPosition-1).getContent());
 //                intent2.putExtra("url", DistApp.serverAbsolutePath + "/snews!mobileNewsdetail.action?news.id=4028816f4d4be502014d4c0e22dc003d");
 //                intent2.putExtra("name", "消息通知");
@@ -115,6 +115,8 @@ public class Portal_LocalFragment extends BasePortal_TabFragment {
     public PostFormBuilder httpBuilder() {
         return  OkHttpUtils
                 .post()
+//                .addHeader("content-type", "application/json;")
+//                .addHeader("Content-Disposition", "application/json;")
 //                .url(WowuApp.serverAbsolutePath)
                 .url("http://58.246.138.178:8000/DistMobile/mobileMeeting!getAllMeeting.action")
                 .addParams("type", "smartplan")
@@ -129,7 +131,7 @@ public class Portal_LocalFragment extends BasePortal_TabFragment {
 
     @Override
     public String getFragmentName() {
-        return "test_FindFragement";
+        return "Portal_LocalFragment";
     }
 
 

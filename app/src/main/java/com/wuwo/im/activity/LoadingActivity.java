@@ -30,7 +30,7 @@ public class LoadingActivity extends com.wuwo.im.activity.BaseActivity {
         setContentView(R.layout.activity_start_loading);
 
         iv_start = (ImageView) findViewById(R.id.iv_start);
-        iv_start.setImageResource(R.drawable.afternoon);
+        iv_start.setImageResource(R.drawable.start);
 
 //        // 闪屏的核心代码
 //        new Handler().postDelayed(new Runnable() {
@@ -70,7 +70,7 @@ public class LoadingActivity extends com.wuwo.im.activity.BaseActivity {
                     startActivity();
                 } else {
                     Toast.makeText(mContext, "没有网络连接!", Toast.LENGTH_LONG).show();
-                    Intent intent = new Intent(mContext, MainActivity.class);
+                    Intent intent = new Intent(mContext, LoginChooseActivity.class);
                     startActivity(intent);
                     overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                     finish();
@@ -94,7 +94,7 @@ public class LoadingActivity extends com.wuwo.im.activity.BaseActivity {
             editor.putBoolean("firstLogin", false);
             editor.commit();
         } else {
-            intent = new Intent(mContext, LoginActivity.class);
+            intent = new Intent(mContext, LoginChooseActivity.class);
         }
         startActivity(intent);
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);

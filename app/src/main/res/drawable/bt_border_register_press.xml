@@ -5,11 +5,11 @@
     android:orientation="vertical" >
     <!--  <solid android:color="#EEEEEE" /> 这里是背景的颜色-->
    
-   <solid android:color="@color/login_btn_blue" />
+   <solid android:color="@color/white" />
    <!-- 这里是边框的颜色和宽度 -->
-    <stroke android:width="8dp" android:color="@color/login_btn_blue" />
+    <stroke android:width="6dp" android:color="@color/white" />
 
-    <corners android:radius="4dp" />
+    <corners android:radius="25dp" />
 
     <padding android:left="0dp" android:top="0dp" android:right="0dp" android:bottom="0dp" />
 </shape>

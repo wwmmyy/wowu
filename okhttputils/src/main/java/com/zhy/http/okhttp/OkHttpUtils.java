@@ -2,6 +2,7 @@ package com.zhy.http.okhttp;
 
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
@@ -128,7 +129,10 @@ public class OkHttpUtils
                 {
                     try
                     {
+                        Log.e("服务器请求返回异常",response.toString()+"::::::::::::"+response.message()+":::"+response.body());
                         sendFailResultCallback(requestCall.getRequest(), new RuntimeException(response.body().string()), finalCallback);
+
+
                     } catch (IOException e)
                     {
                         e.printStackTrace();

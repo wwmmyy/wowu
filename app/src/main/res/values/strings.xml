@@ -12,14 +12,14 @@
     <string name="soft_updating">正在更新</string>
     <string name="soft_update_cancel">取消</string>
     <string name="title_activity_register">创建新账号</string>
-    <string name="register_hint"> 请输入11位手机号</string>
+    <string name="register_hint"> 手机号</string>
     <string name="register_phone_but"> 获取验证码</string>
     <string name="register_phone_pwd"> 请输入密码</string>
     <string name="register_phone_sms"> 请输入验证码</string>
     <string name="register_next">下一步</string>
 
     <!-- Strings related to login -->
-    <string name="user_name">用户名</string>
+    <string name="user_name"> 手机号、邮箱、先知号</string>
     <string name="user_password">密码</string>
     <string name="action_sign_in">登录</string>
     <string name="action_sign_in_short">密码</string>

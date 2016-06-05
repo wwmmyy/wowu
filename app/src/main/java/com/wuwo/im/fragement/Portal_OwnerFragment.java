@@ -16,7 +16,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
-import com.wuwo.im.activity.UserDetailActivity;
+import com.wuwo.im.activity.OwnerInfoDetailActivity;
 import com.wuwo.im.config.ExitApp;
 import com.wuwo.im.config.WowuApp;
 
@@ -28,7 +28,7 @@ import im.wuwo.com.wuwo.R;
  * @author dewyze
  */
 @SuppressLint("ValidFragment")
-public class Portal_UserFragment extends BaseAppFragment implements View.OnClickListener {
+public class Portal_OwnerFragment extends BaseAppFragment implements View.OnClickListener {
     //    TextView user_setting_ipinfo;
     boolean initState = false;//记录button按钮的初始状态，假入手势是开启状态则初始置为true，同时避免监听响应该事件
     //    SwitchButton show_sogudu_switch;
@@ -51,7 +51,7 @@ public class Portal_UserFragment extends BaseAppFragment implements View.OnClick
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragement_user_setting, container, false);
+        View view = inflater.inflate(R.layout.fragement_owner_setting, container, false);
         initViews(view);
         return view;
     }
@@ -115,8 +115,8 @@ public class Portal_UserFragment extends BaseAppFragment implements View.OnClick
                                         Intent startMain = new Intent(Intent.ACTION_MAIN);
                                         startMain.addCategory(Intent.CATEGORY_HOME);
                                         startMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                        startActivity(startMain);
                                         ExitApp.getInstance().exit();
+                                        startActivity(startMain);
                                         System.exit(0);
                                         dialog.dismiss();
 
@@ -150,7 +150,7 @@ public class Portal_UserFragment extends BaseAppFragment implements View.OnClick
             case R.id.user_info_detail_edit:
             case R.id.user_info_detail:
                 Intent intent2 = new Intent();
-                intent2.setClass(mContext, UserDetailActivity.class);
+                intent2.setClass(mContext, OwnerInfoDetailActivity.class);
                 mContext.startActivity(intent2);
                 break;
 //            case R.id.user_setting_ipinfo:
@@ -158,8 +158,7 @@ public class Portal_UserFragment extends BaseAppFragment implements View.OnClick
 //                System.out.println("得到点击响应事件::::::得到点击响应事件");
 //                showDialog();
 //                Intent intent2 = new Intent();
-//                intent2.setClass(UserSettingActivity.this, UserDetailActivity.class);
-//                UserSettingActivity.this.startActivity(intent2);
+ //                UserSettingActivity.this.startActivity(intent2);
 //                break;
 
 //            case R.id.return_back:
@@ -175,6 +174,6 @@ public class Portal_UserFragment extends BaseAppFragment implements View.OnClick
 
     @Override
     public String getFragmentName() {
-        return "Portal_UserFragment";
+        return "Portal_ownFragment";
     }
 }

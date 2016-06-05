@@ -36,9 +36,10 @@ public class CharacterChooseActivity extends BaseActivity implements View.OnClic
         ExitApp.getInstance().addOpenedActivity(this);
         initTop();
 
-        String[] data = {"Staggered", "LayoutManager", "GridLayout", "Adapter", "ViewHolder",
-                "LinearLayout", "CardView", "ListView", "TextView",
-                "Vertical", "Horizontal", "RecyclerView"};
+        String[] data = {"INTJ", "ENTJ", "INTP", "ENTP",
+                "INFJ","INTJ", "ENTJ", "INTP",
+                "INTJ", "ENTJ", "INTP", "ENTP",
+                "INTJ", "ENTJ", "INTP", "ENTP"};
 
         initAdapter();
         messageRAdapter.setData(Arrays.asList(data));
@@ -92,6 +93,7 @@ public class CharacterChooseActivity extends BaseActivity implements View.OnClic
 //                intent2.putExtra("url", DistApp.serverAbsolutePath + "/snews!mobileNewsdetail.action?news.id=4028816f4d4be502014d4c0e22dc003d");
 //                intent2.putExtra("name", "消息通知");
                 startActivity(intent2);
+                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
             }
         });
     }
@@ -105,21 +107,25 @@ public class CharacterChooseActivity extends BaseActivity implements View.OnClic
             case R.id.bt_jingque:
                 intent2 = new Intent(mContext, CharacterTestActivity.class);
                 startActivity(intent2);
-                finish();
+                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+//                finish();
                 break;
             case R.id.return_back:
                 CharacterChooseActivity.this.finish();
+                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                 break;
 
             case R.id.bt_kuaisu:
                 intent2 = new Intent(mContext, MainActivity.class);
                 startActivity(intent2);
+                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                 finish();
                 break;
 
             case R.id.choose_sure:
                 intent2 = new Intent(mContext, MainActivity.class);
                 startActivity(intent2);
+                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                 finish();
                 break;
 

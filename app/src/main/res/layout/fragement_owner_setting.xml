@@ -13,19 +13,19 @@
         android:background="?attr/appbg"
         android:gravity="center_vertical"
         android:orientation="vertical">
+
         <com.facebook.drawee.view.SimpleDraweeView
             android:id="@+id/user_login_pic"
             android:layout_width="82dp"
             android:layout_height="82dp"
             android:layout_centerHorizontal="true"
-            dist:roundAsCircle="true"
-            dist:roundingBorderWidth="2dp"
+            dist:placeholderImage="@drawable/woman2"
+            dist:progressBarAutoRotateInterval="5000"
             dist:progressBarImage="@drawable/con_progress_bar"
             dist:progressBarImageScaleType="centerInside"
-            dist:progressBarAutoRotateInterval="5000"
+            dist:roundAsCircle="true"
             dist:roundingBorderColor="@color/white"
-            dist:placeholderImage="@drawable/woman2"
-            />
+            dist:roundingBorderWidth="2dp" />
 
 
         <TextView
@@ -63,21 +63,21 @@
             android:textColor="@color/white"
             android:textSize="13dp" />
 
-<!--        <FrameLayout
-            android:layout_width="wrap_content"
-            android:layout_height="fill_parent"
-            android:visibility="gone">
-            <ImageView
-                android:id="@+id/user_info_detail_more"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginLeft="5dip"
-                android:layout_marginRight="15dip"
-                android:background="@drawable/mail_group_right"
-                android:gravity="center"
-                android:scaleType="fitCenter" />
-        </FrameLayout>-->
+        <!--        <FrameLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="fill_parent"
+                    android:visibility="gone">
+                    <ImageView
+                        android:id="@+id/user_info_detail_more"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="5dip"
+                        android:layout_marginRight="15dip"
+                        android:background="@drawable/mail_group_right"
+                        android:gravity="center"
+                        android:scaleType="fitCenter" />
+                </FrameLayout>-->
     </RelativeLayout>
 
     <!-- 反馈意见  关于我们  应用推荐 -->
@@ -140,16 +140,16 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="20dp"
-                    android:text="手势密码"
+                    android:text="密码修改"
                     android:textColor="@color/black1" />
 
                 <!--<com.dist.iportal.view.SwitchButton-->
-                    <!--android:id="@+id/show_sogudu_switch"-->
-                    <!--android:layout_width="90dip"-->
-                    <!--android:layout_height="35dip"-->
-                    <!--android:layout_alignParentRight="true"-->
-                    <!--android:layout_centerVertical="true"-->
-                    <!--android:layout_marginRight="18dip" />-->
+                <!--android:id="@+id/show_sogudu_switch"-->
+                <!--android:layout_width="90dip"-->
+                <!--android:layout_height="35dip"-->
+                <!--android:layout_alignParentRight="true"-->
+                <!--android:layout_centerVertical="true"-->
+                <!--android:layout_marginRight="18dip" />-->
             </RelativeLayout>
 
             <!-- <View
@@ -177,8 +177,22 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="20dp"
-                    android:text="订阅"
+                    android:text="手机绑定"
                     android:textColor="@color/black1" />
+
+                <TextView
+                    style="@style/setting_text_style"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="15dip"
+                    android:drawableRight="@drawable/morex"
+                    android:drawablePadding="5dp"
+                    android:text="已绑定"
+                    android:textColor="@android:color/darker_gray" />
+
+
             </RelativeLayout>
 
 
@@ -201,7 +215,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="20dp"
-                    android:text="用户反馈"
+                    android:text="消息提醒"
                     android:textColor="@color/black1" />
 
                 <!-- <TextView
@@ -215,11 +229,12 @@
                     android:text="  "
                     android:textColor="@android:color/darker_gray" /> -->
             </RelativeLayout>
+
             <RelativeLayout
                 android:id="@+id/user_password_alter"
                 android:layout_width="fill_parent"
                 android:layout_height="50dp"
-                android:background="@color/white" >
+                android:background="@color/white">
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -234,7 +249,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="20dp"
-                    android:text="修改密码"
+                    android:text="用户反馈"
                     android:textColor="@color/black1" />
 
                 <!-- <TextView
@@ -250,8 +265,6 @@
             </RelativeLayout>
         </LinearLayout>
     </android.support.v7.widget.CardView>
-
-
 
 
     <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"

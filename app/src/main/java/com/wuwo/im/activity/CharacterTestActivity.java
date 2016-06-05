@@ -13,7 +13,6 @@ import com.wuwo.im.adapter.CommRecyclerAdapter;
 import com.wuwo.im.adapter.CommRecyclerViewHolder;
 import com.wuwo.im.chat.ChatListActivity;
 import com.wuwo.im.config.ExitApp;
-import com.wuwo.im.view.RecycleViewDivider;
 
 import java.util.Arrays;
 
@@ -53,9 +52,7 @@ public class CharacterTestActivity extends AppCompatActivity {
         mRecyclerView.setLayoutManager(linearLayoutManager);
 
         //分割线
-        mRecyclerView.addItemDecoration(new RecycleViewDivider(mContext, LinearLayoutManager.HORIZONTAL));
-//        mRecyclerView.addItemDecoration(new  RecycleViewDivider(this,linearLayoutManager.getOrientation()));
-//        mRecyclerView.addItemDecoration(new RecycleViewDivider(  mContext, LinearLayoutManager.HORIZONTAL, 10, getResources().getColor(R.color.deep_gray)));
+//        mRecyclerView.addItemDecoration(new RecycleViewDivider(mContext, LinearLayoutManager.HORIZONTAL));
         //初始化适配器并绑定适配器
         mRecyclerView.setAdapter(messageRAdapter);
     }
@@ -65,6 +62,7 @@ public class CharacterTestActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 CharacterTestActivity.this.finish();
+                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
             }
         });
 
@@ -76,6 +74,7 @@ public class CharacterTestActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent2 = new Intent(mContext, CharacterTResultActivity.class);
                 startActivity(intent2);
+                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
             }
         });
 
@@ -109,6 +108,7 @@ public class CharacterTestActivity extends AppCompatActivity {
 //                intent2.putExtra("url", DistApp.serverAbsolutePath + "/snews!mobileNewsdetail.action?news.id=4028816f4d4be502014d4c0e22dc003d");
 //                intent2.putExtra("name", "消息通知");
                 startActivity(intent2);
+                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
             }
         });
     }

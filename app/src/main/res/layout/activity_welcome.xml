@@ -122,7 +122,7 @@
                 android:layout_marginBottom="60dp"
                 android:paddingRight="@dimen/activity_horizontal_margin"
                 android:paddingLeft="@dimen/activity_horizontal_margin"
-                android:background="@drawable/txtborder_login"
+                android:background="@drawable/bt_border"
                 android:text="@string/start_enter"
                 android:textColor="@color/white"
                 android:textSize="20sp" />

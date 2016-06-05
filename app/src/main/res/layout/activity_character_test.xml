@@ -41,12 +41,12 @@
             android:id="@+id/tx_top_right"
             android:layout_width="wrap_content"
             android:layout_height="30dp"
-            android:textColor="#ffffff"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="8dp"
             android:gravity="center_vertical"
             android:text="完成"
+            android:textColor="#ffffff"
             android:textSize="16sp"
             android:visibility="gone" />
     </RelativeLayout>
@@ -57,47 +57,60 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
-        android:layout_margin="16dp"
         android:layout_marginTop="20dp"
         android:max="100"
         android:progress="50"
+        android:visibility="gone"
         android:progressDrawable="@drawable/bg_bar"
         android:thumb="@android:color/holo_green_light" />'
 
-
     <TextView
+        android:id="@+id/tv_num"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:gravity="center"
+        android:text="2/30" />
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/activity_horizontal_margin"
-        android:layout_marginTop="20dp"
-        android:text="5."
-        android:textSize="25sp" />
+        android:layout_margin="@dimen/text_margin_10dp"
+        android:paddingBottom="20dp"
+        android:background="@drawable/setting_bg"
+        android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/tv_question"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/activity_horizontal_margin"
-        android:text="大多数人会认为你是一个?"
-        android:textSize="18sp" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_marginTop="8dp"
+            android:text="5."
+            android:textSize="25sp" />
 
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_marginTop="30dp"
-        android:layout_height="1dp"
-        android:layout_marginLeft="@dimen/activity_horizontal_margin"
-        android:layout_marginRight="@dimen/activity_horizontal_margin"
-        android:background="@color/darkgray"
-        />
+        <TextView
+            android:id="@+id/tv_question"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:text="大多数人会认为你是一个?"
+            android:textSize="18sp" />
+    </LinearLayout>
+
+    <!--    <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:layout_marginTop="30dp"
+            android:background="@color/darkgray" />-->
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_question"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/activity_horizontal_margin"
-        android:layout_marginRight="@dimen/activity_horizontal_margin"
-         />
+        android:layout_marginLeft="@dimen/text_margin_10dp"
+        android:layout_marginRight="@dimen/text_margin_10dp" />
 
 
 </LinearLayout>

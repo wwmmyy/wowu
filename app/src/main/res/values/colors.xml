@@ -431,13 +431,15 @@
 
 
     <!--<color name="colorPrimary">#125688</color>-->
-    <color name="colorPrimary">#2298ef</color>
+    <!--<color name="colorPrimary">#2298ef</color>-->
+    <color name="colorPrimary">#00B167</color>
 
     <color name="colorPrimary1">#2298ef</color>
     <color name="colorPrimary2">#24ceff</color>
     <color name="colorPrimary3">#0fe7ff</color>
     <!--<color name="colorPrimaryDark">#125688</color>-->
-    <color name="colorPrimaryDark">#2298ef</color>
+    <!--<color name="colorPrimaryDark">#2298ef</color>-->
+    <color name="colorPrimaryDark">#00B167</color>
     <color name="textColorPrimary">#FFFFFF</color>
     <color name="windowBackground">#FFFFFF</color>
     <color name="navigationBarColor">#000000</color>

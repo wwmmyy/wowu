@@ -3,9 +3,14 @@
     <!--http://blog.csdn.net/jdsjlzx/article/details/41441083-->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- 状态栏颜色 -->
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item><!--#303F9F-->
-        <!-- toolbar（actionbar）颜色  <item name="colorPrimary">#4876FF</item> -->
-        <item name="colorPrimary">@color/colorPrimaryDark</item>
+<!--        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorPrimary">@color/colorPrimaryDark</item>-->
+
+
+        <item name="colorPrimaryDark">#00B167</item>
+        <item name="colorPrimary">#00B167</item>
+
+
         <!-- 窗口的背景颜色
         <item name="android:windowBackground">#ffffff</item> -->
         <!--设置下划线的颜色-

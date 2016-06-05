@@ -89,7 +89,7 @@
         android:layout_height="45dip"
         android:layout_gravity="center"
         android:layout_margin="20dip"
-        android:background="@drawable/txtborder_login"
+        android:background="@drawable/bt_border"
         android:gravity="center"
         android:text="确 定"
         android:textColor="@color/white"

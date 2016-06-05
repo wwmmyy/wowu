@@ -3,10 +3,9 @@
     xmlns:dist="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/whitesmoke"
     android:gravity="center_horizontal"
     android:orientation="vertical"
-    tools:context="com.wuwo.im.activity.RegisterActivity">
+    android:background="@drawable/login_bg" >
 
     <include layout="@layout/top_title_bar" />
 
@@ -54,10 +53,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
                 android:layout_marginTop="15dp"
-                android:background="@drawable/bg_borderwhite"
-                android:hint="@string/register_hint"
-                android:inputType="textPhonetic"
+                android:hint="请设置昵称"
                 android:padding="4dp" />
+            <!--android:background="@drawable/bg_borderwhite"-->
         </android.support.design.widget.TextInputLayout>
 
         <LinearLayout
@@ -65,9 +63,8 @@
             android:layout_height="50dp"
             android:gravity="center_vertical"
             android:layout_marginTop="15dp"
-            android:background="@drawable/bg_borderwhite"
             android:orientation="horizontal">
-
+            <!--android:background="@drawable/bg_borderwhite"-->
             <RadioGroup
                 android:id="@+id/rg"
                 android:layout_width="match_parent"
@@ -103,11 +100,13 @@
             android:layout_marginTop="35dp"
             android:layout_marginLeft="@dimen/activity_horizontal_margin"
             android:layout_marginRight="@dimen/activity_horizontal_margin"
-            android:background="@drawable/txtborder_login"
+            android:background="@drawable/bt_border_register_selector2"
             android:text="完成"
             android:textColor="@color/white"
             android:textSize="18sp"
             android:textStyle="bold" />
+
+        <!--android:background="@drawable/bt_border"-->
 
     </LinearLayout>
 

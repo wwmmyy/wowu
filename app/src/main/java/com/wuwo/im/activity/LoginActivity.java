@@ -24,10 +24,14 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.squareup.okhttp.MediaType;
+import com.squareup.okhttp.Request;
 import com.wuwo.im.config.WowuApp;
 import com.wuwo.im.util.MyToast;
 import com.wuwo.im.util.UpdateManager;
 import com.wuwo.im.util.UtilsTool;
+import com.zhy.http.okhttp.OkHttpUtils;
+import com.zhy.http.okhttp.callback.StringCallback;
 
 import org.json.JSONObject;
 
@@ -72,11 +76,94 @@ public class LoginActivity extends Activity implements OnClickListener {
 
 
         initView();
-//        validateDevice(); 
+//      validateDevice();
+
+
+        startLogin();
+
 
 //        // 检查文件更新
 //        manager = new UpdateManager(mContext);
 //        manager.checkUpdateMe();
+    }
+
+    public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
+
+    private void startLogin() {
+
+
+//        new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//                try{
+//                OkHttpClient okHttpClient = new OkHttpClient();
+//                JSONObject json=new JSONObject();
+//                json.put("PhoneNumber", "15000659340");
+//                json.put("Password", "123456");
+//                    RequestBody body = RequestBody.create(JSON, json.toString());
+//                    Request request = new Request.Builder()
+//                            .addHeader("content-type", "application/json")
+//                            .url("http://139.196.85.20/Account/Login")
+//                            .post(body)
+//                            .build();
+//                    Response response = okHttpClient.newCall(request).execute();
+//                    String result = response.body().string();
+////                    MyToast.show(mContext,"返回值::::"+result.toString());
+//                    Log.e("返回值::::",result.toString());
+//                }catch (Exception e){
+//                    e.printStackTrace();
+//                }
+//            }
+//        }).start();
+
+
+        try {
+
+            JSONObject json = new JSONObject();
+            json.put("PhoneNumber", "15000659340");
+            json.put("Password", "123456");
+
+            OkHttpUtils
+                    .postString()
+                    .addHeader("content-type", "application/json")
+                    .url("http://139.196.85.20/Account/Login")
+                    .mediaType(JSON)
+                    .content(json.toString())
+                    .build()
+                    .execute(new StringCallback() {
+                        @Override
+                        public void onError(Request request, Exception e) {
+                            e.printStackTrace();
+                            MyToast.show(mContext, "返回值失败" + request.toString());
+                        }
+
+                        @Override
+                        public void onResponse(String response) {
+                            MyToast.show(mContext, "返回的结果为：：：：" + response);
+                        }
+                    });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+/*                OkHttpUtils
+                .get()
+                .addHeader("content-type", "application/json;")
+//                .addHeader("Content-Disposition", "application/json;")
+                .url("http://139.196.110.136:7777/Disposition/DispositionList")
+//                .addParams("type", "smartplan")
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Request request, Exception e) {
+                        MyToast.show(mContext,"返回值失败");
+                    }
+                    @Override
+                    public void onResponse(String response) {
+                        MyToast.show(mContext,"返回的结果为：：：："+response);
+                    }
+                });*/
     }
 
 
@@ -98,6 +185,7 @@ public class LoginActivity extends Activity implements OnClickListener {
         login_auto.setOnClickListener(this);
 //         login_by_gesture.setOnClickListener(this);
         user_register.setOnClickListener(this);
+        findViewById(R.id.return_back).setOnClickListener(this);
 
 
 //         如果是设置保存了密码，则自动注入用户名及密码
@@ -114,9 +202,9 @@ public class LoginActivity extends Activity implements OnClickListener {
             imap_login_password.setText(m_password);
             if (login_auto_check) {
                  /*Toast.makeText(mContext, "正在登录...", Toast.LENGTH_SHORT).show();
-      			Intent intent = new Intent(LoginActivity.this,HomeActivity.class);
+                  Intent intent = new Intent(LoginActivity.this,HomeActivity.class);
       			startActivity(intent); */   
-            	/*mdialog = UtilsTool.initProgressDialog(mContext,"正在登录.....");
+                /*mdialog = UtilsTool.initProgressDialog(mContext,"正在登录.....");
                 mdialog.show();
             	UserLoginResult userloginresult = new UserLoginResult();
                 userloginresult.execute(mdialog, imap_login_uername.getText().toString(), imap_login_password.getText().toString());         
@@ -186,37 +274,45 @@ public class LoginActivity extends Activity implements OnClickListener {
         // TODO 自动生成的方法存根
         switch (v.getId()) {
             case R.id.imap_login_userlogin:
-                if (imap_login_uername.getText().toString().trim().equals("")
-//                    ||imap_login_password.getText().toString().trim().equals("")
-                        ) {
-                    MyToast.show(mContext, "用户名或密码不能为空", Toast.LENGTH_LONG);
-//                Intent  temp=new Intent(this,CharacterChooseActivity.class);
-//                startActivity(temp);
+//                if (imap_login_uername.getText().toString().trim().equals("")
+////                    ||imap_login_password.getText().toString().trim().equals("")
+//                        ) {
+//                    MyToast.show(mContext, "用户名或密码不能为空", Toast.LENGTH_LONG);
+////                Intent  temp=new Intent(this,CharacterChooseActivity.class);
+////                startActivity(temp);
+//
+//                } else {
+//                    mdialog = UtilsTool.initProgressDialog(mContext, "正在登陆.....");
+//                    mdialog.show();
+////                UserLoginResult userloginresult = new UserLoginResult();
+////                userloginresult.execute(mdialog, imap_login_uername.getText().toString(), imap_login_password.getText().toString());
+//
+//                    Intent temp = new Intent(this, MainActivity.class);
+//                    startActivity(temp);
+//                    mdialog.dismiss();
+//                    finish();
+//                }
 
-                } else {
-                    mdialog = UtilsTool.initProgressDialog(mContext, "正在登陆.....");
-                    mdialog.show();
-//                UserLoginResult userloginresult = new UserLoginResult();
-//                userloginresult.execute(mdialog, imap_login_uername.getText().toString(), imap_login_password.getText().toString());
+                startLogin();
 
-                    Intent temp = new Intent(this, MainActivity.class);
-                    startActivity(temp);
-                    mdialog.dismiss();
-                    finish();
-                }
                 break;
             case R.id.login_by_gesture:
                 Intent intent2 = new Intent();
-                intent2.setClass(mContext, RegisterActivity.class);
+                intent2.setClass(mContext, RegisterStepOneActivity.class);
                 startActivity(intent2);
 //                finish();
                 break;
 
             case R.id.user_register:
                 Intent intent3 = new Intent();
-                intent3.setClass(mContext, RegisterActivity.class);
+                intent3.setClass(mContext, RegisterStepOneActivity.class);
                 startActivity(intent3);
 //            finish();
+                break;
+
+            case R.id.return_back:
+                finish();
+                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                 break;
             default:
                 break;

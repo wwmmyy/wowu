@@ -2,12 +2,118 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/whitesmoke"
+    android:layout_gravity="center_horizontal"
+    android:background="@drawable/login_bg"
     android:gravity="center_horizontal"
     android:orientation="vertical"
-    tools:context="com.wuwo.im.activity.RegisterActivity">
+    tools:context="com.wuwo.im.activity.RegisterStepOneActivity">
 
     <include layout="@layout/top_title_bar" />
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/text_margin_10dp"
+        android:layout_marginTop="20dp"
+        android:text="注册先知先觉"
+        android:textColor="@android:color/white"
+        android:textSize="23sp" />
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_marginTop="20dp"
+        android:layout_width="match_parent"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:id="@+id/et_register_phone_num"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_marginTop="15dp"
+            android:hint="@string/register_hint"
+            android:inputType="textPhonetic"
+            android:padding="4dp" />
+    </android.support.design.widget.TextInputLayout>
+
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginTop="30dp"
+        android:layout_marginRight="20dp"
+        android:gravity="right|center_vertical"
+        android:orientation="horizontal">
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="继续操作，即表示你要接受"
+            android:textColor="@android:color/white"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/user_register_police"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="隐私授权政策"
+            android:textColor="@color/teal"
+            android:textSize="14sp" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="与"
+            android:textColor="@android:color/white"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/user_register_tiaokuan"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="条款"
+            android:textColor="@color/teal"
+            android:textSize="14sp" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_register_one_sure"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:background="@drawable/bt_border_register_selector2"
+        android:gravity="center_horizontal"
+        android:paddingBottom="10dp"
+        android:paddingLeft="60dp"
+        android:paddingRight="60dp"
+        android:paddingTop="10dp"
+        android:text="继续"
+        android:textColor="@color/white"
+        android:textSize="22sp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -15,9 +121,11 @@
         android:layout_marginLeft="@dimen/activity_horizontal_margin"
         android:layout_marginRight="@dimen/activity_horizontal_margin"
         android:layout_marginTop="15dp"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:visibility="gone">
 
         <android.support.design.widget.TextInputLayout
+            android:layout_marginTop="20dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -31,6 +139,9 @@
                 android:inputType="textPhonetic"
                 android:padding="4dp" />
         </android.support.design.widget.TextInputLayout>
+
+
+
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -80,16 +191,15 @@
         </android.support.design.widget.TextInputLayout>
 
 
-
         <Button
             android:id="@+id/register_next"
             style="?android:textAppearanceButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="35dp"
             android:layout_marginLeft="@dimen/activity_horizontal_margin"
             android:layout_marginRight="@dimen/activity_horizontal_margin"
-            android:background="@drawable/txtborder_login"
+            android:layout_marginTop="35dp"
+            android:background="@drawable/bt_border"
             android:text="@string/register_next"
             android:textColor="@color/white"
             android:textSize="18sp"

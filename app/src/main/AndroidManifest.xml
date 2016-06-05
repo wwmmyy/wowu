@@ -48,7 +48,7 @@
     <application
         android:name="com.wuwo.im.config.WowuApp"
         android:allowBackup="true"
-        android:icon="@drawable/ic_launcher"
+        android:icon="@drawable/icon"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
@@ -65,10 +65,10 @@
         <activity android:name="com.wuwo.im.activity.WelcomeActivity" />
         <activity android:name="com.wuwo.im.activity.LoginActivity" />
         <activity
-            android:name="com.wuwo.im.activity.RegisterActivity"
+            android:name="com.wuwo.im.activity.RegisterStepOneActivity"
             android:label="@string/title_activity_register" />
         <activity
-            android:name="com.wuwo.im.activity.RegisterNextActivity"
+            android:name="com.wuwo.im.activity.RegisterStepFourActivity"
             android:label="@string/title_activity_register" />
         <activity android:name="com.wuwo.im.activity.MainActivity" />
         <activity android:name="com.wuwo.im.chat.ChatingMainActivity" />
@@ -78,10 +78,15 @@
         <activity android:name="com.wuwo.im.activity.CharacterChooseActivity" />
         <activity android:name="com.wuwo.im.activity.CharacterTestActivity" />
         <activity android:name="com.wuwo.im.activity.CharacterTResultActivity" />
-        <activity android:name="com.wuwo.im.activity.UserDetailActivity" />
-        <activity android:name="com.wuwo.im.activity.FromContractsActivity"></activity>
+        <activity android:name="com.wuwo.im.activity.OwnerInfoDetailActivity" />
+        <activity android:name="com.wuwo.im.activity.FromContractsActivity" />
         <activity android:name="com.wuwo.im.activity.VersionIntroActivity" />
         <activity android:name="com.wuwo.im.activity.FeedbackActivity" />
+        <activity android:name="com.wuwo.im.activity.LoginChooseActivity" />
+        <activity android:name="com.wuwo.im.activity.RegisterPolicyActivity" />
+        <activity android:name="com.wuwo.im.activity.RegisterStepTwoActivity" />
+        <activity android:name="com.wuwo.im.activity.RegisterStepThreeActivity" />
+        <activity android:name="com.wuwo.im.activity.UserInfoEditActivity"></activity>
     </application>
 
 </manifest>

@@ -52,11 +52,11 @@ public class ChatListActivity extends BaseActivity implements OnClickListener {
             Intent intent2 = new Intent();
             intent2.setClass(mcontext, ChatedActivty.class);
             startActivity(intent2);
-
+            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
             break;
         case R.id.return_back0_sixinlist:
             ChatListActivity.this.finish();
-
+            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
             break;
 
         default:

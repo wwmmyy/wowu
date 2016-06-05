@@ -1,12 +1,10 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:app1="http://schemas.android.com/apk/res-auto"
-    xmlns:app2="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="center_horizontal"
-    android:background="@color/whitesmoke"
+    android:background="@drawable/login_bg"
     android:orientation="vertical">
 
     <LinearLayout
@@ -14,73 +12,41 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="170dp">
-            <!-- 01579b   0f2056-->
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="120dp"
-                android:background="#2298ef"></RelativeLayout>
+        <include layout="@layout/top_title_bar" />
+        <!--        <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="170dp">
+                    &lt;!&ndash; 01579b   0f2056&ndash;&gt;
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="120dp"
+                        ></RelativeLayout>
+                    &lt;!&ndash;android:background="#2298ef"&ndash;&gt;
 
-            <RelativeLayout
-                android:layout_width="90dp"
-                android:layout_height="90dp"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="88dp"
-                android:background="@drawable/circle_back">
+                    <RelativeLayout
+                        android:layout_width="90dp"
+                        android:layout_height="90dp"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="88dp"
+                        android:background="@drawable/circle_back">
 
-                <TextView
-                    android:layout_width="75dp"
-                    android:layout_height="75dp"
-                    android:layout_centerInParent="true"
-                    android:background="@drawable/ic_launcher" />
-            </RelativeLayout>
-        </RelativeLayout>
+                        <TextView
+                            android:layout_width="75dp"
+                            android:layout_height="75dp"
+                            android:layout_centerInParent="true"
+                            android:background="@drawable/ic_launcher" />
+                    </RelativeLayout>
+                </RelativeLayout>-->
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="15dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="120dp"
+            android:gravity="center"
             android:orientation="vertical"
             android:paddingLeft="@dimen/login_horizontal_margin"
             android:paddingRight="@dimen/login_horizontal_margin">
-
-
-            <!-- <com.yh.materialdesign.edittext.MaterialEditText
-                 android:id="@+id/imap_login_uername"
-                 android:layout_width="match_parent"
-                 android:layout_height="wrap_content"
-                 android:layout_marginTop="30dip"
-                 android:ellipsize="end"
-                 android:focusable="false"
-                 android:hint="手机号"
-                 android:textCursorDrawable="@drawable/text_cursor_cyan"
-                 android:textSize="18sp"
-                 app2:baseColor="#555555"
-                 app:floatingLabel="highlight"
-                 app:maxCharacters="20"
-                 app:primaryColor="@android:color/holo_blue_light"
-                 app:singleLineEllipsis="true"
-                  />
-
-             <com.yh.materialdesign.edittext.MaterialEditText
-                 android:id="@+id/imap_login_password"
-                 android:layout_width="match_parent"
-                 android:layout_height="wrap_content"
-                 android:ellipsize="end"
-                 android:focusable="false"
-                 android:hint="密码"
-                 android:inputType="textPassword"
-                 android:textColor="@android:color/white"
-                 android:textCursorDrawable="@drawable/text_cursor_cyan"
-                 android:textSize="18sp"
-                 app:floatingLabel="highlight"
-                 app:maxCharacters="20"
-                 app2:baseColor="#555555"
-                 app:primaryColor="@android:color/holo_blue_light"
-                 app:singleLineEllipsis="true"/>-->
-
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
@@ -93,14 +59,15 @@
                     android:hint="@string/user_name"
                     android:inputType="text|textPhonetic"
                     android:maxLines="1"
-                    android:text="hhe"
-                    android:singleLine="true" />
+                    android:singleLine="true"
+                    android:text="hhe" />
 
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/text_margin_10dp">
 
                 <EditText
                     android:id="@+id/imap_login_password"
@@ -188,8 +155,8 @@
                 style="?android:textAppearanceButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="25dp"
-                android:background="@drawable/txtborder_login"
+                android:layout_marginTop="35dp"
+                android:background="@drawable/bt_border_login"
                 android:text="@string/action_sign_in"
                 android:textColor="@color/white"
                 android:textSize="18sp"

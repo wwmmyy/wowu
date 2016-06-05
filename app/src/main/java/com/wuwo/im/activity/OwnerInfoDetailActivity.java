@@ -18,18 +18,21 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.provider.MediaStore;
+import android.provider.MediaStore.MediaColumns;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
+import android.view.View.OnClickListener;
+import android.view.ViewGroup.LayoutParams;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.facebook.imagepipeline.core.ImagePipeline;
-import com.wuwo.im.config.ExitApp;
 import com.wuwo.im.config.WowuApp;
 import com.wuwo.im.util.FormFile;
 import com.wuwo.im.util.MyToast;
@@ -42,65 +45,84 @@ import java.util.Map;
 
 import im.wuwo.com.wuwo.R;
 
-
-public class RegisterNextActivity extends BaseActivity implements View.OnClickListener {
-
-    Context mcontext = RegisterNextActivity.this;
-    //    in.srain.cube.image.ImageLoader imageLoader;//加载用户头像
+public class OwnerInfoDetailActivity extends BaseActivity implements OnClickListener {
+    Context mcontext = OwnerInfoDetailActivity.this;
+//    in.srain.cube.image.ImageLoader imageLoader;//加载用户头像
     SharedPreferences mSettings;
     SimpleDraweeView usersetting_userpic;
+    TextView set_userrole;
     Uri uri;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        // TODO 自动生成的方法存根
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        //    this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+        //            WindowManager.LayoutParams.FLAG_FULLSCREEN);// 去掉信息栏
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_register_next);
-        ExitApp.getInstance().addOpenedActivity(this);
-        mSettings = mcontext.getSharedPreferences(WowuApp.PREFERENCE_KEY, MODE_PRIVATE);
-        initView();
-    }
 
-    private void initView() {
-        findViewById(R.id.return_back).setOnClickListener(this);
-        findViewById(R.id.set_user_pic).setOnClickListener(this);
-        findViewById(R.id.register_finish).setOnClickListener(this);
+        setContentView(R.layout.activity_owner_detail);
+        mSettings = mcontext.getSharedPreferences(WowuApp.PREFERENCE_KEY,
+                MODE_PRIVATE);
+
+        //      加载用户头像
+//        imageLoader = ImageLoaderFactory.create(mcontext);
+//        usersetting_userpic = (in.srain.cube.image.CircleCubeImageView) findViewById(R.id.usersetting_userpic);
+//        usersetting_userpic.loadImage(imageLoader, DistApp.userImagePath + mSettings.getString("userid", "") + ".jpg");// 设为缓存图片
+
+        uri=Uri.parse(WowuApp.userImagePath + mSettings.getString("userid", "") + ".jpg");
+         usersetting_userpic = (SimpleDraweeView)findViewById(R.id.usersetting_userpic);
+        usersetting_userpic.setImageURI(Uri.parse(WowuApp.userImagePath + mSettings.getString("userid", "") + ".jpg"));
+
+        TextView back_news1 = (TextView) findViewById(R.id.user_detail_return_back);
+        back_news1.setOnClickListener(this);
+        usersetting_userpic.setOnClickListener(this);
+
+        set_userrole = (TextView) findViewById(R.id.set_userrole);
+        RelativeLayout usersetting_userpic_layout = (RelativeLayout) findViewById(R.id.usersetting_userpic_layout);
+        usersetting_userpic_layout.setOnClickListener(this);
+
+        TextView set_username = (TextView) findViewById(R.id.set_username);
+        set_username.setText(mSettings.getString("username", "游客"));
+
+        TextView set_organsition = (TextView) findViewById(R.id.set_organsition);
+        set_organsition.setText(mSettings.getString("userOrganzation", "").equals("") ? "无信息" : mSettings.getString("userOrganzation", "无信息"));
 
 
-        uri = Uri.parse(WowuApp.userImagePath + mSettings.getString("userid", "") + ".jpg");
-        usersetting_userpic = (SimpleDraweeView) findViewById(R.id.usersetting_userpic);
-        //usersetting_userpic.setImageURI(Uri.parse(WowuApp.userImagePath + mSettings.getString("userid", "") + ".jpg"));
+        TextView set_userrole = (TextView) findViewById(R.id.set_userrole);
+        set_userrole.setText(mSettings.getString("userRole", "").equals("") ? "无信息" : mSettings.getString("userRole", "无信息"));
+
+
     }
 
     @Override
     public void onClick(View v) {
+        // TODO 自动生成的方法存根
         switch (v.getId()) {
-            case R.id.return_back:
-                this.finish();
+            case R.id.user_detail_return_back:
+                OwnerInfoDetailActivity.this.finish();
+                overridePendingTransition(0, R.anim.slide_out_to_left);
                 break;
-            case R.id.set_user_pic:
-                showDialog();
-                break;
-            case R.id.register_finish:
-//                MainActivity
-                Intent temp = new Intent(this, CharacterChooseActivity.class);
-                startActivity(temp);
-//                finish();
+            case R.id.usersetting_userpic_layout:
+            case R.id.usersetting_userpic:
+            showDialog();
                 break;
 
+            default:
+                break;
         }
-    }
 
+    }
 
     private void showDialog() {
         View view = getLayoutInflater().inflate(R.layout.dialog_user_pic_choose, null);
         final Dialog dialog = new Dialog(this, R.style.transparentFrameWindowStyle);
-        dialog.setContentView(view, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT));
+        dialog.setContentView(view, new LayoutParams(LayoutParams.FILL_PARENT,
+                LayoutParams.WRAP_CONTENT));
         Window window = dialog.getWindow();
 
         Button xiangmubanli_cancel = (Button) view.findViewById(R.id.userpic_setting_cancel);
 
-        xiangmubanli_cancel.setOnClickListener(new View.OnClickListener() {
+        xiangmubanli_cancel.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View arg0) {
                 // TODO 自动生成的方法存根
@@ -110,7 +132,7 @@ public class RegisterNextActivity extends BaseActivity implements View.OnClickLi
 
         //      直接拍照
         Button userimg_take_picture = (Button) view.findViewById(R.id.userimg_take_picture);
-        userimg_take_picture.setOnClickListener(new View.OnClickListener() {
+        userimg_take_picture.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View arg0) {
                 // TODO 自动生成的方法存根
@@ -121,7 +143,7 @@ public class RegisterNextActivity extends BaseActivity implements View.OnClickLi
 
         //        从相册中选择
         Button userimg_select_pic = (Button) view.findViewById(R.id.userimg_select_pic);
-        userimg_select_pic.setOnClickListener(new View.OnClickListener() {
+        userimg_select_pic.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View arg0) {
                 // TODO 自动生成的方法存根
@@ -141,8 +163,8 @@ public class RegisterNextActivity extends BaseActivity implements View.OnClickLi
         wl.x = 0;
         wl.y = getWindowManager().getDefaultDisplay().getHeight();
         // 以下这两句是为了保证按钮可以水平满屏
-        wl.width = ViewGroup.LayoutParams.MATCH_PARENT;
-        wl.height = ViewGroup.LayoutParams.WRAP_CONTENT;
+        wl.width = LayoutParams.MATCH_PARENT;
+        wl.height = LayoutParams.WRAP_CONTENT;
 
         // 设置显示位置
         dialog.onWindowAttributesChanged(wl);
@@ -207,11 +229,12 @@ public class RegisterNextActivity extends BaseActivity implements View.OnClickLi
                 }
 
                 try {
-                    String[] pojo = {MediaStore.MediaColumns.DATA};
+                    String[] pojo = {MediaColumns.DATA};
+
                     Cursor cursor = managedQuery(uri, pojo, null, null, null);
                     if (cursor != null) {
                         ContentResolver cr = this.getContentResolver();
-                        int colunm_index = cursor.getColumnIndexOrThrow(MediaStore.MediaColumns.DATA);
+                        int colunm_index = cursor.getColumnIndexOrThrow(MediaColumns.DATA);
                         cursor.moveToFirst();
                         String path = cursor.getString(colunm_index);
                         /***
@@ -293,8 +316,7 @@ public class RegisterNextActivity extends BaseActivity implements View.OnClickLi
                 //请求普通信息
                 Map<String, String> params = new HashMap<String, String>();
                 params.put("userId", mSettings.getString("userid", ""));//用户登录以后获取用户的userID并保存
-//                if(MakeToken.refreshToken()){//重新刷新token
-//                params.put("access_token", WowuApp.access_token);
+ //                params.put("access_token", WowuApp.access_token);
 
                 try {
                     FormFile formfile = null;
@@ -303,7 +325,7 @@ public class RegisterNextActivity extends BaseActivity implements View.OnClickLi
                         formfile = new FormFile(file.getName(), file, "image",
                                 "application/octet-stream");
                     }
-                    //                    上传图片到服务器
+                    //                    上传图片到服务器        
                     boolean result = SocketHttpRequester.post(requestURL, params, formfile);
                 } catch (Exception e) {
                     // TODO 自动生成的 catch 块

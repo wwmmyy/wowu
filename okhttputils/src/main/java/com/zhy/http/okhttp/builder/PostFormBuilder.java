@@ -92,4 +92,10 @@ public class PostFormBuilder extends OkHttpRequestBuilder
         headers.put(key, val);
         return this;
     }
+
+//    @Override
+//    public OkHttpRequestBuilder addRequestBody(RequestBody requestBody) {
+//        this.requestBody = requestBody;
+//        return this;
+//    }
 }

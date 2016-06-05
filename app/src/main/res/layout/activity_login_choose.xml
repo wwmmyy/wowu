@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/login_bg"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    tools:context="com.wuwo.im.activity.LoginChooseActivity">
+
+
+
+ <ImageView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_centerHorizontal="true"
+    android:src="@drawable/logo_w"
+     android:layout_marginTop="30dp"/>
+
+    <TextView
+        android:id="@+id/tv_welcome_choose"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingBottom="100dp"
+        android:paddingTop="20dp"
+        android:layout_centerInParent="true"
+        android:text="欢迎来到先知先觉\n激情不再擦肩而过"
+        android:lineSpacingExtra="8dp"
+        android:textSize="22sp"
+        android:textColor="@color/white"/>
+
+
+    <TextView
+        android:id="@+id/tv_welcome_register"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingBottom="10dp"
+        android:paddingLeft="60dp"
+        android:paddingRight="60dp"
+        android:paddingTop="10dp"
+        android:text="注册"
+        android:layout_below="@+id/tv_welcome_choose"
+        android:layout_centerHorizontal="true"
+        android:textColor="?attr/appbg"
+        android:background="@drawable/bt_border_register_selector"
+        android:textSize="20sp"
+        />
+
+    <TextView
+        android:id="@+id/tv_welcome_sure"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="登录"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:paddingLeft="60dp"
+        android:paddingRight="60dp"
+        android:layout_marginTop="30dp"
+        android:layout_below="@+id/tv_welcome_register"
+        android:layout_centerHorizontal="true"
+        android:textColor="?attr/appbg"
+        android:background="@drawable/bt_border_register_selector2"
+        android:textSize="20sp"
+        />
+    <!--android:textColor="@drawable/bt_textcolor_register_selector"-->
+
+</RelativeLayout>

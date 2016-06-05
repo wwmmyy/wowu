@@ -18,6 +18,7 @@ import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
@@ -32,7 +33,7 @@ import com.wuwo.im.config.WowuApp;
 import com.wuwo.im.fragement.Portal_ContactFragment;
 import com.wuwo.im.fragement.Portal_FindFragment;
 import com.wuwo.im.fragement.Portal_LocalFragment;
-import com.wuwo.im.fragement.Portal_UserFragment;
+import com.wuwo.im.fragement.Portal_OwnerFragment;
 import com.wuwo.im.fragement.Portal_XiaoXiFragment;
 import com.wuwo.im.util.UtilsTool;
 import com.wuwo.im.view.ActionItem;
@@ -57,7 +58,7 @@ import im.wuwo.com.wuwo.R;
  * @版本: V1.0
  * @版权:Copyright ©  All rights reserved.
  */
-public class MainActivity extends BaseFragementActivity implements MyTabWidget.OnTabSelectedListener {
+public class MainActivity extends BaseFragementActivity implements MyTabWidget.OnTabSelectedListener, OnClickListener {
 
     //	private static final String TAG = "MainActivity";
     //	private HomeFragment mHomeFragment;
@@ -85,9 +86,9 @@ public class MainActivity extends BaseFragementActivity implements MyTabWidget.O
     private ImageView return_back_igw;
     private TextView title_tv;
     private PopupMenu popupMenu;
-//负责更换主题的
-    private   ImageView menu_theme;
-//    private RelativeLayout title_bar;
+    //负责更换主题的
+    private ImageView menu_theme;
+    //    private RelativeLayout title_bar;
     private TitlePopup titlePopup;
 
 
@@ -106,7 +107,6 @@ public class MainActivity extends BaseFragementActivity implements MyTabWidget.O
 
 //        启动对话IM功能
 //        chatLogin();
-
 
 
         mSettings = mContext.getSharedPreferences(WowuApp.PREFERENCE_KEY,
@@ -192,7 +192,6 @@ public class MainActivity extends BaseFragementActivity implements MyTabWidget.O
 //        }
 //
 //    };
-
 
 
 //    public void registerBoradcastReceiver() {
@@ -408,7 +407,7 @@ public class MainActivity extends BaseFragementActivity implements MyTabWidget.O
 
     private void init() {
 
-        return_back_igw= (ImageView) findViewById(R.id.return_back);
+        return_back_igw = (ImageView) findViewById(R.id.return_back);
         mTopIndicator = (MyTabWidget) findViewById(R.id.top_indicator);
         mTopIndicator.setOnTabSelectedListener(this);
 
@@ -418,7 +417,7 @@ public class MainActivity extends BaseFragementActivity implements MyTabWidget.O
         fragments.add(new Portal_FindFragment());
         fragments.add(new Portal_ContactFragment());
         fragments.add(new Portal_XiaoXiFragment());
-        fragments.add(new Portal_UserFragment());
+        fragments.add(new Portal_OwnerFragment());
 
 
         mViewPager = (NoScrollViewPager) findViewById(R.id.view_pager);
@@ -427,11 +426,10 @@ public class MainActivity extends BaseFragementActivity implements MyTabWidget.O
 
 
         findViewById(R.id.return_back).setVisibility(View.GONE);
-        title_tv = (TextView)findViewById(R.id.top_title);
+        title_tv = (TextView) findViewById(R.id.top_title);
         title_tv.setText(mTopIndicator.getmLabels()[0]);
 //        title_bar = (RelativeLayout)findViewById(R.id.tx_top_right);
 //        title_bar.setVisibility(View.GONE);
-
 
 
         this.fragmentManager = this.getSupportFragmentManager();
@@ -444,13 +442,19 @@ public class MainActivity extends BaseFragementActivity implements MyTabWidget.O
             public void onPageSelected(int position) {
                 // TODO 自动生成的方法存根
 //                滑动完成后底部的导航条也跟着跳转
-                mTopIndicator.setTabsDisplay(mContext, position>4?4:position);
+                mTopIndicator.setTabsDisplay(mContext, position > 4 ? 4 : position);
                 title_tv.setText(mTopIndicator.getmLabels()[position]);
 
 
+                if(position==4){
+                    menu_theme.setVisibility(View.VISIBLE);
+                }else{
+                    menu_theme.setVisibility(View.GONE);
+                }
+
 
 //        点击后关闭消息红点
-                mTopIndicator.setIndicateDisplay(position, false,"");
+                mTopIndicator.setIndicateDisplay(position, false, "");
 
             }
 
@@ -472,17 +476,15 @@ public class MainActivity extends BaseFragementActivity implements MyTabWidget.O
         }
 
 
+//        return_back_igw.setOnClickListener(new OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                mViewPager.setCurrentItem(4);//退回到更多界面
+//                return_back_igw.setVisibility(View.GONE);
+//    }
+//});
 
-
-        return_back_igw.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mViewPager.setCurrentItem(4);//退回到更多界面
-                return_back_igw.setVisibility(View.GONE);
-    }
-});
-
-        menu_theme= (ImageView) findViewById(R.id.menu_theme);
+        menu_theme = (ImageView) findViewById(R.id.menu_theme);
 
 
         initPopupData();
@@ -496,28 +498,13 @@ public class MainActivity extends BaseFragementActivity implements MyTabWidget.O
 //        });
 
         popupMenu = new PopupMenu(MainActivity.this);
-        menu_theme.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                // TODO Auto-generated method stub
-                popupMenu.showLocation(R.id.menu_theme);
-
-                popupMenu.setOnItemClickListener(new PopupMenu.OnItemClickListener() {
-                    @Override
-                    public void onClick(com.wuwo.im.view.PopupMenu.MENUITEM item, String str, int position) {
-                        // TODO Auto-generated method stub
-                        putData(position);
-                    }
-                });
-            }
-        });
+        menu_theme.setOnClickListener(this);
 
 
 //        底部导航条消息数量红点
-        mTopIndicator.setIndicateDisplay(1, true,"11");
-        mTopIndicator.setIndicateDisplay(2, true,"3");
-        mTopIndicator.setIndicateDisplay(3, true,"8");
+        mTopIndicator.setIndicateDisplay(1, true, "11");
+        mTopIndicator.setIndicateDisplay(2, true, "3");
+        mTopIndicator.setIndicateDisplay(3, true, "8");
 
     }
 
@@ -593,8 +580,26 @@ public class MainActivity extends BaseFragementActivity implements MyTabWidget.O
 
     }
 
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.menu_theme:
+                popupMenu.showLocation(R.id.menu_theme);
+                popupMenu.setOnItemClickListener(new PopupMenu.OnItemClickListener() {
+                    @Override
+                    public void onClick(com.wuwo.im.view.PopupMenu.MENUITEM item, String str, int position) {
+                        // TODO Auto-generated method stub
+                        putData(position);
+                    }
+                });
+                break;
+//            case R.id.menu_theme:
+//
+//                break;
 
 
+        }
+    }
 
 
     class MyPagerAdapter extends PagerAdapter {
@@ -647,121 +652,7 @@ public class MainActivity extends BaseFragementActivity implements MyTabWidget.O
      * @Title: showExitDialog
      * @Description: 软件退出对话框
      */
-    private void showExitDialog(Context mContext) {/*
-        View view = this.getLayoutInflater().inflate(R.layout.exit_all_dialog, null);
-        final Dialog dialog = new Dialog(mContext, R.style.transparentFrameWindowStyle);
-        dialog.setContentView(view, new LayoutParams(LayoutParams.FILL_PARENT,
-                LayoutParams.WRAP_CONTENT));
-        Window window = dialog.getWindow();
-        Button home_exit_cancel = (Button) view.findViewById(R.id.home_exit_cancel);
-        Button home_exit_sure = (Button) view.findViewById(R.id.home_exit_sure);
-        home_exit_cancel.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View arg0) {
-                // TODO 自动生成的方法存根
-                dialog.dismiss();
-            }
-        });
-        home_exit_sure.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View arg0) {
-                // TODO 自动生成的方法存根
-                dialog.dismiss();
-
-                Message msg = new Message();
-                msg.what = Loading;
-                mHandler.sendMessage(msg);
-
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        // TODO 自动生成的方法存根
-                        String url = DistApp.serverAbsolutePath+"/mobile/app-mobileLog.action";
-                        Map<String, String> map = new HashMap<String, String>();
-                        map.put("deviceNumber", DistApp.ALL_deviceNumber);
-                        map.put("action", "exit");
-//                        map.put("appidentify", "com.dist.iportal");
-//                      把设备的坐标也传过去
-                        map.put("deviceType","android");
-                        map.put("latitude", DistApp.latitude);
-                        map.put("longitude", DistApp.longitude);
-                        map.put("radius", DistApp.Radius);
-                        map.put("userId", mSettings.getString("userid", ""));//用户登录以后获取用户的userID并保存
-                        try {
-//                           退出时向服务器通报
-                            Log.d("退出时获取到的返回结果为 ",
-                                    UtilsTool.getStringFromServer(url, map )
-                                    );
-                        } catch (Exception e) {
-                            // TODO 自动生成的 catch 块
-                            e.printStackTrace();
-                        }
-
-                        Message msg2 = new Message();
-                        msg2.what = END;
-                        mHandler.sendMessage(msg2);
-
-                    }
-                }).start();
-
-
-
-
-
-
-                Timer timer = new Timer();
-                timer.schedule(new TimerTask() {
-                    @Override
-                    public void run() {
-                        Message message = new Message();
-                        message.what = END;
-                        mHandler.sendMessage(message);
-                    }
-                }, 3000);
-
-            }
-        });
-
-        // 设置显示动画
-        //          window.setWindowAnimations(R.style.main_menu_animstyle);
-        WindowManager.LayoutParams wl = window.getAttributes();
-        wl.x = 0;
-        wl.y = this.getWindowManager().getDefaultDisplay().getHeight();
-        // 以下这两句是为了保证按钮可以水平满屏
-        wl.width = ViewGroup.LayoutParams.WRAP_CONTENT;
-        wl.height = ViewGroup.LayoutParams.WRAP_CONTENT;
-        // 设置显示位置
-        dialog.onWindowAttributesChanged(wl);
-        // 设置点击外围解散
-        dialog.setCanceledOnTouchOutside(true);
-        dialog.show();
-    */
-
-
-
-
-//              AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.AppCompatAlertDialogStyle);
-//                builder.setTitle("提示");
-//                builder.setMessage("确定退出程序吗？");
-//                builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int which) {
-//                        doSomething(dialog);
-//                    }
-//                });
-//                builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int which) {
-//                        dialog.dismiss();
-//                    }
-//                });
-//                builder.show();
-
-
-
-
-
-
+    private void showExitDialog(Context mContext) {
         final AlertDialog d = new AlertDialog.Builder(this, R.style.AppCompatAlertDialogStyle)
                 .setTitle("提示")
 //                .setCancelable(true)
@@ -806,31 +697,7 @@ public class MainActivity extends BaseFragementActivity implements MyTabWidget.O
         });
         d.show();
 
-
-
-//        materialDialog = new MaterialDialog(mContext);
-//        materialDialog.setTitle("提示").setMessage("确定退出程序吗？")
-//                // mMaterialDialog.setBackgroundResource(R.drawable.background);
-//                .setPositiveButton("确定", new OnClickListener() {
-//                    @Override
-//                    public void onClick(View v) {
-//
-//                        // TODO 自动生成的方法存根
-//                        materialDialog.dismiss();
-//
-//
-//
-//                    }
-//                }).setNegativeButton("取消", new OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                materialDialog.dismiss();
-//
-//            }
-//        }).setCanceledOnTouchOutside(true).show();
-
-
-    }
+ }
 
 //    private void doSomething(DialogInterface dialog) {
 //        dialog.dismiss();
@@ -936,12 +803,13 @@ public class MainActivity extends BaseFragementActivity implements MyTabWidget.O
 
     //声明一个静态常量，用作退出BaseActivity的Tag
     public static final String EXIST = "exist";
-    boolean isExist=false;
+    boolean isExist = false;
+
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
 
-        Log.d("进入LoginValidateActivity","onNewIntent");
+        Log.d("进入LoginValidateActivity", "onNewIntent");
 
         if (intent != null) {//判断其他Activity启动本Activity时传递来的intent是否为空
 //            this.finish();
@@ -964,12 +832,12 @@ public class MainActivity extends BaseFragementActivity implements MyTabWidget.O
         //实例化标题栏弹窗
         titlePopup = new TitlePopup(this, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         //给标题栏弹窗添加子类
-        titlePopup.addAction(new ActionItem(this, "商务主题", R.drawable.back_,R.color.colorPrimary));
-        titlePopup.addAction(new ActionItem(this, "粉色主题", R.drawable.back_,R.color.violet));
-        titlePopup.addAction(new ActionItem(this, "蓝色主题", R.drawable.back_,R.color.blue));
-        titlePopup.addAction(new ActionItem(this, "绿色主题", R.drawable.back_,R.color.green));
-        titlePopup.addAction(new ActionItem(this, "紫色主题", R.drawable.back_,R.color.wisteria));
-        titlePopup.addAction(new ActionItem(this, "橘色主题", R.drawable.back_,R.color.googleplus));
+        titlePopup.addAction(new ActionItem(this, "商务主题", R.drawable.back_, R.color.colorPrimary));
+        titlePopup.addAction(new ActionItem(this, "粉色主题", R.drawable.back_, R.color.violet));
+        titlePopup.addAction(new ActionItem(this, "蓝色主题", R.drawable.back_, R.color.blue));
+        titlePopup.addAction(new ActionItem(this, "绿色主题", R.drawable.back_, R.color.green));
+        titlePopup.addAction(new ActionItem(this, "紫色主题", R.drawable.back_, R.color.wisteria));
+        titlePopup.addAction(new ActionItem(this, "橘色主题", R.drawable.back_, R.color.googleplus));
 
 //        titlePopup.addAction(new ActionItem(this, "项目树", R.drawable.mm_title_btn_compose_normal));
         //添加弹出框listitem项点击监听
@@ -989,16 +857,15 @@ public class MainActivity extends BaseFragementActivity implements MyTabWidget.O
     }
 
 
-
     /**
      * 用来保存主题标识
      */
     private SharedPreferences mPreferences;
+
     /**
      * 是否是 Dark Theme(即是黑色主题) 主题
      */
 //    private boolean mIsDark;
-
     private void putData(int position) {
 
         mPreferences = getSharedPreferences("theme", MODE_PRIVATE);
