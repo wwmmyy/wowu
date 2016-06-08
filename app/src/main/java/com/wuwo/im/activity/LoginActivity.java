@@ -2,7 +2,6 @@ package com.wuwo.im.activity;
 
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -14,8 +13,6 @@ import android.os.Message;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.Window;
 import android.view.WindowManager;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -24,7 +21,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.squareup.okhttp.MediaType;
 import com.squareup.okhttp.Request;
 import com.wuwo.im.config.WowuApp;
 import com.wuwo.im.util.MyToast;
@@ -40,24 +36,26 @@ import java.util.Map;
 
 import im.wuwo.com.wuwo.R;
 
-public class LoginActivity extends Activity implements OnClickListener {
+public class LoginActivity extends BaseLoadActivity {
 
-    Context mContext = LoginActivity.this;
+//    Context mContext = LoginActivity.this;
     private AutoCompleteTextView imap_login_uername;
     private EditText imap_login_password;
     private Button imap_login_userlogin;
     private CheckBox login_save_pwd;
     private CheckBox login_auto;
     private ProgressDialog mdialog;
-    SharedPreferences settings;
-    SharedPreferences.Editor editor;
-    UpdateManager manager;
+    private SharedPreferences settings;
+    private  SharedPreferences.Editor editor;
+    private UpdateManager manager;
+
+//    private LoadserverdataService loadDataService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         // TODO 自动生成的方法存根
         super.onCreate(savedInstanceState);
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
+//        requestWindowFeature(Window.FEATURE_NO_TITLE);
 //        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
 //                WindowManager.LayoutParams.FLAG_FULLSCREEN);// 去掉信息栏
 //        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);//强制为横屏
@@ -69,25 +67,15 @@ public class LoginActivity extends Activity implements OnClickListener {
         settings = this.getSharedPreferences(WowuApp.PREFERENCE_KEY, MODE_PRIVATE);
         editor = settings.edit();
 
-//        Bundle extras = getIntent().getExtras(); 
-//        if(extras!=null){
-//            username_fromserver = extras.getString("username"); 
-//        }
 
-
+//        loadDataService=new LoadserverdataService(this);
         initView();
 //      validateDevice();
-
-
-        startLogin();
-
 
 //        // 检查文件更新
 //        manager = new UpdateManager(mContext);
 //        manager.checkUpdateMe();
     }
-
-    public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
 
     private void startLogin() {
 
@@ -118,16 +106,14 @@ public class LoginActivity extends Activity implements OnClickListener {
 
 
         try {
-
             JSONObject json = new JSONObject();
             json.put("PhoneNumber", "15000659340");
             json.put("Password", "123456");
-
             OkHttpUtils
                     .postString()
                     .addHeader("content-type", "application/json")
-                    .url("http://139.196.85.20/Account/Login")
-                    .mediaType(JSON)
+                    .url(WowuApp.LoginURL)
+                    .mediaType(WowuApp.JSON)
                     .content(json.toString())
                     .build()
                     .execute(new StringCallback() {
@@ -233,67 +219,20 @@ public class LoginActivity extends Activity implements OnClickListener {
       			startActivity(intent);*/
             }
         }
-
-
-//        imap_login_uername.setText(DistAndroidApp.username);
-//         if(!DistAndroidApp.passwd.endsWith("")){
-//             imap_login_password.setText(DistAndroidApp.passwd);
-//         }
-//        TextView login_by_text=(TextView)findViewById(R.id.login_by_text);
-//        login_by_text.setOnClickListener(new OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                // TODO 自动生成的方法存根
-//                imap_login_uername.setText(""); 
-//                username_fromserver=null;
-//            }
-//        });
-//        
-//        
-//        if(username_fromserver!=null){
-////          将从服务器已登录的用户名赋值到输入框中
-//            imap_login_uername.setText(username_fromserver); 
-////            使底部切换用户按钮可见登录可见
-//            login_by_text.setVisibility(View.VISIBLE);
-//            
-//        }
-
-
-    }
-
-
-    @Override
-    protected void onDestroy() {
-        // TODO Auto-generated method stub
-//    	manager.closeDialog();
-        super.onDestroy();
-    }
-
+}
     @Override
     public void onClick(View v) {
         // TODO 自动生成的方法存根
         switch (v.getId()) {
             case R.id.imap_login_userlogin:
-//                if (imap_login_uername.getText().toString().trim().equals("")
-////                    ||imap_login_password.getText().toString().trim().equals("")
-//                        ) {
-//                    MyToast.show(mContext, "用户名或密码不能为空", Toast.LENGTH_LONG);
-////                Intent  temp=new Intent(this,CharacterChooseActivity.class);
-////                startActivity(temp);
-//
-//                } else {
-//                    mdialog = UtilsTool.initProgressDialog(mContext, "正在登陆.....");
-//                    mdialog.show();
-////                UserLoginResult userloginresult = new UserLoginResult();
-////                userloginresult.execute(mdialog, imap_login_uername.getText().toString(), imap_login_password.getText().toString());
-//
-//                    Intent temp = new Intent(this, MainActivity.class);
-//                    startActivity(temp);
-//                    mdialog.dismiss();
-//                    finish();
-//                }
-
-                startLogin();
+                try{
+                    JSONObject json = new JSONObject();
+                    json.put("PhoneNumber", "15000659340");
+                    json.put("Password", "123456");
+                    loadDataService.loadPostJsonRequestData(WowuApp.JSON,WowuApp.LoginURL,json.toString());
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
 
                 break;
             case R.id.login_by_gesture:
@@ -318,6 +257,16 @@ public class LoginActivity extends Activity implements OnClickListener {
                 break;
         }
 
+    }
+
+    @Override
+    public void loadServerData(String response) {
+        MyToast.show(mContext, "返回的结果为：：：：" + response);
+    }
+
+    @Override
+    public void loadDataFailed(String response) {
+        MyToast.show(mContext, "返回值失败" + response.toString());
     }
 
 

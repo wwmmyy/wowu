@@ -14,6 +14,12 @@ import com.wuwo.im.config.WowuApp;
 import com.wuwo.im.view.MyScrollLayout;
 
 import im.wuwo.com.wuwo.R;
+/** 
+*desc WelcomeActivity
+*@author 王明远
+*@日期： 2016/6/9 0:07
+*@版权:Copyright    All rights reserved.
+*/
 
 public class WelcomeActivity extends BaseActivity implements MyScrollLayout.OnViewChangeListener {
 	

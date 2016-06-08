@@ -9,6 +9,7 @@ import com.facebook.drawee.backends.pipeline.Fresco;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+import com.squareup.okhttp.MediaType;
 import com.wuwo.im.util.UtilsTool;
 
 import im.wuwo.com.wuwo.R;
@@ -30,7 +31,8 @@ public class WowuApp extends Application {
     SharedPreferences settings;
 
     public static final String LOG_DIR = Environment.getExternalStorageDirectory().getAbsolutePath() + "/errorLog";
-    public static String serverAbsolutePath = "http://58.246.138.178:8040/gzServices/ServiceProvider.ashx"; // dist
+//    public static String serverAbsolutePath = "http://58.246.138.178:8040/gzServices/ServiceProvider.ashx"; // dist
+    public static String serverAbsolutePath = "http://139.196.85.20/";
     //此为即时通讯消息推送的服务器端ip及端口
 //    public static String XMPPserverIP = serverIP;  // dist
     public static String XMPPserverIP = " ";
@@ -70,6 +72,53 @@ public class WowuApp extends Application {
 
     public static final String ALL_CachePathDirTemp = "/mnt/sdcard/Downloads/";//下载文件的暂存路径
     public static String userImagePath = serverAbsolutePath + "/appIcon/userIcon/";  //头像缩略图
+
+
+
+
+    public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
+
+
+//########Media   媒体相关##########################################
+//    POST Media/PreUploadImage 预上传图片 {  "Content": "sample string 1",  "FromIOS": true }
+//    Content	 Base64编码的图像  string    Required
+//    FromIOS	 是否来自IOS的Base64  boolean   None.
+    public static String PreUploadImageURL = serverAbsolutePath + "Media/PreUploadImage";
+
+//########User   账户相关##########################################
+//     登录 {   "PhoneNumber": "sample string 1", "Password": "sample string 2" }
+    public static String LoginURL = serverAbsolutePath + "Account/Login";
+//    发送短信验证码  {  "PhoneNumber": "sample string 1", "Type": 2 }
+    public static String SmsValidateURL = serverAbsolutePath + "Account/SendSmsValidateCode";
+//    验证短信验证码 {   "PhoneNumber": "sample string 1", "Type": 2,    "SmsValidateCode": "sample string 3"  }    短信用途(0：注册，1：找回密码)
+    public static String ValidateCodeURL = serverAbsolutePath + "Account/ValidateSmsCode";
+//    设置用户的性格 POST Account/SetDisposition?dispositionId={dispositionId}
+    public static String SetDispositionURL = serverAbsolutePath + "Account/SetDisposition";
+//    GET Account/GetDispositionInfo 获取用户的性格
+    public static String GetDispositionInfoURL = serverAbsolutePath + "Account/GetDispositionInfo";
+//    OST Account/SubmitLocation?lon={lon}&lat={lat} 提交位置
+    public static String SubmitLocationURL = serverAbsolutePath + "Account/SubmitLocation";
+
+//########Disposition   性格相关##########################################
+//    GET Disposition/DispositionList  性格列表
+    public static String DispositionListURL = serverAbsolutePath + "Disposition/DispositionList";
+//    GET Disposition/QuestionList   测试题列表
+    public static String QuestionListURL = serverAbsolutePath + "Disposition/QuestionList";
+//    POST Disposition/SubmitAnswer   提交答案   [  {  "QuestionId": "sample string 1",   "Answer": "sample string 2"  },
+// {  "QuestionId": "sample string 1", "Answer": "sample string 2"  } ]
+    public static String SubmitAnswerURL = serverAbsolutePath + "Disposition/SubmitAnswer";
+
+//########Chat   聊天室##########################################
+//GET Chat/GetNearbyUser?lon={lon}&lat={lat}&pageIndex={pageIndex} 获取附近的用户
+    public static String GetNearbyUserURL = serverAbsolutePath + "Chat/GetNearbyUser";
+
+
+
+    public static String PhoneNumber="";
+    public static String Password="";
+    public static String SmsValidateCode="";
+    public static String Gender="";
+    public static String Name="";
 
 
     // 创建服务用于捕获崩溃异常

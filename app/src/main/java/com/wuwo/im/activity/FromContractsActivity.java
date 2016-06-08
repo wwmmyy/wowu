@@ -27,6 +27,12 @@ import com.zhy.http.okhttp.callback.StringCallback;
 import java.util.ArrayList;
 
 import im.wuwo.com.wuwo.R;
+/** 
+*desc
+*@author 王明远
+*@日期： 2016/6/9 0:08
+*@版权:Copyright    All rights reserved.
+*/
 
 public class FromContractsActivity extends AppCompatActivity {
     Cursor cursor;

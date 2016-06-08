@@ -24,6 +24,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 import im.wuwo.com.wuwo.R;
+/** 
+*desc VersionIntroActivity
+*@author 王明远
+*@日期： 2016/6/9 0:07
+*@版权:Copyright    All rights reserved.
+*/
 
 public class VersionIntroActivity extends Activity implements OnClickListener {
     Context mContext = VersionIntroActivity.this;

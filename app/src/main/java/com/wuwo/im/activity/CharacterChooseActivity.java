@@ -23,7 +23,6 @@ import im.wuwo.com.wuwo.R;
  * @日期： 2016/5/21 12:24
  * @版权:Copyright All rights reserved.
  */
-
 public class CharacterChooseActivity extends BaseActivity implements View.OnClickListener {
     Context mContext = this;
     RecyclerView mRecyclerView;

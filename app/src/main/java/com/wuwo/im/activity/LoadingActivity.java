@@ -37,7 +37,7 @@ public class LoadingActivity extends com.wuwo.im.activity.BaseActivity {
 //            @Override
 //            public void run() {
 //                // 判断是否第一次安装软件
-//                SharedPreferences mSettings = getSharedPreferences(  WowuApp.PREFERENCE_KEY, MODE_PRIVATE);
+//                SharedPreferences mSettings = getSharedPreferences(  .PREFERENCE_KEY, MODE_PRIVATE);
 //                Boolean mFirstTimeSeting = mSettings.getBoolean("mFirstTimeSeting", true);
 //                if (mFirstTimeSeting) {
 //                    Intent intent = new Intent(mcontext, WelcomeActivity.class);

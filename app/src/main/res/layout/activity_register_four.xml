@@ -49,7 +49,7 @@
             android:layout_height="wrap_content">
 
             <EditText
-                android:id="@+id/user_register_phone_num"
+                android:id="@+id/user_register_nicheng"
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
                 android:layout_marginTop="15dp"

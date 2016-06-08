@@ -1,28 +1,22 @@
 package com.wuwo.im.activity;
 
+import android.content.Context;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.util.Log;
+import android.view.View;
+import android.view.Window;
 
-import im.wuwo.com.wuwo.R;
+import com.wuwo.im.config.ExitApp;
+import com.wuwo.im.service.LoadserverdataService;
+import com.wuwo.im.service.loadServerDataListener;
 
-/** 
-*desc
-*@author 王明远
-*@日期： 2016/6/9 0:09
-*@版权:Copyright    All rights reserved.
-*/
+public abstract class BaseLoadActivity extends BaseActivity implements View.OnClickListener, loadServerDataListener {
 
-public class BaseFragementActivity extends FragmentActivity {
+    LoadserverdataService loadDataService;
+    Context mContext = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-//        if ( getSharedPreferences("theme", Context.MODE_PRIVATE)
-//                .getBoolean("isDark", false)) {
-//            setTheme(R.style.AppTheme_Dark);
-//        }else {
-//            setTheme(R.style.AppBaseTheme);
-//        }
 
 
 //        int currentTheme = getSharedPreferences("theme", Context.MODE_PRIVATE).getInt("currentTheme", 0);
@@ -50,14 +44,18 @@ public class BaseFragementActivity extends FragmentActivity {
 //                break;
 //        }
 
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
         super.onCreate(savedInstanceState);
-
+        mContext = this;
+        loadDataService = new LoadserverdataService(this);
+        ExitApp.getInstance().addOpenedActivity(this);
         Log.i("BaseActivity", "BaseActivity onCreate");
     }
+
 
     @Override
     public void onBackPressed() {
         finish();
-        overridePendingTransition(0, R.anim.slide_out_to_left);
+//        overridePendingTransition(0, R.anim.slide_out_to_left);
     }
 }

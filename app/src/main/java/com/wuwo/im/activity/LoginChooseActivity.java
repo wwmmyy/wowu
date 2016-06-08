@@ -11,6 +11,12 @@ import android.widget.TextView;
 import com.wuwo.im.config.ExitApp;
 
 import im.wuwo.com.wuwo.R;
+/** 
+*desc
+*@author 王明远
+*@日期： 2016/6/9 0:08
+*@版权:Copyright    All rights reserved.
+*/
 
 public class LoginChooseActivity extends BaseActivity implements View.OnClickListener {
     private TextView tv_welcome_choose;

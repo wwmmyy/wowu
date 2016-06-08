@@ -44,6 +44,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 import im.wuwo.com.wuwo.R;
+/** 
+*desc OwnerInfoDetailActivity
+*@author 王明远
+*@日期： 2016/6/9 0:08
+*@版权:Copyright    All rights reserved.
+*/
 
 public class OwnerInfoDetailActivity extends BaseActivity implements OnClickListener {
     Context mcontext = OwnerInfoDetailActivity.this;

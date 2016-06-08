@@ -5,7 +5,6 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.ContentResolver;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -24,13 +23,14 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.facebook.imagepipeline.core.ImagePipeline;
-import com.wuwo.im.config.ExitApp;
 import com.wuwo.im.config.WowuApp;
+import com.wuwo.im.service.LoadserverdataService;
 import com.wuwo.im.util.FormFile;
 import com.wuwo.im.util.MyToast;
 import com.wuwo.im.util.SocketHttpRequester;
@@ -42,21 +42,29 @@ import java.util.Map;
 
 import im.wuwo.com.wuwo.R;
 
+/**
+*desc RegisterStepFourActivity
+*@author 王明远
+*@日期： 2016/6/9 0:06
+*@版权:Copyright   All rights reserved.
+*/
 
-public class RegisterStepFourActivity extends BaseActivity implements View.OnClickListener {
+public class RegisterStepFourActivity extends BaseLoadActivity  {
 
-    Context mcontext = RegisterStepFourActivity.this;
+//    private  Context mContext = RegisterStepFourActivity.this;
     //    in.srain.cube.image.ImageLoader imageLoader;//加载用户头像
-    SharedPreferences mSettings;
-    SimpleDraweeView usersetting_userpic;
-    Uri uri;
-
+    private  SharedPreferences mSettings;
+    private SimpleDraweeView usersetting_userpic;
+    private  EditText user_register_nicheng;
+    private  Uri uri;
+    private LoadserverdataService loadDataService;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register_four);
-        ExitApp.getInstance().addOpenedActivity(this);
-        mSettings = mcontext.getSharedPreferences(WowuApp.PREFERENCE_KEY, MODE_PRIVATE);
+//        ExitApp.getInstance().addOpenedActivity(this);
+//        loadDataService = new LoadserverdataService(this);
+        mSettings = mContext.getSharedPreferences(WowuApp.PREFERENCE_KEY, MODE_PRIVATE);
         initView();
     }
 
@@ -64,7 +72,7 @@ public class RegisterStepFourActivity extends BaseActivity implements View.OnCli
         findViewById(R.id.return_back).setOnClickListener(this);
         findViewById(R.id.set_user_pic).setOnClickListener(this);
         findViewById(R.id.register_finish).setOnClickListener(this);
-
+        user_register_nicheng= (EditText) findViewById(R.id.user_register_nicheng);
 
         uri = Uri.parse(WowuApp.userImagePath + mSettings.getString("userid", "") + ".jpg");
         usersetting_userpic = (SimpleDraweeView) findViewById(R.id.usersetting_userpic);
@@ -83,6 +91,7 @@ public class RegisterStepFourActivity extends BaseActivity implements View.OnCli
                 break;
             case R.id.register_finish:
 //                MainActivity
+                WowuApp.Name=user_register_nicheng.getText().toString();
                 Intent temp = new Intent(this, CharacterChooseActivity.class);
                 startActivity(temp);
                 overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
@@ -335,7 +344,7 @@ public class RegisterStepFourActivity extends BaseActivity implements View.OnCli
             switch (msg.what) {
                 case Loading:
 
-                    pg = UtilsTool.initProgressDialog(mcontext, "正在上传.....");
+                    pg = UtilsTool.initProgressDialog(mContext, "正在上传.....");
                     pg.show();
                     break;
 
@@ -353,4 +362,13 @@ public class RegisterStepFourActivity extends BaseActivity implements View.OnCli
         }
     };
 
+    @Override
+    public void loadServerData(String response) {
+
+    }
+
+    @Override
+    public void loadDataFailed(String response) {
+
+    }
 }
