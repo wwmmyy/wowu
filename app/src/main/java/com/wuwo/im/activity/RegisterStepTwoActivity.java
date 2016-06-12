@@ -8,24 +8,26 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.wuwo.im.config.WowuApp;
-import com.wuwo.im.service.LoadserverdataService;
 import com.wuwo.im.util.MyToast;
 
 import org.json.JSONObject;
 
 import im.wuwo.com.wuwo.R;
-/**
-*desc RegisterStepTwoActivity
-*@author 王明远
-*@日期： 2016/6/9 0:07
-*@版权:Copyright    All rights reserved.
-*/
 
-public class RegisterStepTwoActivity extends BaseLoadActivity  {
-//    Context mContext = RegisterStepTwoActivity.this;
+/**
+ * 主要是填写获取到的验证码验证是否正确
+ * desc RegisterStepTwoActivity
+ *
+ * @author 王明远
+ * @日期： 2016/6/9 0:07
+ * @版权:Copyright All rights reserved.
+ */
+
+public class RegisterStepTwoActivity extends BaseLoadActivity {
+    //    Context mContext = RegisterStepTwoActivity.this;
     private EditText et_register_two_yanzhengma;
     private TextView tv_register_two_sure, tv_registersteptwo_phone_num;
-    private LoadserverdataService loadDataService;
+//    private LoadserverdataService loadDataService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +46,8 @@ public class RegisterStepTwoActivity extends BaseLoadActivity  {
         findViewById(R.id.tv_register_two_sure).setOnClickListener(this);
         findViewById(R.id.tv_registersteptwo_change_phone_num).setOnClickListener(this);
         findViewById(R.id.return_back).setOnClickListener(this);
+
+        tv_registersteptwo_phone_num.setText(WowuApp.PhoneNumber);
 
     }
 
@@ -85,10 +89,10 @@ public class RegisterStepTwoActivity extends BaseLoadActivity  {
 //        }
         try {
             JSONObject json = new JSONObject();
-            json.put("PhoneNumber", "18565398524");
+            json.put("PhoneNumber", WowuApp.PhoneNumber);
             json.put("Type", "0");
             json.put("SmsValidateCode", et_register_two_yanzhengma.getText().toString());
-            loadDataService.loadPostJsonRequestData(WowuApp.JSON, WowuApp.ValidateCodeURL, json.toString());
+            loadDataService.loadPostJsonRequestData(WowuApp.JSON, WowuApp.ValidateCodeURL, json.toString(), R.id.tv_register_two_sure);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -114,7 +118,7 @@ public class RegisterStepTwoActivity extends BaseLoadActivity  {
     }
 
     @Override
-    public void loadServerData(String response) {
+    public void loadServerData(String response, int flag) {
         MyToast.show(mContext, "返回的结果为：：：：" + response);
         Log.i("返回的结果为", response.toString());
 
@@ -124,7 +128,7 @@ public class RegisterStepTwoActivity extends BaseLoadActivity  {
     }
 
     @Override
-    public void loadDataFailed(String request) {
+    public void loadDataFailed(String request,int flag) {
         MyToast.show(mContext, "返回值失败" + request.toString());
         Log.i("返回值失败", request.toString());
     }

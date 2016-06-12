@@ -9,8 +9,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -24,40 +22,41 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.facebook.imagepipeline.core.ImagePipeline;
 import com.wuwo.im.config.WowuApp;
-import com.wuwo.im.service.LoadserverdataService;
-import com.wuwo.im.util.FormFile;
 import com.wuwo.im.util.MyToast;
-import com.wuwo.im.util.SocketHttpRequester;
 import com.wuwo.im.util.UtilsTool;
 
+import org.json.JSONObject;
+
 import java.io.File;
-import java.util.HashMap;
-import java.util.Map;
 
 import im.wuwo.com.wuwo.R;
 
 /**
-*desc RegisterStepFourActivity
-*@author 王明远
-*@日期： 2016/6/9 0:06
-*@版权:Copyright   All rights reserved.
-*/
+ * 添加头像和性别
+ *
+ * @author 王明远
+ * @日期： 2016/6/9 0:06
+ * @版权:Copyright All rights reserved.
+ */
 
-public class RegisterStepFourActivity extends BaseLoadActivity  {
+public class RegisterStepFourActivity extends BaseLoadActivity {
 
-//    private  Context mContext = RegisterStepFourActivity.this;
+    //    private  Context mContext = RegisterStepFourActivity.this;
     //    in.srain.cube.image.ImageLoader imageLoader;//加载用户头像
-    private  SharedPreferences mSettings;
+    private SharedPreferences mSettings;
     private SimpleDraweeView usersetting_userpic;
-    private  EditText user_register_nicheng;
-    private  Uri uri;
-    private LoadserverdataService loadDataService;
+    private EditText user_register_nicheng;
+    private Uri uri;
+    private RadioGroup user_register_rg_gender;
+
+    //    private LoadserverdataService loadDataService;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,11 +71,26 @@ public class RegisterStepFourActivity extends BaseLoadActivity  {
         findViewById(R.id.return_back).setOnClickListener(this);
         findViewById(R.id.set_user_pic).setOnClickListener(this);
         findViewById(R.id.register_finish).setOnClickListener(this);
-        user_register_nicheng= (EditText) findViewById(R.id.user_register_nicheng);
+        user_register_nicheng = (EditText) findViewById(R.id.user_register_nicheng);
+        user_register_rg_gender = (RadioGroup) findViewById(R.id.user_register_rg_gender);
 
         uri = Uri.parse(WowuApp.userImagePath + mSettings.getString("userid", "") + ".jpg");
         usersetting_userpic = (SimpleDraweeView) findViewById(R.id.usersetting_userpic);
         //usersetting_userpic.setImageURI(Uri.parse(WowuApp.userImagePath + mSettings.getString("userid", "") + ".jpg"));
+
+        user_register_rg_gender.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                //checkId就是当前选中的RadioButton
+                if (R.id.user_register_rb_gender1 == checkedId) {
+                    WowuApp.Gender = 1;
+                } else {
+                    WowuApp.Gender = 0;
+                }
+            }
+        });
+
+
     }
 
     @Override
@@ -90,12 +104,33 @@ public class RegisterStepFourActivity extends BaseLoadActivity  {
                 showDialog();
                 break;
             case R.id.register_finish:
-//                MainActivity
-                WowuApp.Name=user_register_nicheng.getText().toString();
-                Intent temp = new Intent(this, CharacterChooseActivity.class);
-                startActivity(temp);
-                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-//                finish();
+
+                WowuApp.Name = user_register_nicheng.getText().toString();
+
+//                Intent temp = new Intent(this, CharacterChooseActivity.class);
+//                startActivity(temp);
+//                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+////                finish();
+
+                Message msg = new Message();
+                msg.what = Loading;
+                mHandler.sendMessage(msg);
+
+                        try {
+                            JSONObject json = new JSONObject();
+                            json.put("PhoneNumber", WowuApp.PhoneNumber);
+                            json.put("SmsValidateCode", WowuApp.SmsValidateCode);
+                            json.put("Platform", "android");
+                            json.put("Name", WowuApp.Name);
+                            json.put("Gender", WowuApp.Gender);
+                            json.put("Password",WowuApp.Password);
+                            if (WowuApp.picPath != null) {
+                                json.put("Photo", UtilsTool.bitmaptoString(UtilsTool.loadCompressedBitmap(WowuApp.picPath, 80, 80)));//BitmapFactory.decodeFile(picPath)
+                            }
+                            loadDataService.loadPostJsonRequestData(WowuApp.JSON, WowuApp.RegisterURL, json.toString(), 0);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                 break;
 
         }
@@ -110,7 +145,6 @@ public class RegisterStepFourActivity extends BaseLoadActivity  {
         Window window = dialog.getWindow();
 
         Button xiangmubanli_cancel = (Button) view.findViewById(R.id.userpic_setting_cancel);
-
         xiangmubanli_cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
@@ -135,8 +169,6 @@ public class RegisterStepFourActivity extends BaseLoadActivity  {
         userimg_select_pic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
-                // TODO 自动生成的方法存根
-
                 Intent intent = new Intent();
                 //       这个是调用android内置的intent，来过滤图片文件 ，同时也可以过滤其他的
                 intent.setType("image/*");
@@ -162,8 +194,7 @@ public class RegisterStepFourActivity extends BaseLoadActivity  {
         dialog.show();
     }
 
-    private static String requestURL = WowuApp.serverAbsolutePath
-            + "/mobile/updateUserImg!upUserImg.action";
+    private static String requestURL = WowuApp.serverAbsolutePath + "/mobile/updateUserImg!upUserImg.action";
     private String picPath = null;
     private static final int PHOTO_SELECT = 110;
 
@@ -231,6 +262,7 @@ public class RegisterStepFourActivity extends BaseLoadActivity  {
                          */
                         if (path.endsWith("jpg") || path.endsWith("png")) {
                             picPath = path;
+                            WowuApp.picPath = picPath;
                             clearOldDrable();
                             sendToServer();
                         } else {
@@ -290,50 +322,55 @@ public class RegisterStepFourActivity extends BaseLoadActivity  {
     public void sendToServer() {
         File tempfile = null;
         if (picPath != null) {
-            tempfile = new File(picPath);
+//            tempfile = new File(picPath);
+
+            return;
         }
-        final File file = tempfile;
 
-        Thread t = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                //                    if (file != null) {
-                Message msg = new Message();
-                msg.what = Loading;
-                mHandler.sendMessage(msg);
-                //请求普通信息
-                Map<String, String> params = new HashMap<String, String>();
-                params.put("userId", mSettings.getString("userid", ""));//用户登录以后获取用户的userID并保存
-//                if(MakeToken.refreshToken()){//重新刷新token
-//                params.put("access_token", WowuApp.access_token);
+//        final File file = tempfile;
+//        Thread t = new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//                //                    if (file != null) {
+//                Message msg = new Message();
+//                msg.what = Loading;
+//                mHandler.sendMessage(msg);
+//                //请求普通信息
+//                Map<String, String> params = new HashMap<String, String>();
+//                params.put("userId", mSettings.getString("userid", ""));//用户登录以后获取用户的userID并保存
+////                if(MakeToken.refreshToken()){//重新刷新token
+////                params.put("access_token", WowuApp.access_token);
+//
+//                try {
+//                    FormFile formfile = null;
+//                    if (file != null) {
+//                        params.put("fileName", file.getName());
+//                        formfile = new FormFile(file.getName(), file, "image",
+//                                "application/octet-stream");
+//                    }
+//                    //                    上传图片到服务器
+//                    boolean result = SocketHttpRequester.post(requestURL, params, formfile);
+//                } catch (Exception e) {
+//                    // TODO 自动生成的 catch 块
+//                    e.printStackTrace();
+//                }
+//
+//                Message msg2 = new Message();
+//                msg2.what = END;
+//                mHandler.sendMessage(msg2);
+//
+////                   }
+//            }
+//        });
+//        t.start();
 
-                try {
-                    FormFile formfile = null;
-                    if (file != null) {
-                        params.put("fileName", file.getName());
-                        formfile = new FormFile(file.getName(), file, "image",
-                                "application/octet-stream");
-                    }
-                    //                    上传图片到服务器
-                    boolean result = SocketHttpRequester.post(requestURL, params, formfile);
-                } catch (Exception e) {
-                    // TODO 自动生成的 catch 块
-                    e.printStackTrace();
-                }
 
-                Message msg2 = new Message();
-                msg2.what = END;
-                mHandler.sendMessage(msg2);
-
-//                   }
-            }
-        });
-        t.start();
     }
 
-    ProgressDialog pg;
+    private ProgressDialog pg;
     private final int Loading = 1;
     private final int END = 2;
+    private final int PICSHOW = 3;
 
     /**
      * 上传到服务器是加载进度框
@@ -349,13 +386,22 @@ public class RegisterStepFourActivity extends BaseLoadActivity  {
                     break;
 
                 case END:
-                    clearOldDrable();
-                    Drawable drawable = new BitmapDrawable(UtilsTool.loadCompressedBitmap(picPath, 80,
-                            80));
-                    usersetting_userpic.setImageDrawable(drawable);
-                    //                usersetting_userpic.refreshDrawableState();
-                    pg.dismiss();
+//                    clearOldDrable();
+//                    Drawable drawable = new BitmapDrawable(UtilsTool.loadCompressedBitmap(picPath, 80, 80));
+//                    usersetting_userpic.setImageDrawable(drawable);
+
+                   if(pg!=null) pg.dismiss();
                     MyToast.show(getApplicationContext(), "修改成功", Toast.LENGTH_LONG);
+                    break;
+
+                case PICSHOW:
+                    clearOldDrable();
+//                    Drawable drawable = new BitmapDrawable(UtilsTool.loadCompressedBitmap(picPath, 80, 80));
+//                    usersetting_userpic.setImageDrawable(drawable);
+                    File photo = new File(picPath);
+                    imageUri = Uri.fromFile(photo);
+                    usersetting_userpic.setImageURI(imageUri);
+
                     break;
             }
             super.handleMessage(msg);
@@ -363,12 +409,32 @@ public class RegisterStepFourActivity extends BaseLoadActivity  {
     };
 
     @Override
-    public void loadServerData(String response) {
+    public void loadServerData(String response, int flag) {
+        MyToast.show(mContext, "返回的结果为：：：：" + response);
+        Log.i("返回的结果为", response.toString());
+
+//        temp2 = new Intent(mContext, RegisterStepThreeActivity.class);
+//        mContext.startActivity(temp2);
+//        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+//        temp2 = new Intent(mContext, RegisterStepThreeActivity.class);
+//        mContext.startActivity(temp2);
+//        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+
+
+        Message msg2 = new Message();
+        msg2.what = END;
+        mHandler.sendMessage(msg2);
+
+        Intent temp = new Intent(this, CharacterChooseActivity.class);
+        startActivity(temp);
+        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
 
     }
 
     @Override
-    public void loadDataFailed(String response) {
-
+    public void loadDataFailed(String request,int flag) {
+        MyToast.show(mContext, "返回值失败" + request.toString());
+        Log.i("返回值失败", request.toString());
+        pg.dismiss();
     }
 }

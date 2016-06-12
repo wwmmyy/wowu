@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.wuwo.im.config.WowuApp;
+import com.wuwo.im.service.LocationService;
 import com.wuwo.im.util.UtilsTool;
 
 import im.wuwo.com.wuwo.R;
@@ -83,6 +84,19 @@ public class LoadingActivity extends com.wuwo.im.activity.BaseActivity {
             }
         });
         iv_start.startAnimation(scaleAnim);
+
+
+        initLocationService();
+
+    }
+
+    private void initLocationService() {
+         // 启动终端定位服务 1
+         Intent startServiceIntent = new Intent(getApplicationContext(),
+         LocationService.class);
+         startServiceIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+         getApplicationContext().startService(startServiceIntent);
+
     }
 
     private void startActivity() {

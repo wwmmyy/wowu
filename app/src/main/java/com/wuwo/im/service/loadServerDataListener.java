@@ -8,6 +8,6 @@ package com.wuwo.im.service;
 */
 
 public interface loadServerDataListener {
-      void loadServerData(String response);
-      void loadDataFailed(String response);
+      void loadServerData(String response,int flag);
+      void loadDataFailed(String response,int flag);
 }

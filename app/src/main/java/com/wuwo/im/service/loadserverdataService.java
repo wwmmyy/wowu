@@ -10,7 +10,7 @@ import com.zhy.http.okhttp.callback.StringCallback;
  *
  * @author 王明远
  * @日期： 2016/6/7 23:59
- * @版权:Copyright   All rights reserved.
+ * @版权:Copyright All rights reserved.
  */
 
 public class LoadserverdataService {
@@ -36,34 +36,80 @@ public class LoadserverdataService {
 //            }
 
 
-
-
-
     public LoadserverdataService(loadServerDataListener loadListener) {
         mLoadListener = loadListener;
     }
 
 
-    public void loadPostJsonRequestData ( MediaType mediaType,String url, String JsonRequest) {
-            OkHttpUtils
-                    .postString()
-                    .addHeader("content-type", "application/json")
-                    .url(url)
-                    .mediaType(mediaType)
-                    .content(JsonRequest)
-                    .build()
-                    .execute(new StringCallback() {
-                        @Override
-                        public void onError(Request request, Exception e) {
-                            e.printStackTrace();
-                            mLoadListener.loadDataFailed(request.toString());
-                        }
-                        @Override
-                        public void onResponse(String response) {
-                            mLoadListener.loadServerData(response.toString());
-                        }
-                    });
+    public void loadPostJsonRequestData(final MediaType mediaType, final String url, final String JsonRequest, final int flag) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                OkHttpUtils
+                        .postString()
+                        .addHeader("content-type", "application/json")
+                        .url(url)
+                        .mediaType(mediaType)
+                        .content(JsonRequest)
+                        .build()
+                        .execute(new StringCallback() {
+                            @Override
+                            public void onError(Request request, Exception e) {
+                                e.printStackTrace();
+                                mLoadListener.loadDataFailed(request.toString(), flag);
+                            }
+
+                            @Override
+                            public void onResponse(String response) {
+                                mLoadListener.loadServerData(response.toString(), flag);
+                            }
+                        });
+            }
+        }).start();
     }
+
+
+
+    public void loadGetJsonRequestData(final String url, final int flag) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                OkHttpUtils
+                        .get()
+                        .addHeader("content-type", "application/json")
+                        .url(url)
+                        .build()
+                        .execute(new StringCallback() {
+                            @Override
+                            public void onError(Request request, Exception e) {
+                                e.printStackTrace();
+                                mLoadListener.loadDataFailed(request.toString(), flag);
+                            }
+
+                            @Override
+                            public void onResponse(String response) {
+                                mLoadListener.loadServerData(response.toString(), flag);
+                            }
+                        });
+            }
+        }).start();
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 }

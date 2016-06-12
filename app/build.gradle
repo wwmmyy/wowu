@@ -18,7 +18,13 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ['libs']
+        }
+    }
 }
+
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
@@ -38,4 +44,6 @@ dependencies {
     compile files('libs/ShareSDK-Wechat-2.6.4.jar')
     compile files('libs/ShareSDK-Wechat-Core-2.6.4.jar')
     compile files('libs/ShareSDK-Wechat-Moments-2.6.4.jar')
+    //    compile files('libs/locSDK_4.2.jar')
+    compile files('libs/BaiduLBS_Android.jar')
 }

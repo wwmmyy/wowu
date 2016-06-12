@@ -66,20 +66,21 @@
             android:orientation="horizontal">
             <!--android:background="@drawable/bg_borderwhite"-->
             <RadioGroup
-                android:id="@+id/rg"
+                android:id="@+id/user_register_rg_gender"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="horizontal"
                 android:paddingLeft="5dp"
                 android:paddingRight="5dp">
             <RadioButton
+                android:id="@+id/user_register_rb_gender0"
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="20dp"
-                android:text="男"
-                android:id="@+id/radioButton" />
+                android:text="男"  />
             <RadioButton
+                android:id="@+id/user_register_rb_gender1"
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="match_parent"

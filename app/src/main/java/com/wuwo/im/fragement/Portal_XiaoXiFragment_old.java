@@ -182,9 +182,7 @@ public class Portal_XiaoXiFragment_old extends BaseAppFragment {
     }
 
     private void setRefresh() {
-
         mRecyclerViewAdapter.getDataList().clear();
         mCount = 1;
-
     }
 }

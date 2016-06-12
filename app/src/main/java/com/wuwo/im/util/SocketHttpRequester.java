@@ -31,7 +31,7 @@ public class SocketHttpRequester {
          </FORM>
      * @param path 上传路径(注：避免使用localhost或127.0.0.1这样的路径测试，因为它会指向手机模拟器，你可以使用http://www.iteye.cn或http://192.168.1.101:8083这样的路径测试)
      * @param params 请求参数 key为参数名,value为参数值
-     * @param file 上传文件
+     * @param   上传文件
      */
     public static boolean post(String path, Map<String, String> params, FormFile[] files){     
         try {

@@ -5,6 +5,7 @@
     android:layout_height="match_parent"
     android:background="@color/app_bg"
     android:orientation="vertical"
+    android:gravity="center_horizontal"
     tools:context="com.wuwo.im.activity.CharacterTestActivity">
 
 
@@ -79,13 +80,13 @@
         android:background="@drawable/setting_bg"
         android:orientation="vertical">
 
-        <TextView
+<!--        <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/activity_horizontal_margin"
             android:layout_marginTop="8dp"
             android:text="5."
-            android:textSize="25sp" />
+            android:textSize="25sp" />-->
 
 
         <TextView
@@ -111,6 +112,22 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/text_margin_10dp"
         android:layout_marginRight="@dimen/text_margin_10dp" />
+
+
+    <TextView
+        android:id="@+id/tv_question_sure"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:background="@drawable/item_background_selector"
+        android:gravity="center_horizontal"
+        android:paddingBottom="10dp"
+        android:paddingLeft="60dp"
+        android:paddingRight="60dp"
+        android:paddingTop="10dp"
+        android:text="完成"
+         android:textColor="@color/colorPrimary"
+        android:textSize="22sp" />
 
 
 </LinearLayout>

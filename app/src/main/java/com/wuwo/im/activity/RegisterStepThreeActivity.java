@@ -7,10 +7,10 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.wuwo.im.config.WowuApp;
-import com.wuwo.im.service.LoadserverdataService;
 
 import im.wuwo.com.wuwo.R;
 /**
+ * 添加密码
 *desc RegisterStepThreeActivity
 *@author 王明远
 *@日期： 2016/6/9 0:07
@@ -21,7 +21,7 @@ public class RegisterStepThreeActivity extends BaseLoadActivity  {
 //    Context mContext = RegisterStepThreeActivity.this;
     private EditText et_register_password;
     private TextView tv_register_three_sure;
-    private LoadserverdataService loadDataService;
+//    private LoadserverdataService loadDataService;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,12 +59,12 @@ public class RegisterStepThreeActivity extends BaseLoadActivity  {
     }
 
     @Override
-    public void loadServerData(String response) {
+    public void loadServerData(String response,int flag) {
 
     }
 
     @Override
-    public void loadDataFailed(String response) {
+    public void loadDataFailed(String response,int flag) {
 
     }
 }

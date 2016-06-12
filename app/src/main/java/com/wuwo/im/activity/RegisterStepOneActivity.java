@@ -6,7 +6,6 @@ import android.view.View;
 import android.widget.EditText;
 
 import com.wuwo.im.config.WowuApp;
-import com.wuwo.im.service.LoadserverdataService;
 import com.wuwo.im.util.MyToast;
 
 import org.json.JSONObject;
@@ -25,7 +24,7 @@ public class RegisterStepOneActivity extends BaseLoadActivity  {
     EditText register_phone_sms;
     EditText et_register_phone_num;
 //    Context mContext=this;
-    private LoadserverdataService loadDataService;
+//    private LoadserverdataService loadDataService;
 
 
     @Override
@@ -81,14 +80,15 @@ public class RegisterStepOneActivity extends BaseLoadActivity  {
 //        } catch (Exception e) {
 //            e.printStackTrace();
 //        }
-        try{
-            JSONObject json = new JSONObject();
-            json.put("PhoneNumber",et_register_phone_num.getText().toString());
-            json.put("Type", "0");
-            loadDataService.loadPostJsonRequestData(WowuApp.JSON,WowuApp.SmsValidateURL,json.toString());
-        }catch (Exception e){
-            e.printStackTrace();
-        }
+
+                try{
+                    JSONObject json = new JSONObject();
+                    json.put("PhoneNumber",et_register_phone_num.getText().toString());
+                    json.put("Type", "0");
+                    loadDataService.loadPostJsonRequestData(WowuApp.JSON,WowuApp.SmsValidateURL,json.toString(),R.id.tv_register_one_sure);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
     }
 
 
@@ -125,12 +125,12 @@ public class RegisterStepOneActivity extends BaseLoadActivity  {
     }
 
     @Override
-    public void loadServerData(String response) {
+    public void loadServerData(String response,int flag) {
         MyToast.show(mContext, "返回的结果为：：：：" + response);
     }
 
     @Override
-    public void loadDataFailed(String response) {
+    public void loadDataFailed(String response,int flag) {
         MyToast.show(mContext, "返回值失败" + response.toString());
     }
 }

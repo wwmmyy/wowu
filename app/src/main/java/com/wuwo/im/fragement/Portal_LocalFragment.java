@@ -12,10 +12,10 @@ import com.wuwo.im.activity.UserInfoEditActivity;
 import com.wuwo.im.adapter.CommRecyclerAdapter;
 import com.wuwo.im.adapter.CommRecyclerViewHolder;
 import com.wuwo.im.bean.newsMessage;
-import com.zhy.http.okhttp.OkHttpUtils;
-import com.zhy.http.okhttp.builder.PostFormBuilder;
+import com.wuwo.im.config.WowuApp;
 
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -111,7 +111,7 @@ public class Portal_LocalFragment extends BasePortal_TabFragment {
         return null;
     }
 
-    @Override
+/*    @Override
     public PostFormBuilder httpBuilder() {
         return  OkHttpUtils
                 .post()
@@ -121,11 +121,29 @@ public class Portal_LocalFragment extends BasePortal_TabFragment {
                 .url("http://58.246.138.178:8000/DistMobile/mobileMeeting!getAllMeeting.action")
                 .addParams("type", "smartplan")
                 .addParams("action", "getlawrulelist");
+    }*/
+
+
+    @Override
+    public JSONObject postJsonObject() throws JSONException {
+        JSONObject json = new JSONObject();
+        json.put("PhoneNumber", WowuApp.PhoneNumber);
+        json.put("Type", "0");
+        return json;
     }
 
     @Override
-    public boolean loadMore() {
-//        return false;
+    public String postURL() {
+        return null;
+    }
+
+    @Override
+    public String getURL() {
+        return WowuApp.GetNearbyUserURL+"?lon=" + WowuApp.longitude + "&lat=" + WowuApp.latitude;
+    }
+
+    @Override
+    public boolean loadMore() { 
         return true;
     }
 

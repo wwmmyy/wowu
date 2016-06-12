@@ -10,10 +10,10 @@ import com.google.gson.GsonBuilder;
 import com.wuwo.im.adapter.CommRecyclerAdapter;
 import com.wuwo.im.adapter.CommRecyclerViewHolder;
 import com.wuwo.im.bean.newsMessage;
-import com.zhy.http.okhttp.OkHttpUtils;
-import com.zhy.http.okhttp.builder.PostFormBuilder;
+import com.wuwo.im.config.WowuApp;
 
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,41 +32,12 @@ public class Portal_NewsFragment extends BasePortal_TabFragment {
     @Override
     public void setLoadInfo(String totalresult) throws JSONException {
 
-
-
         Gson gson = new GsonBuilder().create();
         if (totalresult != null) {
             java.lang.reflect.Type type = new com.google.gson.reflect.TypeToken<List<newsMessage>>() {
             }.getType();
             meeting_userlist = gson.fromJson(totalresult, type);
         }
-
-//            //                    int size = result.getPropertyCount();
-//        JSONObject obj = new JSONObject(totalresult);
-//        if (obj.optBoolean("success")) {
-//            meeting_userlist.clear();
-//            String result = obj.optString("result");
-//            //Log.d("收文获得的返回值列表为：",result + "");
-//            if (result != null) {
-//                JSONArray attachlist = new JSONArray(result);
-//                for (int i = 0; i < attachlist.length(); i++) {
-//                    JSONObject attachjson = attachlist.getJSONObject(i);
-//                    newsMessage tempmail = new newsMessage();
-//                    tempmail.setId(attachjson.optString("id"));
-//                    tempmail.setTitle(attachjson.optString("title"));
-//                    tempmail.setContent(attachjson.optString("name"));
-//                    tempmail.setTime0(attachjson.optString("publishdate"));
-//                    tempmail.setCreater(attachjson.optString("typename"));
-//                    tempmail.setProjectId(attachjson.optString("id"));
-//                    tempmail.setWidgetsLabel(attachjson.optString("typename"));
-//                    tempmail.setShowurl(attachjson.optString("extension"));
-//                    meeting_userlist.add(tempmail);
-//                }
-//            }
-//        }
-
-
-
     }
 
     @Override
@@ -109,13 +80,21 @@ public class Portal_NewsFragment extends BasePortal_TabFragment {
     }
 
     @Override
-    public PostFormBuilder httpBuilder() {
-        return  OkHttpUtils
-                .post()
-//                .url(WowuApp.serverAbsolutePath)
-                .url("http://58.246.138.178:8000/DistMobile/mobileMeeting!getAllMeeting.action")
-                .addParams("type", "smartplan")
-                .addParams("action", "getlawrulelist");
+    public JSONObject postJsonObject() throws JSONException {
+        JSONObject json = new JSONObject();
+        json.put("PhoneNumber", WowuApp.PhoneNumber);
+        json.put("Type", "0");
+        return json;
+    }
+
+    @Override
+    public String postURL() {
+        return null;
+    }
+
+    @Override
+    public String getURL() {
+        return WowuApp.GetUserInfoURL+"?userId="+WowuApp.UserId;
     }
 
     @Override

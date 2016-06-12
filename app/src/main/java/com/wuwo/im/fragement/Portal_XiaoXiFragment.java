@@ -10,12 +10,12 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.wuwo.im.adapter.CommRecyclerAdapter;
 import com.wuwo.im.adapter.CommRecyclerViewHolder;
-import com.wuwo.im.chat.ChatListActivity;
 import com.wuwo.im.bean.newsMessage;
-import com.zhy.http.okhttp.OkHttpUtils;
-import com.zhy.http.okhttp.builder.PostFormBuilder;
+import com.wuwo.im.chat.ChatListActivity;
+import com.wuwo.im.config.WowuApp;
 
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -111,16 +111,42 @@ public class Portal_XiaoXiFragment extends BasePortal_TabFragment {
         return null;
     }
 
+//    @Override
+//    public PostFormBuilder httpBuilder() {
+//        return  OkHttpUtils
+//                .post()
+////                .url(WowuApp.serverAbsolutePath)
+//                .url("http://58.246.138.178:8000/DistMobile/mobileMeeting!getAllMeeting.action")
+//                .addParams("type", "smartplan")
+//                .addParams("newsMessageId", "4028826f505a3b0f01506553b0c80c3a")
+//                .addParams("action", "getlawrulelist");
+//    }
+
+
+
+
     @Override
-    public PostFormBuilder httpBuilder() {
-        return  OkHttpUtils
-                .post()
-//                .url(WowuApp.serverAbsolutePath)
-                .url("http://58.246.138.178:8000/DistMobile/mobileMeeting!getAllMeeting.action")
-                .addParams("type", "smartplan")
-                .addParams("newsMessageId", "4028826f505a3b0f01506553b0c80c3a")
-                .addParams("action", "getlawrulelist");
+    public JSONObject postJsonObject() throws JSONException {
+        JSONObject json = new JSONObject();
+        json.put("PhoneNumber", WowuApp.PhoneNumber);
+        json.put("Type", "0");
+        return json;
     }
+
+    @Override
+    public String postURL() {
+        return "http://58.246.138.178:8000/DistMobile/mobileMeeting!getAllMeeting.action";
+    }
+
+    @Override
+    public String getURL() {
+        return WowuApp.GetUserInfoURL+"?userId="+WowuApp.UserId;
+    }
+
+
+
+
+
 
     @Override
     public boolean loadMore() {

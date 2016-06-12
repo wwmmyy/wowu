@@ -11,14 +11,10 @@ import com.wuwo.im.service.LoadserverdataService;
 import com.wuwo.im.service.loadServerDataListener;
 
 public abstract class BaseLoadActivity extends BaseActivity implements View.OnClickListener, loadServerDataListener {
-
     LoadserverdataService loadDataService;
     Context mContext = null;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
-
 //        int currentTheme = getSharedPreferences("theme", Context.MODE_PRIVATE).getInt("currentTheme", 0);
 //        switch (currentTheme) {
 //            case 0:
@@ -53,9 +49,9 @@ public abstract class BaseLoadActivity extends BaseActivity implements View.OnCl
     }
 
 
-    @Override
-    public void onBackPressed() {
-        finish();
-//        overridePendingTransition(0, R.anim.slide_out_to_left);
-    }
+//    @Override
+//    public void onBackPressed() {
+////        finish();
+////        overridePendingTransition(0, R.anim.slide_out_to_left);
+//    }
 }

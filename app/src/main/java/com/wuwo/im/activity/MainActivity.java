@@ -48,7 +48,7 @@ import java.util.List;
 import im.wuwo.com.wuwo.R;
 
 /**
- * @类名: MainActivity
+ * @类名:
  * @描述: TODO
  * @作者: 王明远
  * @日期: 2016-5-6 下午5:15:51

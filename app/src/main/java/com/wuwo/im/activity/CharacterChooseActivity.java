@@ -1,11 +1,15 @@
 package com.wuwo.im.activity;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -13,6 +17,9 @@ import com.wuwo.im.adapter.CommRecyclerAdapter;
 import com.wuwo.im.adapter.CommRecyclerViewHolder;
 import com.wuwo.im.chat.ChatListActivity;
 import com.wuwo.im.config.ExitApp;
+import com.wuwo.im.config.WowuApp;
+import com.wuwo.im.util.MyToast;
+import com.wuwo.im.util.UtilsTool;
 
 import java.util.Arrays;
 
@@ -23,7 +30,7 @@ import im.wuwo.com.wuwo.R;
  * @日期： 2016/5/21 12:24
  * @版权:Copyright All rights reserved.
  */
-public class CharacterChooseActivity extends BaseActivity implements View.OnClickListener {
+public class CharacterChooseActivity extends BaseLoadActivity {
     Context mContext = this;
     RecyclerView mRecyclerView;
     CommRecyclerAdapter messageRAdapter;
@@ -36,7 +43,7 @@ public class CharacterChooseActivity extends BaseActivity implements View.OnClic
         initTop();
 
         String[] data = {"INTJ", "ENTJ", "INTP", "ENTP",
-                "INFJ","INTJ", "ENTJ", "INTP",
+                "INFJ", "INTJ", "ENTJ", "INTP",
                 "INTJ", "ENTJ", "INTP", "ENTP",
                 "INTJ", "ENTJ", "INTP", "ENTP"};
 
@@ -104,10 +111,10 @@ public class CharacterChooseActivity extends BaseActivity implements View.OnClic
 
         switch (v.getId()) {
             case R.id.bt_jingque:
-                intent2 = new Intent(mContext, CharacterTestActivity.class);
-                startActivity(intent2);
-                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-//                finish();
+                Message msg = new Message();
+                msg.what = Loading;
+                mHandler.sendMessage(msg);
+                loadDataService.loadGetJsonRequestData(WowuApp.QuestionListURL, R.id.bt_jingque);
                 break;
             case R.id.return_back:
                 CharacterChooseActivity.this.finish();
@@ -131,4 +138,46 @@ public class CharacterChooseActivity extends BaseActivity implements View.OnClic
 
         }
     }
+
+    @Override
+    public void loadServerData(String response, int flag) {
+
+        intent2 = new Intent(mContext, CharacterTestActivity.class);
+        intent2.putExtra("questionList",response);
+        startActivity(intent2);
+        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+
+
+        Log.d("返回的结果为：：：：" , response);
+
+        MyToast.show(mContext, "返回的结果为：：：：" + response);
+    }
+
+    @Override
+    public void loadDataFailed(String response, int flag) {
+        MyToast.show(mContext, "返回值失败" + response.toString());
+        if (pg != null) pg.dismiss();
+    }
+
+
+    private ProgressDialog pg;
+    private final int Loading = 1;
+    private final int END = 2;
+    private Handler mHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case Loading:
+                    pg = UtilsTool.initProgressDialog(mContext, "正在连接.....");
+                    pg.show();
+                    break;
+                case END:
+                    if (pg != null) pg.dismiss();
+                    break;
+            }
+            super.handleMessage(msg);
+        }
+    };
+
+
 }
