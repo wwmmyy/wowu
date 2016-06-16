@@ -2,6 +2,8 @@ package com.wuwo.im.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -34,9 +36,31 @@ public class RegisterStepThreeActivity extends BaseLoadActivity  {
 
     private void initView() {
         et_register_password = (EditText) findViewById(R.id.et_register_password);
-        tv_register_three_sure = (TextView) findViewById(R.id.tv_register_three_sure);
-        tv_register_three_sure.setOnClickListener(this);
         findViewById(R.id.return_back).setOnClickListener(this);
+
+
+        tv_register_three_sure= (TextView)findViewById(R.id.tv_register_three_sure);
+        tv_register_three_sure.setOnClickListener(this);
+        tv_register_three_sure.getBackground().setAlpha(50);//0~255透明度值
+        tv_register_three_sure.setTextColor(tv_register_three_sure.getTextColors().withAlpha(50));
+        et_register_password.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+            @Override
+            public void afterTextChanged(Editable s) {
+                if(et_register_password.getText().toString().equals("")){
+                    tv_register_three_sure.getBackground().setAlpha(50);//0~255透明度值
+                    tv_register_three_sure.setTextColor(tv_register_three_sure.getTextColors().withAlpha(50));
+                }else{
+                    tv_register_three_sure.getBackground().setAlpha(255);//0~255透明度值
+                    tv_register_three_sure.setTextColor(tv_register_three_sure.getTextColors().withAlpha(255));
+                }
+            }
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+        });
     }
 
 

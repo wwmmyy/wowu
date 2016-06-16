@@ -67,6 +67,7 @@ public class CharacterChooseActivity extends BaseLoadActivity {
     private void initTop() {
         ((TextView) findViewById(R.id.top_title)).setText("性格类型选择");
         findViewById(R.id.return_back).setOnClickListener(this);
+        findViewById(R.id.return_back).setVisibility(View.GONE);//暂时将后退键隐藏掉
         findViewById(R.id.bt_jingque).setOnClickListener(this);
         findViewById(R.id.bt_kuaisu).setOnClickListener(this);
         findViewById(R.id.choose_sure).setOnClickListener(this);

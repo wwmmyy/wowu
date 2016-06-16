@@ -4,17 +4,20 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
-import android.content.ContentResolver;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.provider.MediaStore;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +26,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
@@ -55,6 +59,7 @@ public class RegisterStepFourActivity extends BaseLoadActivity {
     private EditText user_register_nicheng;
     private Uri uri;
     private RadioGroup user_register_rg_gender;
+    private TextView register_finish;
 
     //    private LoadserverdataService loadDataService;
     @Override
@@ -70,13 +75,12 @@ public class RegisterStepFourActivity extends BaseLoadActivity {
     private void initView() {
         findViewById(R.id.return_back).setOnClickListener(this);
         findViewById(R.id.set_user_pic).setOnClickListener(this);
-        findViewById(R.id.register_finish).setOnClickListener(this);
         user_register_nicheng = (EditText) findViewById(R.id.user_register_nicheng);
         user_register_rg_gender = (RadioGroup) findViewById(R.id.user_register_rg_gender);
 
         uri = Uri.parse(WowuApp.userImagePath + mSettings.getString("userid", "") + ".jpg");
         usersetting_userpic = (SimpleDraweeView) findViewById(R.id.usersetting_userpic);
-        //usersetting_userpic.setImageURI(Uri.parse(WowuApp.userImagePath + mSettings.getString("userid", "") + ".jpg"));
+        usersetting_userpic.setImageURI(Uri.parse(WowuApp.userImagePath + mSettings.getString("userid", "") + ".jpg"));
 
         user_register_rg_gender.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
@@ -89,6 +93,32 @@ public class RegisterStepFourActivity extends BaseLoadActivity {
                 }
             }
         });
+
+        register_finish= (TextView)findViewById(R.id.register_finish);
+        register_finish.setOnClickListener(this);
+        register_finish.getBackground().setAlpha(50);//0~255透明度值
+        register_finish.setTextColor(register_finish.getTextColors().withAlpha(50));
+        user_register_nicheng.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+            @Override
+            public void afterTextChanged(Editable s) {
+                if(user_register_nicheng.getText().toString().equals("")){
+                    register_finish.getBackground().setAlpha(50);//0~255透明度值
+                    register_finish.setTextColor(register_finish.getTextColors().withAlpha(50));
+                }else{
+                    register_finish.getBackground().setAlpha(255);//0~255透明度值
+                    register_finish.setTextColor(register_finish.getTextColors().withAlpha(255));
+                }
+            }
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+        });
+
+
+
 
 
     }
@@ -124,9 +154,11 @@ public class RegisterStepFourActivity extends BaseLoadActivity {
                             json.put("Name", WowuApp.Name);
                             json.put("Gender", WowuApp.Gender);
                             json.put("Password",WowuApp.Password);
-                            if (WowuApp.picPath != null) {
-                                json.put("Photo", UtilsTool.bitmaptoString(UtilsTool.loadCompressedBitmap(WowuApp.picPath, 80, 80)));//BitmapFactory.decodeFile(picPath)
-                            }
+//                            if (WowuApp.picPath != null) {
+//                                json.put("Photo", UtilsTool.bitmaptoString(UtilsTool.loadCompressedBitmap(WowuApp.picPath, 80, 80)));//BitmapFactory.decodeFile(picPath)
+//                            }
+                            json.put("Photo", UtilsTool.bitmaptoString(photo));//BitmapFactory.decodeFile(picPath)
+
                             loadDataService.loadPostJsonRequestData(WowuApp.JSON, WowuApp.RegisterURL, json.toString(), 0);
                         } catch (Exception e) {
                             e.printStackTrace();
@@ -159,7 +191,28 @@ public class RegisterStepFourActivity extends BaseLoadActivity {
             @Override
             public void onClick(View arg0) {
                 // TODO 自动生成的方法存根
-                openCamera();
+//                openCamera();
+
+
+                Intent intentFromCapture = new Intent(
+                        MediaStore.ACTION_IMAGE_CAPTURE);
+                // 判断存储卡是否可以用，可用进行存储
+                String state = Environment
+                        .getExternalStorageState();
+                if (state.equals(Environment.MEDIA_MOUNTED)) {
+                    File path = Environment
+                            .getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM);
+                    File file = new File(path, IMAGE_FILE_NAME);
+                    intentFromCapture.putExtra(
+                            MediaStore.EXTRA_OUTPUT,
+                            Uri.fromFile(file));
+                }
+
+                startActivityForResult(intentFromCapture,
+                        CAMERA_REQUEST_CODE);
+
+
+
                 dialog.dismiss();
             }
         });
@@ -169,11 +222,22 @@ public class RegisterStepFourActivity extends BaseLoadActivity {
         userimg_select_pic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
-                Intent intent = new Intent();
-                //       这个是调用android内置的intent，来过滤图片文件 ，同时也可以过滤其他的
-                intent.setType("image/*");
-                intent.setAction(Intent.ACTION_GET_CONTENT);
-                startActivityForResult(intent, PHOTO_SELECT);
+//                Intent intent = new Intent();
+//                //       这个是调用android内置的intent，来过滤图片文件 ，同时也可以过滤其他的
+//                intent.setType("image/*");
+//                intent.setAction(Intent.ACTION_GET_CONTENT);
+//                startActivityForResult(intent, PHOTO_SELECT);
+
+
+                Intent intentFromGallery = new Intent();
+                intentFromGallery.setType("image/*"); // 设置文件类型
+                intentFromGallery
+                        .setAction(Intent.ACTION_GET_CONTENT);
+                startActivityForResult(intentFromGallery,
+                        IMAGE_REQUEST_CODE);
+
+
+
                 dialog.dismiss();
             }
         });
@@ -224,63 +288,160 @@ public class RegisterStepFourActivity extends BaseLoadActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
-        // TODO Auto-generated method stub
-        super.onActivityResult(requestCode, resultCode, data);
-        String sdStatus = Environment.getExternalStorageState();
-        Log.i("获取到返回值结果", "获取到返回值结果");
-        switch (requestCode) {
-            case PHOTO_CAPTURE:
-                if (!sdStatus.equals(Environment.MEDIA_MOUNTED)) {
-                    Log.i("内存卡错误", "请检查您的内存卡");
-                } else {
-                    clearOldDrable();
-                    sendToServer();
-                }
-                break;
-
-            case PHOTO_SELECT:
-
-                /**
-                 * 当选择的图片不为空的话，在获取到图片的途径
-                 */
-                Uri uri = null;
-                if (data != null) {
-                    uri = data.getData();
-                }
-
-                try {
-                    String[] pojo = {MediaStore.MediaColumns.DATA};
-                    Cursor cursor = managedQuery(uri, pojo, null, null, null);
-                    if (cursor != null) {
-                        ContentResolver cr = this.getContentResolver();
-                        int colunm_index = cursor.getColumnIndexOrThrow(MediaStore.MediaColumns.DATA);
-                        cursor.moveToFirst();
-                        String path = cursor.getString(colunm_index);
-                        /***
-                         * 这里加这样一个判断主要是为了第三方的软件选择，比如：使用第三方的文件管理器的话，你选择的文件就不一定是图片了，
-                         * 这样的话，我们判断文件的后缀名 如果是图片格式的话，那么才可以
-                         */
-                        if (path.endsWith("jpg") || path.endsWith("png")) {
-                            picPath = path;
-                            WowuApp.picPath = picPath;
-                            clearOldDrable();
-                            sendToServer();
-                        } else {
-                            alert();
-                        }
+        // 结果码不等于取消时候
+        if (resultCode != RESULT_CANCELED) {
+            switch (requestCode) {
+                case IMAGE_REQUEST_CODE :
+                    startPhotoZoom(data.getData());
+                    break;
+                case CAMERA_REQUEST_CODE :
+                    // 判断存储卡是否可以用，可用进行存储
+                    String state = Environment.getExternalStorageState();
+                    if (state.equals(Environment.MEDIA_MOUNTED)) {
+                        File path = Environment
+                                .getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM);
+                        File tempFile = new File(path, IMAGE_FILE_NAME);
+                        startPhotoZoom(Uri.fromFile(tempFile));
                     } else {
-                        alert();
+                        Toast.makeText(getApplicationContext(),
+                                "未找到存储卡，无法存储照片！", Toast.LENGTH_SHORT).show();
                     }
-
-                } catch (Exception e) {
-                }
-
-                break;
-            default:
-                return;
+                    break;
+                case RESULT_REQUEST_CODE : // 图片缩放完成后
+                    if (data != null) {
+                        getImageToView(data);
+                    }
+                    break;
+            }
         }
 
+
+
+
+        // TODO Auto-generated method stub
+        super.onActivityResult(requestCode, resultCode, data);
+//        String sdStatus = Environment.getExternalStorageState();
+//        Log.i("获取到返回值结果", "获取到返回值结果");
+//        switch (requestCode) {
+//            case PHOTO_CAPTURE:
+//                if (!sdStatus.equals(Environment.MEDIA_MOUNTED)) {
+//                    Log.i("内存卡错误", "请检查您的内存卡");
+//                } else {
+//                    clearOldDrable();
+//                    sendToServer();
+//                }
+//                break;
+//
+//            case PHOTO_SELECT:
+//                /**
+//                 * 当选择的图片不为空的话，在获取到图片的途径
+//                 */
+//                Uri uri = null;
+//                if (data != null) {
+//                    uri = data.getData();
+//                }
+//                try {
+//                    String[] pojo = {MediaStore.MediaColumns.DATA};
+//                    Cursor cursor = managedQuery(uri, pojo, null, null, null);
+//                    if (cursor != null) {
+//                        ContentResolver cr = this.getContentResolver();
+//                        int colunm_index = cursor.getColumnIndexOrThrow(MediaStore.MediaColumns.DATA);
+//                        cursor.moveToFirst();
+//                        String path = cursor.getString(colunm_index);
+//                        /***
+//                         * 这里加这样一个判断主要是为了第三方的软件选择，比如：使用第三方的文件管理器的话，你选择的文件就不一定是图片了，
+//                         * 这样的话，我们判断文件的后缀名 如果是图片格式的话，那么才可以
+//                         */
+//                        if (path.endsWith("jpg") || path.endsWith("png")) {
+//                            picPath = path;
+//                            WowuApp.picPath = picPath;
+//                            clearOldDrable();
+//                            sendToServer();
+//                        } else {
+//                            alert();
+//                        }
+//                    } else {
+//                        alert();
+//                    }
+//                } catch (Exception e) {
+//                }
+//                break;
+//            default:
+//                return;
+//        }
+
+
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    /** 头像名称 */
+    private static final String IMAGE_FILE_NAME = "image.jpg";
+
+    /** 请求码 */
+    private static final int IMAGE_REQUEST_CODE = 0;
+    private static final int CAMERA_REQUEST_CODE = 1;
+    private static final int RESULT_REQUEST_CODE = 2;
+
+    /**
+     * 裁剪图片方法实现
+     *
+     * @param uri
+     */
+    public void startPhotoZoom(Uri uri) {
+        Intent intent = new Intent("com.android.camera.action.CROP");
+        intent.setDataAndType(uri, "image/*");
+        // 设置裁剪
+        intent.putExtra("crop", "true");
+        // aspectX aspectY 是宽高的比例
+        intent.putExtra("aspectX", 1);
+        intent.putExtra("aspectY", 1);
+        // outputX outputY 是裁剪图片宽高
+        intent.putExtra("outputX", 340);
+        intent.putExtra("outputY", 340);
+        intent.putExtra("return-data", true);
+        startActivityForResult(intent, RESULT_REQUEST_CODE);
+    }
+
+    /**
+     * 保存裁剪之后的图片数据
+     *
+     * @param
+     */
+    Bitmap photo=null;
+    private void getImageToView(Intent data) {
+        Bundle extras = data.getExtras();
+        if (extras != null) {
+              photo = extras.getParcelable("data");
+            Drawable drawable = new BitmapDrawable(this.getResources(), photo);
+
+            usersetting_userpic.setImageDrawable(drawable);
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
 
     /**
      * @param
@@ -389,7 +550,6 @@ public class RegisterStepFourActivity extends BaseLoadActivity {
 //                    clearOldDrable();
 //                    Drawable drawable = new BitmapDrawable(UtilsTool.loadCompressedBitmap(picPath, 80, 80));
 //                    usersetting_userpic.setImageDrawable(drawable);
-
                    if(pg!=null) pg.dismiss();
                     MyToast.show(getApplicationContext(), "修改成功", Toast.LENGTH_LONG);
                     break;
@@ -401,7 +561,6 @@ public class RegisterStepFourActivity extends BaseLoadActivity {
                     File photo = new File(picPath);
                     imageUri = Uri.fromFile(photo);
                     usersetting_userpic.setImageURI(imageUri);
-
                     break;
             }
             super.handleMessage(msg);

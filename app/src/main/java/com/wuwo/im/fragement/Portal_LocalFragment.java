@@ -139,7 +139,9 @@ public class Portal_LocalFragment extends BasePortal_TabFragment {
 
     @Override
     public String getURL() {
-        return WowuApp.GetNearbyUserURL+"?lon=" + WowuApp.longitude + "&lat=" + WowuApp.latitude;
+//        return WowuApp.GetNearbyUserURL+"?lon=" + WowuApp.longitude + "&lat=" + WowuApp.latitude;
+
+        return WowuApp.GetNearbyUserURL+"?lon=31.196694&lat=121.716728";
     }
 
     @Override

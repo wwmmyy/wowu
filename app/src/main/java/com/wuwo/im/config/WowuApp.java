@@ -37,7 +37,7 @@ public class WowuApp extends Application {
     public MyLocationListener mMyLocationListener;
     public static final String LOG_DIR = Environment.getExternalStorageDirectory().getAbsolutePath() + "/errorLog";
     //    public static String serverAbsolutePath = "http://58.246.138.178:8040/gzServices/ServiceProvider.ashx"; // dist
-    public static String serverAbsolutePath = "http://139.196.85.20/";
+    public static String serverAbsolutePath = "http://139.196.110.136:7777/";//http://139.196.85.20/
     //此为即时通讯消息推送的服务器端ip及端口
 //    public static String XMPPserverIP = serverIP;  // dist
     public static String XMPPserverIP = " ";

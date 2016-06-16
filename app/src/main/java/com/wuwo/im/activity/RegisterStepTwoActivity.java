@@ -2,6 +2,8 @@ package com.wuwo.im.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -34,8 +36,7 @@ public class RegisterStepTwoActivity extends BaseLoadActivity {
         super.onCreate(savedInstanceState);
 //        ExitApp.getInstance().addOpenedActivity(this);
         setContentView(R.layout.activity_register_step_two);
-//        loadDataService = new LoadserverdataService(this);
-        initView();
+         initView();
 
     }
 
@@ -43,11 +44,34 @@ public class RegisterStepTwoActivity extends BaseLoadActivity {
 
         et_register_two_yanzhengma = (EditText) findViewById(R.id.et_register_two_yanzhengma);
         tv_registersteptwo_phone_num = (TextView) findViewById(R.id.tv_registersteptwo_phone_num);
-        findViewById(R.id.tv_register_two_sure).setOnClickListener(this);
-        findViewById(R.id.tv_registersteptwo_change_phone_num).setOnClickListener(this);
+         findViewById(R.id.tv_registersteptwo_change_phone_num).setOnClickListener(this);
         findViewById(R.id.return_back).setOnClickListener(this);
 
         tv_registersteptwo_phone_num.setText(WowuApp.PhoneNumber);
+
+        tv_register_two_sure= (TextView)findViewById(R.id.tv_register_two_sure);
+        tv_register_two_sure.setOnClickListener(this);
+        tv_register_two_sure.getBackground().setAlpha(50);//0~255透明度值
+        tv_register_two_sure.setTextColor(tv_register_two_sure.getTextColors().withAlpha(50));
+        et_register_two_yanzhengma.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+            @Override
+            public void afterTextChanged(Editable s) {
+                if(et_register_two_yanzhengma.getText().toString().equals("")){
+                    tv_register_two_sure.getBackground().setAlpha(50);//0~255透明度值
+                    tv_register_two_sure.setTextColor(tv_register_two_sure.getTextColors().withAlpha(50));
+                }else{
+                    tv_register_two_sure.getBackground().setAlpha(255);//0~255透明度值
+                    tv_register_two_sure.setTextColor(tv_register_two_sure.getTextColors().withAlpha(255));
+                }
+            }
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+        });
+
 
     }
 
