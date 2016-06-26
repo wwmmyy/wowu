@@ -19,24 +19,27 @@
         android:orientation="vertical">
 
 
-        <RelativeLayout
+<!--        <RelativeLayout
             android:id="@+id/set_user_pic"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="15dp"
-            android:background="@drawable/circle_back">
+            android:background="@drawable/circle_back">-->
 
             <com.facebook.drawee.view.SimpleDraweeView
                 android:id="@+id/usersetting_userpic"
-                android:layout_width="72dp"
-                android:layout_height="72dp"
+                android:layout_width="82dp"
+                android:layout_height="82dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="15dp"
                 dist:roundAsCircle="true"
-                android:layout_centerInParent="true"
+                dist:roundingBorderColor="@color/white"
+                dist:roundingBorderWidth="1dp"
                 dist:placeholderImage="@drawable/ic_launcher"
                 />
 
-        </RelativeLayout>
+        <!--</RelativeLayout>-->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -101,7 +104,7 @@
             android:layout_marginTop="35dp"
             android:layout_marginLeft="@dimen/activity_horizontal_margin"
             android:layout_marginRight="@dimen/activity_horizontal_margin"
-            android:background="@drawable/bt_border_register_selector2"
+            android:background="@drawable/bt_border_choose_login_selector"
             android:text="完成"
             android:textColor="@color/white"
             android:textSize="18sp"

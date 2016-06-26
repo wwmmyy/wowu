@@ -129,10 +129,10 @@ public class OkHttpUtils
                 {
                     try
                     {
-                        Log.e("服务器请求返回异常",response.toString()+"::::::::::::"+response.message()+":::"+response.body());
+//                        Log.e("服务器请求返回异常",response.toString()+"::::::::::::"+response.message()+":::"+response.body().string());
+
                         sendFailResultCallback(requestCall.getRequest(), new RuntimeException(response.body().string()), finalCallback);
-
-
+                        Log.e("服务器请求返回异常",response.body().string());
                     } catch (IOException e)
                     {
                         e.printStackTrace();

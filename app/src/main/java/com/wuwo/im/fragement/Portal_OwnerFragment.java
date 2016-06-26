@@ -16,7 +16,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
-import com.wuwo.im.activity.OwnerInfoDetailActivity;
+import com.wuwo.im.activity.OwnerInfoEditActivity;
 import com.wuwo.im.config.ExitApp;
 import com.wuwo.im.config.WowuApp;
 
@@ -108,7 +108,8 @@ public class Portal_OwnerFragment extends BaseAppFragment implements View.OnClic
                                         SharedPreferences.Editor editor = mSettings.edit();
                                         editor.putString("username", "");
                                         editor.putString("password", "");
-                                        editor.putBoolean("login_auto_check", false);
+//                                        editor.putBoolean("login_auto_check", false);
+                                        editor.putBoolean("login_save_pwd_check",false);
                                         editor.commit();
 
                                         //            彻底退出应用程序，经测试，效果很好
@@ -150,7 +151,8 @@ public class Portal_OwnerFragment extends BaseAppFragment implements View.OnClic
             case R.id.user_info_detail_edit:
             case R.id.user_info_detail:
                 Intent intent2 = new Intent();
-                intent2.setClass(mContext, OwnerInfoDetailActivity.class);
+//                intent2.setClass(mContext, OwnerInfoDetailActivity.class);
+                intent2.setClass(mContext, OwnerInfoEditActivity.class);
                 mContext.startActivity(intent2);
                 break;
 //            case R.id.user_setting_ipinfo:

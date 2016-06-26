@@ -1,23 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:background="@drawable/login_bg"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent"
+    android:background="@color/white">
 
-    <include
+
+    <RelativeLayout
         android:id="@+id/top_indicator_"
-        layout="@layout/top_title_bar" />
+        android:layout_width="fill_parent"
+        android:layout_height="50dp"
+        android:background="?attr/appbg">
+
+        <ImageView
+            android:id="@+id/return_back"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="-32dp"
+            android:clickable="true"
+            android:gravity="center_vertical"
+            android:padding="8dp"
+            android:src="@drawable/back_a" />
+
+        <TextView
+            android:id="@+id/top_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:clickable="true"
+            android:gravity="center_horizontal"
+            android:text="先"
+            android:textColor="#ffffff"
+            android:textSize="21sp" />
+
+        <TextView
+            android:id="@+id/tx_top_right"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="8dp"
+            android:gravity="center_vertical"
+            android:textColor="#ffffff"
+            android:textSize="14sp" />
+    </RelativeLayout>
+
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/top_indicator_"
-        android:layout_marginRight="-3dp"
-        android:layout_marginTop="15dp"/>
+        android:layout_marginTop="1dp"
+        android:layout_marginRight="-3dp" />
 
-  <!--  android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"-->
+    <!--  android:paddingLeft="@dimen/activity_horizontal_margin"
+      android:paddingRight="@dimen/activity_horizontal_margin"-->
+
 
     <Button
         android:id="@+id/choose_sure"
@@ -25,95 +64,109 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:background="@drawable/bt_border_register_selector2"
-        android:paddingLeft="18dp"
-        android:paddingRight="18dp"
-        android:text="确定选择"
+        android:background="@drawable/item_background_test_selector"
+        android:paddingLeft="28dp"
+        android:paddingRight="28dp"
+        android:text="确定"
         android:textSize="20sp" />
-    <!--android:background="@drawable/bt_border"-->
 
     <View
         android:id="@+id/line_temp"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_below="@+id/choose_sure"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
         android:layout_marginTop="30dp"
         android:background="@color/hintColor"
-        android:layout_marginLeft="@dimen/activity_horizontal_margin"
-        android:layout_marginRight="@dimen/activity_horizontal_margin" />
+        android:visibility="gone" />
 
 
     <TextView
         android:id="@+id/tv_shuoming"
-        android:layout_below="@+id/line_temp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/line_temp"
         android:layout_marginTop="20dp"
         android:gravity="center"
         android:text="不確定性格的类型？那就来测试一下吧" />
 
-
     <LinearLayout
-        android:id="@+id/ly_temp1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/tv_shuoming"
+        android:layout_marginLeft="@dimen/login_horizontal_margin"
+        android:layout_marginRight="@dimen/login_horizontal_margin"
+        android:background="@drawable/item_background_test_selector"
         android:layout_marginTop="20dp"
-        android:orientation="horizontal"
-        android:paddingLeft="@dimen/activity_horizontal_margin"
-        android:paddingRight="@dimen/activity_horizontal_margin">
+        android:orientation="horizontal">
 
-        <Button
+        <LinearLayout
             android:id="@+id/bt_kuaisu"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:background="@drawable/bt_border_register_selector2"
             android:layout_weight="1"
-            android:padding="5dp"
-            android:text="快速版"
-            android:textSize="20sp" />
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="@dimen/text_margin_10dp"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin">
 
-        <Button
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:padding="5dp"
+                android:text="快速版"
+                android:textColor="?attr/appbg"
+                android:textSize="20sp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="30秒"
+                android:textColor="?attr/appbg"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="?attr/appbg" />
+
+
+        <LinearLayout
             android:id="@+id/bt_jingque"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:background="@drawable/bt_border_register_selector2"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/ly_temp1"
             android:layout_weight="1"
-            android:padding="5dp"
-            android:text="精确版"
-            android:textSize="20sp" />
-    </LinearLayout>
-
-
-    <LinearLayout
-        android:id="@+id/ly_temp2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/ly_temp1"
-        android:orientation="horizontal"
-        android:layout_marginTop="4dp"
-        android:paddingLeft="@dimen/activity_horizontal_margin"
-        android:paddingRight="@dimen/activity_horizontal_margin">
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:orientation="vertical"
             android:gravity="center"
-            android:padding="5dp"
-            android:text="30秒"
-            android:textSize="20sp" />
+            android:padding="@dimen/text_margin_10dp"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin">
 
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:padding="5dp"
-            android:text="3分钟"
-            android:textSize="20sp" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:padding="5dp"
+                android:text="精确版"
+                android:textColor="?attr/appbg"
+                android:textSize="20sp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="3分钟"
+                android:textColor="?attr/appbg"
+                android:textSize="16sp" />
+
+        </LinearLayout>
+
+
     </LinearLayout>
-
 </RelativeLayout>

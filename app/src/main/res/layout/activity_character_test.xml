@@ -5,8 +5,7 @@
     android:layout_height="match_parent"
     android:background="@color/app_bg"
     android:orientation="vertical"
-    android:gravity="center_horizontal"
-    tools:context="com.wuwo.im.activity.CharacterTestActivity">
+    android:gravity="center_horizontal" >
 
 
     <RelativeLayout
@@ -23,7 +22,7 @@
             android:clickable="true"
             android:gravity="center_vertical"
             android:padding="5dp"
-            android:text="上一题"
+            android:text="返回"
             android:textColor="@color/white"
             android:textSize="18sp" />
 
@@ -70,23 +69,9 @@
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:gravity="center"
-        android:text="2/30" />
+        android:text="0/0"
+        android:textSize="18sp"/>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/text_margin_10dp"
-        android:paddingBottom="20dp"
-        android:background="@drawable/setting_bg"
-        android:orientation="vertical">
-
-<!--        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/activity_horizontal_margin"
-            android:layout_marginTop="8dp"
-            android:text="5."
-            android:textSize="25sp" />-->
 
 
         <TextView
@@ -94,9 +79,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/activity_horizontal_margin"
-            android:text="大多数人会认为你是一个?"
+            android:layout_margin="@dimen/text_margin_10dp"
+            android:background="@drawable/setting_bg"
+            android:text=".........."
+            android:minHeight="100dp"
+            android:paddingLeft="@dimen/text_margin_10dp"
+            android:paddingBottom="@dimen/text_margin_10dp"
             android:textSize="18sp" />
-    </LinearLayout>
+
 
     <!--    <View
             android:layout_width="match_parent"
@@ -109,7 +99,7 @@
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_question"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="200dp"
         android:layout_marginLeft="@dimen/text_margin_10dp"
         android:layout_marginRight="@dimen/text_margin_10dp" />
 
@@ -126,6 +116,7 @@
         android:paddingRight="60dp"
         android:paddingTop="10dp"
         android:text="完成"
+        android:visibility="gone"
          android:textColor="@color/colorPrimary"
         android:textSize="22sp" />
 

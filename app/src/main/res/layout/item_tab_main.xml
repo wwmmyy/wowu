@@ -10,10 +10,10 @@
         android:layout_centerInParent="true"
         android:layout_marginBottom="3dp"
         android:layout_marginTop="2dp"
-        android:gravity="center_horizontal"
         android:textSize="15sp" />
 
-    <!-- android:textColor="@drawable/text_color_selector"-->
+    <!--
+        android:gravity="center_horizontal" android:textColor="@drawable/text_color_selector"-->
 
     <!--
     <ImageView

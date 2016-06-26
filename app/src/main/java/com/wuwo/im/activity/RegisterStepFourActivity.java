@@ -8,6 +8,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -23,7 +24,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -36,6 +36,7 @@ import com.wuwo.im.config.WowuApp;
 import com.wuwo.im.util.MyToast;
 import com.wuwo.im.util.UtilsTool;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
@@ -66,21 +67,20 @@ public class RegisterStepFourActivity extends BaseLoadActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register_four);
-//        ExitApp.getInstance().addOpenedActivity(this);
-//        loadDataService = new LoadserverdataService(this);
         mSettings = mContext.getSharedPreferences(WowuApp.PREFERENCE_KEY, MODE_PRIVATE);
         initView();
     }
 
     private void initView() {
         findViewById(R.id.return_back).setOnClickListener(this);
-        findViewById(R.id.set_user_pic).setOnClickListener(this);
+//        findViewById(R.id.set_user_pic).setOnClickListener(this);
         user_register_nicheng = (EditText) findViewById(R.id.user_register_nicheng);
         user_register_rg_gender = (RadioGroup) findViewById(R.id.user_register_rg_gender);
 
-        uri = Uri.parse(WowuApp.userImagePath + mSettings.getString("userid", "") + ".jpg");
+//        uri = Uri.parse(WowuApp.userImagePath + mSettings.getString("userid", "") + ".jpg");
         usersetting_userpic = (SimpleDraweeView) findViewById(R.id.usersetting_userpic);
-        usersetting_userpic.setImageURI(Uri.parse(WowuApp.userImagePath + mSettings.getString("userid", "") + ".jpg"));
+        usersetting_userpic .setOnClickListener(this);
+//        usersetting_userpic.setImageURI(Uri.parse(WowuApp.userImagePath + mSettings.getString("userid", "") + ".jpg"));
 
         user_register_rg_gender.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
@@ -116,11 +116,6 @@ public class RegisterStepFourActivity extends BaseLoadActivity {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
             }
         });
-
-
-
-
-
     }
 
     @Override
@@ -130,17 +125,12 @@ public class RegisterStepFourActivity extends BaseLoadActivity {
                 this.finish();
                 overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                 break;
-            case R.id.set_user_pic:
+            case R.id.usersetting_userpic:
                 showDialog();
                 break;
             case R.id.register_finish:
 
                 WowuApp.Name = user_register_nicheng.getText().toString();
-
-//                Intent temp = new Intent(this, CharacterChooseActivity.class);
-//                startActivity(temp);
-//                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-////                finish();
 
                 Message msg = new Message();
                 msg.what = Loading;
@@ -157,7 +147,8 @@ public class RegisterStepFourActivity extends BaseLoadActivity {
 //                            if (WowuApp.picPath != null) {
 //                                json.put("Photo", UtilsTool.bitmaptoString(UtilsTool.loadCompressedBitmap(WowuApp.picPath, 80, 80)));//BitmapFactory.decodeFile(picPath)
 //                            }
-                            json.put("Photo", UtilsTool.bitmaptoString(photo));//BitmapFactory.decodeFile(picPath)
+                            Log.i("图像存放的路径为：：：","：："+imageUri.getPath());
+                            json.put("Photo",UtilsTool.bitmaptoString(BitmapFactory.decodeFile(imageUri.getPath()) ) ); //   UtilsTool.bitmaptoString(photo)　　  UtilsTool.compressBitmap(photo,13)
 
                             loadDataService.loadPostJsonRequestData(WowuApp.JSON, WowuApp.RegisterURL, json.toString(), 0);
                         } catch (Exception e) {
@@ -176,8 +167,8 @@ public class RegisterStepFourActivity extends BaseLoadActivity {
                 ViewGroup.LayoutParams.WRAP_CONTENT));
         Window window = dialog.getWindow();
 
-        Button xiangmubanli_cancel = (Button) view.findViewById(R.id.userpic_setting_cancel);
-        xiangmubanli_cancel.setOnClickListener(new View.OnClickListener() {
+//        Button xiangmubanli_cancel = (Button) view.findViewById(R.id.userpic_setting_cancel);
+        view.findViewById(R.id.userpic_setting_cancel).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
                 // TODO 自动生成的方法存根
@@ -186,14 +177,12 @@ public class RegisterStepFourActivity extends BaseLoadActivity {
         });
 
         //      直接拍照
-        Button userimg_take_picture = (Button) view.findViewById(R.id.userimg_take_picture);
-        userimg_take_picture.setOnClickListener(new View.OnClickListener() {
+//        Button userimg_take_picture = (Button) view.findViewById(R.id.userimg_take_picture);
+        view.findViewById(R.id.userimg_take_picture).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
                 // TODO 自动生成的方法存根
 //                openCamera();
-
-
                 Intent intentFromCapture = new Intent(
                         MediaStore.ACTION_IMAGE_CAPTURE);
                 // 判断存储卡是否可以用，可用进行存储
@@ -207,19 +196,14 @@ public class RegisterStepFourActivity extends BaseLoadActivity {
                             MediaStore.EXTRA_OUTPUT,
                             Uri.fromFile(file));
                 }
-
-                startActivityForResult(intentFromCapture,
-                        CAMERA_REQUEST_CODE);
-
-
-
+                startActivityForResult(intentFromCapture, CAMERA_REQUEST_CODE);
                 dialog.dismiss();
             }
         });
 
         //        从相册中选择
-        Button userimg_select_pic = (Button) view.findViewById(R.id.userimg_select_pic);
-        userimg_select_pic.setOnClickListener(new View.OnClickListener() {
+//        Button userimg_select_pic = (Button) view.findViewById(R.id.userimg_select_pic);
+        view.findViewById(R.id.userimg_select_pic).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
 //                Intent intent = new Intent();
@@ -235,8 +219,6 @@ public class RegisterStepFourActivity extends BaseLoadActivity {
                         .setAction(Intent.ACTION_GET_CONTENT);
                 startActivityForResult(intentFromGallery,
                         IMAGE_REQUEST_CODE);
-
-
 
                 dialog.dismiss();
             }
@@ -309,7 +291,9 @@ public class RegisterStepFourActivity extends BaseLoadActivity {
                     break;
                 case RESULT_REQUEST_CODE : // 图片缩放完成后
                     if (data != null) {
-                        getImageToView(data);
+//                        getImageToView(data);
+                        clearOldDrable();
+                        usersetting_userpic.setImageURI(imageUri);
                     }
                     break;
             }
@@ -410,8 +394,10 @@ public class RegisterStepFourActivity extends BaseLoadActivity {
         intent.putExtra("aspectX", 1);
         intent.putExtra("aspectY", 1);
         // outputX outputY 是裁剪图片宽高
-        intent.putExtra("outputX", 340);
-        intent.putExtra("outputY", 340);
+        intent.putExtra("outputX", 200);
+        intent.putExtra("outputY", 200);
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
+        intent.putExtra("outputFormat", "JPEG");// 返回格式
         intent.putExtra("return-data", true);
         startActivityForResult(intent, RESULT_REQUEST_CODE);
     }
@@ -426,8 +412,8 @@ public class RegisterStepFourActivity extends BaseLoadActivity {
         Bundle extras = data.getExtras();
         if (extras != null) {
               photo = extras.getParcelable("data");
-            Drawable drawable = new BitmapDrawable(this.getResources(), photo);
 
+            Drawable drawable = new BitmapDrawable(this.getResources(), photo);
             usersetting_userpic.setImageDrawable(drawable);
         }
     }
@@ -456,9 +442,9 @@ public class RegisterStepFourActivity extends BaseLoadActivity {
 //        imageLoader.getImageProvider().flushFileCache();
 
         ImagePipeline imagePipeline = Fresco.getImagePipeline();
-        imagePipeline.evictFromMemoryCache(uri);
-        imagePipeline.evictFromDiskCache(uri);
-        imagePipeline.evictFromCache(uri);
+        imagePipeline.evictFromMemoryCache(imageUri);
+        imagePipeline.evictFromDiskCache(imageUri);
+        imagePipeline.evictFromCache(imageUri);
 
     }
 
@@ -552,8 +538,11 @@ public class RegisterStepFourActivity extends BaseLoadActivity {
 //                    usersetting_userpic.setImageDrawable(drawable);
                    if(pg!=null) pg.dismiss();
                     MyToast.show(getApplicationContext(), "修改成功", Toast.LENGTH_LONG);
-                    break;
 
+                    Intent temp = new Intent(mContext, CharacterChooseActivity.class);
+                    startActivity(temp);
+                    overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                    break;
                 case PICSHOW:
                     clearOldDrable();
 //                    Drawable drawable = new BitmapDrawable(UtilsTool.loadCompressedBitmap(picPath, 80, 80));
@@ -580,13 +569,19 @@ public class RegisterStepFourActivity extends BaseLoadActivity {
 //        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
 
 
-        Message msg2 = new Message();
-        msg2.what = END;
-        mHandler.sendMessage(msg2);
 
-        Intent temp = new Intent(this, CharacterChooseActivity.class);
-        startActivity(temp);
-        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+//        {"token":"380a389909944158bb050ea4126e94e85b521129eb8547409a91ece5f75a360f","easemobId":"8ed631fa-3565-11e6-988d-59e695f37b1d"}
+
+        try {
+            JSONObject responseJson=new JSONObject(response);
+           WowuApp.token= responseJson.optString("token");
+
+            Message msg2 = new Message();
+            msg2.what = END;
+            mHandler.sendMessage(msg2);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
     }
 

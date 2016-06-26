@@ -7,7 +7,7 @@
     
         <!--<item android:drawable="@drawable/btn_xinwen_highlight" android:state_checked="true"/>-->
     <!--<item android:drawable="@drawable/btn_xinwen_normal" android:state_checked="false"/>-->
-    <item android:drawable="@drawable/sy_b" android:state_checked="true"/>
-    <item android:drawable="@drawable/sy_g" android:state_checked="false"/>
+    <item android:drawable="@drawable/nearby_st" android:state_checked="true"/>
+    <item android:drawable="@drawable/nearby_nor" android:state_checked="false"/>
 
 </selector>

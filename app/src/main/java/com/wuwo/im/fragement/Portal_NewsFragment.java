@@ -20,11 +20,13 @@ import java.util.List;
 
 import im.wuwo.com.wuwo.R;
 
-/**
- * 首页 设置 fragment
- *
- * @author dewyze
- */
+/** 
+*desc 最新消息记录，此部分后面会用环信的代替
+*@author 王明远
+*@日期： 2016/6/25 12:22
+*@版权:Copyright 上海数慧系统有限公司  All rights reserved.
+*/
+
 @SuppressLint("ValidFragment")
 public class Portal_NewsFragment extends BasePortal_TabFragment {
 

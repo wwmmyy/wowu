@@ -8,6 +8,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.AutoCompleteTextView;
@@ -33,7 +34,7 @@ public class LoginActivity extends BaseLoadActivity {
     private EditText wohu_password;
     private Button imap_login_userlogin;
     private CheckBox login_save_pwd;
-    private CheckBox login_auto;
+//    private CheckBox login_auto;
     private ProgressDialog mdialog;
     private SharedPreferences settings;
     private SharedPreferences.Editor editor;
@@ -74,22 +75,22 @@ public class LoginActivity extends BaseLoadActivity {
         wohu_password = (EditText) this.findViewById(R.id.imap_login_password);
         imap_login_userlogin = (Button) this.findViewById(R.id.imap_login_userlogin);
         login_save_pwd = (CheckBox) this.findViewById(R.id.login_save_pwd);
-        login_auto = (CheckBox) this.findViewById(R.id.login_auto);
+//        login_auto = (CheckBox) this.findViewById(R.id.login_auto);
 //         TextView login_by_gesture= (TextView) this.findViewById(R.id.login_by_gesture);
         TextView user_register = (TextView) this.findViewById(R.id.user_register);
 
         imap_login_userlogin.setOnClickListener(this);
         login_save_pwd.setOnClickListener(this);
-        login_auto.setOnClickListener(this);
+//        login_auto.setOnClickListener(this);
         user_register.setOnClickListener(this);
         findViewById(R.id.return_back).setOnClickListener(this);
 
 
 //         如果是设置保存了密码，则自动注入用户名及密码
-        Boolean login_save_pwd_check = settings.getBoolean("login_save_pwd_check", false);
+        Boolean login_save_pwd_check = settings.getBoolean("login_save_pwd_check", true);
         login_save_pwd.setChecked(login_save_pwd_check);
-        Boolean login_auto_check = settings.getBoolean("login_auto_check", false);
-        login_auto.setChecked(login_auto_check);
+//        Boolean login_auto_check = settings.getBoolean("login_auto_check", false);
+//        login_auto.setChecked(login_auto_check);
 
         String m_username = settings.getString("PhoneNumber", "");
         String m_password = settings.getString("Password", "");
@@ -101,7 +102,10 @@ public class LoginActivity extends BaseLoadActivity {
                 WowuApp.Password = settings.getString("Password", "");
                 WowuApp.Name = settings.getString("Name", "");
 
-                startLogin();
+                if(!WowuApp.PhoneNumber.equals("") &&!WowuApp.Password.equals("") ){
+                    startLogin();
+                }
+
             }
             wohu_password.setText(m_password);
         }
@@ -147,10 +151,10 @@ public class LoginActivity extends BaseLoadActivity {
         mHandler.sendMessage(msg);
         try {
             JSONObject json = new JSONObject();
-                    json.put("PhoneNumber", "15000659340");
-                    json.put("Password", "123456");
-//            json.put("PhoneNumber", WowuApp.PhoneNumber);
-//            json.put("Password", WowuApp.Password);
+//                    json.put("PhoneNumber", "15000659340");
+//                    json.put("Password", "123456");
+            json.put("PhoneNumber", WowuApp.PhoneNumber);
+            json.put("Password", WowuApp.Password);
             loadDataService.loadPostJsonRequestData(WowuApp.JSON, WowuApp.LoginURL, json.toString(), R.id.imap_login_userlogin);
         } catch (Exception e) {
             e.printStackTrace();
@@ -161,8 +165,8 @@ public class LoginActivity extends BaseLoadActivity {
     //此处是连接网络的返回值
     @Override
     public void loadServerData(String response, int flag) {
-        MyToast.show(mContext, "返回的结果为：：：：" + response);
-
+//        MyToast.show(mContext, "返回的结果为：：：：" + response);
+        Log.i("获取登陆返回值为：：：", response.toString());
         switch (flag) {
             case R.id.imap_login_userlogin:
                 try {
@@ -175,6 +179,7 @@ public class LoginActivity extends BaseLoadActivity {
                     editor.putString("Password",WowuApp.Password);
                     editor.putInt("Gender",WowuApp.Gender);
                     editor.putString("Name",WowuApp.Name);
+                    editor.putBoolean("login_save_pwd_check",true); //登录成功后下次点开后可自动登录
                     editor.commit();
 
 //                  跳转到主界面
@@ -192,7 +197,7 @@ public class LoginActivity extends BaseLoadActivity {
 
     @Override
     public void loadDataFailed(String response,int flag) {
-        MyToast.show(mContext, "返回值失败" + response.toString());
+        MyToast.show(mContext,response.toString());
         if(pg!=null)pg.dismiss();
     }
 
@@ -205,7 +210,7 @@ public class LoginActivity extends BaseLoadActivity {
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case Loading:
-                    pg = UtilsTool.initProgressDialog(mContext, "正在上传.....");
+                    pg = UtilsTool.initProgressDialog(mContext, "正在登录...");
                     pg.show();
                     break;
                 case END:

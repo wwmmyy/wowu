@@ -43,6 +43,7 @@ import android.widget.Toast;
 
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonParser;
+import com.wuwo.im.activity.LoginChooseActivity;
 import com.wuwo.im.config.WowuApp;
 
 import java.io.BufferedInputStream;
@@ -504,7 +505,7 @@ public class UtilsTool {
     /**
      * 根据图片名称拷贝图片
      *
-     * @param fileName 文件名
+     * @param   文件名
      */
     public void copyPictureByFilePath(final Handler handler, final String url) {
 
@@ -1291,7 +1292,7 @@ public class UtilsTool {
      * 发送消息到服务端，获取到服务器端返回的字符串
      *
      * @param params 请求参数
-     * @param encode 编码格式
+     * @param   编码格式
      * @return
      * @throws Exception
      */
@@ -2367,18 +2368,90 @@ public class UtilsTool {
 //   }  
 
 
-
-
     // 将Bitmap转换成字符串
     public static String bitmaptoString(Bitmap bitmap) {
+
         String string = null;
         ByteArrayOutputStream bStream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, bStream);
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bStream);
         byte[] bytes = bStream.toByteArray();
         string = Base64.encodeToString(bytes, Base64.DEFAULT);
+
+//        Log.i("获取到的图片大小为　２：：：：：",":　"+string);
+
+//        saveStringToSD(string);
+
         return string;
     }
 
+    private static void saveStringToSD   (String toSaveString) {
+
+        try {
+            Writer info = new StringWriter();
+
+
+            if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
+                InputStream is = StringTOInputStream(toSaveString);
+                File dir = new File(WowuApp.LOG_DIR);
+                if (dir.exists() == false) {
+                    boolean b = dir.mkdirs();
+                }
+
+                File file = new File(WowuApp.LOG_DIR, "64返回的图片.txt");
+                FileOutputStream fos = new FileOutputStream(file);
+                //           fos.write(toSaveString.getBytes());
+                //           fos.close();
+
+                byte[] buffer = new byte[1024];
+                int len = 0;
+                while ((len = is.read(buffer)) != -1) {
+                    fos.write(buffer, 0, len);
+                }
+                fos.flush();
+                fos.close();
+                is.close();
+            }
+        } catch (Exception e2) {
+            // TODO: handle exception
+            e2.printStackTrace();
+        }
+
+    }
+
+
+    public static String compressBitmap(Bitmap bitmap, float size) {
+        String string = null;
+
+
+        Log.i("获取到的图片大小为　１：：：：：",":　"+getSizeOfBitmap(bitmap) );
+        if (bitmap == null || getSizeOfBitmap(bitmap) <= size) {
+            return null;//如果图片本身的大小已经小于这个大小了，就没必要进行压缩
+        }
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);//如果签名是png的话，则不管quality是多少，都不会进行质量的压缩
+        int quality = 100;
+        while (baos.toByteArray().length / 1024f > size) {
+            quality = quality - 4;// 每次都减少4
+            baos.reset();// 重置baos即清空baos
+            if (quality <= 0) {
+                break;
+            }
+            bitmap.compress(Bitmap.CompressFormat.JPEG, quality, baos);
+        }
+        byte[] bytes = baos.toByteArray();
+        string = Base64.encodeToString(bytes, Base64.DEFAULT);
+
+        Log.i("获取到的图片大小为　２：：：：：",":　"+string.length());
+
+        return string;
+    }
+
+    private static float getSizeOfBitmap(Bitmap bitmap) {
+
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);//这里100的话表示不压缩质量
+        return baos.toByteArray().length / 1024;//读出图片的kb大小
+    }
 
 
     // 将字符串转换成Bitmap类型

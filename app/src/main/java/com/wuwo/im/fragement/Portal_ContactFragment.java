@@ -2,7 +2,6 @@ package com.wuwo.im.fragement;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.Dialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
@@ -12,19 +11,19 @@ import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.squareup.okhttp.Request;
-import com.wuwo.im.activity.FromContractsActivity;
+import com.wuwo.im.activity.UserInfoEditActivity;
 import com.wuwo.im.adapter.CommRecyclerAdapter;
 import com.wuwo.im.adapter.CommRecyclerViewHolder;
-import com.wuwo.im.bean.newsMessage;
+import com.wuwo.im.bean.LocalUser;
 import com.wuwo.im.config.WowuApp;
+import com.wuwo.im.service.LoadserverdataService;
+import com.wuwo.im.service.loadServerDataListener;
 import com.wuwo.im.util.MyToast;
 import com.wuwo.im.view.PullLoadMoreRecyclerView;
 import com.wuwo.im.view.SearchView;
@@ -45,20 +44,22 @@ import im.wuwo.com.wuwo.R;
  * @author dewyze
  */
 @SuppressLint("ValidFragment")
-public class Portal_ContactFragment extends BaseAppFragment implements View.OnClickListener {
+public class Portal_ContactFragment extends BaseAppFragment implements View.OnClickListener , loadServerDataListener {
 
     Activity mContext;
     SharedPreferences mSettings;
     SharedPreferences.Editor editor;
     private PullLoadMoreRecyclerView mPullLoadMoreRecyclerView;
-    private int mCount = 1;
-    private ArrayList<newsMessage> meeting_userlist = new ArrayList<newsMessage>(); //记录所有的最新消息
-    //    private XinWen_RecyclerViewAdapter mXinWen_RecyclerViewAdapter;
-    private SearchView search_view;
+    private int mCount = 0;
+    private ArrayList<LocalUser.DataBean> meeting_userlist = new ArrayList<LocalUser.DataBean>(); //记录所有的最新消息
+     private SearchView search_view;
     private String searchinfo;
     CommRecyclerAdapter messageRAdapter;
 
     mHandlerWeak mtotalHandler;
+
+    LoadserverdataService loadDataService;
+
 
     @Override
     public void onAttach(Activity activity) {
@@ -67,6 +68,7 @@ public class Portal_ContactFragment extends BaseAppFragment implements View.OnCl
         mSettings = mContext.getSharedPreferences(WowuApp.PREFERENCE_KEY,
                 android.content.Context.MODE_PRIVATE);
         mtotalHandler = new mHandlerWeak(this);
+        loadDataService = new LoadserverdataService(this);
 
     }
 
@@ -107,10 +109,6 @@ public class Portal_ContactFragment extends BaseAppFragment implements View.OnCl
         search_view.setVisibility(View.VISIBLE);
 //       loadData();
 
-        view.findViewById(R.id.tv_contact_add).setOnClickListener(this);
-        view.findViewById(R.id.tv_weixin_add).setOnClickListener(this);
-        view.findViewById(R.id.tv_qq_add).setOnClickListener(this);
-
         search_view.setSearchListener(new SearchView.searchListener() {
             @Override
             public void searchInfo(String info) {
@@ -147,13 +145,13 @@ public class Portal_ContactFragment extends BaseAppFragment implements View.OnCl
                     @Override
                     public void onResponse(String response) {
                         if (response != null) {
-                            java.lang.reflect.Type type = new com.google.gson.reflect.TypeToken<List<newsMessage >>() {
+                            java.lang.reflect.Type type = new com.google.gson.reflect.TypeToken<List<LocalUser.DataBean >>() {
                             }.getType();
 
                             meeting_userlist = gson.fromJson(response, type);
                             //在view界面上展示结果
                             Message msg = new Message();
-                            msg.what = DOWNLOADED_NEWSMESSAGE;
+                            msg.what = DOWNLOADED_LocalUser;
                             msg.arg1=searchInfoTag;
                             mtotalHandler.sendMessage(msg);
 
@@ -164,71 +162,73 @@ public class Portal_ContactFragment extends BaseAppFragment implements View.OnCl
 
     Gson gson = new GsonBuilder().create();
 
+
+    private final int LOAD_DATA=1;
     //    从网络加载流转日志数据并展示出来
     private void loadData() {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                OkHttpUtils
-                        .post()
-//                        .url(DistApp.SUNBO_BASE_URL)
-                        .url("http://58.246.138.178:8000/DistMobile/mobileMeeting!getAllMeeting.action")
-                        .addParams("type", "smartplan")
-                        .addParams("action", "getlawrulelist")
-//                        .addParams("action", "getofficalList")
-                        .addParams("page", mCount + "")
-                        .addParams("page", mCount + "")
-                        .build()
-                        .execute(new StringCallback() {
-                            @Override
-                            public void onError(Request request, Exception e) {
-//                              MyToast.show(mContext, "获取服务器信息失败", Toast.LENGTH_LONG);
-                                Message msg = new Message();
-                                msg.what = DOWNLOADED_ERROR;
-                                mtotalHandler.sendMessage(msg);
-                            }
 
-                            @Override
-                            public void onResponse(String totalresult) {
-                                try {
-                                    if (totalresult != null) {
-                                        setLoadInfo(totalresult);
-                                    }
-                                    Message msg = new Message();
-                                    msg.what = DOWNLOADED_NEWSMESSAGE;
-                                    mtotalHandler.sendMessage(msg);
-                                } catch (Exception e) {
-//                                    e.printStackTrace();
-                                    Message msg = new Message();
-                                    msg.what = DOWNLOADED_ERROR;
-                                    mtotalHandler.sendMessage(msg);
-                                }
-                            }
-                        });
-            }
-        }).start();
+        loadDataService.loadGetJsonRequestData( WowuApp.GetFriendsURL+"?lon=" + WowuApp.longitude + "&lat=" + WowuApp.latitude+ "&userId=" + "437ca552-ca12-4542-98e0-b2011399b849"+ "&PhoneNumber="+WowuApp.PhoneNumber ,LOAD_DATA);
+
     }
 
-    public static final int DOWNLOADED_NEWSMESSAGE = 0;
+    public static final int DOWNLOADED_LocalUser= 0;
     public static final int DOWNLOADED_ERROR = 1;
     public static final int REFRESH_DATA = 2;
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
-            case R.id.tv_contact_add:
-                Intent txl=new Intent(mContext, FromContractsActivity.class);
-                startActivity(txl);
 
-            break;
-            case R.id.tv_weixin_add:
-                showWeiXinShareDialog();
-                break;
-            case R.id.tv_qq_add:
-                showQQShareDialog();
+
+
+
+    }
+
+    @Override
+    public void loadServerData(String response, int flag) {
+        switch (flag){
+            case LOAD_DATA:
+                try {
+                    if (response != null) {
+                        setLoadInfo(response);
+                    }
+                    Message msg = new Message();
+                    msg.what = DOWNLOADED_LocalUser;
+                    mtotalHandler.sendMessage(msg);
+                } catch (Exception e) {
+//                                    e.printStackTrace();
+                    Message msg = new Message();
+                    msg.what = DOWNLOADED_ERROR;
+                    mtotalHandler.sendMessage(msg);
+                }
                 break;
         }
+
+
+
     }
+
+    @Override
+    public void loadDataFailed(String response, int flag) {
+
+        switch (flag){
+            case LOAD_DATA:
+                Message msg = new Message();
+                msg.what = DOWNLOADED_ERROR;
+                mtotalHandler.sendMessage(msg);
+                break;
+        }
+
+
+
+
+
+
+    }
+
+
+
+
+
 
     private static class mHandlerWeak extends Handler {
         private WeakReference<Portal_ContactFragment> activity = null;
@@ -246,7 +246,7 @@ public class Portal_ContactFragment extends BaseAppFragment implements View.OnCl
             }
             switch (msg.what) {
                 // 正在下载
-                case DOWNLOADED_NEWSMESSAGE:
+                case DOWNLOADED_LocalUser:
                     if (act.messageRAdapter == null) {
                         act.initAdapter();
                         act.messageRAdapter.setData(act.getLoadInfo());
@@ -311,11 +311,9 @@ public class Portal_ContactFragment extends BaseAppFragment implements View.OnCl
 
 
     public void setLoadInfo(String totalresult) throws JSONException {
-
-
         Gson gson = new GsonBuilder().create();
         if (totalresult != null) {
-            java.lang.reflect.Type type = new com.google.gson.reflect.TypeToken<List<newsMessage>>() {
+            java.lang.reflect.Type type = new com.google.gson.reflect.TypeToken<List<LocalUser.DataBean>>() {
             }.getType();
             meeting_userlist = gson.fromJson(totalresult, type);
         }
@@ -329,13 +327,21 @@ public class Portal_ContactFragment extends BaseAppFragment implements View.OnCl
 
 
     public CommRecyclerAdapter initAdapter() {
-        messageRAdapter = new CommRecyclerAdapter<newsMessage>(getActivity(), R.layout.item_contact_list) {
+        messageRAdapter = new CommRecyclerAdapter<LocalUser.DataBean>(getActivity(), R.layout.item_contact_list) {
             @Override
-            public void convert(CommRecyclerViewHolder viewHolder, newsMessage mainMessage) {
+            public void convert(CommRecyclerViewHolder viewHolder, LocalUser.DataBean mainMessage) {
+
                 //对对应的View进行赋值
-//                viewHolder.setText(R.id.news_title, mainMessage.getTitle());
+                viewHolder.setText(R.id.contract_title, mainMessage.getName());
+
+                viewHolder.setText(R.id.contract_code, mainMessage.getDistance()+" | "+ mainMessage.getBefore());
+                viewHolder.setText(R.id.contact_userinfo, mainMessage.getDisposition());
+                viewHolder.setText(R.id.contact_gender, mainMessage.getAge()+"");
+
+
                 SimpleDraweeView portal_news_img = (SimpleDraweeView) viewHolder.getView(R.id.news_label_pic);
-                portal_news_img.setImageURI(Uri.parse("http://www.gog.com.cn/pic/0/10/91/11/10911138_955870.jpg"));
+                portal_news_img.setImageURI(Uri.parse(mainMessage.getPhotoUrl()));
+
             }
 
             @Override
@@ -349,11 +355,12 @@ public class Portal_ContactFragment extends BaseAppFragment implements View.OnCl
             public void onItemClick(View view, int position) {
 
 
-//                Intent intent2 = new Intent(mContext, NewsOneDetailActivity.class);
-//                //        intent2.putExtra("content", newsMessagelist.get(tempPosition-1).getContent());
+                Intent intent2 = new Intent(mContext, UserInfoEditActivity.class);
+//                //        intent2.putExtra("content", LocalUser.DataBeanlist.get(tempPosition-1).getContent());
 //                intent2.putExtra("url", DistApp.serverAbsolutePath + "/snews!mobileNewsdetail.action?news.id=4028816f4d4be502014d4c0e22dc003d");
 //                intent2.putExtra("name", "消息通知");
-//                startActivity(intent2);
+                startActivity(intent2);
+                mContext.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
 //                mContext.overridePendingTransition(0, 0);
             }
         });
@@ -373,95 +380,6 @@ public class Portal_ContactFragment extends BaseAppFragment implements View.OnCl
         return false;
     }
 
-    private void showWeiXinShareDialog() {
-        View view = mContext.getLayoutInflater().inflate(R.layout.fragement_contact_weixinadd_pop, null);
-        final Dialog dialog = new Dialog(mContext, R.style.transparentFrameWindowStyle);
-        dialog.setContentView(view, new ViewGroup.LayoutParams(android.view.ViewGroup.LayoutParams.FILL_PARENT,
-                android.view.ViewGroup.LayoutParams.WRAP_CONTENT));
-        Window window = dialog.getWindow();
-
-        view.findViewById(R.id.home_member_cancel).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View arg0) {
-                // TODO 自动生成的方法存根
-                dialog.dismiss();
-            }
-        });
-        view.findViewById(R.id.rt_weixin_pyq).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View arg0) {
-                // TODO 自动生成的方法存根
-                dialog.dismiss();
-            }
-        });
-        view.findViewById(R.id.rt_weixin_hy).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View arg0) {
-                // TODO 自动生成的方法存根
-                dialog.dismiss();
-            }
-        });
-
-        // 设置显示动画
-        window.setWindowAnimations(R.style.main_menu_animstyle);
-        WindowManager.LayoutParams wl = window.getAttributes();
-        wl.x = 0;
-        wl.y = mContext.getWindowManager().getDefaultDisplay().getHeight();
-        // 以下这两句是为了保证按钮可以水平满屏
-        wl.width = ViewGroup.LayoutParams.MATCH_PARENT;
-        wl.height = ViewGroup.LayoutParams.WRAP_CONTENT;
-
-        // 设置显示位置
-        dialog.onWindowAttributesChanged(wl);
-        // 设置点击外围解散
-        dialog.setCanceledOnTouchOutside(true);
-        dialog.show();
-    }
-
-
-    private void showQQShareDialog() {
-        View view = mContext.getLayoutInflater().inflate(R.layout.fragement_contact_qqadd_pop, null);
-        final Dialog dialog = new Dialog(mContext, R.style.transparentFrameWindowStyle);
-        dialog.setContentView(view, new ViewGroup.LayoutParams(android.view.ViewGroup.LayoutParams.FILL_PARENT,
-                android.view.ViewGroup.LayoutParams.WRAP_CONTENT));
-        Window window = dialog.getWindow();
-
-        view.findViewById(R.id.home_member_cancel).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View arg0) {
-                // TODO 自动生成的方法存根
-                dialog.dismiss();
-            }
-        });
-        view.findViewById(R.id.rt_qq_kj).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View arg0) {
-                // TODO 自动生成的方法存根
-                dialog.dismiss();
-            }
-        });
-        view.findViewById(R.id.rt_qq_hy).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View arg0) {
-                // TODO 自动生成的方法存根
-                dialog.dismiss();
-            }
-        });
-        // 设置显示动画
-        window.setWindowAnimations(R.style.main_menu_animstyle);
-        WindowManager.LayoutParams wl = window.getAttributes();
-        wl.x = 0;
-        wl.y = mContext.getWindowManager().getDefaultDisplay().getHeight();
-        // 以下这两句是为了保证按钮可以水平满屏
-        wl.width = ViewGroup.LayoutParams.MATCH_PARENT;
-        wl.height = ViewGroup.LayoutParams.WRAP_CONTENT;
-
-        // 设置显示位置
-        dialog.onWindowAttributesChanged(wl);
-        // 设置点击外围解散
-        dialog.setCanceledOnTouchOutside(true);
-        dialog.show();
-    }
 
     public String getFragmentName() {
         return "Portal_ContactFragment";

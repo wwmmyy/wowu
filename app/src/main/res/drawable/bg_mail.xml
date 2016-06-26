@@ -2,8 +2,8 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
 
 
-       <item android:drawable="@drawable/gw_b" android:state_checked="true"/>
-   <item android:drawable="@drawable/gw_g"/>
+       <item android:drawable="@drawable/chat_st" android:state_checked="true"/>
+   <item android:drawable="@drawable/chat_nor"/>
 
     <!--
        <item android:drawable="@drawable/gongwen_icon_p" android:state_checked="true"/>

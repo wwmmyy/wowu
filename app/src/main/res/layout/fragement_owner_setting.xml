@@ -280,7 +280,8 @@
         <RelativeLayout
             android:id="@+id/clear_cache_quit"
             android:layout_width="fill_parent"
-            android:layout_height="45dp">
+            android:background="@drawable/item_background_selector_light"
+            android:layout_height="52dp">
 
             <TextView
                 android:id="@+id/tx_finish_quit"

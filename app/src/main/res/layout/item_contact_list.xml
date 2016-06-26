@@ -58,23 +58,23 @@
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/news_title"
+                android:id="@+id/contract_title"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1.0"
                 android:gravity="center|left"
                 android:singleLine="true"
-                android:text="市领导到城市规划展览馆展览馆调研 "
+                android:text="... "
                 android:textColor="#000000"
                 android:textSize="15sp" />
 
             <TextView
-                android:id="@+id/news_code"
+                android:id="@+id/contract_code"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center|right"
                 android:minWidth="100dp"
-                android:text="gw20150112"
+                android:text="....."
                 android:textColor="@color/gray"
                 android:textSize="14sp" />
         </LinearLayout>
@@ -87,25 +87,38 @@
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/news_Time"
+                android:id="@+id/contact_gender"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center|left"
+                android:background="@drawable/item_background_contract_age"
+                 android:singleLine="true"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:text="21"
+                android:textColor="@color/red"
+                android:textSize="12sp" />
+            <TextView
+                android:id="@+id/contact_userinfo"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="10dp"
                 android:layout_weight="1.0"
                 android:gravity="center|left"
                 android:singleLine="true"
-                android:text="建设项目选址意见书核发(含变更、延续)"
+                android:layout_marginLeft="3dp"
+                android:text="..."
                 android:textColor="@color/gray"
                 android:textSize="14sp" />
 
-            <TextView
+<!--            <TextView
                 android:id="@+id/news_end_time"
                 android:layout_width="100dp"
                 android:layout_height="fill_parent"
                 android:gravity="center|right"
                 android:text="剩余5天"
                 android:textColor="@color/colorPrimary"
-                android:textSize="14sp" />
+                android:textSize="14sp" />-->
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

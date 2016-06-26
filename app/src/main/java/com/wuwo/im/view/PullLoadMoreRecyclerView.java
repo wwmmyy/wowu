@@ -101,6 +101,14 @@ public class PullLoadMoreRecyclerView extends LinearLayout {
         mRecyclerView.setLayoutManager(linearLayoutManager);
     }
 
+
+    public void setHorizontalLinearLayout() {
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext);
+        linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+        mRecyclerView.setLayoutManager(linearLayoutManager);
+    }
+
+
     /**
      * GridLayoutManager
      */

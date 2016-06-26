@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:fresco="http://schemas.android.com/apk/res-auto"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/back_color"
+    android:orientation="vertical">
+    <include layout="@layout/top_title_bar" />
+    <com.wuwo.im.view.SearchView
+        android:id="@+id/search_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+          />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:orientation="horizontal"
+        android:paddingBottom="8dp"
+        android:paddingTop="8dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:orientation="horizontal"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp">
+
+            <LinearLayout
+                android:id="@+id/tv_contact_add"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/item_background_selector_nocorn"
+                android:orientation="vertical">
+
+                <com.facebook.drawee.view.SimpleDraweeView
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_gravity="center"
+                    fresco:actualImageScaleType="focusCrop"
+                    fresco:fadeDuration="3000"
+                    fresco:failureImageScaleType="centerInside"
+                    fresco:placeholderImage="@drawable/woman1"
+                    fresco:placeholderImageScaleType="fitCenter"
+                    fresco:progressBarAutoRotateInterval="3000"
+                    fresco:progressBarImage="@drawable/con_progress_bar"
+                    fresco:progressBarImageScaleType="centerInside"
+                    fresco:retryImageScaleType="centerCrop"
+                    fresco:roundedCornerRadius="5dp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:paddingBottom="5dp"
+                    android:paddingTop="5dp"
+                    android:text="添加通讯录好友"
+                    android:textSize="12sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/tv_weixin_add"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/item_background_selector_nocorn"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <com.facebook.drawee.view.SimpleDraweeView
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_gravity="center"
+                    fresco:actualImageScaleType="focusCrop"
+                    fresco:fadeDuration="3000"
+                    fresco:failureImageScaleType="centerInside"
+                    fresco:placeholderImage="@drawable/woman2"
+                    fresco:placeholderImageScaleType="fitCenter"
+                    fresco:progressBarAutoRotateInterval="3000"
+                    fresco:progressBarImage="@drawable/con_progress_bar"
+                    fresco:progressBarImageScaleType="centerInside"
+                    fresco:retryImageScaleType="centerCrop"
+                    fresco:roundedCornerRadius="5dp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:paddingBottom="5dp"
+                    android:paddingTop="5dp"
+                    android:text="添加微信好友"
+                    android:textSize="12sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/tv_qq_add"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/item_background_selector_nocorn"
+                android:gravity="center"
+                android:orientation="vertical">
+                <!--android:background="@drawable/item_background_selector"-->
+
+                <com.facebook.drawee.view.SimpleDraweeView
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_gravity="center"
+                    fresco:actualImageScaleType="focusCrop"
+                    fresco:fadeDuration="3000"
+                    fresco:failureImageScaleType="centerInside"
+                    fresco:placeholderImage="@drawable/woman3"
+                    fresco:placeholderImageScaleType="fitCenter"
+                    fresco:progressBarAutoRotateInterval="3000"
+                    fresco:progressBarImage="@drawable/con_progress_bar"
+                    fresco:progressBarImageScaleType="centerInside"
+                    fresco:retryImageScaleType="centerCrop"
+                    fresco:roundedCornerRadius="5dp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:paddingBottom="5dp"
+                    android:paddingTop="5dp"
+                    android:text="添加QQ好友"
+                    android:textSize="12sp" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/back_color" />
+
+    <com.wuwo.im.view.PullLoadMoreRecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/pullLoadMoreRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+</LinearLayout>

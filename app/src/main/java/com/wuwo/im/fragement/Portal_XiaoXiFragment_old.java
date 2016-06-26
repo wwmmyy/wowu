@@ -1,7 +1,6 @@
 package com.wuwo.im.fragement;
 
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -15,7 +14,6 @@ import com.google.gson.GsonBuilder;
 import com.squareup.okhttp.Request;
 import com.wuwo.im.adapter.XiaoxiViewAdapter;
 import com.wuwo.im.bean.newsMessage;
-import com.wuwo.im.chat.ChatListActivity;
 import com.wuwo.im.util.MyToast;
 import com.wuwo.im.view.PullLoadMoreRecyclerView;
 import com.zhy.http.okhttp.OkHttpUtils;
@@ -133,12 +131,12 @@ public class Portal_XiaoXiFragment_old extends BaseAppFragment {
                                 Toast.makeText(getActivity(), position + " click",
                                         Toast.LENGTH_SHORT).show();
 
-                                Intent intent2 = new Intent(getActivity(), ChatListActivity.class);
+/*                                Intent intent2 = new Intent(getActivity(), ChatListActivity.class);
                                 //        intent2.putExtra("content", newsMessagelist.get(tempPosition-1).getContent());
                                 //                intent2.putExtra("url", DistApp.serverAbsolutePath + "/snews!mobileNewsdetail.action?news.id=4028816f4d4be502014d4c0e22dc003d");
                                 //                intent2.putExtra("name", "消息通知");
                                 startActivity(intent2);
-                                getActivity().overridePendingTransition(0, 0);
+                                getActivity().overridePendingTransition(0, 0);*/
 
                             }
                             @Override

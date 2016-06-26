@@ -4,12 +4,15 @@ import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Environment;
+import android.support.multidex.MultiDex;
 import android.util.Log;
 
 import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClient;
+import com.easemob.redpacketsdk.RedPacket;
 import com.facebook.drawee.backends.pipeline.Fresco;
+import com.hyphenate.chatuidemo.DemoHelper;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
@@ -37,15 +40,33 @@ public class WowuApp extends Application {
     public MyLocationListener mMyLocationListener;
     public static final String LOG_DIR = Environment.getExternalStorageDirectory().getAbsolutePath() + "/errorLog";
     //    public static String serverAbsolutePath = "http://58.246.138.178:8040/gzServices/ServiceProvider.ashx"; // dist
-    public static String serverAbsolutePath = "http://139.196.110.136:7777/";//http://139.196.85.20/
+    public static String serverAbsolutePath = "http://api.imxianzhi.com/";//http://139.196.85.20/     http://api.imxianzhi.com/   http://139.196.110.136:7777/
     //此为即时通讯消息推送的服务器端ip及端口
 //    public static String XMPPserverIP = serverIP;  // dist
     public static String XMPPserverIP = " ";
     public static int XMPPserverPort = 0;  // dist
 
+//环信
+    public static Context applicationContext;
+    private static WowuApp instance;
+    // login user name
+    public final String PREF_USERNAME = "username";
+
+    /**
+     * nickname for current user, the nickname instead of ID be shown when user receive notification from APNs
+     */
+    public static String currentUserNick = "";
+
     @Override
     public void onCreate() {
+        MultiDex.install(this);
         super.onCreate();
+        applicationContext = this;
+        instance = this;
+
+        //init demo helper
+        DemoHelper.getInstance().init(applicationContext);
+        RedPacket.getInstance().initContext(applicationContext);
 
         Fresco.initialize(getApplicationContext());
 
@@ -77,9 +98,22 @@ public class WowuApp extends Application {
         mLocationClient.registerLocationListener(mMyLocationListener);
     }
 
+
+
+    public static WowuApp getInstance() {
+        return instance;
+    }
+
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(base);
+        MultiDex.install(this);
+    }
+
+
     //  记录位置坐标
-    public static String latitude = "";
-    public static String longitude = "";
+    public static String latitude = "716728";
+    public static String longitude = "31.196694";
     public static String Radius = "";
 
     public static final String PREFERENCE_KEY = "com.wowu.im";
@@ -120,7 +154,8 @@ public class WowuApp extends Application {
 //    GET Disposition/DispositionList  性格列表
     public static String DispositionListURL = serverAbsolutePath + "Disposition/DispositionList";
     //    GET Disposition/QuestionList   测试题列表
-    public static String QuestionListURL = serverAbsolutePath + "Disposition/QuestionList";
+    public static String QuestionListURL = serverAbsolutePath + "Disposition/QuestionList?isSimple=false";
+    public static String Question_JINGJIANListURL = serverAbsolutePath + "Disposition/QuestionList?isSimple=true";
     //    POST Disposition/SubmitAnswer   提交答案   [  {  "QuestionId": "sample string 1",   "Answer": "sample string 2"  },
 // {  "QuestionId": "sample string 1", "Answer": "sample string 2"  } ]
     public static String SubmitAnswerURL = serverAbsolutePath + "Disposition/SubmitAnswer";
@@ -132,6 +167,11 @@ public class WowuApp extends Application {
     public static String GetUserInfoURL = serverAbsolutePath + "Chat/GetUserInfo" ;
 
 
+    public static String GetFriendsURL = serverAbsolutePath + "Friend/GetFriends" ;
+
+
+
+
     public static String UserId = "";
     public static String PhoneNumber = "";
     public static String Password = "";
@@ -140,6 +180,20 @@ public class WowuApp extends Application {
     public static String Name = "";
     public static String picPath = null;//用户头像路径
     public static String token = "";
+
+
+
+
+
+//        环信IM appkey
+    public static String ClientId="YXA6HWVlsDtsEeae3XlMmSCTxA";
+    public static String ClientSecret="YXA6URQvvr4B_mKfhXOnn3RsUdY62zU";
+
+
+
+
+
+
 
 
     // 创建服务用于捕获崩溃异常

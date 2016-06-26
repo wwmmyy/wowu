@@ -108,7 +108,14 @@ public class LoadingActivity extends com.wuwo.im.activity.BaseActivity {
             editor.putBoolean("firstLogin", false);
             editor.commit();
         } else {
-            intent = new Intent(mContext, LoginChooseActivity.class);
+            if(settings.getBoolean("login_save_pwd_check", false)){//说明之前已经成功登录过
+                intent = new Intent(mContext, LoginActivity.class);
+            }else{
+                intent = new Intent(mContext, LoginChooseActivity.class);
+            }
+
+
+
         }
         startActivity(intent);
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);

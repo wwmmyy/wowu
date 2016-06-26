@@ -1,8 +1,8 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 22
-    buildToolsVersion "22.0.1"
+    compileSdkVersion 23
+    buildToolsVersion "23.0.1"
 
     defaultConfig {
         applicationId "im.wuwo.com.wuwo"
@@ -10,6 +10,7 @@ android {
         targetSdkVersion 22
         versionCode 1
         versionName "1.0"
+        multiDexEnabled true
     }
 
     buildTypes {
@@ -28,23 +29,31 @@ android {
 
 
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile project(':redpacketlibrary')
+    compile project(':easeui')
+    compile fileTree(include: ['*.jar'], dir: 'libs' )
     testCompile 'junit:junit:4.12'
-    compile 'com.android.support:appcompat-v7:22.2.1'
-    compile 'com.android.support:recyclerview-v7:22.2.1'
-    compile 'com.android.support:design:22.2.1'
-    compile 'com.facebook.fresco:fresco:0.8.1'
-    compile 'com.android.support:cardview-v7:22.2.1'
-    compile files('libs/asmack.jar')
+    compile 'com.android.support:appcompat-v7:23.0.1'
+    compile 'com.android.support:recyclerview-v7:23.0.1'
+    compile 'com.android.support:design:23.0.1'
+    compile('com.facebook.fresco:fresco:0.8.1') {
+        exclude group: 'com.parse.bolts',
+                module: 'bolts-android'
+    }
+
+    compile 'com.android.support:multidex:1.0.0'
+    compile 'com.android.support:cardview-v7:23.0.1'
     compile files('libs/gson-2.2.4.jar')
     compile files('libs/ksoap2-android-assembly-3.3.0-jar-with-dependencies.jar')
     compile files('libs/otto-1.3.5.jar')
     compile files('libs/universal-image-loader-1.9.3.jar')
     compile project(':okhttputils')
-    compile 'com.android.support:support-v4:22.2.1'
+    compile 'com.android.support:support-v4:23.0.1'
     compile files('libs/ShareSDK-Wechat-2.6.4.jar')
     compile files('libs/ShareSDK-Wechat-Core-2.6.4.jar')
     compile files('libs/ShareSDK-Wechat-Moments-2.6.4.jar')
-    //    compile files('libs/locSDK_4.2.jar')
-    compile files('libs/locSDK_6.13.jar')
+    compile files('libs/bolts-tasks-1.4.0.jar')
+    compile files('libs/umeng-analytics-v5.2.4.jar')
+    compile files('libs/umeng-update-v2.6.0.1.jar')
+    compile files('libs/parse-android-1.13.0.jar')
 }

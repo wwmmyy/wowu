@@ -13,6 +13,7 @@ import android.view.Window;
 import android.view.WindowManager;
 
 import com.wuwo.im.activity.FeedbackActivity;
+import com.wuwo.im.activity.MyCharacterResultActivity;
 import com.wuwo.im.activity.VersionIntroActivity;
 import com.wuwo.im.config.WowuApp;
 
@@ -83,7 +84,11 @@ public class Portal_FindFragment extends BaseAppFragment implements View.OnClick
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.user_info_detail:
-                showSharefDialog();
+                Intent temp1Intent=new Intent(mContext, MyCharacterResultActivity.class);
+                startActivity(temp1Intent);
+                mContext.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+
+
                 break;
             case R.id.find_share_f:
                 showSharefDialog();
@@ -96,10 +101,12 @@ public class Portal_FindFragment extends BaseAppFragment implements View.OnClick
             case R.id.find_version_will:
                 Intent temp2Intent=new Intent(mContext, VersionIntroActivity.class);
                 startActivity(temp2Intent);
+                mContext.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                 break;
             case R.id.find_feedback:
                 Intent tempIntent=new Intent(mContext, FeedbackActivity.class);
                 startActivity(tempIntent);
+                mContext.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                 break;
         }
     }

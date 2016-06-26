@@ -49,7 +49,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1.0"
                     android:gravity="center|left"
-                    android:text="莱特小新"
+                    android:text="name"
                     android:textColor="#000000"
                     android:textSize="16sp" />
 
@@ -58,7 +58,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center|right"
-                    android:text="FTSP201500028"
+                    android:text="distance|time"
                     android:textColor="@color/black"
                     android:textSize="13sp" />
             </LinearLayout>
@@ -66,7 +66,19 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:paddingTop="3dp"
                 android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tvage_gender"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center|left"
+                    android:singleLine="true"
+                    android:text="21"
+                    android:textColor="@color/red"
+                    android:textSize="14sp" />
 
                 <TextView
                     android:id="@+id/yewu_type"
@@ -74,20 +86,19 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1.0"
                     android:gravity="center|left"
+                    android:layout_marginLeft="3dp"
                     android:singleLine="true"
-                    android:text="建设工程规划许可证核发 "
+                    android:text="... "
                     android:textColor="#000000"
-                    android:textSize="15sp" />
+                    android:textSize="14sp" />
 
-                <TextView
+                <ImageView
                     android:id="@+id/yewu_code"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
-                    android:gravity="center|right"
-                    android:text="在办"
-                    android:textColor="@color/red_color"
-                    android:textSize="13sp" />
+                    android:src="@drawable/mate_b"
+                    android:gravity="center|right" />
             </LinearLayout>
 
             <LinearLayout
@@ -103,9 +114,9 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1.0"
                     android:gravity="center|left"
-                    android:text="班宇琼"
+                    android:text="签名"
                     android:textColor="@android:color/darker_gray"
-                    android:textSize="14sp" />
+                    android:textSize="12sp" />
 
 
                 <TextView
@@ -115,6 +126,7 @@
                     android:gravity="center|right"
                     android:text="2015-12-13 07:35"
                     android:textColor="@color/black"
+                    android:visibility="gone"
                     android:textSize="12sp" />
             </LinearLayout>
         </LinearLayout>

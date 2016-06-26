@@ -10,14 +10,18 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
+            <option value="$PROJECT_DIR$/easeui" />
             <option value="$PROJECT_DIR$/okhttputils" />
+            <option value="$PROJECT_DIR$/redpacketlibrary" />
           </set>
         </option>
         <option name="myModules">
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
+            <option value="$PROJECT_DIR$/easeui" />
             <option value="$PROJECT_DIR$/okhttputils" />
+            <option value="$PROJECT_DIR$/redpacketlibrary" />
           </set>
         </option>
       </GradleProjectSettings>

@@ -41,7 +41,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="50dp"
-        android:background="@drawable/bt_border_register_selector2"
+        android:background="@drawable/bt_border_choose_login_selector"
         android:gravity="center_horizontal"
         android:paddingBottom="10dp"
         android:paddingLeft="60dp"

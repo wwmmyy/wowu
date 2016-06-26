@@ -3,6 +3,7 @@ package com.wuwo.im.util;
 import android.content.Context;
 import android.os.Handler;
 import android.view.Gravity;
+import android.widget.Toast;
 
 
 public abstract class MyToast {
@@ -86,7 +87,7 @@ public abstract class MyToast {
     }
     
     public static void show(Context ctx,CharSequence msg) {
-        show(  ctx,   msg,1000);
+        show(  ctx,   msg, Toast.LENGTH_LONG);
     }
  
 }

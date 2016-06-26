@@ -152,8 +152,13 @@ public class RegisterStepTwoActivity extends BaseLoadActivity {
     }
 
     @Override
-    public void loadDataFailed(String request,int flag) {
-        MyToast.show(mContext, "返回值失败" + request.toString());
-        Log.i("返回值失败", request.toString());
+    public void loadDataFailed(String response,int flag) {
+        MyToast.show(mContext, "返回值失败" + response.toString());
+        Log.i("返回值失败", response.toString());
+
+
+
+
+
     }
 }

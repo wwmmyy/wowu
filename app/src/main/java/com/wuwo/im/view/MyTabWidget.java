@@ -42,7 +42,7 @@ public class MyTabWidget extends LinearLayout {
     }
 
     // 底部菜单的文字数组
-    private CharSequence[] mLabels = {"附近", "发现", "联系人", "消息", "我"};
+    private CharSequence[] mLabels = {"附近", "发现", "联系人", "消息", " 我 "};
 
 
 
@@ -177,7 +177,7 @@ public class MyTabWidget extends LinearLayout {
 
             } else {
                 itemName.setChecked(false);
-                itemName.setTextColor(context.getResources().getColor(R.color.black));
+                itemName.setTextColor(context.getResources().getColor(R.color.tabcor));
                 view.setBackgroundColor(Color.rgb(250, 250, 250));
             }
         }
@@ -230,7 +230,7 @@ public class MyTabWidget extends LinearLayout {
 
             } else {
                 checkedTextView.setChecked(false);
-                checkedTextView.setTextColor(context.getResources().getColor(R.color.black));
+                checkedTextView.setTextColor(context.getResources().getColor(R.color.tabcor));
                 mViewList.get(i).setBackgroundColor(Color.rgb(250, 250, 250));
 
 ////				字体不加粗

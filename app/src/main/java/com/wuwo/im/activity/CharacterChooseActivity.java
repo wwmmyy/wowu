@@ -13,15 +13,20 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.wuwo.im.adapter.CommRecyclerAdapter;
 import com.wuwo.im.adapter.CommRecyclerViewHolder;
-import com.wuwo.im.chat.ChatListActivity;
+import com.wuwo.im.bean.UserCharacter;
 import com.wuwo.im.config.ExitApp;
 import com.wuwo.im.config.WowuApp;
 import com.wuwo.im.util.MyToast;
 import com.wuwo.im.util.UtilsTool;
 
-import java.util.Arrays;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import im.wuwo.com.wuwo.R;
 
@@ -35,6 +40,9 @@ public class CharacterChooseActivity extends BaseLoadActivity {
     RecyclerView mRecyclerView;
     CommRecyclerAdapter messageRAdapter;
 
+    private ArrayList<UserCharacter> CharacterList = new ArrayList<UserCharacter>(); //记录所有的最新消息
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,26 +50,21 @@ public class CharacterChooseActivity extends BaseLoadActivity {
         ExitApp.getInstance().addOpenedActivity(this);
         initTop();
 
-        String[] data = {"INTJ", "ENTJ", "INTP", "ENTP",
-                "INFJ", "INTJ", "ENTJ", "INTP",
-                "INTJ", "ENTJ", "INTP", "ENTP",
-                "INTJ", "ENTJ", "INTP", "ENTP"};
-
         initAdapter();
-        messageRAdapter.setData(Arrays.asList(data));
-
+        messageRAdapter.setData(CharacterList);
         mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view);
-
 
 //        //如果布局大小一致有利于优化
         mRecyclerView.setHasFixedSize(true);
-
         GridLayoutManager gridLayoutManager = new GridLayoutManager(mContext, 4);
         gridLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         mRecyclerView.setLayoutManager(gridLayoutManager);
-
         //初始化适配器并绑定适配器
         mRecyclerView.setAdapter(messageRAdapter);
+
+        pg = UtilsTool.initProgressDialog(mContext, "正在连接.....");
+        pg.show();
+        loadDataService.loadGetJsonRequestData(WowuApp.DispositionListURL, R.id.bt_jingque);
     }
 
     private void initTop() {
@@ -75,11 +78,11 @@ public class CharacterChooseActivity extends BaseLoadActivity {
 
 
     public void initAdapter() {
-        messageRAdapter = new CommRecyclerAdapter<String>(mContext, R.layout.item_chacter_choose) {
+        messageRAdapter = new CommRecyclerAdapter<UserCharacter>(mContext, R.layout.item_chacter_choose) {
             @Override
-            public void convert(CommRecyclerViewHolder viewHolder, String mainMessage) {
+            public void convert(CommRecyclerViewHolder viewHolder, UserCharacter mainMessage) {
                 //对对应的View进行赋值
-                viewHolder.setText(R.id.tv_choose, mainMessage);
+                viewHolder.setText(R.id.tv_choose, mainMessage.getName());
 
 //                SimpleDraweeView portal_news_img = (SimpleDraweeView) viewHolder.getView(R.id.news_label_pic);
 //                portal_news_img.setImageURI(Uri.parse("http://www.gog.com.cn/pic/0/10/91/11/10911138_955870.jpg"));
@@ -94,17 +97,27 @@ public class CharacterChooseActivity extends BaseLoadActivity {
         messageRAdapter.setOnItemClick(new CommRecyclerAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
+                CommRecyclerViewHolder holder = (CommRecyclerViewHolder) view.getTag();
 
-                Intent intent2 = new Intent(mContext, ChatListActivity.class);
-                //        intent2.putExtra("content", Stringlist.get(tempPosition-1).getContent());
-//                intent2.putExtra("url", DistApp.serverAbsolutePath + "/snews!mobileNewsdetail.action?news.id=4028816f4d4be502014d4c0e22dc003d");
-//                intent2.putExtra("name", "消息通知");
-                startActivity(intent2);
-                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                if(lastView!=null){
+                    lastView.setBackgroundColor(mContext.getResources().getColor(R.color.colorPrimary));
+                    ((TextView)lastView).setTextColor(mContext.getResources().getColor(R.color.white));
+                }
+                lastView= holder.getView(R.id.tv_choose);
+                lastView.setBackgroundColor(mContext.getResources().getColor(R.color.white));
+                ((TextView)lastView).setTextColor(mContext.getResources().getColor(R.color.colorPrimary));
+
+                slelectedCharacter=CharacterList.get(position);
             }
         });
     }
 
+
+    View lastView=null;
+    UserCharacter  slelectedCharacter=new UserCharacter();
+
+    public static final int JINGJIAN = 1;
+    public static final int JINGQUE = 2;
     Intent intent2 = null;
 
     @Override
@@ -112,28 +125,35 @@ public class CharacterChooseActivity extends BaseLoadActivity {
 
         switch (v.getId()) {
             case R.id.bt_jingque:
-                Message msg = new Message();
-                msg.what = Loading;
-                mHandler.sendMessage(msg);
-                loadDataService.loadGetJsonRequestData(WowuApp.QuestionListURL, R.id.bt_jingque);
+                intent2 = new Intent(mContext, CharacterTestActivity.class);
+                intent2.putExtra("testType", JINGQUE);
+                startActivity(intent2);
+                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                break;
+            case R.id.bt_kuaisu:
+                intent2 = new Intent(mContext, CharacterTestActivity.class);
+                intent2.putExtra("testType", JINGJIAN);
+                startActivity(intent2);
+                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                 break;
             case R.id.return_back:
                 CharacterChooseActivity.this.finish();
                 overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                 break;
-
-            case R.id.bt_kuaisu:
-                intent2 = new Intent(mContext, MainActivity.class);
-                startActivity(intent2);
-                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-                finish();
-                break;
-
             case R.id.choose_sure:
-                intent2 = new Intent(mContext, MainActivity.class);
-                startActivity(intent2);
-                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-                finish();
+
+                Message msg = Message.obtain();
+                msg.what = Loading;
+                mHandler.sendMessage(msg);
+
+                     try{
+                        JSONObject json = new JSONObject();
+                        json.put("dispositionId",slelectedCharacter.getId());
+                        loadDataService.loadPostJsonRequestData(WowuApp.JSON,WowuApp.SetDispositionURL+"?dispositionId="+slelectedCharacter.getId(),json.toString(),R.id.choose_sure);
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
+
                 break;
 
 
@@ -142,21 +162,34 @@ public class CharacterChooseActivity extends BaseLoadActivity {
 
     @Override
     public void loadServerData(String response, int flag) {
+        switch (flag) {
 
-        intent2 = new Intent(mContext, CharacterTestActivity.class);
-        intent2.putExtra("questionList",response);
-        startActivity(intent2);
-        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-
-
-        Log.d("返回的结果为：：：：" , response);
-
-        MyToast.show(mContext, "返回的结果为：：：：" + response);
+//            [{"Name":"ISFJ","Title":"保护者","Description":"SJ护卫者","Qualities":null,"DisplayIndex":16,"Id":"6951e3af-2660-42de-8b96-e00a78e73c87"},
+            case R.id.bt_jingque:
+                Gson gson = new GsonBuilder().create();
+                if (response != null) {
+                    java.lang.reflect.Type type = new com.google.gson.reflect.TypeToken<List<UserCharacter>>() {
+                    }.getType();
+                    CharacterList = gson.fromJson(response, type);
+                    Message msg = Message.obtain();
+                    msg.what = END;
+                    mHandler.sendMessage(msg);
+                }
+                break;
+            case R.id.choose_sure:
+                if (pg != null) pg.dismiss();
+                    intent2 = new Intent(mContext, MainActivity.class);
+                    startActivity(intent2);
+                    overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                    finish();
+                break;
+        }
+        Log.d("返回的结果为：：：：", response);
     }
 
     @Override
     public void loadDataFailed(String response, int flag) {
-        MyToast.show(mContext, "返回值失败" + response.toString());
+        MyToast.show(mContext, "连接失败" + response.toString());
         if (pg != null) pg.dismiss();
     }
 
@@ -174,11 +207,14 @@ public class CharacterChooseActivity extends BaseLoadActivity {
                     break;
                 case END:
                     if (pg != null) pg.dismiss();
+                    messageRAdapter.clearDate();
+                    messageRAdapter.setData(CharacterList);
+                    if(CharacterList!=null &&CharacterList.size()>0){
+                        slelectedCharacter=CharacterList.get(0);
+                    }
                     break;
             }
             super.handleMessage(msg);
         }
     };
-
-
 }

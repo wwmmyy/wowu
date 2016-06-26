@@ -446,9 +446,9 @@ public class MainActivity extends BaseFragementActivity implements MyTabWidget.O
                 title_tv.setText(mTopIndicator.getmLabels()[position]);
 
 
-                if(position==4){
+                if (position == 2) {
                     menu_theme.setVisibility(View.VISIBLE);
-                }else{
+                } else {
                     menu_theme.setVisibility(View.GONE);
                 }
 
@@ -584,14 +584,21 @@ public class MainActivity extends BaseFragementActivity implements MyTabWidget.O
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.menu_theme:
-                popupMenu.showLocation(R.id.menu_theme);
-                popupMenu.setOnItemClickListener(new PopupMenu.OnItemClickListener() {
-                    @Override
-                    public void onClick(com.wuwo.im.view.PopupMenu.MENUITEM item, String str, int position) {
-                        // TODO Auto-generated method stub
-                        putData(position);
-                    }
-                });
+
+//                此部分为更换主题功能，暂时不需要屏蔽
+//                popupMenu.showLocation(R.id.menu_theme);
+//                popupMenu.setOnItemClickListener(new PopupMenu.OnItemClickListener() {
+//                    @Override
+//                    public void onClick(com.wuwo.im.view.PopupMenu.MENUITEM item, String str, int position) {
+//                        putData(position);
+//                    }
+//                });
+
+
+                Intent temp = new Intent(mContext, AddFriendActivity.class);
+                startActivity(temp);
+
+
                 break;
 //            case R.id.menu_theme:
 //
@@ -697,7 +704,7 @@ public class MainActivity extends BaseFragementActivity implements MyTabWidget.O
         });
         d.show();
 
- }
+    }
 
 //    private void doSomething(DialogInterface dialog) {
 //        dialog.dismiss();

@@ -1,7 +1,6 @@
 package com.wuwo.im.fragement;
 
 import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.net.Uri;
 import android.view.View;
 
@@ -11,7 +10,6 @@ import com.google.gson.GsonBuilder;
 import com.wuwo.im.adapter.CommRecyclerAdapter;
 import com.wuwo.im.adapter.CommRecyclerViewHolder;
 import com.wuwo.im.bean.newsMessage;
-import com.wuwo.im.chat.ChatListActivity;
 import com.wuwo.im.config.WowuApp;
 
 import org.json.JSONException;
@@ -100,12 +98,12 @@ public class Portal_XiaoXiFragment extends BasePortal_TabFragment {
             public void onItemClick(View view, int position) {
 
 
-                Intent intent2 = new Intent(mContext, ChatListActivity.class);
+/*                Intent intent2 = new Intent(mContext, ChatListActivity.class);
                 //        intent2.putExtra("content", newsMessagelist.get(tempPosition-1).getContent());
 //                intent2.putExtra("url", DistApp.serverAbsolutePath + "/snews!mobileNewsdetail.action?news.id=4028816f4d4be502014d4c0e22dc003d");
 //                intent2.putExtra("name", "消息通知");
                 startActivity(intent2);
-                mContext.overridePendingTransition(0, 0);
+                mContext.overridePendingTransition(0, 0);*/
             }
         });
         return null;

@@ -41,7 +41,7 @@ abstract class BasePortal_TabFragment extends BaseAppFragment  implements  loadS
       SharedPreferences mSettings;
       Editor editor;
     private PullLoadMoreRecyclerView mPullLoadMoreRecyclerView;
-    private int mCount = 1;
+    private int mCount = 0;
       LoadserverdataService loadDataService;
 
       CommRecyclerAdapter messageRAdapter;
@@ -248,13 +248,13 @@ abstract class BasePortal_TabFragment extends BaseAppFragment  implements  loadS
     private void setRefresh() {
 //        mXinWen_RecyclerViewAdapter.getDataList().clear();
       if(messageRAdapter!=null)  messageRAdapter.clearDate();
-        mCount = 1;
+        mCount = 0;
     }
 
 
     @Override
     public void loadServerData(String response, int flag) {
-        MyToast.show(mContext, "返回的结果为：：：：" + response);
+//        MyToast.show(mContext, "返回的结果为：：：：" + response);
         Log.i("返回的结果为", response.toString());
 
 
