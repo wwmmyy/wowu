@@ -65,7 +65,7 @@ public class Portal_FindFragment extends BaseAppFragment implements View.OnClick
 
         view.findViewById(R.id.user_info_detail).setOnClickListener(this);
         view.findViewById(R.id.find_share_f).setOnClickListener(this);
-        view.findViewById(R.id.find_share_friend).setOnClickListener(this);
+//        view.findViewById(R.id.find_share_friend).setOnClickListener(this);
         view.findViewById(R.id.find_inv_friend).setOnClickListener(this);
         view.findViewById(R.id.find_share_friendcircle).setOnClickListener(this);
         view.findViewById(R.id.find_version_will).setOnClickListener(this);
@@ -93,7 +93,7 @@ public class Portal_FindFragment extends BaseAppFragment implements View.OnClick
             case R.id.find_share_f:
                 showSharefDialog();
                 break;
-            case R.id.find_share_friend:
+            case R.id.find_inv_friend:
                 showShareInviteDialog();
                 break;
 

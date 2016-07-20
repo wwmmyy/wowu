@@ -4,8 +4,6 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 
-import im.wuwo.com.wuwo.R;
-
 /** 
 *desc
 *@author 王明远
@@ -55,9 +53,9 @@ public class BaseFragementActivity extends FragmentActivity {
         Log.i("BaseActivity", "BaseActivity onCreate");
     }
 
-    @Override
-    public void onBackPressed() {
-        finish();
-        overridePendingTransition(0, R.anim.slide_out_to_left);
-    }
+//    @Override
+//    public void onBackPressed() {
+//        finish();
+//        overridePendingTransition(0, R.anim.slide_out_to_left);
+//    }
 }

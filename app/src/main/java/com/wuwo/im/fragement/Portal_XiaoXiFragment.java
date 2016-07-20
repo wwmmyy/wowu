@@ -11,6 +11,7 @@ import com.wuwo.im.adapter.CommRecyclerAdapter;
 import com.wuwo.im.adapter.CommRecyclerViewHolder;
 import com.wuwo.im.bean.newsMessage;
 import com.wuwo.im.config.WowuApp;
+import com.zhy.http.okhttp.OkHttpUtils;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -138,7 +139,7 @@ public class Portal_XiaoXiFragment extends BasePortal_TabFragment {
 
     @Override
     public String getURL() {
-        return WowuApp.GetUserInfoURL+"?userId="+WowuApp.UserId;
+        return OkHttpUtils.GetUserInfoURL+"?userId="+WowuApp.UserId;
     }
 
 

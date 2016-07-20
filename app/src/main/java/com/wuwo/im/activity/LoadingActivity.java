@@ -11,6 +11,10 @@ import android.view.animation.ScaleAnimation;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.easemob.redpacketsdk.RPCallback;
+import com.easemob.redpacketsdk.RedPacket;
+import com.hyphenate.chat.EMClient;
+import com.hyphenate.chatuidemo.DemoHelper;
 import com.wuwo.im.config.WowuApp;
 import com.wuwo.im.service.LocationService;
 import com.wuwo.im.util.UtilsTool;
@@ -21,7 +25,7 @@ public class LoadingActivity extends com.wuwo.im.activity.BaseActivity {
 
     private ImageView iv_start;
     private Context mContext = LoadingActivity.this;
-
+    private static final int sleepTime = 2000;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -90,6 +94,32 @@ public class LoadingActivity extends com.wuwo.im.activity.BaseActivity {
 
     }
 
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        new Thread(new Runnable() {
+            public void run() {
+                if (DemoHelper.getInstance().isLoggedIn()) {
+                    // auto login mode, make sure all group and conversation is loaed before enter the main screen
+                    long start = System.currentTimeMillis();
+                    EMClient.getInstance().groupManager().loadAllGroups();
+                    EMClient.getInstance().chatManager().loadAllConversations();
+
+                    RedPacket.getInstance().initRPToken(DemoHelper.getInstance().getCurrentUsernName(), DemoHelper.getInstance().getCurrentUsernName(), EMClient.getInstance().getChatConfig().getAccessToken(), new RPCallback() {
+                        @Override
+                        public void onSuccess() {
+                        }
+                        @Override
+                        public void onError(String s, String s1) {
+
+                        }
+                    });
+                }
+            }
+        }).start();
+    }
+
     private void initLocationService() {
          // 启动终端定位服务 1
          Intent startServiceIntent = new Intent(getApplicationContext(),
@@ -103,7 +133,7 @@ public class LoadingActivity extends com.wuwo.im.activity.BaseActivity {
         Intent intent = null;
         SharedPreferences settings = this.getSharedPreferences(WowuApp.PREFERENCE_KEY, MODE_PRIVATE);
         if (settings.getBoolean("firstLogin", true)) {
-            intent = new Intent(mContext, WelcomeActivity.class);
+            intent = new Intent(mContext,LoginChooseActivity.class);//WelcomeActivity
             SharedPreferences.Editor editor = settings.edit();
             editor.putBoolean("firstLogin", false);
             editor.commit();
@@ -113,9 +143,6 @@ public class LoadingActivity extends com.wuwo.im.activity.BaseActivity {
             }else{
                 intent = new Intent(mContext, LoginChooseActivity.class);
             }
-
-
-
         }
         startActivity(intent);
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);

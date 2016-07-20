@@ -215,7 +215,7 @@ public class UtilsTool {
      * px to sp
      *
      * @param pxValue
-     * @param fontScale
+     * @param
      * @return
      */
     public static int px2sp(float pxValue, Context context) {
@@ -505,7 +505,7 @@ public class UtilsTool {
     /**
      * 根据图片名称拷贝图片
      *
-     * @param   文件名
+     * @param
      */
     public void copyPictureByFilePath(final Handler handler, final String url) {
 
@@ -1596,6 +1596,13 @@ public class UtilsTool {
         return sb.toString().trim();
     }
 
+
+
+    public static void startActivity(Context context, Class<?> activity,boolean finish) {
+        Intent intent = new Intent(context, activity);
+//        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        context.startActivity(intent);
+    }
 
     /**
      * 开启activity

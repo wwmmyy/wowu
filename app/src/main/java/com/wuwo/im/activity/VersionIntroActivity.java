@@ -14,9 +14,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.wuwo.im.config.WowuApp;
 import com.wuwo.im.util.MyToast;
 import com.wuwo.im.util.UtilsTool;
+import com.zhy.http.okhttp.OkHttpUtils;
 
 import org.json.JSONObject;
 
@@ -89,7 +89,7 @@ public class VersionIntroActivity extends Activity implements OnClickListener {
      * @throws
      */
     public void sendToServer() {
-        final String requestURL = WowuApp.serverAbsolutePath + "/mobile/app-feedBack.action";
+        final String requestURL = OkHttpUtils.serverAbsolutePath + "/mobile/app-feedBack.action";
 
         Thread t = new Thread(new Runnable() {
             @Override

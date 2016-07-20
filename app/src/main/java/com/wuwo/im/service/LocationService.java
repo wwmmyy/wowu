@@ -58,7 +58,7 @@ public class LocationService extends Service {
 //          option.setCoorType(tempcoor);
             option.setCoorType("bd09ll");           
 //            int span=120*1000;//两分钟定位一次
-            int span=10*1000;//两分钟定位一次120
+            int span=120*1000;//两分钟定位一次120
 //          try {
 //                  span = Integer.valueOf(frequence.getText().toString());
 //          } catch (Exception e) {

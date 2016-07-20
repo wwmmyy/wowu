@@ -25,7 +25,7 @@
                 dist:progressBarImage="@drawable/con_progress_bar"
                 dist:progressBarImageScaleType="centerInside"
                 dist:progressBarAutoRotateInterval="5000"
-                dist:placeholderImage="@drawable/ic_launcher"
+                dist:placeholderImage="@drawable/icon"
                 dist:roundAsCircle="true" />
 
 

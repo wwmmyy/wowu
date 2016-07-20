@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,13 +23,13 @@ import com.wuwo.im.adapter.CommRecyclerAdapter;
 import com.wuwo.im.adapter.CommRecyclerViewHolder;
 import com.wuwo.im.bean.LocalUser;
 import com.wuwo.im.config.WowuApp;
-import com.wuwo.im.service.LoadserverdataService;
-import com.wuwo.im.service.loadServerDataListener;
 import com.wuwo.im.util.MyToast;
 import com.wuwo.im.view.PullLoadMoreRecyclerView;
 import com.wuwo.im.view.SearchView;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
+import com.zhy.http.okhttp.service.LoadserverdataService;
+import com.zhy.http.okhttp.service.loadServerDataListener;
 
 import org.json.JSONException;
 
@@ -167,7 +168,7 @@ public class Portal_ContactFragment extends BaseAppFragment implements View.OnCl
     //    从网络加载流转日志数据并展示出来
     private void loadData() {
 
-        loadDataService.loadGetJsonRequestData( WowuApp.GetFriendsURL+"?lon=" + WowuApp.longitude + "&lat=" + WowuApp.latitude+ "&userId=" + "437ca552-ca12-4542-98e0-b2011399b849"+ "&PhoneNumber="+WowuApp.PhoneNumber ,LOAD_DATA);
+        loadDataService.loadGetJsonRequestData( WowuApp.GetFriendsURL+"?lon=" + WowuApp.longitude + "&lat=" + WowuApp.latitude ,LOAD_DATA);//+ "&userId=" + WowuApp.UserId+ "&PhoneNumber="+WowuApp.PhoneNumber
 
     }
 
@@ -185,6 +186,9 @@ public class Portal_ContactFragment extends BaseAppFragment implements View.OnCl
 
     @Override
     public void loadServerData(String response, int flag) {
+        Log.i("获取好友列表::::",response+" ;");
+
+
         switch (flag){
             case LOAD_DATA:
                 try {

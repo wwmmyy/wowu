@@ -435,7 +435,7 @@
     <!--<color name="colorPrimary">#125688</color>-->
     <!--<color name="colorPrimary">#2298ef</color>-->
     <color name="colorPrimary">#00B167</color>
-
+    <color name="top_bar_normal_bg">#00B167</color>
     <color name="colorPrimary1">#2298ef</color>
     <color name="colorPrimary2">#24ceff</color>
     <color name="colorPrimary3">#0fe7ff</color>
@@ -467,7 +467,7 @@
     <color name="common_bg">#fcfcfc</color>
     <color name="btn_pressed_green_solid">#B6DA53</color>
     <color name="divider_list">#d4d4d4</color>
-    <color name="top_bar_normal_bg">#00acff</color>
+
     <color name="error_item_color">#F6EBE6</color>
     <color name="bottom_bar_normal_bg">#2D2F31</color>
     <color name="bottom_text_color_normal">#ffffff</color>

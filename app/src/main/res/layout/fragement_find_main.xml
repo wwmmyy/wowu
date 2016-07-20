@@ -24,7 +24,7 @@
             android:layout_marginLeft="10dp"
             fresco:fadeDuration="3000"
             fresco:failureImageScaleType="centerInside"
-            fresco:placeholderImage="@drawable/man1"
+            fresco:placeholderImage="@drawable/chara"
             fresco:placeholderImageScaleType="fitCenter"
             fresco:progressBarAutoRotateInterval="3000"
             fresco:progressBarImage="@drawable/con_progress_bar"
@@ -63,7 +63,7 @@
             android:layout_marginLeft="10dp"
             fresco:fadeDuration="3000"
             fresco:failureImageScaleType="centerInside"
-            fresco:placeholderImage="@drawable/man1"
+            fresco:placeholderImage="@drawable/fcode"
             fresco:placeholderImageScaleType="fitCenter"
             fresco:progressBarAutoRotateInterval="3000"
             fresco:progressBarImage="@drawable/con_progress_bar"
@@ -95,7 +95,7 @@
                         android:textColor="@android:color/darker_gray" />-->
     </RelativeLayout>
 
-    <RelativeLayout
+  <!--  <RelativeLayout
         android:id="@+id/find_share_friend"
         android:layout_width="fill_parent"
         android:layout_height="60dp"
@@ -103,7 +103,7 @@
         android:background="@drawable/item_background_find_selector">
 
 
-        <!--fresco:backgroundImage="@android:color/holo_orange_light"-->
+        &lt;!&ndash;fresco:backgroundImage="@android:color/holo_orange_light"&ndash;&gt;
         <com.facebook.drawee.view.SimpleDraweeView
             android:id="@+id/find_share_f_ic1"
             android:layout_width="45dp"
@@ -113,7 +113,7 @@
             android:layout_marginLeft="10dp"
             fresco:fadeDuration="3000"
             fresco:failureImageScaleType="centerInside"
-            fresco:placeholderImage="@drawable/man1"
+            fresco:placeholderImage="@drawable/sharetom"
             fresco:placeholderImageScaleType="fitCenter"
             fresco:progressBarAutoRotateInterval="5000"
             fresco:progressBarImage="@drawable/con_progress_bar"
@@ -129,7 +129,7 @@
             android:layout_toRightOf="@+id/find_share_f_ic1"
             android:paddingLeft="10dp"
             android:text="分享给微信、QQ、通讯录好友" />
-    </RelativeLayout>
+    </RelativeLayout>-->
 
     <RelativeLayout
         android:id="@+id/find_inv_friend"
@@ -147,7 +147,7 @@
             fresco:fadeDuration="3000"
             android:layout_marginLeft="10dp"
             fresco:failureImageScaleType="centerInside"
-            fresco:placeholderImage="@drawable/man1"
+            fresco:placeholderImage="@drawable/invite"
             fresco:placeholderImageScaleType="fitCenter"
             fresco:progressBarAutoRotateInterval="3000"
             fresco:progressBarImage="@drawable/con_progress_bar"
@@ -182,7 +182,7 @@
             fresco:fadeDuration="3000"
             android:layout_marginLeft="10dp"
             fresco:failureImageScaleType="centerInside"
-            fresco:placeholderImage="@drawable/man1"
+            fresco:placeholderImage="@drawable/sharetom"
             fresco:placeholderImageScaleType="fitCenter"
             fresco:progressBarAutoRotateInterval="3000"
             fresco:progressBarImage="@drawable/con_progress_bar"
@@ -197,7 +197,7 @@
             android:layout_centerVertical="true"
             android:layout_toRightOf="@+id/find_share_f_ic3"
             android:paddingLeft="10dp"
-            android:text="分享我的性格测试到朋友圈" />
+            android:text="分享我的性格到朋友圈" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -216,7 +216,7 @@
             android:layout_marginLeft="10dp"
             fresco:fadeDuration="3000"
             fresco:failureImageScaleType="centerInside"
-            fresco:placeholderImage="@drawable/man1"
+            fresco:placeholderImage="@drawable/edition"
             fresco:placeholderImageScaleType="fitCenter"
             fresco:progressBarAutoRotateInterval="3000"
             fresco:progressBarImage="@drawable/con_progress_bar"
@@ -251,7 +251,7 @@
             fresco:fadeDuration="3000"
             android:layout_marginLeft="10dp"
             fresco:failureImageScaleType="centerInside"
-            fresco:placeholderImage="@drawable/man1"
+            fresco:placeholderImage="@drawable/feedback"
             fresco:placeholderImageScaleType="fitCenter"
             fresco:progressBarAutoRotateInterval="3000"
             fresco:progressBarImage="@drawable/con_progress_bar"

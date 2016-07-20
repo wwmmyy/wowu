@@ -19,7 +19,7 @@
         fresco:actualImageScaleType="focusCrop"
         fresco:fadeDuration="3000"
         fresco:failureImageScaleType="centerInside"
-        fresco:placeholderImage="@drawable/man1"
+        fresco:placeholderImage="@drawable/icon"
         fresco:placeholderImageScaleType="fitCenter"
         fresco:progressBarAutoRotateInterval="3000"
         fresco:progressBarImage="@drawable/con_progress_bar"

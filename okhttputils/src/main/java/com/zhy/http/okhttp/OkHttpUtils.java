@@ -2,7 +2,6 @@ package com.zhy.http.okhttp;
 
 import android.os.Handler;
 import android.os.Looper;
-import android.util.Log;
 
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
@@ -33,6 +32,14 @@ import javax.net.ssl.SSLSession;
 
 public class OkHttpUtils
 {
+
+    public static String token = "";//用户保存登录成功后的token
+    public static String serverAbsolutePath = "http://api.imxianzhi.com/";//http://139.196.85.20/     http://api.imxianzhi.com/   http://139.196.110.136:7777/
+    //        GET Chat/GetUserInfo?userId={userId} 获取目标用户的信息
+    public static String GetUserInfoURL = OkHttpUtils.serverAbsolutePath + "Chat/GetUserInfo" ;
+
+
+
     public static final long DEFAULT_MILLISECONDS = 10000;
     private static OkHttpUtils mInstance;
     private OkHttpClient mOkHttpClient;
@@ -132,7 +139,7 @@ public class OkHttpUtils
 //                        Log.e("服务器请求返回异常",response.toString()+"::::::::::::"+response.message()+":::"+response.body().string());
 
                         sendFailResultCallback(requestCall.getRequest(), new RuntimeException(response.body().string()), finalCallback);
-                        Log.e("服务器请求返回异常",response.body().string());
+//                        Log.e("服务器请求返回异常",response.body().string());
                     } catch (IOException e)
                     {
                         e.printStackTrace();

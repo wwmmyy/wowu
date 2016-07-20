@@ -16,10 +16,10 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.wuwo.im.adapter.CommRecyclerAdapter;
 import com.wuwo.im.config.WowuApp;
-import com.wuwo.im.service.LoadserverdataService;
-import com.wuwo.im.service.loadServerDataListener;
 import com.wuwo.im.util.MyToast;
 import com.wuwo.im.view.PullLoadMoreRecyclerView;
+import com.zhy.http.okhttp.service.LoadserverdataService;
+import com.zhy.http.okhttp.service.loadServerDataListener;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -35,7 +35,7 @@ import im.wuwo.com.wuwo.R;
  * @author dewyze
  */
 @SuppressLint("ValidFragment")
-abstract class BasePortal_TabFragment extends BaseAppFragment  implements  loadServerDataListener {
+abstract class BasePortal_TabFragment extends BaseAppFragment  implements loadServerDataListener {
 
       Activity mContext;
       SharedPreferences mSettings;
@@ -119,50 +119,6 @@ abstract class BasePortal_TabFragment extends BaseAppFragment  implements  loadS
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
-
-//        new Thread(new Runnable() {
-//            @Override
-//            public void run() {
-////                OkHttpUtils
-////                        .post()
-////                        .url(DistApp.SUNBO_BASE_URL)
-////                        .addParams("type", "smartplan")
-//                      httpBuilder()
-//                              .addParams("page", mCount + "")
-//                              .build()
-//                        .execute(new StringCallback() {
-//                            @Override
-//                            public void onError(Request request, Exception e) {
-////                              MyToast.show(mContext, "获取服务器信息失败", Toast.LENGTH_LONG);
-//                                Message msg = new Message();
-//                                msg.what = DOWNLOADED_ERROR;
-//                                mtotalHandler.sendMessage(msg);
-//                            }
-//                            @Override
-//                            public void onResponse(String totalresult) {
-//                                try {
-//                                    if (totalresult != null) {
-//                                        setLoadInfo(totalresult);
-//                                    }
-//                                        Message msg = new Message();
-//                                        msg.what = DOWNLOADED_NEWSMESSAGE;
-//                                        mtotalHandler.sendMessage(msg);
-//                                } catch (Exception e) {
-////                                    e.printStackTrace();
-//                                    Message msg = new Message();
-//                                    msg.what = DOWNLOADED_ERROR;
-//                                    mtotalHandler.sendMessage(msg);
-//                                }
-//                            }
-//                        });
-//            }
-//        }).start();
-
-
-
-
-
 
     }
 

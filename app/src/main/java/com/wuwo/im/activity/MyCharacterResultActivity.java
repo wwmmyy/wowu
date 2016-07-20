@@ -1,8 +1,12 @@
 package com.wuwo.im.activity;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
+
+import com.facebook.drawee.view.SimpleDraweeView;
+import com.wuwo.im.config.WowuApp;
 
 import im.wuwo.com.wuwo.R;
 
@@ -18,6 +22,9 @@ public class MyCharacterResultActivity extends BaseLoadActivity  {
     private void initView() {
         findViewById(R.id.tv_character_re_test).setOnClickListener(this);
         findViewById(R.id.return_back).setOnClickListener(this);
+
+        SimpleDraweeView draweeView = (SimpleDraweeView) findViewById(R.id.user_login_pic);
+        draweeView.setImageURI(Uri.parse(WowuApp.iconPath));//"http://www.gog.com.cn/pic/0/10/91/11/10911138_955870.jpg"
     }
 
 
@@ -26,6 +33,7 @@ public class MyCharacterResultActivity extends BaseLoadActivity  {
         switch (v.getId()) {
             case R.id.return_back:
                 this.finish();
+                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                 break;
             case R.id.tv_character_re_test:
 //                Intent temp2 = new Intent(this, CharacterTestActivity.class);

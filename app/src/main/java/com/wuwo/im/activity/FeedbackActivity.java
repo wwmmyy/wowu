@@ -24,9 +24,9 @@ import android.widget.Toast;
 
 import com.wuwo.im.adapter.MailGridViewAdapter;
 import com.wuwo.im.bean.Attachment;
-import com.wuwo.im.config.WowuApp;
 import com.wuwo.im.util.MyToast;
 import com.wuwo.im.util.UtilsTool;
+import com.zhy.http.okhttp.OkHttpUtils;
 
 import org.json.JSONObject;
 
@@ -103,7 +103,7 @@ public class FeedbackActivity extends Activity implements OnClickListener {
      * @Description: 上传到服务器
      */
     public void sendToServer() {
-        final String requestURL = WowuApp.serverAbsolutePath + "/mobile/app-feedBack.action";
+        final String requestURL = OkHttpUtils.serverAbsolutePath + "/mobile/app-feedBack.action";
 
         Thread t = new Thread(new Runnable() {
             @Override

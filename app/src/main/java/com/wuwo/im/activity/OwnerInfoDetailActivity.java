@@ -38,6 +38,7 @@ import com.wuwo.im.util.FormFile;
 import com.wuwo.im.util.MyToast;
 import com.wuwo.im.util.SocketHttpRequester;
 import com.wuwo.im.util.UtilsTool;
+import com.zhy.http.okhttp.OkHttpUtils;
 
 import java.io.File;
 import java.util.HashMap;
@@ -179,7 +180,7 @@ public class OwnerInfoDetailActivity extends BaseActivity implements OnClickList
         dialog.show();
     }
 
-    private static String requestURL = WowuApp.serverAbsolutePath
+    private static String requestURL = OkHttpUtils.serverAbsolutePath
             + "/mobile/updateUserImg!upUserImg.action";
     private String picPath = null;
     private static final int PHOTO_SELECT = 110;

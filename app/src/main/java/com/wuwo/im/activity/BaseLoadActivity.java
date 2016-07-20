@@ -7,8 +7,8 @@ import android.view.View;
 import android.view.Window;
 
 import com.wuwo.im.config.ExitApp;
-import com.wuwo.im.service.LoadserverdataService;
-import com.wuwo.im.service.loadServerDataListener;
+import com.zhy.http.okhttp.service.LoadserverdataService;
+import com.zhy.http.okhttp.service.loadServerDataListener;
 
 public abstract class BaseLoadActivity extends BaseActivity implements View.OnClickListener, loadServerDataListener {
     LoadserverdataService loadDataService;

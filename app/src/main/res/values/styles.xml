@@ -60,6 +60,21 @@
         <item name="android:paddingBottom">12dip</item>
     </style>
 
+
+    <style name="user_info_detail_text_style">
+        <item name="android:textSize">16.0sp</item>
+        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:paddingLeft">20dip</item>
+        <item name="android:paddingTop">12dip</item>
+        <item name="android:paddingBottom">12dip</item>
+        <item name="android:layout_centerVertical">true</item>
+        <item name="android:drawableRight">@drawable/morex</item>
+        <item name="android:layout_width">0dip</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_marginLeft">6dp</item>
+    </style>
+
     <style name="find_share_text_style">
         <item name="android:textSize">15.0sp</item>
         <item name="android:textColor">@color/black</item>

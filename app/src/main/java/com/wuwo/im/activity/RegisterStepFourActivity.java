@@ -35,6 +35,7 @@ import com.facebook.imagepipeline.core.ImagePipeline;
 import com.wuwo.im.config.WowuApp;
 import com.wuwo.im.util.MyToast;
 import com.wuwo.im.util.UtilsTool;
+import com.zhy.http.okhttp.OkHttpUtils;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -240,7 +241,7 @@ public class RegisterStepFourActivity extends BaseLoadActivity {
         dialog.show();
     }
 
-    private static String requestURL = WowuApp.serverAbsolutePath + "/mobile/updateUserImg!upUserImg.action";
+    private static String requestURL = OkHttpUtils.serverAbsolutePath + "/mobile/updateUserImg!upUserImg.action";
     private String picPath = null;
     private static final int PHOTO_SELECT = 110;
 
@@ -574,7 +575,7 @@ public class RegisterStepFourActivity extends BaseLoadActivity {
 
         try {
             JSONObject responseJson=new JSONObject(response);
-           WowuApp.token= responseJson.optString("token");
+            OkHttpUtils.token= responseJson.optString("token");
 
             Message msg2 = new Message();
             msg2.what = END;

@@ -9,16 +9,22 @@
     <RelativeLayout
         android:id="@+id/user_info_detail"
         android:layout_width="match_parent"
-        android:layout_height="150dp"
+        android:layout_height="100dp"
         android:background="?attr/appbg"
         android:gravity="center_vertical"
         android:orientation="vertical">
 
+        <!--           <FrameLayout
+                      android:layout_width="wrap_content"
+                      android:layout_height="fill_parent"
+                       android:layout_centerHorizontal="true" >
+                   </FrameLayout>-->
         <com.facebook.drawee.view.SimpleDraweeView
             android:id="@+id/user_login_pic"
             android:layout_width="82dp"
             android:layout_height="82dp"
-            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="20dp"
             dist:placeholderImage="@drawable/woman2"
             dist:progressBarAutoRotateInterval="5000"
             dist:progressBarImage="@drawable/con_progress_bar"
@@ -27,58 +33,54 @@
             dist:roundingBorderColor="@color/white"
             dist:roundingBorderWidth="2dp" />
 
+        <LinearLayout
+            android:id="@+id/ln_user_info"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/text_margin_10dp"
+            android:layout_toRightOf="@+id/user_login_pic"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/user_login_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:singleLine="true"
+                android:text="..."
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/white"
+                android:textSize="22sp" />
+
+            <TextView
+                android:id="@+id/user_info_detail_edit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="8dp"
+                android:text="先知号：xxxx"
+                android:textColor="@color/white"
+                android:textSize="13sp" />
+        </LinearLayout>
 
         <TextView
-            android:id="@+id/user_login_name"
+            android:id="@+id/user_info_edit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/user_login_pic"
-            android:layout_centerHorizontal="true"
-            android:singleLine="true"
-            android:text="林珂"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textColor="@color/white"
-            android:textSize="24dp" />
-
-        <TextView
-            android:id="@+id/local_file_count"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_marginLeft="5dip"
-            android:singleLine="true"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textColor="@color/black" />
-
-
-        <TextView
-            android:id="@+id/user_info_detail_edit"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/user_login_name"
-            android:layout_centerHorizontal="true"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
             android:layout_gravity="left"
+            android:layout_marginRight="25dp"
+            android:background="@drawable/bt_border_choose_login_selector"
             android:gravity="left"
-            android:text="点击查看详细资料"
+            android:padding="@dimen/text_margin_10dp"
+            android:text="编辑资料"
             android:textColor="@color/white"
-            android:textSize="13dp" />
+            android:textSize="15sp" />
 
-        <!--        <FrameLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="fill_parent"
-                    android:visibility="gone">
-                    <ImageView
-                        android:id="@+id/user_info_detail_more"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginLeft="5dip"
-                        android:layout_marginRight="15dip"
-                        android:background="@drawable/mail_group_right"
-                        android:gravity="center"
-                        android:scaleType="fitCenter" />
-                </FrameLayout>-->
+
     </RelativeLayout>
+
 
     <!-- 反馈意见  关于我们  应用推荐 -->
 
@@ -122,7 +124,7 @@
                 android:background="@color/black" />
 
             <RelativeLayout
-                android:id="@+id/clear_cache_layout"
+                android:id="@+id/update_pwd"
                 android:layout_width="fill_parent"
                 android:layout_height="50dp"
                 android:background="@color/white">
@@ -159,7 +161,7 @@
                 android:background="@color/gray" /> -->
 
             <RelativeLayout
-                android:id="@+id/grant_add_news_push"
+                android:id="@+id/bind_phone"
                 android:layout_width="fill_parent"
                 android:layout_height="50dp"
                 android:background="@color/white">
@@ -187,8 +189,8 @@
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:layout_marginRight="15dip"
-                    android:drawableRight="@drawable/morex"
                     android:drawablePadding="5dp"
+                    android:drawableRight="@drawable/morex"
                     android:text="已绑定"
                     android:textColor="@android:color/darker_gray" />
 
@@ -197,7 +199,7 @@
 
 
             <RelativeLayout
-                android:id="@+id/user_feedback_id"
+                android:id="@+id/message_warn"
                 android:layout_width="fill_parent"
                 android:layout_height="50dp"
                 android:background="@color/white">
@@ -230,7 +232,7 @@
                     android:textColor="@android:color/darker_gray" /> -->
             </RelativeLayout>
 
-            <RelativeLayout
+       <!--     <RelativeLayout
                 android:id="@+id/user_password_alter"
                 android:layout_width="fill_parent"
                 android:layout_height="50dp"
@@ -252,7 +254,7 @@
                     android:text="用户反馈"
                     android:textColor="@color/black1" />
 
-                <!-- <TextView
+                &lt;!&ndash; <TextView
                     style="@style/setting_text_style"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -261,8 +263,8 @@
                     android:layout_marginRight="15dip"
                     android:drawableRight="@drawable/morex"
                     android:text="  "
-                    android:textColor="@android:color/darker_gray" /> -->
-            </RelativeLayout>
+                    android:textColor="@android:color/darker_gray" /> &ndash;&gt;
+            </RelativeLayout>-->
         </LinearLayout>
     </android.support.v7.widget.CardView>
 
@@ -272,7 +274,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="40dp"
         card_view:cardBackgroundColor="@android:color/white"
         card_view:cardCornerRadius="10dp"
         card_view:cardElevation="0dp">
@@ -280,8 +282,8 @@
         <RelativeLayout
             android:id="@+id/clear_cache_quit"
             android:layout_width="fill_parent"
-            android:background="@drawable/item_background_selector_light"
-            android:layout_height="52dp">
+            android:layout_height="52dp"
+            android:background="@drawable/item_background_selector_light">
 
             <TextView
                 android:id="@+id/tx_finish_quit"

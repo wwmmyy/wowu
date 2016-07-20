@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:dist="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/app_bg"
@@ -10,8 +10,6 @@
         android:layout_width="fill_parent"
         android:layout_height="50dp"
         android:background="?attr/appbg">
-
-
         <ImageView
             android:id="@+id/return_back"
             android:layout_width="100dp"
@@ -35,1052 +33,134 @@
             android:textSize="20sp" />
     </RelativeLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:background="?attr/appbg"
-        android:gravity="center_horizontal"
-        android:orientation="horizontal"
-        android:paddingBottom="3dp">
 
-        <TextView
-            android:id="@+id/contact_gender"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/item_background_user_age"
-            android:gravity="center|left"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
-            android:singleLine="true"
-            android:text="21"
-            android:textColor="@color/red"
-            android:textSize="12sp" />
-
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:background="?attr/appbg"
-            android:text="NHJD XX者"
-            android:textColor="@color/white"
-            android:textSize="13sp" />
-
-    </LinearLayout>
-
-
-    <com.wuwo.im.view.PullLoadMoreRecyclerView
-        android:id="@+id/pullLoadMoreRecyclerView"
-        android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:background="?attr/appbg" />
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="?attr/appbg"
-        android:gravity="center"
-        android:padding="4dp"
-        android:text="0.1KM | 10分钟"
-        android:textColor="@color/white"
-        android:textSize="13sp" />
-
-    <ScrollView
+    <android.support.design.widget.CoordinatorLayout
+        android:id="@+id/main_content"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
-        android:orientation="vertical">
-
-        <LinearLayout
+        android:layout_weight="1">
+        <!--
+          下面使用 appbar_scrolling_view_behavior 这个 Behavior，
+          要收缩的 view 必须要放到 AppBarLayout 这个 design 库的 layout 中
+        -->
+        <android.support.design.widget.AppBarLayout
+            android:id="@+id/app_bar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:orientation="vertical">
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+            <!-- 滑动收缩的 view 给他指定一个 layout_scrollFlags 的属性 -->
 
 
-            <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
-                android:id="@+id/card_view0"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginTop="10dp"
-                card_view:cardBackgroundColor="@android:color/white"
-                card_view:cardCornerRadius="10dp"
-                card_view:cardElevation="0dp">
+                android:layout_gravity="center_horizontal"
+                android:background="?attr/appbg"
+                android:orientation="vertical"
+                android:paddingBottom="3dp"
+                app:layout_scrollFlags="scroll|enterAlways">
 
                 <LinearLayout
-                    android:layout_width="fill_parent"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <RelativeLayout
-                        android:layout_width="fill_parent"
-                        android:layout_height="45dp">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
-                            android:layout_marginLeft="20dp"
-                            android:text="会员资料"
-                            android:textColor="@color/black"
-                            android:textSize="16dp" />
-                    </RelativeLayout>
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="0.1dp"
-                        android:background="@color/black" />
-
-                    <RelativeLayout
-                        android:id="@+id/clear_cache_layout0"
-                        android:layout_width="fill_parent"
-                        android:layout_height="55dp"
-                        android:background="@drawable/item_background_find_selector">
-                        <!--android:background="@drawable/item_background_selector_nocorn"-->
-
-                        <TextView
-                            android:id="@+id/tv_xianzhi_huiyuan"
-                            style="@style/setting_text_style"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
-                            android:layout_marginLeft="3dp"
-                            android:text="先知会员:"
-                            android:textColor="@android:color/darker_gray" />
-
-                        <TextView
-                            style="@style/setting_text_style"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
-                            android:layout_toRightOf="@id/tv_xianzhi_huiyuan"
-                            android:layout_weight="1"
-                            android:text="VIP2"
-                            android:textColor="@color/gold" />
-
-                    </RelativeLayout>
-
-
-                    <RelativeLayout
-                        android:layout_width="fill_parent"
-                        android:layout_height="55dp"
-                        android:background="@drawable/item_background_find_selector">
-
-                        <!--android:background="@drawable/item_background_selector_nocorn"-->
-                        <TextView
-                            android:id="@+id/tv_xingji"
-                            style="@style/setting_text_style"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
-                            android:layout_marginLeft="3dp"
-                            android:gravity="center_vertical"
-                            android:text=" 星   级 : "
-                            android:textColor="@android:color/darker_gray" />
-
-
-                        <RatingBar
-                            android:id="@+id/ratingBar"
-                            style="@style/MyRatingBar"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerHorizontal="true"
-                            android:layout_centerVertical="true"
-                            android:layout_marginBottom="10dp"
-                            android:layout_marginLeft="5dp"
-                            android:layout_marginTop="15dp"
-                            android:layout_toRightOf="@id/tv_xingji"
-                            android:gravity="center_vertical"
-                            android:numStars="5"
-                            android:rating="3.5"
-                            android:stepSize="0.5" />
-
-                    </RelativeLayout>
-
-
-                    <RelativeLayout
-                        android:layout_width="fill_parent"
-                        android:layout_height="55dp"
-                        android:background="@drawable/item_background_selector_nocorn">
-
-                        <!--                <ImageView
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:layout_centerVertical="true"
-                                            android:layout_marginLeft="3dp"
-                                            android:src="@drawable/ic_mima" />-->
-
-                        <TextView
-                            android:id="@+id/tv_xianzhihao"
-                            style="@style/setting_text_style"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
-                            android:layout_marginLeft="3dp"
-                            android:text="先知号 :"
-                            android:textColor="@android:color/darker_gray" />
-
-                        <TextView
-                            style="@style/setting_text_style"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
-                            android:layout_toRightOf="@id/tv_xianzhihao"
-                            android:layout_weight="1"
-                            android:text="12345678"
-                            android:textColor="@color/black1" />
-
-
-                    </RelativeLayout>
-
-                </LinearLayout>
-            </android.support.v7.widget.CardView>
-
-
-            <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
-                android:id="@+id/card_view"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginTop="10dp"
-                card_view:cardBackgroundColor="@android:color/white"
-                card_view:cardCornerRadius="10dp"
-                card_view:cardElevation="0dp">
-
-                <LinearLayout
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <RelativeLayout
-                        android:layout_width="fill_parent"
-                        android:layout_height="45dp">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
-                            android:layout_marginLeft="20dp"
-                            android:text="个人资料"
-                            android:textColor="@color/black"
-                            android:textSize="16dp" />
-                    </RelativeLayout>
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="0.1dp"
-                        android:background="@color/black" />
-
-                    <RelativeLayout
-                        android:id="@+id/clear_cache_layout"
-                        android:layout_width="fill_parent"
-                        android:layout_height="55dp"
-                        android:background="@drawable/item_background_selector_nocorn">
-
-                        <!--                <ImageView
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:layout_centerVertical="true"
-                                            android:layout_marginLeft="3dp"
-                                            android:src="@drawable/ic_mima" />-->
-
-                        <TextView
-                            android:id="@+id/tv_zhongwen_nicheng"
-                            style="@style/setting_text_style"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
-                            android:layout_marginLeft="3dp"
-                            android:text="中文昵称:"
-                            android:textColor="@android:color/darker_gray" />
-
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
-                            android:layout_toRightOf="@id/tv_zhongwen_nicheng"
-                            android:orientation="horizontal">
-
-                            <TextView
-                                style="@style/setting_text_style"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:text="用户的昵称"
-                                android:textColor="@color/black1" />
-
-                            <TextView
-                                style="@style/setting_text_style"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_alignParentRight="true"
-                                android:layout_centerVertical="true"
-                                android:layout_marginRight="15dip"
-                                android:drawablePadding="5dp"
-                                android:drawableRight="@drawable/morex"
-                                android:textColor="@android:color/darker_gray" />
-                        </LinearLayout>
-
-                    </RelativeLayout>
-
-                    <!--             <View
-                                   android:layout_width="fill_parent"
-                                   android:layout_height="0.1dp"
-                                   android:background="@color/gray" />  -->
-
-                    <RelativeLayout
-                        android:layout_width="fill_parent"
-                        android:layout_height="55dp"
-                        android:background="@drawable/item_background_selector_nocorn">
-
-                        <!--                <ImageView
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:layout_centerVertical="true"
-                                            android:layout_marginLeft="3dp"
-                                            android:src="@drawable/ic_mima" />-->
-
-                        <TextView
-                            android:id="@+id/tv_yingwen_nicheng"
-                            style="@style/setting_text_style"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
-                            android:layout_marginLeft="3dp"
-                            android:text="英文昵称:"
-                            android:textColor="@android:color/darker_gray" />
-
-
-                        <LinearLayout
-                            android:id="@+id/ln_yingwen_nicheng"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
-                            android:layout_toRightOf="@id/tv_yingwen_nicheng"
-                            android:orientation="horizontal">
-
-                            <TextView
-                                style="@style/setting_text_style"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:text="English Name"
-                                android:textColor="@color/black1" />
-
-                            <TextView
-                                style="@style/setting_text_style"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_alignParentRight="true"
-                                android:layout_centerVertical="true"
-                                android:layout_marginRight="15dip"
-                                android:drawablePadding="5dp"
-                                android:drawableRight="@drawable/morex"
-                                android:textColor="@android:color/darker_gray" />
-                        </LinearLayout>
-                    </RelativeLayout>
-
-
-                    <RelativeLayout
-                        android:layout_width="fill_parent"
-                        android:layout_height="55dp"
-                        android:background="@drawable/item_background_selector_nocorn">
-
-                        <!--                <ImageView
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:layout_centerVertical="true"
-                                            android:layout_marginLeft="3dp"
-                                            android:src="@drawable/ic_mima" />-->
-
-                        <TextView
-                            android:id="@+id/tv_birthday"
-                            style="@style/setting_text_style"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
-                            android:layout_marginLeft="3dp"
-                            android:text="生 日:    "
-                            android:textColor="@android:color/darker_gray" />
-
-
-                        <LinearLayout
-                            android:id="@+id/ln_birthday"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
-                            android:layout_toRightOf="@id/tv_birthday"
-                            android:orientation="horizontal">
-
-                            <TextView
-                                style="@style/setting_text_style"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:text="1898-07-23   26岁  射手座"
-                                android:textColor="@color/black1" />
-
-                            <TextView
-                                style="@style/setting_text_style"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_alignParentRight="true"
-                                android:layout_centerVertical="true"
-                                android:layout_marginRight="15dip"
-                                android:drawablePadding="5dp"
-                                android:drawableRight="@drawable/morex"
-                                android:textColor="@android:color/darker_gray" />
-                        </LinearLayout>
-                    </RelativeLayout>
-
-
-                    <RelativeLayout
-                        android:layout_width="fill_parent"
-                        android:layout_height="55dp"
-                        android:background="@drawable/item_background_selector_nocorn">
-
-                        <!--                <ImageView
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:layout_centerVertical="true"
-                                            android:layout_marginLeft="3dp"
-                                            android:src="@drawable/ic_mima" />-->
-
-                        <TextView
-                            android:id="@+id/tv_feeling"
-                            style="@style/setting_text_style"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
-                            android:text="情感状态:   "
-                            android:textColor="@android:color/darker_gray" />
-
-
-                        <LinearLayout
-                            android:id="@+id/ln_feeling"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
-                            android:layout_toRightOf="@id/tv_feeling"
-                            android:orientation="horizontal">
-
-                            <TextView
-                                style="@style/setting_text_style"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:text="未婚"
-                                android:textColor="@color/black1" />
-
-                            <TextView
-                                style="@style/setting_text_style"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_alignParentRight="true"
-                                android:layout_centerVertical="true"
-                                android:layout_marginRight="15dip"
-                                android:drawablePadding="5dp"
-                                android:drawableRight="@drawable/morex"
-                                android:textColor="@android:color/darker_gray" />
-                        </LinearLayout>
-                    </RelativeLayout>
-
-
-                    <RelativeLayout
-                        android:layout_width="fill_parent"
-                        android:layout_height="55dp"
-                        android:background="@drawable/item_background_selector_nocorn">
-
-                        <!--                <ImageView
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:layout_centerVertical="true"
-                                            android:layout_marginLeft="3dp"
-                                            android:src="@drawable/ic_mima" />-->
-
-                        <TextView
-                            android:id="@+id/tv_jiaxiang"
-                            style="@style/setting_text_style"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
-                            android:layout_marginLeft="3dp"
-                            android:text="家 乡:     "
-                            android:textColor="@android:color/darker_gray" />
-
-
-                        <LinearLayout
-                            android:id="@+id/ln_jiaxiang"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
-                            android:layout_toRightOf="@id/tv_jiaxiang"
-                            android:orientation="horizontal">
-
-                            <TextView
-                                style="@style/setting_text_style"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:text="福建/莆田"
-                                android:textColor="@color/black1" />
-
-                            <TextView
-                                style="@style/setting_text_style"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_alignParentRight="true"
-                                android:layout_centerVertical="true"
-                                android:layout_marginRight="15dip"
-                                android:drawablePadding="5dp"
-                                android:drawableRight="@drawable/morex"
-                                android:textColor="@android:color/darker_gray" />
-                        </LinearLayout>
-
-                    </RelativeLayout>
-
-
-                    <RelativeLayout
-                        android:layout_width="fill_parent"
-                        android:layout_height="55dp"
-                        android:background="@drawable/item_background_selector_nocorn">
-
-                        <!--                <ImageView
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:layout_centerVertical="true"
-                                            android:layout_marginLeft="3dp"
-                                            android:src="@drawable/ic_mima" />-->
-
-                        <TextView
-                            android:id="@+id/tv_geren_jieshao"
-                            style="@style/setting_text_style"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
-                            android:layout_marginLeft="3dp"
-                            android:text="个人介绍:"
-                            android:textColor="@android:color/darker_gray" />
-
-
-                        <LinearLayout
-                            android:id="@+id/ln_geren_jieshao"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
-                            android:layout_toRightOf="@id/tv_geren_jieshao"
-                            android:orientation="horizontal">
-
-                            <TextView
-                                style="@style/setting_text_style"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:text="性格社交创始人"
-                                android:textColor="@color/black1" />
-
-                            <TextView
-                                style="@style/setting_text_style"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_alignParentRight="true"
-                                android:layout_centerVertical="true"
-                                android:layout_marginRight="15dip"
-                                android:drawablePadding="5dp"
-                                android:drawableRight="@drawable/morex"
-                                android:textColor="@android:color/darker_gray" />
-                        </LinearLayout>
-
-                    </RelativeLayout>
-
-                    <!--             <View
-                                   android:layout_width="fill_parent"
-                                   android:layout_height="0.1dp"
-                                   android:background="@color/gray" />  -->
-
-                    <RelativeLayout
-                        android:layout_width="fill_parent"
-                        android:layout_height="55dp"
-                        android:background="@drawable/item_background_selector_nocorn">
-
-                        <!--                <ImageView
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:layout_centerVertical="true"
-                                            android:layout_marginLeft="3dp"
-                                            android:src="@drawable/ic_mima" />-->
-
-                        <TextView
-                            android:id="@+id/tv_shenfenbiaoqian"
-                            style="@style/setting_text_style"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
-                            android:layout_marginLeft="3dp"
-                            android:text="身份标签:"
-                            android:textColor="@android:color/darker_gray" />
-
-
-                        <LinearLayout
-                            android:id="@+id/ln_shenfenbiaoqian"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
-                            android:layout_toRightOf="@id/tv_shenfenbiaoqian"
-                            android:orientation="horizontal">
-
-                            <TextView
-                                style="@style/setting_text_style"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:text="白领/创业者/创始人"
-                                android:textColor="@color/black1" />
-
-                            <TextView
-                                style="@style/setting_text_style"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_alignParentRight="true"
-                                android:layout_centerVertical="true"
-                                android:layout_marginRight="15dip"
-                                android:drawablePadding="5dp"
-                                android:drawableRight="@drawable/morex"
-                                android:textColor="@android:color/darker_gray" />
-                        </LinearLayout>
-                    </RelativeLayout>
-
-
-                    <RelativeLayout
-                        android:layout_width="fill_parent"
+                    android:layout_gravity="center_horizontal"
+                    android:gravity="center_horizontal"
+                    android:orientation="horizontal"
+                    android:paddingBottom="3dp">
+
+                    <TextView
+                        android:id="@+id/contact_gender"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/item_background_selector_nocorn"
-                        android:paddingBottom="5dp"
-                        android:paddingTop="5dp">
+                        android:background="@drawable/item_background_user_age"
+                        android:gravity="center|left"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp"
+                        android:singleLine="true"
+                        android:text="21"
+                        android:textColor="@color/red"
+                        android:textSize="12sp" />
 
-                        <!--                <ImageView
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:layout_centerVertical="true"
-                                            android:layout_marginLeft="3dp"
-                                            android:src="@drawable/ic_mima" />-->
-
-                        <TextView
-                            android:id="@+id/tv_zhiye"
-                            style="@style/setting_text_style"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
-                            android:layout_marginLeft="3dp"
-                            android:text="职 业:    "
-                            android:textColor="@android:color/darker_gray" />
-
-
-                        <LinearLayout
-                            android:id="@+id/ln_zhiye"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
-                            android:layout_toRightOf="@id/tv_zhiye"
-                            android:orientation="horizontal">
-
-                            <TextView
-                                style="@style/setting_text_style"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:text="白领/创业者/创始人\n 白领/创业者/创始人"
-                                android:textColor="@color/black1" />
-
-                            <TextView
-                                style="@style/setting_text_style"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_alignParentRight="true"
-                                android:layout_centerVertical="true"
-                                android:layout_marginRight="15dip"
-                                android:drawablePadding="5dp"
-                                android:drawableRight="@drawable/morex"
-                                android:textColor="@android:color/darker_gray" />
-                        </LinearLayout>
-                    </RelativeLayout>
-
-
-                    <RelativeLayout
-                        android:layout_width="fill_parent"
+                    <TextView
+                        android:id="@+id/tv_username"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/item_background_selector_nocorn"
-                        android:paddingBottom="5dp"
-                        android:paddingTop="5dp">
-
-                        <!--                <ImageView
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:layout_centerVertical="true"
-                                            android:layout_marginLeft="3dp"
-                                            android:src="@drawable/ic_mima" />-->
-
-                        <TextView
-                            android:id="@+id/tv_school"
-                            style="@style/setting_text_style"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
-                            android:text="学 校    :   "
-                            android:textColor="@android:color/darker_gray" />
-
-
-                        <LinearLayout
-                            android:id="@+id/ln_school"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
-                            android:layout_toRightOf="@id/tv_school"
-                            android:orientation="horizontal">
-
-                            <TextView
-                                style="@style/setting_text_style"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:text="白领/创业者/创始人\n 白领/创业者/创始人"
-                                android:textColor="@color/black1" />
-
-                            <TextView
-                                style="@style/setting_text_style"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_alignParentRight="true"
-                                android:layout_centerVertical="true"
-                                android:layout_marginRight="15dip"
-                                android:drawablePadding="5dp"
-                                android:drawableRight="@drawable/morex"
-                                android:textColor="@android:color/darker_gray" />
-                        </LinearLayout>
-                    </RelativeLayout>
+                        android:layout_marginLeft="5dp"
+                        android:text="NHJD XX者"
+                        android:textColor="@color/white"
+                        android:textSize="13sp" />
 
                 </LinearLayout>
-            </android.support.v7.widget.CardView>
 
 
-            <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="20dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginTop="15dp"
-                card_view:cardBackgroundColor="@android:color/white"
-                card_view:cardCornerRadius="10dp"
-                card_view:cardElevation="0dp">
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/pullLoadMoreRecyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp" />
 
-                <LinearLayout
-                    android:layout_width="fill_parent"
+                <TextView
+                    android:id="@+id/tv_dis_time"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:gravity="center"
+                    android:padding="4dp"
+                    android:text="0.1KM | 10分钟"
+                    android:textColor="@color/white"
+                    android:textSize="13sp" />
 
-                    <RelativeLayout
-                        android:layout_width="fill_parent"
-                        android:layout_height="45dp">
+            </LinearLayout>
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
-                            android:layout_marginLeft="20dp"
-                            android:text="其他资料"
-                            android:textColor="@color/black"
-                            android:textSize="16dp" />
-                    </RelativeLayout>
+        </android.support.design.widget.AppBarLayout>
 
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="0.1dp"
-                        android:background="@color/black" />
+        <!-- 下面的 list 指定 behavior   提供滑动的 view 支持 ListView、GridView、RecyclerView -->
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rlist_view_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
-                    <RelativeLayout
-                        android:layout_width="fill_parent"
-                        android:layout_height="55dp"
-                        android:background="@drawable/item_background_selector_nocorn">
+    </android.support.design.widget.CoordinatorLayout>
 
-                        <!--                <ImageView
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:layout_centerVertical="true"
-                                            android:layout_marginLeft="3dp"
-                                            android:src="@drawable/ic_mima" />-->
-
-                        <TextView
-                            android:id="@+id/tv_shenghuodidian0"
-                            style="@style/setting_text_style"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
-                            android:layout_marginLeft="3dp"
-                            android:text="生活地点:"
-                            android:textColor="@android:color/darker_gray" />
-
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
-                            android:layout_toRightOf="@id/tv_shenghuodidian0"
-                            android:orientation="horizontal">
-
-                            <TextView
-                                android:id="@+id/tv_shenghuodidian"
-                                style="@style/setting_text_style"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:text="宁和小区"
-                                android:textColor="@color/black1" />
-
-                            <TextView
-                                style="@style/setting_text_style"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_alignParentRight="true"
-                                android:layout_centerVertical="true"
-                                android:layout_marginRight="15dip"
-                                android:drawablePadding="5dp"
-                                android:drawableRight="@drawable/morex"
-                                android:textColor="@android:color/darker_gray" />
-                        </LinearLayout>
-
-                    </RelativeLayout>
-
-                    <!--             <View
-                                   android:layout_width="fill_parent"
-                                   android:layout_height="0.1dp"
-                                   android:background="@color/gray" />  -->
-
-                    <RelativeLayout
-                        android:layout_width="fill_parent"
-                        android:layout_height="55dp"
-                        android:background="@drawable/item_background_selector_nocorn">
-
-                        <!--                <ImageView
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:layout_centerVertical="true"
-                                            android:layout_marginLeft="3dp"
-                                            android:src="@drawable/ic_mima" />-->
-
-                        <TextView
-                            android:id="@+id/tv_gongzuodidian0"
-                            style="@style/setting_text_style"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
-                            android:layout_marginLeft="3dp"
-                            android:text="工作地点:"
-                            android:textColor="@android:color/darker_gray" />
-
-
-                        <LinearLayout
-                            android:id="@+id/ln_gongzuodidian0"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
-                            android:layout_toRightOf="@id/tv_gongzuodidian0"
-                            android:orientation="horizontal">
-
-                            <TextView
-                                android:id="@+id/ln_gongzuodidian"
-                                style="@style/setting_text_style"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:text="大宁商业广场"
-                                android:textColor="@color/black1" />
-
-                            <TextView
-                                style="@style/setting_text_style"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_alignParentRight="true"
-                                android:layout_centerVertical="true"
-                                android:layout_marginRight="15dip"
-                                android:drawablePadding="5dp"
-                                android:drawableRight="@drawable/morex"
-                                android:textColor="@android:color/darker_gray" />
-                        </LinearLayout>
-                    </RelativeLayout>
-
-
-                    <RelativeLayout
-                        android:layout_width="fill_parent"
-                        android:layout_height="55dp"
-                        android:background="@drawable/item_background_selector_nocorn">
-
-                        <!--                <ImageView
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:layout_centerVertical="true"
-                                            android:layout_marginLeft="3dp"
-                                            android:src="@drawable/ic_mima" />-->
-
-                        <TextView
-                            android:id="@+id/tv_changchumodi0"
-                            style="@style/setting_text_style"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
-                            android:layout_marginLeft="3dp"
-                            android:text="常出没地:"
-                            android:textColor="@android:color/darker_gray" />
-
-
-                        <LinearLayout
-                            android:id="@+id/ln_changchumodi"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
-                            android:layout_toRightOf="@id/tv_changchumodi0"
-                            android:orientation="horizontal">
-
-                            <TextView
-                                style="@style/setting_text_style"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:text="上海、北京"
-                                android:textColor="@color/black1" />
-
-                            <TextView
-                                android:id="@+id/tv_changchumodi"
-                                style="@style/setting_text_style"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_alignParentRight="true"
-                                android:layout_centerVertical="true"
-                                android:layout_marginRight="15dip"
-                                android:drawablePadding="5dp"
-                                android:drawableRight="@drawable/morex"
-                                android:textColor="@android:color/darker_gray" />
-                        </LinearLayout>
-                    </RelativeLayout>
-
-                    <RelativeLayout
-                        android:layout_width="fill_parent"
-                        android:layout_height="55dp"
-                        android:background="@drawable/item_background_selector_nocorn">
-
-                        <!--                <ImageView
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:layout_centerVertical="true"
-                                            android:layout_marginLeft="3dp"
-                                            android:src="@drawable/ic_mima" />-->
-
-                        <TextView
-                            android:id="@+id/tv_quguo_jingdian0"
-                            style="@style/setting_text_style"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
-                            android:layout_marginLeft="3dp"
-                            android:text="去过景点:"
-                            android:textColor="@android:color/darker_gray" />
-
-
-                        <LinearLayout
-                            android:id="@+id/ln_quguo_jingdian"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
-                            android:layout_toRightOf="@id/tv_quguo_jingdian0"
-                            android:orientation="horizontal">
-
-                            <TextView
-                                android:id="@+id/tv_quguo_jingdian"
-                                style="@style/setting_text_style"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:text="黄山、桂林、厦门"
-                                android:textColor="@color/black1" />
-
-                            <TextView
-                                style="@style/setting_text_style"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_alignParentRight="true"
-                                android:layout_centerVertical="true"
-                                android:layout_marginRight="15dip"
-                                android:drawablePadding="5dp"
-                                android:drawableRight="@drawable/morex"
-                                android:textColor="@android:color/darker_gray" />
-                        </LinearLayout>
-                    </RelativeLayout>
-
-                </LinearLayout>
-            </android.support.v7.widget.CardView>
-
-        </LinearLayout>
-
-    </ScrollView>
-
-
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:background="@color/top_pop"
-        android:orientation="horizontal" >
 
         <RadioGroup
             android:id="@+id/rg"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal"
+            android:layout_height="50dp"
+            android:background="@color/top_pop"
             android:layout_gravity="center"
+            android:orientation="horizontal"
             android:paddingLeft="5dp"
-            android:paddingRight="5dp" >
+            android:paddingRight="5dp">
 
             <RadioButton
-                android:id="@+id/rb1"
+                android:id="@+id/rb_chat"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:background="#00000000"
                 android:button="@null"
-                android:paddingLeft="50dp"
-                android:paddingRight="50dp"
                 android:drawableLeft="@drawable/chat2"
                 android:gravity="center"
-                android:textColor="@color/white"
+                android:paddingLeft="50dp"
+                android:paddingRight="50dp"
                 android:text="对话"
+                android:textColor="@color/white"
                 android:textSize="18sp" />
 
             <RadioButton
-                android:id="@+id/rb2"
+                android:id="@+id/rb_guanzhu"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:background="#00000000"
                 android:button="@null"
-                android:paddingLeft="50dp"
-                android:paddingRight="50dp"
                 android:drawableLeft="@drawable/follow"
                 android:gravity="center"
+                android:paddingLeft="50dp"
+                android:paddingRight="50dp"
                 android:text="关注"
                 android:textColor="@color/white"
                 android:textSize="18sp" />
 
-
         </RadioGroup>
-
-
-
-    </LinearLayout>
 </LinearLayout>

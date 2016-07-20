@@ -1,18 +1,25 @@
 package com.wuwo.im.activity;
 
+import android.annotation.TargetApi;
 import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.os.PowerManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.IntentCompat;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.support.v7.app.AlertDialog;
@@ -25,7 +32,18 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.easemob.redpacketui.RedPacketConstant;
+import com.hyphenate.EMCallBack;
+import com.hyphenate.EMContactListener;
+import com.hyphenate.chat.EMClient;
+import com.hyphenate.chatuidemo.Constant;
+import com.hyphenate.chatuidemo.DemoHelper;
+import com.hyphenate.chatuidemo.runtimepermissions.PermissionsManager;
+import com.hyphenate.chatuidemo.runtimepermissions.PermissionsResultAction;
+import com.hyphenate.chatuidemo.ui.*;
+import com.hyphenate.easeui.utils.EaseCommonUtils;
 import com.squareup.otto.Bus;
 import com.wuwo.im.config.ExitApp;
 import com.wuwo.im.config.OneMapOttoBus;
@@ -34,7 +52,6 @@ import com.wuwo.im.fragement.Portal_ContactFragment;
 import com.wuwo.im.fragement.Portal_FindFragment;
 import com.wuwo.im.fragement.Portal_LocalFragment;
 import com.wuwo.im.fragement.Portal_OwnerFragment;
-import com.wuwo.im.fragement.Portal_XiaoXiFragment;
 import com.wuwo.im.util.UtilsTool;
 import com.wuwo.im.view.ActionItem;
 import com.wuwo.im.view.MyTabWidget;
@@ -91,7 +108,11 @@ public class MainActivity extends BaseFragementActivity implements MyTabWidget.O
     //    private RelativeLayout title_bar;
     private TitlePopup titlePopup;
 
-
+    private ConversationListFragment conversationListFragment;
+    private BroadcastReceiver broadcastReceiver;
+    private LocalBroadcastManager broadcastManager;
+    private int currentTabIndex;
+    private BroadcastReceiver internalDebugReceiver;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -121,7 +142,7 @@ public class MainActivity extends BaseFragementActivity implements MyTabWidget.O
 //        registerBoradcastReceiver();
 
 ////        启动终端定位服务 1
-//        Intent startServiceIntent = new Intent(getApplicationContext(), LocationService.class);
+//        Intent startServiceIntent = new Intent(getApplicationContext(), LocationServiceeeee.class);
 //        startServiceIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 //        getApplicationContext().startService(startServiceIntent);
 
@@ -141,7 +162,193 @@ public class MainActivity extends BaseFragementActivity implements MyTabWidget.O
         mOttoBus = OneMapOttoBus.getInstance();
         mOttoBus.register(this);
 
+
+
+        initIM();
+
+
+
+
+
     }
+
+    private void initIM() {
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            String packageName = getPackageName();
+            PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
+            if (!pm.isIgnoringBatteryOptimizations(packageName)) {
+                Intent intent = new Intent();
+                intent.setAction(android.provider.Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS);
+                intent.setData(Uri.parse("package:" + packageName));
+                startActivity(intent);
+            }
+        }
+
+        //register broadcast receiver to receive the change of group from DemoHelper
+        registerBroadcastReceiver();
+
+
+        EMClient.getInstance().contactManager().setContactListener(new MyContactListener());
+        //debug purpose only
+        registerInternalDebugReceiver();
+
+    }
+    @TargetApi(23)
+    private void requestPermissions() {
+        PermissionsManager.getInstance().requestAllManifestPermissionsIfNecessary(this, new PermissionsResultAction() {
+            @Override
+            public void onGranted() {
+//				Toast.makeText(MainActivity.this, "All permissions have been granted", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onDenied(String permission) {
+                //Toast.makeText(MainActivity.this, "Permission " + permission + " has been denied", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+
+    private void registerBroadcastReceiver() {
+        broadcastManager = LocalBroadcastManager.getInstance(this);
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(Constant.ACTION_CONTACT_CHANAGED);
+        intentFilter.addAction(Constant.ACTION_GROUP_CHANAGED);
+        intentFilter.addAction(RedPacketConstant.REFRESH_GROUP_RED_PACKET_ACTION);
+        broadcastReceiver = new BroadcastReceiver() {
+
+            @Override
+            public void onReceive(Context context, Intent intent) {
+//                updateUnreadLabel();
+//                updateUnreadAddressLable();
+                if (currentTabIndex == 0) {
+                    // refresh conversation list
+                    if (conversationListFragment != null) {
+                        conversationListFragment.refresh();
+                    }
+                }
+                String action = intent.getAction();
+                if(action.equals(Constant.ACTION_GROUP_CHANAGED)){
+                    if (EaseCommonUtils.getTopActivity(MainActivity.this).equals(GroupsActivity.class.getName())) {
+                        GroupsActivity.instance.onResume();
+                    }
+                }
+                if (action.equals(RedPacketConstant.REFRESH_GROUP_RED_PACKET_ACTION)){
+                    if (conversationListFragment != null){
+                        conversationListFragment.refresh();
+                    }
+                }
+            }
+        };
+        broadcastManager.registerReceiver(broadcastReceiver, intentFilter);
+    }
+
+    public class MyContactListener implements EMContactListener {
+        @Override
+        public void onContactAdded(String username) {}
+        @Override
+        public void onContactDeleted(final String username) {
+            runOnUiThread(new Runnable() {
+                public void run() {
+                    if (ChatActivity.activityInstance != null && ChatActivity.activityInstance.toChatUsername != null &&
+                            username.equals(ChatActivity.activityInstance.toChatUsername)) {
+                        String st10 = getResources().getString(R.string.have_you_removed);
+                        Toast.makeText(MainActivity.this, ChatActivity.activityInstance.getToChatUsername() + st10, Toast.LENGTH_LONG)
+                                .show();
+                        ChatActivity.activityInstance.finish();
+                    }
+                }
+            });
+        }
+        @Override
+        public void onContactInvited(String username, String reason) {}
+        @Override
+        public void onContactAgreed(String username) {}
+        @Override
+        public void onContactRefused(String username) {}
+    }
+
+    private void unregisterBroadcastReceiver(){
+        broadcastManager.unregisterReceiver(broadcastReceiver);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+//        if (conflictBuilder != null) {
+//            conflictBuilder.create().dismiss();
+//            conflictBuilder = null;
+//        }
+        unregisterBroadcastReceiver();
+
+        try {
+            unregisterReceiver(internalDebugReceiver);
+        } catch (Exception e) {
+        }
+
+
+        //       程序关闭的时候将定位服务退出
+//       if( mLocationClient.isStarted()){
+//           mLocationClient.stop();
+//       }
+
+//        unregisterReceiver(mBroadcastReceiver);
+
+    }
+
+
+
+
+    /**
+     * update unread message count
+     */
+    public void updateUnreadLabel() {
+//        int count = getUnreadMsgCountTotal();
+//        if (count > 0) {
+//            unreadLabel.setText(String.valueOf(count));
+//            unreadLabel.setVisibility(View.VISIBLE);
+//        } else {
+//            unreadLabel.setVisibility(View.INVISIBLE);
+//        }
+    }
+    /**
+     * debug purpose only, you can ignore this
+     */
+    private void registerInternalDebugReceiver() {
+        internalDebugReceiver = new BroadcastReceiver() {
+
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                DemoHelper.getInstance().logout(false,new EMCallBack() {
+
+                    @Override
+                    public void onSuccess() {
+                        runOnUiThread(new Runnable() {
+                            public void run() {
+                                finish();
+                                startActivity(new Intent(MainActivity.this, com.hyphenate.chatuidemo.ui.LoginActivity.class));
+
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onProgress(int progress, String status) {}
+
+                    @Override
+                    public void onError(int code, String message) {}
+                });
+            }
+        };
+        IntentFilter filter = new IntentFilter(getPackageName() + ".em_internal_debug");
+        registerReceiver(internalDebugReceiver, filter);
+    }
+
+
+
+
+
 
 
 //    /**
@@ -405,18 +612,25 @@ public class MainActivity extends BaseFragementActivity implements MyTabWidget.O
 
     private static final int SETSUBSCRIBE = 0x11;
 
+
+    // 底部菜单的文字数组
+    private CharSequence[] mLabels = {"附近", "发现", "联系人", "消息", "我"};
+
     private void init() {
 
         return_back_igw = (ImageView) findViewById(R.id.return_back);
         mTopIndicator = (MyTabWidget) findViewById(R.id.top_indicator);
         mTopIndicator.setOnTabSelectedListener(this);
 
-
+        conversationListFragment = new ConversationListFragment();
 //        fragments.add(new Portal_NewsFragment());
         fragments.add(new Portal_LocalFragment());
         fragments.add(new Portal_FindFragment());
         fragments.add(new Portal_ContactFragment());
-        fragments.add(new Portal_XiaoXiFragment());
+
+//        fragments.add(new Portal_XiaoXiFragment());
+        fragments.add(conversationListFragment);
+
         fragments.add(new Portal_OwnerFragment());
 
 
@@ -443,7 +657,8 @@ public class MainActivity extends BaseFragementActivity implements MyTabWidget.O
                 // TODO 自动生成的方法存根
 //                滑动完成后底部的导航条也跟着跳转
                 mTopIndicator.setTabsDisplay(mContext, position > 4 ? 4 : position);
-                title_tv.setText(mTopIndicator.getmLabels()[position]);
+//                title_tv.setText(mTopIndicator.getmLabels()[position]);
+                title_tv.setText(mLabels[position]);
 
 
                 if (position == 2) {
@@ -521,21 +736,7 @@ public class MainActivity extends BaseFragementActivity implements MyTabWidget.O
 //    }
 
 
-    @Override
-    protected void onDestroy() {
-        // TODO 自动生成的方法存根
-//       程序关闭的时候将定位服务退出
-//       if( mLocationClient.isStarted()){
-//           mLocationClient.stop();
-//       }
-
-//        unregisterReceiver(mBroadcastReceiver);
-
-        super.onDestroy();
-    }
-
-
-    @Override
+/*    @Override
     public void onBackPressed() {
         // 连续按两下return退出
         //          long currentTime = new Date().getTime();
@@ -547,9 +748,9 @@ public class MainActivity extends BaseFragementActivity implements MyTabWidget.O
         //              showExitDialog();
         //          }
 
-        showExitDialog(mContext);
+//        showExitDialog(mContext);
         return;
-    }
+    }*/
 //    /**
 //     * @Title: setFuncAddVisibility
 //     * @Description: 设置订阅动能按钮的可见性
@@ -616,7 +817,8 @@ public class MainActivity extends BaseFragementActivity implements MyTabWidget.O
             if (!fragment.isAdded()) { // 如果fragment还没有added
                 FragmentTransaction ft = fragmentManager.beginTransaction();
                 ft.add(fragment, fragment.getClass().getSimpleName());
-                ft.commit();
+//                ft.commit();
+                ft.commitAllowingStateLoss();
                 /**
                  * 在用FragmentTransaction.commit()方法提交FragmentTransaction对象后
                  * 会在进程的主线程中，用异步的方式来执行。 如果想要立即执行这个等待中的操作，就要调用这个方法（只能在主线程中调用）。

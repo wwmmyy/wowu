@@ -36,10 +36,10 @@ dependencies {
     compile 'com.android.support:appcompat-v7:23.0.1'
     compile 'com.android.support:recyclerview-v7:23.0.1'
     compile 'com.android.support:design:23.0.1'
-    compile('com.facebook.fresco:fresco:0.8.1') {
+/*    compile('com.facebook.fresco:fresco:0.8.1') {
         exclude group: 'com.parse.bolts',
                 module: 'bolts-android'
-    }
+    }*/
 
     compile 'com.android.support:multidex:1.0.0'
     compile 'com.android.support:cardview-v7:23.0.1'
@@ -47,7 +47,7 @@ dependencies {
     compile files('libs/ksoap2-android-assembly-3.3.0-jar-with-dependencies.jar')
     compile files('libs/otto-1.3.5.jar')
     compile files('libs/universal-image-loader-1.9.3.jar')
-    compile project(':okhttputils')
+//    compile project(':okhttputils')
     compile 'com.android.support:support-v4:23.0.1'
     compile files('libs/ShareSDK-Wechat-2.6.4.jar')
     compile files('libs/ShareSDK-Wechat-Core-2.6.4.jar')

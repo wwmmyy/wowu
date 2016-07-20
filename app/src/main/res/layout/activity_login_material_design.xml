@@ -13,8 +13,7 @@
         android:orientation="vertical">
 
         <include layout="@layout/top_title_bar" />
-        <!--        <RelativeLayout
-                    android:layout_width="match_parent"
+        <!--        <RelativeLayout                    android:layout_width="match_parent"
                     android:layout_height="170dp">
                     &lt;!&ndash; 01579b   0f2056&ndash;&gt;
                     <RelativeLayout

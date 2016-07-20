@@ -1,5 +1,6 @@
 package com.wuwo.im.bean;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
@@ -58,17 +59,30 @@ public class LocalUser {
         this.Data = Data;
     }
 
-    public static class DataBean {
+    public   class DataBean  implements Serializable {
         private String UserId;
         private String Name;
         private String Disposition;
         private String Description;
         private int Age;
-        private int Gender;
+        private Object Gender;
         private String Distance;
         private String Before;
         private String PhotoUrl;
         private String EasemobId;
+        private static final long serialVersionUID = 9060527069391618394L;
+        public DataBean(String userId, String name, String disposition, String description, int age, Object gender, String distance, String before, String photoUrl, String easemobId) {
+            UserId = userId;
+            Name = name;
+            Disposition = disposition;
+            Description = description;
+            Age = age;
+            Gender = gender;
+            Distance = distance;
+            Before = before;
+            PhotoUrl = photoUrl;
+            EasemobId = easemobId;
+        }
 
         public String getUserId() {
             return UserId;
@@ -110,11 +124,11 @@ public class LocalUser {
             this.Age = Age;
         }
 
-        public int getGender() {
+        public Object getGender() {
             return Gender;
         }
 
-        public void setGender(int Gender) {
+        public void setGender(Object Gender) {
             this.Gender = Gender;
         }
 

@@ -6,7 +6,13 @@
     android:orientation="vertical"
     tools:context="com.wuwo.im.activity.FromContractsActivity">
 
-    <include layout="@layout/top_title_bar" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@color/colorPrimary">
+        <include layout="@layout/top_title_bar"  />
+    </LinearLayout>
     <!--    <ListView
         android:id="@+id/lv_contracts"
         android:layout_width="match_parent"
