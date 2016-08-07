@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.provider.ContactsContract;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -34,7 +33,7 @@ import im.wuwo.com.wuwo.R;
 *@版权:Copyright    All rights reserved.
 */
 
-public class FromContractsActivity extends AppCompatActivity {
+public class FromContractsActivity extends BaseLoadActivity {
     Cursor cursor;
     Context mContext = FromContractsActivity.this;
     ArrayList<Contact> mContacts = new ArrayList<Contact>();
@@ -186,4 +185,18 @@ public class FromContractsActivity extends AppCompatActivity {
     };
 
 
+    @Override
+    public void onClick(View v) {
+
+    }
+
+    @Override
+    public void loadServerData(String response, int flag) {
+
+    }
+
+    @Override
+    public void loadDataFailed(String response, int flag) {
+
+    }
 }

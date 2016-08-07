@@ -23,7 +23,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="30dp"
-                android:background="@drawable/welcome1" />
+                android:background="@drawable/start" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -47,7 +47,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="30dp"
-                android:background="@drawable/welcome2" />
+                android:background="@drawable/start" />
 
             <TextView
                 android:id="@+id/t1"
@@ -73,7 +73,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="30dp"
-                android:background="@drawable/welcome3" />
+                android:background="@drawable/start" />
 
             <TextView 
                 android:layout_width="wrap_content"
@@ -99,7 +99,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="30dp"
-                android:background="@drawable/welcome4" />
+                android:background="@drawable/icon" />
 
             <TextView
                 android:layout_width="wrap_content"

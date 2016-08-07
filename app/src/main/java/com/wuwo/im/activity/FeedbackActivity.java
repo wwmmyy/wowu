@@ -1,6 +1,5 @@
 package com.wuwo.im.activity;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -12,7 +11,6 @@ import android.os.Handler;
 import android.os.Message;
 import android.provider.MediaStore;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.EditText;
@@ -35,7 +33,7 @@ import java.util.Map;
 
 import im.wuwo.com.wuwo.R;
 
-public class FeedbackActivity extends Activity implements OnClickListener {
+public class FeedbackActivity extends BaseLoadActivity {
     Context mContext = FeedbackActivity.this;
     String titlename;
     TextView feed_back_send;
@@ -215,6 +213,16 @@ public class FeedbackActivity extends Activity implements OnClickListener {
 
             }
         }
+    }
+
+    @Override
+    public void loadServerData(String response, int flag) {
+
+    }
+
+    @Override
+    public void loadDataFailed(String response, int flag) {
+
     }
 
 

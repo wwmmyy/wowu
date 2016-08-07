@@ -119,6 +119,7 @@ public class ContactListFragment extends EaseContactListFragment {
                 String username = ((EaseUser)listView.getItemAtPosition(position)).getUsername();
                 // demo中直接进入聊天页面，实际一般是进入用户详情页
                 startActivity(new Intent(getActivity(), ChatActivity.class).putExtra("userId", username));
+                getActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
             }
         });
 
@@ -129,6 +130,7 @@ public class ContactListFragment extends EaseContactListFragment {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(getActivity(), AddContactActivity.class));
+                getActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
             }
         });
         
@@ -175,18 +177,22 @@ public class ContactListFragment extends EaseContactListFragment {
             case R.id.application_item:
                 // 进入申请与通知页面
                 startActivity(new Intent(getActivity(), NewFriendsMsgActivity.class));
+                getActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                 break;
             case R.id.group_item:
                 // 进入群聊列表页面
                 startActivity(new Intent(getActivity(), GroupsActivity.class));
+                getActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                 break;
             case R.id.chat_room_item:
                 //进入聊天室列表页面
                 startActivity(new Intent(getActivity(), PublicChatRoomsActivity.class));
+                getActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                 break;
             case R.id.robot_item:
                 //进入Robot列表页面
                 startActivity(new Intent(getActivity(), RobotsActivity.class));
+                getActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                 break;
 
             default:
@@ -229,7 +235,7 @@ public class ContactListFragment extends EaseContactListFragment {
 	/**
 	 * delete contact
 	 * 
-	 * @param toDeleteUser
+	 * @param
 	 */
 	public void deleteContact(final EaseUser tobeDeleteUser) {
 		String st1 = getResources().getString(R.string.deleting);
@@ -258,7 +264,7 @@ public class ContactListFragment extends EaseContactListFragment {
 					getActivity().runOnUiThread(new Runnable() {
 						public void run() {
 							pd.dismiss();
-							Toast.makeText(getActivity(), st2 + e.getMessage(), 1).show();
+							Toast.makeText(getActivity(), st2 + e.getMessage(), Toast.LENGTH_SHORT).show();
 						}
 					});
 
@@ -284,7 +290,7 @@ public class ContactListFragment extends EaseContactListFragment {
                                 refresh();
                             }else{
                                 String s1 = getResources().getString(R.string.get_failed_please_check);
-                                Toast.makeText(getActivity(), s1, 1).show();
+                                Toast.makeText(getActivity(), s1,Toast.LENGTH_SHORT).show();
                                 loadingView.setVisibility(View.GONE);
                             }
                         }

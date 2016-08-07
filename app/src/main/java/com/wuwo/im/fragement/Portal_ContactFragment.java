@@ -2,32 +2,34 @@ package com.wuwo.im.fragement;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.squareup.okhttp.Request;
 import com.wuwo.im.activity.UserInfoEditActivity;
 import com.wuwo.im.adapter.CommRecyclerAdapter;
 import com.wuwo.im.adapter.CommRecyclerViewHolder;
 import com.wuwo.im.bean.LocalUser;
 import com.wuwo.im.config.WowuApp;
-import com.wuwo.im.util.MyToast;
 import com.wuwo.im.view.PullLoadMoreRecyclerView;
-import com.wuwo.im.view.SearchView;
-import com.zhy.http.okhttp.OkHttpUtils;
-import com.zhy.http.okhttp.callback.StringCallback;
 import com.zhy.http.okhttp.service.LoadserverdataService;
 import com.zhy.http.okhttp.service.loadServerDataListener;
 
@@ -52,8 +54,8 @@ public class Portal_ContactFragment extends BaseAppFragment implements View.OnCl
     SharedPreferences.Editor editor;
     private PullLoadMoreRecyclerView mPullLoadMoreRecyclerView;
     private int mCount = 0;
-    private ArrayList<LocalUser.DataBean> meeting_userlist = new ArrayList<LocalUser.DataBean>(); //记录所有的最新消息
-     private SearchView search_view;
+    private ArrayList<LocalUser.DataBean> chat_userlist = new ArrayList<LocalUser.DataBean>(); //记录所有的最新消息
+//     private SearchView search_view;
     private String searchinfo;
     CommRecyclerAdapter messageRAdapter;
 
@@ -61,7 +63,8 @@ public class Portal_ContactFragment extends BaseAppFragment implements View.OnCl
 
     LoadserverdataService loadDataService;
 
-
+    protected EditText query;
+    protected ImageButton clearSearch;
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
@@ -106,60 +109,140 @@ public class Portal_ContactFragment extends BaseAppFragment implements View.OnCl
 //        mPullLoadMoreRecyclerView.setStaggeredGridLayout(2);
         mPullLoadMoreRecyclerView.setOnPullLoadMoreListener(new PullLoadMoreListener());
 
-        search_view = (SearchView) view.findViewById(R.id.search_view);
-        search_view.setVisibility(View.VISIBLE);
-//       loadData();
+//        search_view = (SearchView) view.findViewById(R.id.search_view);
+//        search_view.setVisibility(View.VISIBLE);
+////       loadData();
+//        search_view.setSearchListener(new SearchView.searchListener() {
+//            @Override
+//            public void searchInfo(String info) {
+//                searchInfoTag = searchInfoTag + 1;
+//                searchinfo = info;
+//                if (info != null && !info.equals("")) {
+//                    searchData(info, searchInfoTag);
+//                } else {
+//                    boolean temp = search_view.resertSearch();
+//                    if (messageRAdapter != null) {//说明已经加载过搜索
+//                        setRefresh();
+//                        messageRAdapter.notifyDataSetChanged();
+//                    }
+//                }
+//            }
+//        });
 
-        search_view.setSearchListener(new SearchView.searchListener() {
-            @Override
-            public void searchInfo(String info) {
-                searchInfoTag = searchInfoTag + 1;
-                searchinfo = info;
-                if (info != null && !info.equals("")) {
-                    searchData(info, searchInfoTag);
+        query = (EditText) view.findViewById(R.id.query);
+        // button to clear content in search bar
+        clearSearch = (ImageButton) view.findViewById(R.id.search_clear);
+
+
+        initQuery();
+
+
+    }
+    List<LocalUser.DataBean> searchList=new ArrayList<LocalUser.DataBean>() ;
+    String currentSearchInfo="";
+    private void initQuery() {
+
+        query.addTextChangedListener(new TextWatcher() {
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                currentSearchInfo=s.toString();
+                if (s.length() > 0) {
+                    clearSearch.setVisibility(View.VISIBLE);
+                    SearchFilter(s);
                 } else {
-                    boolean temp = search_view.resertSearch();
-                    if (messageRAdapter != null) {//说明已经加载过搜索
-                        setRefresh();
-                        messageRAdapter.notifyDataSetChanged();
-                    }
+                    clearSearch.setVisibility(View.INVISIBLE);
+
+                    searchList=chat_userlist;
+                    Message msg = new Message();
+                    msg.what = SEARCH_DATA;
+                    mtotalHandler.sendMessage(msg);
+
                 }
             }
+
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            public void afterTextChanged(Editable s) {
+            }
         });
+        clearSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                query.getText().clear();
+                hideSoftKeyboard();
+            }
+        });
+
     }
-    //    /从网络加载流转日志数据并展示出来
-    private void searchData(String info, final int searchInfoTag) {
-        OkHttpUtils
-                .post()
-                .url("http://58.246.138.178:8081/DistMobile/mobileMeeting!getAllMeeting.action")
-                .addParams("MeetingId", "4028826f505a3b0f01506553b0c80c3a")
-                .addParams("page",mCount+"")
-                .build()
-                .execute(new StringCallback() {
-                    @Override
-                    public void onError(Request request, Exception e) {
-                        MyToast.show(mContext, "获取服务器信息失败", Toast.LENGTH_LONG);
-                        mPullLoadMoreRecyclerView.setRefreshing(false);
-                        mPullLoadMoreRecyclerView.setPullLoadMoreCompleted();
-                    }
 
-                    @Override
-                    public void onResponse(String response) {
-                        if (response != null) {
-                            java.lang.reflect.Type type = new com.google.gson.reflect.TypeToken<List<LocalUser.DataBean >>() {
-                            }.getType();
-
-                            meeting_userlist = gson.fromJson(response, type);
-                            //在view界面上展示结果
-                            Message msg = new Message();
-                            msg.what = DOWNLOADED_LocalUser;
-                            msg.arg1=searchInfoTag;
-                            mtotalHandler.sendMessage(msg);
-
+    private void SearchFilter(final CharSequence s) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(chat_userlist!=null){
+                    searchList=new ArrayList<LocalUser.DataBean>() ;
+                    for(int i=0;i<chat_userlist.size();i++){
+                        if(((LocalUser.DataBean)chat_userlist.get(i)).getName().contains(s)){
+                            LocalUser.DataBean temp= (LocalUser.DataBean)chat_userlist.get(i);
+                            searchList.add(temp);
                         }
                     }
-                });
+                    if(s.toString().equals(currentSearchInfo)){
+                        Message msg = new Message();
+                        msg.what = SEARCH_DATA;
+                        mtotalHandler.sendMessage(msg);
+                    }
+                }
+
+            }
+        }).start();
+
     }
+
+    protected void hideSoftKeyboard() {
+        InputMethodManager inputMethodManager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        if (getActivity().getWindow().getAttributes().softInputMode != WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN) {
+            if (getActivity().getCurrentFocus() != null)
+                inputMethodManager.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(),
+                        InputMethodManager.HIDE_NOT_ALWAYS);
+        }
+    }
+
+
+
+    //    /从网络加载流转日志数据并展示出来
+//    private void searchData(String info, final int searchInfoTag) {
+//        OkHttpUtils
+//                .post()
+//                .url("http://58.246.138.178:8081/DistMobile/mobileMeeting!getAllMeeting.action")
+//                .addParams("MeetingId", "4028826f505a3b0f01506553b0c80c3a")
+//                .addParams("page",mCount+"")
+//                .build()
+//                .execute(new StringCallback() {
+//                    @Override
+//                    public void onError(Request request, Exception e) {
+//                        MyToast.show(mContext, "获取服务器信息失败", Toast.LENGTH_LONG);
+//                        mPullLoadMoreRecyclerView.setRefreshing(false);
+//                        mPullLoadMoreRecyclerView.setPullLoadMoreCompleted();
+//                    }
+//
+//                    @Override
+//                    public void onResponse(String response) {
+//                        if (response != null) {
+//                            java.lang.reflect.Type type = new com.google.gson.reflect.TypeToken<List<LocalUser.DataBean >>() {
+//                            }.getType();
+//
+//                            ssmeeting_userlist = gson.fromJson(response, type);
+//                            //在view界面上展示结果
+//                            Message msg = new Message();
+//                            msg.what = DOWNLOADED_LocalUser;
+//                            msg.arg1=searchInfoTag;
+//                            mtotalHandler.sendMessage(msg);
+//
+//                        }
+//                    }
+//                });
+//    }
 
     Gson gson = new GsonBuilder().create();
 
@@ -168,13 +251,14 @@ public class Portal_ContactFragment extends BaseAppFragment implements View.OnCl
     //    从网络加载流转日志数据并展示出来
     private void loadData() {
 
-        loadDataService.loadGetJsonRequestData( WowuApp.GetFriendsURL+"?lon=" + WowuApp.longitude + "&lat=" + WowuApp.latitude ,LOAD_DATA);//+ "&userId=" + WowuApp.UserId+ "&PhoneNumber="+WowuApp.PhoneNumber
+        loadDataService.loadGetJsonRequestData( WowuApp.GetFriendsURL+"?lon=" + mSettings.getString("longitude", "0") + "&lat=" + mSettings.getString("latitude", "0") ,LOAD_DATA);//+ "&userId=" + WowuApp.UserId+ "&PhoneNumber="+WowuApp.PhoneNumber
 
     }
 
     public static final int DOWNLOADED_LocalUser= 0;
     public static final int DOWNLOADED_ERROR = 1;
     public static final int REFRESH_DATA = 2;
+    public static final int SEARCH_DATA = 3;
 
     @Override
     public void onClick(View v) {
@@ -271,6 +355,11 @@ public class Portal_ContactFragment extends BaseAppFragment implements View.OnCl
                     act.setRefresh();
                     act.loadData();
                     break;
+                case SEARCH_DATA:
+                    if(act !=null &&  act.messageRAdapter !=null ){
+                        act.messageRAdapter.setData2(act.searchList);
+                    }
+                    break;
                 default:
                     break;
             }
@@ -319,14 +408,14 @@ public class Portal_ContactFragment extends BaseAppFragment implements View.OnCl
         if (totalresult != null) {
             java.lang.reflect.Type type = new com.google.gson.reflect.TypeToken<List<LocalUser.DataBean>>() {
             }.getType();
-            meeting_userlist = gson.fromJson(totalresult, type);
+            chat_userlist = gson.fromJson(totalresult, type);
         }
 
     }
 
 
     public ArrayList<?> getLoadInfo() {
-        return meeting_userlist;
+        return chat_userlist;
     }
 
 
@@ -340,7 +429,18 @@ public class Portal_ContactFragment extends BaseAppFragment implements View.OnCl
 
                 viewHolder.setText(R.id.contract_code, mainMessage.getDistance()+" | "+ mainMessage.getBefore());
                 viewHolder.setText(R.id.contact_userinfo, mainMessage.getDisposition());
-                viewHolder.setText(R.id.contact_gender, mainMessage.getAge()+"");
+
+                TextView genderm= (TextView) viewHolder.getView(R.id.contact_gender_male);
+                TextView genderw= (TextView) viewHolder.getView(R.id.contact_gender_female);
+                if(mainMessage.getGender()==0){
+                    genderm.setVisibility(View.VISIBLE);
+                    genderw.setVisibility(View.GONE);
+                    genderm.setText(mainMessage.getAge()+"");
+                }else{
+                    genderm.setVisibility(View.GONE);
+                    genderw.setVisibility(View.VISIBLE);
+                    genderw.setText(mainMessage.getAge()+"");
+                }
 
 
                 SimpleDraweeView portal_news_img = (SimpleDraweeView) viewHolder.getView(R.id.news_label_pic);
@@ -360,9 +460,8 @@ public class Portal_ContactFragment extends BaseAppFragment implements View.OnCl
 
 
                 Intent intent2 = new Intent(mContext, UserInfoEditActivity.class);
-//                //        intent2.putExtra("content", LocalUser.DataBeanlist.get(tempPosition-1).getContent());
-//                intent2.putExtra("url", DistApp.serverAbsolutePath + "/snews!mobileNewsdetail.action?news.id=4028816f4d4be502014d4c0e22dc003d");
-//                intent2.putExtra("name", "消息通知");
+                intent2.putExtra("localUser", chat_userlist.get(position));
+                intent2.putExtra("userType", "contact");
                 startActivity(intent2);
                 mContext.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
 //                mContext.overridePendingTransition(0, 0);

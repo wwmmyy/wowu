@@ -35,7 +35,7 @@
             android:layout_centerInParent="true"
             android:layout_gravity="center"
             dist:placeholderImage="@drawable/ic_launcher"
-            dist:progressBarAutoRotateInterval="5000"
+            dist:progressBarAutoRotateInterval="2000"
             dist:progressBarImage="@drawable/con_progress_bar"
             dist:progressBarImageScaleType="centerInside"
             dist:roundAsCircle="true" />

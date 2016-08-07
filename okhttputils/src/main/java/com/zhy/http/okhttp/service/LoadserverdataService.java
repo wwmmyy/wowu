@@ -67,23 +67,28 @@ public class LoadserverdataService {
                         .execute(new StringCallback() {
                             @Override
                             public void onError(Request request, Exception e) {
-//                                e.printStackTrace();
-                                try {
-                                    JSONObject responseJson = new JSONObject(e.getMessage());
-                                    if (responseJson != null) {
-                                        mLoadListener.loadDataFailed(responseJson.optString("Message"), flag);  //因为返回值的格式统一：{"Message":"验证码错误"}，所以可以将错误信息直接统一解析出来
-                                    } else {
-                                        mLoadListener.loadDataFailed("返回值异常", flag);  //{"Message":"验证码错误"}
+                                e.printStackTrace();
+                                if (mLoadListener != null) {
+                                    try {
+                                        JSONObject responseJson = new JSONObject(e.getMessage());
+                                        if (responseJson != null) {
+                                            mLoadListener.loadDataFailed(responseJson.optString("Message"), flag);  //因为返回值的格式统一：{"Message":"验证码错误"}，所以可以将错误信息直接统一解析出来
+                                        } else {
+                                            mLoadListener.loadDataFailed("返回值异常", flag);  //{"Message":"验证码错误"}
+                                        }
+                                    } catch (Exception e2) {
+                                        e2.printStackTrace();
+                                        mLoadListener.loadDataFailed(e.getMessage(), flag);  //{"Message":"验证码错误"}
                                     }
-                                } catch (Exception e2) {
-                                    e2.printStackTrace();
-                                    mLoadListener.loadDataFailed(e.getMessage(), flag);  //{"Message":"验证码错误"}
+
                                 }
                             }
 
                             @Override
                             public void onResponse(String response) {
-                                mLoadListener.loadServerData(response.toString(), flag);
+                                if (mLoadListener != null) {
+                                    mLoadListener.loadServerData(response.toString(), flag);
+                                }
                             }
                         });
             }
@@ -134,12 +139,6 @@ public class LoadserverdataService {
             }
         }).start();
     }
-
-
-
-
-
-
 
 
 }

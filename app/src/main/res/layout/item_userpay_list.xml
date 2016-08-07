@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/memberpay_vip1"
+    android:layout_width="match_parent"
+    android:layout_height="65dp"
+    android:layout_marginTop="1dp"
+    android:background="@drawable/item_background_selector_nocorn"
+    android:gravity="center"
+    android:orientation="horizontal">
+    <!--android:layout_marginTop="15dp"-->
+
+    <ImageView
+        android:id="@+id/iv_userpay_pic"
+        android:layout_width="55dp"
+        android:layout_height="55dp"
+        android:layout_gravity="center"
+        android:layout_marginLeft="5dp"
+        android:padding="5dp"  />
+
+
+    <TextView
+        android:id="@+id/tv_userpay_month"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="6dp"
+        android:layout_weight="1"
+        android:gravity="center_vertical"
+        android:text="12个月会员"
+        android:textSize="17sp" />
+
+<!--
+    <TextView
+        android:id="@+id/tv_userpay_type"
+        android:layout_width="1dp"
+        android:layout_height="1dp"
+        android:visibility="gone" />
+-->
+
+
+    <TextView
+        android:id="@+id/tv_userpay_price"
+        android:layout_width="75dp"
+        android:layout_height="32dp"
+        android:layout_marginRight="15dp"
+        android:background="@color/colorPrimary"
+        android:gravity="center"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:text="¥108"
+        android:textColor="@color/white"
+        android:textSize="18sp" />
+</LinearLayout>

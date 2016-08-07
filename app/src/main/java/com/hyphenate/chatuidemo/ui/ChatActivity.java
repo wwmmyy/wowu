@@ -48,9 +48,9 @@ public class ChatActivity extends BaseActivity{
             super.onNewIntent(intent);
         else {
             startActivity(intent);
+            finish();
             overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
 
-            finish();
         }
 
     }
@@ -61,8 +61,8 @@ public class ChatActivity extends BaseActivity{
         if (EasyUtils.isSingleActivity(this)) {
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
-            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         }
+            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
     }
     
     public String getToChatUsername(){

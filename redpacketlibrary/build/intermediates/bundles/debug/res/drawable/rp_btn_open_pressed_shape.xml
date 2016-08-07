@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <corners android:radius="3dp" />
+    <solid android:color="#f0dc4a" />
+
+</shape><!-- From: file:/D:/Program%20Files%20(x86)/android/AndroidStudioWorkPlace/WuWo/redpacketlibrary/res/drawable/rp_btn_open_pressed_shape.xml -->

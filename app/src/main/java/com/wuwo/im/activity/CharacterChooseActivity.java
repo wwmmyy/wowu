@@ -126,13 +126,13 @@ public class CharacterChooseActivity extends BaseLoadActivity {
         switch (v.getId()) {
             case R.id.bt_jingque:
                 intent2 = new Intent(mContext, CharacterTestActivity.class);
-                intent2.putExtra("testType", JINGQUE);
+                intent2.putExtra("tetsType", JINGQUE);
                 startActivity(intent2);
                 overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                 break;
             case R.id.bt_kuaisu:
                 intent2 = new Intent(mContext, CharacterTestActivity.class);
-                intent2.putExtra("testType", JINGJIAN);
+                intent2.putExtra("tetsType", JINGJIAN);
                 startActivity(intent2);
                 overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                 break;

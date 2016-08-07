@@ -170,8 +170,9 @@ public class PublicChatRoomsActivity extends BaseActivity {
                 final EMChatRoom room = adapter.getItem(position);
                 startActivity(new Intent(PublicChatRoomsActivity.this, ChatActivity.class).putExtra("chatType", 3).
                 		putExtra("userId", room.getId()));
-                
-            }
+				overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+
+			}
         });
         listView.setOnScrollListener(new OnScrollListener() {
             

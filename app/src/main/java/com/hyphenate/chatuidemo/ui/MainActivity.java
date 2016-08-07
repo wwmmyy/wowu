@@ -92,19 +92,19 @@ public class MainActivity extends BaseActivity {
 		super.onCreate(savedInstanceState);
 		
 		if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-		    String packageName = getPackageName();
-		    PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
-		    if (!pm.isIgnoringBatteryOptimizations(packageName)) {
-		        Intent intent = new Intent();
-		        intent.setAction(android.provider.Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS);
-		        intent.setData(Uri.parse("package:" + packageName));
-		        startActivity(intent);
-		    }
+			String packageName = getPackageName();
+			PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
+			if (!pm.isIgnoringBatteryOptimizations(packageName)) {
+				Intent intent = new Intent();
+				intent.setAction(android.provider.Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS);
+				intent.setData(Uri.parse("package:" + packageName));
+				startActivity(intent);
+			}
 		}
-		
+
 		//make sure activity will not in background if user is logged into another device or removed
 		if (savedInstanceState != null && savedInstanceState.getBoolean(Constant.ACCOUNT_REMOVED, false)) {
-		    DemoHelper.getInstance().logout(false,null);
+			DemoHelper.getInstance().logout(false,null);
 			finish();
 			startActivity(new Intent(this, LoginActivity.class));
 			return;
@@ -558,7 +558,7 @@ public class MainActivity extends BaseActivity {
                             public void run() {
                                 finish();
                                 startActivity(new Intent(MainActivity.this, LoginActivity.class));
-                                
+								 overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                             }
                         });
                     }

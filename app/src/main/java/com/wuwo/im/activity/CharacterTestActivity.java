@@ -10,6 +10,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
@@ -47,6 +48,8 @@ public class CharacterTestActivity extends BaseLoadActivity {
     TextView tv_question_sure, tv_question,tv_num;
     HashMap<String, String> anwsers = new HashMap<>();
     TextView return_back;
+    ImageView return_back0;
+
 
     String[] questionData = {"A.....", "B......."};
 
@@ -62,7 +65,7 @@ public class CharacterTestActivity extends BaseLoadActivity {
         msg.what = Loading;
         mHandler.sendMessage(msg);
 
-       if( getIntent().getIntExtra("tetsType",CharacterChooseActivity.JINGJIAN)==CharacterChooseActivity.JINGJIAN){
+       if( getIntent().getIntExtra("tetsType",0)==CharacterChooseActivity.JINGJIAN){
            loadDataService.loadGetJsonRequestData(WowuApp.Question_JINGJIANListURL, R.id.bt_jingque);
        }else{
            loadDataService.loadGetJsonRequestData(WowuApp.QuestionListURL, R.id.bt_jingque);
@@ -120,6 +123,10 @@ public class CharacterTestActivity extends BaseLoadActivity {
     private void initTop() {
         return_back = (TextView) findViewById(R.id.return_back);
         return_back.setOnClickListener(this);
+        return_back0 = (ImageView) findViewById(R.id.return_back0);
+        return_back0.setOnClickListener(this);
+
+
         TextView tx_top_right = (TextView) findViewById(R.id.tx_top_right);
         tx_top_right.setVisibility(View.VISIBLE);
         tx_top_right.setOnClickListener(this);
@@ -204,13 +211,15 @@ public class CharacterTestActivity extends BaseLoadActivity {
 
                     tv_num.setText((currentPosition+1)+"\\"+Questions.size());
                      if(msg.arg1==0){
-                            return_back.setText("返回");
+                         return_back0.setVisibility(View.VISIBLE);
+                         return_back.setVisibility(View.GONE);
                      }else{
-                            return_back.setText("上一题");
+                         return_back.setVisibility(View.VISIBLE);
+                         return_back0.setVisibility(View.GONE);
                      }
 
                     if (pg != null && pg.isShowing()) pg.dismiss();
-                    tv_question.setText((msg.arg1 + 1) + ".\n" + Questions.get(msg.arg1).getTitle());
+                    tv_question.setText( Questions.get(msg.arg1).getTitle());//(msg.arg1 + 1) + ".\n" +
                     questionData[0] = "A." + Questions.get(msg.arg1).getOptionA();
                     questionData[1] = "B." + Questions.get(msg.arg1).getOptionB();
 
@@ -232,12 +241,11 @@ public class CharacterTestActivity extends BaseLoadActivity {
 
         switch (v.getId()) {
             case R.id.return_back:
-
-                if (currentPosition == 0) {
-                    return_back.setText("返回");
-                    CharacterTestActivity.this.finish();
-                    overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-                } else {
+//                if (currentPosition == 0) {
+//                    return_back.setText("返回");
+//                    CharacterTestActivity.this.finish();
+//                    overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+//                } else {
                     return_back.setText("上一题");
                     currentPosition--;
                     //刷新列表
@@ -245,8 +253,11 @@ public class CharacterTestActivity extends BaseLoadActivity {
                     msg.what = REFRESH;
                     msg.arg1 = currentPosition;
                     mHandler.sendMessage(msg);
-                }
-
+//                }
+                break;
+            case R.id.return_back0:
+                    CharacterTestActivity.this.finish();
+                    overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                 break;
             case R.id.tv_question_sure:
             case R.id.tx_top_right:
@@ -303,5 +314,12 @@ public class CharacterTestActivity extends BaseLoadActivity {
         if (pg != null && pg.isShowing()) pg.dismiss();
         MyToast.show(mContext, response);
     }
+
+    @Override
+    public void onDestroy() {
+        //  If null, all callbacks and messages will be removed.
+        mHandler.removeCallbacksAndMessages(null);
+    }
+
 }
 

@@ -30,9 +30,28 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:gravity="center_horizontal"
-            android:text="个人资料"
+            android:text="编辑资料"
             android:textColor="#ffffff"
             android:textSize="20sp" />
+
+
+        <TextView
+            android:id="@+id/tx_top_right"
+            android:textColor="#ffffff"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:paddingLeft="12dp"
+            android:paddingRight="12dp"
+            android:paddingTop="6dp"
+            android:paddingBottom="6dp"
+            android:layout_marginRight="10dp"
+            android:text="确定"
+            android:background="@drawable/bt_border_charactertest_selector"
+            android:gravity="center_vertical"
+            android:textSize="16sp" />
+
     </RelativeLayout>
 
 
@@ -66,7 +85,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
-
 
 <!--
         <ScrollView

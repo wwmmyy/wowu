@@ -196,6 +196,7 @@ public class LoginActivity extends BaseLoadActivity {
                     editor.putString("Password",WowuApp.Password);
                     editor.putInt("Gender",WowuApp.Gender);
                     editor.putString("Name",json.optString("name"));
+                    editor.putString("iconPath",json.optString("icon"));
                     editor.putBoolean("login_save_pwd_check",true); //登录成功后下次点开后可自动登录
                     editor.commit();
 
@@ -306,8 +307,11 @@ public class LoginActivity extends BaseLoadActivity {
     }
 
 
+    @Override
+    public void onBackPressed() {
 
-
+        this.finish();
+    }
 
     @Override
     public void loadDataFailed(String response,int flag) {

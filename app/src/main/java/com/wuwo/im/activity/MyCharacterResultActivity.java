@@ -7,10 +7,13 @@ import android.view.View;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.wuwo.im.config.WowuApp;
+import com.wuwo.im.view.RangeSeekBar;
 
 import im.wuwo.com.wuwo.R;
 
 public class MyCharacterResultActivity extends BaseLoadActivity  {
+
+    RangeSeekBar rs_character;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,6 +28,10 @@ public class MyCharacterResultActivity extends BaseLoadActivity  {
 
         SimpleDraweeView draweeView = (SimpleDraweeView) findViewById(R.id.user_login_pic);
         draweeView.setImageURI(Uri.parse(WowuApp.iconPath));//"http://www.gog.com.cn/pic/0/10/91/11/10911138_955870.jpg"
+
+        rs_character= (RangeSeekBar) findViewById(R.id.rs_character);
+
+
     }
 
 

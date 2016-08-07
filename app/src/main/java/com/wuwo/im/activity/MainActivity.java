@@ -15,6 +15,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.os.PowerManager;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -23,7 +24,7 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.support.v7.app.AlertDialog;
-import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -35,16 +36,28 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.easemob.redpacketui.RedPacketConstant;
+import com.easemob.redpacketui.utils.RedPacketUtil;
 import com.hyphenate.EMCallBack;
 import com.hyphenate.EMContactListener;
+import com.hyphenate.EMMessageListener;
 import com.hyphenate.chat.EMClient;
+import com.hyphenate.chat.EMCmdMessageBody;
+import com.hyphenate.chat.EMConversation;
+import com.hyphenate.chat.EMMessage;
 import com.hyphenate.chatuidemo.Constant;
 import com.hyphenate.chatuidemo.DemoHelper;
+import com.hyphenate.chatuidemo.db.InviteMessgeDao;
+import com.hyphenate.chatuidemo.db.UserDao;
 import com.hyphenate.chatuidemo.runtimepermissions.PermissionsManager;
 import com.hyphenate.chatuidemo.runtimepermissions.PermissionsResultAction;
-import com.hyphenate.chatuidemo.ui.*;
+import com.hyphenate.chatuidemo.ui.ChatActivity;
+import com.hyphenate.chatuidemo.ui.ConversationListFragment;
+import com.hyphenate.chatuidemo.ui.GroupsActivity;
 import com.hyphenate.easeui.utils.EaseCommonUtils;
+import com.hyphenate.util.EMLog;
 import com.squareup.otto.Bus;
+import com.umeng.analytics.MobclickAgent;
+import com.umeng.update.UmengUpdateAgent;
 import com.wuwo.im.config.ExitApp;
 import com.wuwo.im.config.OneMapOttoBus;
 import com.wuwo.im.config.WowuApp;
@@ -107,19 +120,43 @@ public class MainActivity extends BaseFragementActivity implements MyTabWidget.O
     private ImageView menu_theme;
     //    private RelativeLayout title_bar;
     private TitlePopup titlePopup;
-
-    private ConversationListFragment conversationListFragment;
-    private BroadcastReceiver broadcastReceiver;
-    private LocalBroadcastManager broadcastManager;
     private int currentTabIndex;
-    private BroadcastReceiver internalDebugReceiver;
+
+    private boolean isCurrentAccountRemoved = false;
+
+    // user logged into another device
+    public boolean isConflict = false;
+
+    /**
+     * check if current user account was remove
+     */
+    public boolean getCurrentAccountRemoved() {
+        return isCurrentAccountRemoved;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //make sure activity will not in background if user is logged into another device or removed
+        if (savedInstanceState != null && savedInstanceState.getBoolean(Constant.ACCOUNT_REMOVED, false)) {
+            DemoHelper.getInstance().logout(false, null);
+            finish();
+            startActivity(new Intent(this, com.hyphenate.chatuidemo.ui.LoginActivity.class));
+            return;
+        } else if (savedInstanceState != null && savedInstanceState.getBoolean("isConflict", false)) {
+            finish();
+            startActivity(new Intent(this, com.hyphenate.chatuidemo.ui.LoginActivity.class));
+            return;
+        }
+
+
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);//强制为竖屏
         setContentView(R.layout.activity_main);
-        init();
+
+        requestPermissions();
+
+        initIM();
 
 
 ////      启动消息推送接收服务
@@ -162,18 +199,15 @@ public class MainActivity extends BaseFragementActivity implements MyTabWidget.O
         mOttoBus = OneMapOttoBus.getInstance();
         mOttoBus.register(this);
 
-
-
-        initIM();
-
-
-
-
+        init();
 
     }
 
+    //    private ContactListFragment contactListFragment;
     private void initIM() {
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             String packageName = getPackageName();
             PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
             if (!pm.isIgnoringBatteryOptimizations(packageName)) {
@@ -184,6 +218,23 @@ public class MainActivity extends BaseFragementActivity implements MyTabWidget.O
             }
         }
 
+        //umeng api
+        MobclickAgent.updateOnlineConfig(this);
+        UmengUpdateAgent.setUpdateOnlyWifi(false);
+        UmengUpdateAgent.update(this);
+
+        if (getIntent().getBooleanExtra(Constant.ACCOUNT_CONFLICT, false) && !isConflictDialogShow) {
+            showConflictDialog();
+        } else if (getIntent().getBooleanExtra(Constant.ACCOUNT_REMOVED, false) && !isAccountRemovedDialogShow) {
+            showAccountRemovedDialog();
+        }
+
+        inviteMessgeDao = new InviteMessgeDao(this);
+        userDao = new UserDao(this);
+
+//        contactListFragment = new ContactListFragment();
+
+
         //register broadcast receiver to receive the change of group from DemoHelper
         registerBroadcastReceiver();
 
@@ -193,6 +244,7 @@ public class MainActivity extends BaseFragementActivity implements MyTabWidget.O
         registerInternalDebugReceiver();
 
     }
+
     @TargetApi(23)
     private void requestPermissions() {
         PermissionsManager.getInstance().requestAllManifestPermissionsIfNecessary(this, new PermissionsResultAction() {
@@ -209,6 +261,58 @@ public class MainActivity extends BaseFragementActivity implements MyTabWidget.O
     }
 
 
+    EMMessageListener messageListener = new EMMessageListener() {
+
+        @Override
+        public void onMessageReceived(List<EMMessage> messages) {
+            // notify new message
+            for (EMMessage message : messages) {
+                DemoHelper.getInstance().getNotifier().onNewMsg(message);
+            }
+            refreshUIWithMessage();
+        }
+
+        @Override
+        public void onCmdMessageReceived(List<EMMessage> messages) {
+            for (EMMessage message : messages) {
+                EMCmdMessageBody cmdMsgBody = (EMCmdMessageBody) message.getBody();
+                final String action = cmdMsgBody.action();//get the action user defined in command message
+                if (action.equals(RedPacketConstant.REFRESH_GROUP_RED_PACKET_ACTION) && message.getChatType() == EMMessage.ChatType.GroupChat) {
+                    RedPacketUtil.receiveRedPacketAckMessage(message);
+                }
+            }
+            refreshUIWithMessage();
+        }
+
+        @Override
+        public void onMessageReadAckReceived(List<EMMessage> messages) {
+        }
+
+        @Override
+        public void onMessageDeliveryAckReceived(List<EMMessage> message) {
+        }
+
+        @Override
+        public void onMessageChanged(EMMessage message, Object change) {
+        }
+    };
+
+    private void refreshUIWithMessage() {
+        runOnUiThread(new Runnable() {
+            public void run() {
+                // refresh unread count
+                updateUnreadLabel();
+                if (currentTabIndex == 0) {
+                    // refresh conversation list
+                    if (conversationListFragment != null) {
+                        conversationListFragment.refresh();
+                    }
+                }
+            }
+        });
+    }
+
+
     private void registerBroadcastReceiver() {
         broadcastManager = LocalBroadcastManager.getInstance(this);
         IntentFilter intentFilter = new IntentFilter();
@@ -219,22 +323,27 @@ public class MainActivity extends BaseFragementActivity implements MyTabWidget.O
 
             @Override
             public void onReceive(Context context, Intent intent) {
-//                updateUnreadLabel();
-//                updateUnreadAddressLable();
+                updateUnreadLabel();
+                updateUnreadAddressLable();
                 if (currentTabIndex == 0) {
                     // refresh conversation list
                     if (conversationListFragment != null) {
                         conversationListFragment.refresh();
                     }
                 }
+//                else if (currentTabIndex == 1) {
+//                    if(contactListFragment != null) {
+//                        contactListFragment.refresh();
+//                    }
+//                }
                 String action = intent.getAction();
-                if(action.equals(Constant.ACTION_GROUP_CHANAGED)){
+                if (action.equals(Constant.ACTION_GROUP_CHANAGED)) {
                     if (EaseCommonUtils.getTopActivity(MainActivity.this).equals(GroupsActivity.class.getName())) {
                         GroupsActivity.instance.onResume();
                     }
                 }
-                if (action.equals(RedPacketConstant.REFRESH_GROUP_RED_PACKET_ACTION)){
-                    if (conversationListFragment != null){
+                if (action.equals(RedPacketConstant.REFRESH_GROUP_RED_PACKET_ACTION)) {
+                    if (conversationListFragment != null) {
                         conversationListFragment.refresh();
                     }
                 }
@@ -245,7 +354,9 @@ public class MainActivity extends BaseFragementActivity implements MyTabWidget.O
 
     public class MyContactListener implements EMContactListener {
         @Override
-        public void onContactAdded(String username) {}
+        public void onContactAdded(String username) {
+        }
+
         @Override
         public void onContactDeleted(final String username) {
             runOnUiThread(new Runnable() {
@@ -260,15 +371,21 @@ public class MainActivity extends BaseFragementActivity implements MyTabWidget.O
                 }
             });
         }
+
         @Override
-        public void onContactInvited(String username, String reason) {}
+        public void onContactInvited(String username, String reason) {
+        }
+
         @Override
-        public void onContactAgreed(String username) {}
+        public void onContactAgreed(String username) {
+        }
+
         @Override
-        public void onContactRefused(String username) {}
+        public void onContactRefused(String username) {
+        }
     }
 
-    private void unregisterBroadcastReceiver(){
+    private void unregisterBroadcastReceiver() {
         broadcastManager.unregisterReceiver(broadcastReceiver);
     }
 
@@ -276,10 +393,10 @@ public class MainActivity extends BaseFragementActivity implements MyTabWidget.O
     protected void onDestroy() {
         super.onDestroy();
 
-//        if (conflictBuilder != null) {
-//            conflictBuilder.create().dismiss();
-//            conflictBuilder = null;
-//        }
+        if (conflictBuilder != null) {
+            conflictBuilder.create().dismiss();
+            conflictBuilder = null;
+        }
         unregisterBroadcastReceiver();
 
         try {
@@ -287,31 +404,207 @@ public class MainActivity extends BaseFragementActivity implements MyTabWidget.O
         } catch (Exception e) {
         }
 
-
-        //       程序关闭的时候将定位服务退出
-//       if( mLocationClient.isStarted()){
-//           mLocationClient.stop();
-//       }
-
-//        unregisterReceiver(mBroadcastReceiver);
-
     }
-
-
-
 
     /**
      * update unread message count
      */
     public void updateUnreadLabel() {
-//        int count = getUnreadMsgCountTotal();
-//        if (count > 0) {
-//            unreadLabel.setText(String.valueOf(count));
-//            unreadLabel.setVisibility(View.VISIBLE);
-//        } else {
-//            unreadLabel.setVisibility(View.INVISIBLE);
-//        }
+        int count = getUnreadMsgCountTotal();
+        if (count > 0) {
+            mTopIndicator.setIndicateDisplay(3, true, "" + count);
+        } else {
+            mTopIndicator.setIndicateDisplay(3, false, "");
+        }
     }
+
+    /**
+     * update the total unread count
+     */
+    public void updateUnreadAddressLable() {
+        runOnUiThread(new Runnable() {
+            public void run() {
+                int count = getUnreadAddressCountTotal();
+                if (count > 0) {
+                    mTopIndicator.setIndicateDisplay(2, true, "" + count);
+                } else {
+                    mTopIndicator.setIndicateDisplay(2, false, "");
+                }
+            }
+        });
+    }
+
+    /**
+     * get unread event notification count, including application, accepted, etc
+     *
+     * @return
+     */
+    public int getUnreadAddressCountTotal() {
+        int unreadAddressCountTotal = 0;
+        unreadAddressCountTotal = inviteMessgeDao.getUnreadMessagesCount();
+        return unreadAddressCountTotal;
+    }
+
+    /**
+     * get unread message count
+     *
+     * @return
+     */
+    public int getUnreadMsgCountTotal() {
+        int unreadMsgCountTotal = 0;
+        int chatroomUnreadMsgCount = 0;
+        unreadMsgCountTotal = EMClient.getInstance().chatManager().getUnreadMsgsCount();
+        for (EMConversation conversation : EMClient.getInstance().chatManager().getAllConversations().values()) {
+            if (conversation.getType() == EMConversation.EMConversationType.ChatRoom)
+                chatroomUnreadMsgCount = chatroomUnreadMsgCount + conversation.getUnreadMsgCount();
+        }
+        return unreadMsgCountTotal - chatroomUnreadMsgCount;
+    }
+
+    private InviteMessgeDao inviteMessgeDao;
+    private UserDao userDao;
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        if (!isConflict && !isCurrentAccountRemoved) {
+            updateUnreadLabel();
+            updateUnreadAddressLable();
+        }
+
+        // unregister this event listener when this activity enters the
+        // background
+        DemoHelper sdkHelper = DemoHelper.getInstance();
+        sdkHelper.pushActivity(this);
+
+        EMClient.getInstance().chatManager().addMessageListener(messageListener);
+    }
+
+    @Override
+    protected void onStop() {
+        EMClient.getInstance().chatManager().removeMessageListener(messageListener);
+        DemoHelper sdkHelper = DemoHelper.getInstance();
+        sdkHelper.popActivity(this);
+
+        super.onStop();
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putBoolean("isConflict", isConflict);
+        outState.putBoolean(Constant.ACCOUNT_REMOVED, isCurrentAccountRemoved);
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            moveTaskToBack(false);
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
+    private android.app.AlertDialog.Builder conflictBuilder;
+    private android.app.AlertDialog.Builder accountRemovedBuilder;
+    private boolean isConflictDialogShow;
+    private boolean isAccountRemovedDialogShow;
+    private BroadcastReceiver internalDebugReceiver;
+    private ConversationListFragment conversationListFragment;
+    private BroadcastReceiver broadcastReceiver;
+    private LocalBroadcastManager broadcastManager;
+
+    /**
+     * show the dialog when user logged into another device
+     */
+    private void showConflictDialog() {
+        isConflictDialogShow = true;
+        DemoHelper.getInstance().logout(false, null);
+        String st = getResources().getString(R.string.Logoff_notification);
+        if (!MainActivity.this.isFinishing()) {
+            // clear up global variables
+            try {
+                if (conflictBuilder == null)
+                    conflictBuilder = new android.app.AlertDialog.Builder(MainActivity.this);
+                conflictBuilder.setTitle(st);
+                conflictBuilder.setMessage(R.string.connect_conflict);
+                conflictBuilder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        conflictBuilder = null;
+                        finish();
+                        Intent intent = new Intent(MainActivity.this, com.hyphenate.chatuidemo.ui.LoginActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(intent);
+                    }
+                });
+                conflictBuilder.setCancelable(false);
+                conflictBuilder.create().show();
+                isConflict = true;
+            } catch (Exception e) {
+                EMLog.e(TAG, "---------color conflictBuilder error" + e.getMessage());
+            }
+
+        }
+
+    }
+
+    /**
+     * show the dialog if user account is removed
+     */
+    private void showAccountRemovedDialog() {
+        isAccountRemovedDialogShow = true;
+        DemoHelper.getInstance().logout(false, null);
+        String st5 = getResources().getString(R.string.Remove_the_notification);
+        if (!MainActivity.this.isFinishing()) {
+            // clear up global variables
+            try {
+                if (accountRemovedBuilder == null)
+                    accountRemovedBuilder = new android.app.AlertDialog.Builder(MainActivity.this);
+                accountRemovedBuilder.setTitle(st5);
+                accountRemovedBuilder.setMessage(R.string.em_user_remove);
+                accountRemovedBuilder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        accountRemovedBuilder = null;
+                        finish();
+                        startActivity(new Intent(MainActivity.this, com.hyphenate.chatuidemo.ui.LoginActivity.class));
+                    }
+                });
+                accountRemovedBuilder.setCancelable(false);
+                accountRemovedBuilder.create().show();
+                isCurrentAccountRemoved = true;
+            } catch (Exception e) {
+                EMLog.e(TAG, "---------color userRemovedBuilder error" + e.getMessage());
+            }
+
+        }
+
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        if (intent.getBooleanExtra(Constant.ACCOUNT_CONFLICT, false) && !isConflictDialogShow) {
+            showConflictDialog();
+        } else if (intent.getBooleanExtra(Constant.ACCOUNT_REMOVED, false) && !isAccountRemovedDialogShow) {
+            showAccountRemovedDialog();
+        }
+    }
+
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+        PermissionsManager.getInstance().notifyPermissionsChange(permissions, grantResults);
+    }
+
+
     /**
      * debug purpose only, you can ignore this
      */
@@ -320,7 +613,7 @@ public class MainActivity extends BaseFragementActivity implements MyTabWidget.O
 
             @Override
             public void onReceive(Context context, Intent intent) {
-                DemoHelper.getInstance().logout(false,new EMCallBack() {
+                DemoHelper.getInstance().logout(false, new EMCallBack() {
 
                     @Override
                     public void onSuccess() {
@@ -334,21 +627,18 @@ public class MainActivity extends BaseFragementActivity implements MyTabWidget.O
                     }
 
                     @Override
-                    public void onProgress(int progress, String status) {}
+                    public void onProgress(int progress, String status) {
+                    }
 
                     @Override
-                    public void onError(int code, String message) {}
+                    public void onError(int code, String message) {
+                    }
                 });
             }
         };
         IntentFilter filter = new IntentFilter(getPackageName() + ".em_internal_debug");
         registerReceiver(internalDebugReceiver, filter);
     }
-
-
-
-
-
 
 
 //    /**
@@ -627,6 +917,7 @@ public class MainActivity extends BaseFragementActivity implements MyTabWidget.O
         fragments.add(new Portal_LocalFragment());
         fragments.add(new Portal_FindFragment());
         fragments.add(new Portal_ContactFragment());
+//        fragments.add(contactListFragment);
 
 //        fragments.add(new Portal_XiaoXiFragment());
         fragments.add(conversationListFragment);
@@ -716,10 +1007,10 @@ public class MainActivity extends BaseFragementActivity implements MyTabWidget.O
         menu_theme.setOnClickListener(this);
 
 
-//        底部导航条消息数量红点
-        mTopIndicator.setIndicateDisplay(1, true, "11");
-        mTopIndicator.setIndicateDisplay(2, true, "3");
-        mTopIndicator.setIndicateDisplay(3, true, "8");
+////        底部导航条消息数量红点
+//        mTopIndicator.setIndicateDisplay(1, true, "11");
+//        mTopIndicator.setIndicateDisplay(2, true, "3");
+//        mTopIndicator.setIndicateDisplay(3, true, "8");
 
     }
 
@@ -734,6 +1025,16 @@ public class MainActivity extends BaseFragementActivity implements MyTabWidget.O
 //                return;
 //        }
 //    }
+
+
+     @Override
+    public void onBackPressed() {
+         Intent home = new Intent(Intent.ACTION_MAIN);
+         home.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+         home.addCategory(Intent.CATEGORY_HOME);
+         startActivity(home);
+     }
+
 
 
 /*    @Override
@@ -1014,28 +1315,28 @@ public class MainActivity extends BaseFragementActivity implements MyTabWidget.O
     public static final String EXIST = "exist";
     boolean isExist = false;
 
-    @Override
-    protected void onNewIntent(Intent intent) {
-        super.onNewIntent(intent);
-
-        Log.d("进入LoginValidateActivity", "onNewIntent");
-
-        if (intent != null) {//判断其他Activity启动本Activity时传递来的intent是否为空
-//            this.finish();
-            //获取intent中对应Tag的布尔值
-            isExist = intent.getBooleanExtra(EXIST, false);
-            //如果为真则退出本Activity
-            if (isExist) {
-                this.finish();
-                //  彻底退出应用程序，经测试，效果很好
-                Intent startMain = new Intent(Intent.ACTION_MAIN);
-                startMain.addCategory(Intent.CATEGORY_HOME);
-                startMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(startMain);
-                System.exit(0);
-            }
-        }
-    }
+//    @Override
+//    protected void onNewIntent(Intent intent) {
+//        super.onNewIntent(intent);
+//
+//        Log.d("进入LoginValidateActivity", "onNewIntent");
+//
+//        if (intent != null) {//判断其他Activity启动本Activity时传递来的intent是否为空
+////            this.finish();
+//            //获取intent中对应Tag的布尔值
+//            isExist = intent.getBooleanExtra(EXIST, false);
+//            //如果为真则退出本Activity
+//            if (isExist) {
+//                this.finish();
+//                //  彻底退出应用程序，经测试，效果很好
+//                Intent startMain = new Intent(Intent.ACTION_MAIN);
+//                startMain.addCategory(Intent.CATEGORY_HOME);
+//                startMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//                startActivity(startMain);
+//                System.exit(0);
+//            }
+//        }
+//    }
 
     private void initPopupData() {
         //实例化标题栏弹窗
@@ -1088,15 +1389,32 @@ public class MainActivity extends BaseFragementActivity implements MyTabWidget.O
     }
 
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-//        registerBoradcastReceiver();
+
+
+
+
+
+
+
+
+
+
+    /*在fragment的管理类中，我们要实现这部操作，而他的主要作用是，当D这个activity回传数据到
+这里碎片管理器下面的fragnment中时，往往会经过这个管理器中的onActivityResult的方法。*/
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (data != null && data.getExtras() != null && resultCode == RESULT_OK) {
+            Bundle result = data.getExtras(); //data为B中回传的Intent
+            switch (requestCode) {
+                case WowuApp.ALIPAY:
+              /*在这里，我们通过碎片管理器中的Tag，就是每个碎片的名称，来获取对应的fragment*/
+                    Fragment f = fragmentManager.findFragmentByTag( fragments.get(4).getClass().getSimpleName());
+              /*然后在碎片中调用重写的onActivityResult方法*/
+                    f.onActivityResult(requestCode, resultCode, data);
+                    break;
+
+            }
+        }
     }
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-//        unregisterReceiver(mBroadcastReceiver);
-    }
 }

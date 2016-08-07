@@ -44,8 +44,7 @@
             <RelativeLayout
                 android:id="@+id/clear_cache_layout"
                 android:layout_width="fill_parent"
-                android:layout_height="55dp"
-                android:background="@drawable/item_background_selector_nocorn">
+                android:layout_height="55dp">
 
 
                 <TextView
@@ -67,19 +66,21 @@
                     android:orientation="horizontal">
 
                     <TextView
+                        android:id="@+id/tv_zhongwen_nicheng1"
                         style="@style/user_info_detail_text_style"
-                        android:text="用户的昵称"  />
+                        android:layout_toRightOf="@id/tv_zhongwen_nicheng"
+                        android:text="用户的昵称" />
 
-               <!--  <TextView
-                        style="@style/setting_text_style"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true"
-                        android:layout_marginRight="15dip"
-                        android:drawablePadding="5dp"
-                        android:drawableRight="@drawable/morex"
-                        android:textColor="@android:color/darker_gray" />-->
+                    <!--  <TextView
+                             style="@style/setting_text_style"
+                             android:layout_width="wrap_content"
+                             android:layout_height="wrap_content"
+                             android:layout_alignParentRight="true"
+                             android:layout_centerVertical="true"
+                             android:layout_marginRight="15dip"
+                             android:drawablePadding="5dp"
+                             android:drawableRight="@drawable/morex"
+                             android:textColor="@android:color/darker_gray" />-->
                 </LinearLayout>
 
             </RelativeLayout>
@@ -91,8 +92,7 @@
 
             <RelativeLayout
                 android:layout_width="fill_parent"
-                android:layout_height="55dp"
-                android:background="@drawable/item_background_selector_nocorn">
+                android:layout_height="55dp">
 
                 <!--                <ImageView
                                     android:layout_width="wrap_content"
@@ -113,7 +113,6 @@
 
 
                 <LinearLayout
-                    android:id="@+id/ln_yingwen_nicheng"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
@@ -121,27 +120,27 @@
                     android:orientation="horizontal">
 
                     <TextView
+                        android:id="@+id/ln_yingwen_nicheng"
                         style="@style/user_info_detail_text_style"
-                        android:text="English Name"  />
+                        android:text="English Name" />
 
-<!--                    <TextView
-                        style="@style/setting_text_style"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true"
-                        android:layout_marginRight="15dip"
-                        android:drawablePadding="5dp"
-                        android:drawableRight="@drawable/morex"
-                        android:textColor="@android:color/darker_gray" />-->
+                    <!--                    <TextView
+                                            style="@style/setting_text_style"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_alignParentRight="true"
+                                            android:layout_centerVertical="true"
+                                            android:layout_marginRight="15dip"
+                                            android:drawablePadding="5dp"
+                                            android:drawableRight="@drawable/morex"
+                                            android:textColor="@android:color/darker_gray" />-->
                 </LinearLayout>
             </RelativeLayout>
 
 
             <RelativeLayout
                 android:layout_width="fill_parent"
-                android:layout_height="55dp"
-                android:background="@drawable/item_background_selector_nocorn">
+                android:layout_height="55dp">
 
                 <!--                <ImageView
                                     android:layout_width="wrap_content"
@@ -162,7 +161,6 @@
 
 
                 <LinearLayout
-                    android:id="@+id/ln_birthday"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
@@ -170,27 +168,27 @@
                     android:orientation="horizontal">
 
                     <TextView
+                        android:id="@+id/ln_birthday"
                         style="@style/user_info_detail_text_style"
-                        android:text="1898-07-23   26岁  射手座"  />
+                        android:text="1898-07-23   26岁  射手座" />
 
-<!--                    <TextView
-                        style="@style/setting_text_style"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true"
-                        android:layout_marginRight="15dip"
-                        android:drawablePadding="5dp"
-                        android:drawableRight="@drawable/morex"
-                        android:textColor="@android:color/darker_gray" />-->
+                    <!--                    <TextView
+                                            style="@style/setting_text_style"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_alignParentRight="true"
+                                            android:layout_centerVertical="true"
+                                            android:layout_marginRight="15dip"
+                                            android:drawablePadding="5dp"
+                                            android:drawableRight="@drawable/morex"
+                                            android:textColor="@android:color/darker_gray" />-->
                 </LinearLayout>
             </RelativeLayout>
 
 
             <RelativeLayout
                 android:layout_width="fill_parent"
-                android:layout_height="55dp"
-                android:background="@drawable/item_background_selector_nocorn">
+                android:layout_height="55dp">
 
                 <!--                <ImageView
                                     android:layout_width="wrap_content"
@@ -210,7 +208,6 @@
 
 
                 <LinearLayout
-                    android:id="@+id/ln_feeling"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
@@ -218,27 +215,27 @@
                     android:orientation="horizontal">
 
                     <TextView
+                        android:id="@+id/ln_feeling"
                         style="@style/user_info_detail_text_style"
-                        android:text="未婚"  />
+                        android:text="未婚" />
 
-<!--                    <TextView
-                        style="@style/setting_text_style"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true"
-                        android:layout_marginRight="15dip"
-                        android:drawablePadding="5dp"
-                        android:drawableRight="@drawable/morex"
-                        android:textColor="@android:color/darker_gray" />-->
+                    <!--                    <TextView
+                                            style="@style/setting_text_style"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_alignParentRight="true"
+                                            android:layout_centerVertical="true"
+                                            android:layout_marginRight="15dip"
+                                            android:drawablePadding="5dp"
+                                            android:drawableRight="@drawable/morex"
+                                            android:textColor="@android:color/darker_gray" />-->
                 </LinearLayout>
             </RelativeLayout>
 
 
             <RelativeLayout
                 android:layout_width="fill_parent"
-                android:layout_height="55dp"
-                android:background="@drawable/item_background_selector_nocorn">
+                android:layout_height="55dp">
 
                 <!--                <ImageView
                                     android:layout_width="wrap_content"
@@ -259,7 +256,6 @@
 
 
                 <LinearLayout
-                    android:id="@+id/ln_jiaxiang"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
@@ -267,19 +263,20 @@
                     android:orientation="horizontal">
 
                     <TextView
+                        android:id="@+id/ln_jiaxiang"
                         style="@style/user_info_detail_text_style"
                         android:text="福建/莆田" />
 
-<!--                    <TextView
-                        style="@style/setting_text_style"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true"
-                        android:layout_marginRight="15dip"
-                        android:drawablePadding="5dp"
-                        android:drawableRight="@drawable/morex"
-                        android:textColor="@android:color/darker_gray" />-->
+                    <!--                    <TextView
+                                            style="@style/setting_text_style"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_alignParentRight="true"
+                                            android:layout_centerVertical="true"
+                                            android:layout_marginRight="15dip"
+                                            android:drawablePadding="5dp"
+                                            android:drawableRight="@drawable/morex"
+                                            android:textColor="@android:color/darker_gray" />-->
                 </LinearLayout>
 
             </RelativeLayout>
@@ -287,8 +284,7 @@
 
             <RelativeLayout
                 android:layout_width="fill_parent"
-                android:layout_height="55dp"
-                android:background="@drawable/item_background_selector_nocorn">
+                android:layout_height="55dp">
 
                 <!--                <ImageView
                                     android:layout_width="wrap_content"
@@ -309,7 +305,6 @@
 
 
                 <LinearLayout
-                    android:id="@+id/ln_geren_jieshao"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
@@ -317,19 +312,20 @@
                     android:orientation="horizontal">
 
                     <TextView
+                        android:id="@+id/ln_geren_jieshao"
                         style="@style/user_info_detail_text_style"
                         android:text="性格社交创始人" />
 
-<!--                    <TextView
-                        style="@style/setting_text_style"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true"
-                        android:layout_marginRight="15dip"
-                        android:drawablePadding="5dp"
-                        android:drawableRight="@drawable/morex"
-                        android:textColor="@android:color/darker_gray" />-->
+                    <!--                    <TextView
+                                            style="@style/setting_text_style"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_alignParentRight="true"
+                                            android:layout_centerVertical="true"
+                                            android:layout_marginRight="15dip"
+                                            android:drawablePadding="5dp"
+                                            android:drawableRight="@drawable/morex"
+                                            android:textColor="@android:color/darker_gray" />-->
                 </LinearLayout>
 
             </RelativeLayout>
@@ -341,8 +337,7 @@
 
             <RelativeLayout
                 android:layout_width="fill_parent"
-                android:layout_height="55dp"
-                android:background="@drawable/item_background_selector_nocorn">
+                android:layout_height="55dp">
 
                 <!--                <ImageView
                                     android:layout_width="wrap_content"
@@ -363,7 +358,6 @@
 
 
                 <LinearLayout
-                    android:id="@+id/ln_shenfenbiaoqian"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
@@ -371,19 +365,20 @@
                     android:orientation="horizontal">
 
                     <TextView
+                        android:id="@+id/ln_shenfenbiaoqian"
                         style="@style/user_info_detail_text_style"
-                        android:text="白领/创业者/创始人"  />
+                        android:text="白领/创业者/创始人" />
 
- <!--                   <TextView
-                        style="@style/setting_text_style"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true"
-                        android:layout_marginRight="15dip"
-                        android:drawablePadding="5dp"
-                        android:drawableRight="@drawable/morex"
-                        android:textColor="@android:color/darker_gray" />-->
+                    <!--                   <TextView
+                                           style="@style/setting_text_style"
+                                           android:layout_width="wrap_content"
+                                           android:layout_height="wrap_content"
+                                           android:layout_alignParentRight="true"
+                                           android:layout_centerVertical="true"
+                                           android:layout_marginRight="15dip"
+                                           android:drawablePadding="5dp"
+                                           android:drawableRight="@drawable/morex"
+                                           android:textColor="@android:color/darker_gray" />-->
                 </LinearLayout>
             </RelativeLayout>
 
@@ -391,7 +386,6 @@
             <RelativeLayout
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/item_background_selector_nocorn"
                 android:paddingBottom="5dp"
                 android:paddingTop="5dp">
 
@@ -414,7 +408,6 @@
 
 
                 <LinearLayout
-                    android:id="@+id/ln_zhiye"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
@@ -422,19 +415,9 @@
                     android:orientation="horizontal">
 
                     <TextView
+                        android:id="@+id/ln_zhiye"
                         style="@style/user_info_detail_text_style"
-                        android:text="白领/创业者/创始人\n 白领/创业者/创始人"  />
-
-               <!--     <TextView
-                        style="@style/setting_text_style"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true"
-                        android:layout_marginRight="15dip"
-                        android:drawablePadding="5dp"
-                        android:drawableRight="@drawable/morex"
-                        android:textColor="@android:color/darker_gray" />-->
+                        android:text="白领/创业者/创始人 " />
                 </LinearLayout>
             </RelativeLayout>
 
@@ -442,7 +425,6 @@
             <RelativeLayout
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/item_background_selector_nocorn"
                 android:paddingBottom="5dp"
                 android:paddingTop="5dp">
 
@@ -464,7 +446,6 @@
 
 
                 <LinearLayout
-                    android:id="@+id/ln_school"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
@@ -472,19 +453,20 @@
                     android:orientation="horizontal">
 
                     <TextView
+                        android:id="@+id/ln_school"
                         style="@style/user_info_detail_text_style"
-                        android:text="白领/创业者/创始人\n 白领/创业者/创始人"  />
+                        android:text="白领/创业者/创始人 " />
 
-<!--                    <TextView
-                        style="@style/setting_text_style"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true"
-                        android:layout_marginRight="15dip"
-                        android:drawablePadding="5dp"
-                        android:drawableRight="@drawable/morex"
-                        android:textColor="@android:color/darker_gray" />-->
+                    <!--                    <TextView
+                                            style="@style/setting_text_style"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_alignParentRight="true"
+                                            android:layout_centerVertical="true"
+                                            android:layout_marginRight="15dip"
+                                            android:drawablePadding="5dp"
+                                            android:drawableRight="@drawable/morex"
+                                            android:textColor="@android:color/darker_gray" />-->
                 </LinearLayout>
             </RelativeLayout>
 
@@ -530,8 +512,7 @@
             <RelativeLayout
                 android:id="@+id/rt_shenghuodidian"
                 android:layout_width="fill_parent"
-                android:layout_height="55dp"
-                android:background="@drawable/item_background_selector_nocorn">
+                android:layout_height="55dp">
 
                 <!--                <ImageView
                                     android:layout_width="wrap_content"
@@ -561,18 +542,18 @@
                     <TextView
                         android:id="@+id/tv_shenghuodidian"
                         style="@style/user_info_detail_text_style"
-                        android:text="宁和小区"  />
+                        android:text="宁和小区" />
 
-<!--                    <TextView
-                        style="@style/setting_text_style"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true"
-                        android:layout_marginRight="15dip"
-                        android:drawablePadding="5dp"
-                        android:drawableRight="@drawable/morex"
-                        android:textColor="@android:color/darker_gray" />-->
+                    <!--                    <TextView
+                                            style="@style/setting_text_style"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_alignParentRight="true"
+                                            android:layout_centerVertical="true"
+                                            android:layout_marginRight="15dip"
+                                            android:drawablePadding="5dp"
+                                            android:drawableRight="@drawable/morex"
+                                            android:textColor="@android:color/darker_gray" />-->
                 </LinearLayout>
 
             </RelativeLayout>
@@ -585,8 +566,7 @@
             <RelativeLayout
                 android:id="@+id/rt_gongzuodidian"
                 android:layout_width="fill_parent"
-                android:layout_height="55dp"
-                android:background="@drawable/item_background_selector_nocorn">
+                android:layout_height="55dp">
 
                 <!--                <ImageView
                                     android:layout_width="wrap_content"
@@ -616,19 +596,19 @@
 
                     <TextView
                         android:id="@+id/ln_gongzuodidian"
-                         style="@style/user_info_detail_text_style"
-                        android:text="大宁商业广场"  />
+                        style="@style/user_info_detail_text_style"
+                        android:text="大宁商业广场" />
 
-<!--                    <TextView
-                        style="@style/setting_text_style"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true"
-                        android:layout_marginRight="15dip"
-                        android:drawablePadding="5dp"
-                        android:drawableRight="@drawable/morex"
-                        android:textColor="@android:color/darker_gray" />-->
+                    <!--                    <TextView
+                                            style="@style/setting_text_style"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_alignParentRight="true"
+                                            android:layout_centerVertical="true"
+                                            android:layout_marginRight="15dip"
+                                            android:drawablePadding="5dp"
+                                            android:drawableRight="@drawable/morex"
+                                            android:textColor="@android:color/darker_gray" />-->
                 </LinearLayout>
             </RelativeLayout>
 
@@ -636,8 +616,7 @@
             <RelativeLayout
                 android:id="@+id/rt_changchumodi"
                 android:layout_width="fill_parent"
-                android:layout_height="55dp"
-                android:background="@drawable/item_background_selector_nocorn">
+                android:layout_height="55dp">
 
                 <!--                <ImageView
                                     android:layout_width="wrap_content"
@@ -658,7 +637,6 @@
 
 
                 <LinearLayout
-                    android:id="@+id/ln_changchumodi"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
@@ -666,28 +644,28 @@
                     android:orientation="horizontal">
 
                     <TextView
+                        android:id="@+id/ln_changchumodi"
                         style="@style/user_info_detail_text_style"
                         android:text="上海、北京" />
 
-<!--                    <TextView
-                        android:id="@+id/tv_changchumodi"
-                        style="@style/setting_text_style"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true"
-                        android:layout_marginRight="15dip"
-                        android:drawablePadding="5dp"
-                        android:drawableRight="@drawable/morex"
-                        android:textColor="@android:color/darker_gray" />-->
+                    <!--                    <TextView
+                                            android:id="@+id/tv_changchumodi"
+                                            style="@style/setting_text_style"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_alignParentRight="true"
+                                            android:layout_centerVertical="true"
+                                            android:layout_marginRight="15dip"
+                                            android:drawablePadding="5dp"
+                                            android:drawableRight="@drawable/morex"
+                                            android:textColor="@android:color/darker_gray" />-->
                 </LinearLayout>
             </RelativeLayout>
 
             <RelativeLayout
                 android:id="@+id/rt_quguo_jingdian"
                 android:layout_width="fill_parent"
-                android:layout_height="55dp"
-                android:background="@drawable/item_background_selector_nocorn">
+                android:layout_height="55dp">
 
                 <!--                <ImageView
                                     android:layout_width="wrap_content"
@@ -718,18 +696,18 @@
                     <TextView
                         android:id="@+id/tv_quguo_jingdian"
                         style="@style/user_info_detail_text_style"
-                        android:text="黄山、桂林、厦门"  />
+                        android:text="黄山、桂林、厦门" />
 
-<!--                    <TextView
-                        style="@style/setting_text_style"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true"
-                        android:layout_marginRight="15dip"
-                        android:drawablePadding="5dp"
-                        android:drawableRight="@drawable/morex"
-                        android:textColor="@android:color/darker_gray" />-->
+                    <!--                    <TextView
+                                            style="@style/setting_text_style"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_alignParentRight="true"
+                                            android:layout_centerVertical="true"
+                                            android:layout_marginRight="15dip"
+                                            android:drawablePadding="5dp"
+                                            android:drawableRight="@drawable/morex"
+                                            android:textColor="@android:color/darker_gray" />-->
                 </LinearLayout>
             </RelativeLayout>
 

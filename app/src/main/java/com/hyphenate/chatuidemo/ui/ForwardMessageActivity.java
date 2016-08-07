@@ -51,6 +51,7 @@ public class ForwardMessageActivity extends PickContactNoCheckboxActivity {
                     intent.putExtra("userId", selectUser.getUsername());
                     intent.putExtra("forward_msg_id", forward_msg_id);
                     startActivity(intent);
+                     overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                     finish();
                 }
             }

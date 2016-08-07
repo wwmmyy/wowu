@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<selector
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_pressed="true" android:drawable="@drawable/em_red_packet_chatto_bg_focused" />
+    <item android:drawable="@drawable/em_red_packet_chatto_bg_normal" />
+</selector><!-- From: file:/D:/Program%20Files%20(x86)/android/AndroidStudioWorkPlace/WuWo/redpacketlibrary/res/drawable/em_red_packet_chatto_bg.xml --><!-- From: file:/D:/Program%20Files%20(x86)/android/AndroidStudioWorkPlace/WuWo/redpacketlibrary/build/intermediates/bundles/debug/res/drawable/em_red_packet_chatto_bg.xml -->

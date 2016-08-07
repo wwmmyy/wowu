@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android" >
+    <item android:drawable="@drawable/em_chat_red_packet_pressed" android:state_pressed="true"/>
+    <item android:drawable="@drawable/em_chat_red_packet_normal"/>
+
+</selector><!-- From: file:/D:/Program%20Files%20(x86)/android/AndroidStudioWorkPlace/WuWo/redpacketlibrary/res/drawable/em_chat_red_packet_selector.xml --><!-- From: file:/D:/Program%20Files%20(x86)/android/AndroidStudioWorkPlace/WuWo/redpacketlibrary/build/intermediates/bundles/debug/res/drawable/em_chat_red_packet_selector.xml -->

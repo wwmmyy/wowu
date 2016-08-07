@@ -79,6 +79,7 @@
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -90,7 +91,8 @@
         <activity
             android:name="com.wuwo.im.activity.RegisterStepFourActivity"
             android:label="@string/title_activity_register" />
-        <activity android:name="com.wuwo.im.activity.MainActivity" />
+        <activity android:name="com.wuwo.im.activity.MainActivity"
+            android:launchMode="singleTask"/>
         <activity android:name="com.wuwo.im.chat.ChatingMainActivity" />
         <activity android:name="com.wuwo.im.chat.ChatedActivty" />
         <activity android:name="com.wuwo.im.chat.NotificationActivity" />
@@ -100,36 +102,36 @@
         <activity android:name="com.wuwo.im.activity.CharacterTResultActivity" />
         <activity android:name="com.wuwo.im.activity.OwnerInfoDetailActivity" />
         <activity android:name="com.wuwo.im.activity.FromContractsActivity" />
-        <activity android:name="com.wuwo.im.activity.VersionIntroActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/horizontal_slide"/>
-        <activity android:name="com.wuwo.im.activity.FeedbackActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/horizontal_slide"/>
-        <activity android:name="com.wuwo.im.activity.LoginChooseActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/horizontal_slide"/>
-        <activity android:name="com.wuwo.im.activity.RegisterPolicyActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/horizontal_slide"/>
-        <activity android:name="com.wuwo.im.activity.RegisterStepTwoActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/horizontal_slide"/>
-        <activity android:name="com.wuwo.im.activity.RegisterStepThreeActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/horizontal_slide"/>
-        <activity android:name="com.wuwo.im.activity.UserInfoEditActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/horizontal_slide"/>
-        <activity android:name="com.wuwo.im.activity.AddFriendActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/horizontal_slide"/>
-        <activity android:name="com.wuwo.im.activity.OwnerInfoEditActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/horizontal_slide"/>
-        <activity android:name="com.wuwo.im.activity.MyCharacterResultActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/horizontal_slide"/>
+        <activity
+            android:name="com.wuwo.im.activity.VersionIntroActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.wuwo.im.activity.FeedbackActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.wuwo.im.activity.LoginChooseActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.wuwo.im.activity.RegisterPolicyActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.wuwo.im.activity.RegisterStepTwoActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.wuwo.im.activity.RegisterStepThreeActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.wuwo.im.activity.UserInfoEditActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.wuwo.im.activity.AddFriendActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.wuwo.im.activity.OwnerInfoEditActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.wuwo.im.activity.MyCharacterResultActivity"
+            android:screenOrientation="portrait" />
         <!-- meta-data需要写在application中 -->
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
@@ -160,10 +162,13 @@
             android:name="com.hyphenate.chatuidemo.ui.SplashActivity"
             android:screenOrientation="portrait"
             android:theme="@style/horizontal_slide">
-<!--                <intent-filter>
+
+            <!--
+                    <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>-->
+            </intent-filter>
+            -->
         </activity>
 
         <!-- 登陆 -->
@@ -411,8 +416,7 @@
             <intent-filter android:priority="1000">
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
                 <action android:name="android.intent.action.QUICKBOOT_POWERON" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
+                <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
             </intent-filter>
         </receiver>
 
@@ -546,7 +550,45 @@
         <activity android:name="com.wuwo.im.activity.UserModifyPasswdActivity" />
         <activity android:name="com.wuwo.im.activity.UserBindPhoneActivity" />
         <activity android:name="com.wuwo.im.activity.UserSetWarnActivity" />
-        <activity android:name="com.wuwo.im.activity.UserForgetPasswordActivity"></activity>
+        <activity android:name="com.wuwo.im.activity.UserForgetPasswordActivity" />
+        <activity android:name="com.wuwo.im.activity.UserPayActivity" />
+        <activity android:name="com.wuwo.im.activity.OwnerInfoUpdateTextActivity" />
+        <activity android:name="com.wuwo.im.activity.OwnerInfoUpdateChooseActivity" />
+        <activity android:name="com.wuwo.im.activity.UserPaySuccessActivity" />
+        <activity android:name="com.wuwo.im.activity.UserPayChooseActivity"></activity>
+
+        <receiver
+            android:name="com.wuwo.im.service.WeChatAppRegister"
+            android:permission="com.tencent.mm.plugin.permission.SEND" >
+            <intent-filter>
+                <action android:name="com.tencent.mm.plugin.openapi.Intent.ACTION_REFRESH_WXAPP" />
+            </intent-filter>
+        </receiver>
+
+
+
+
+
+<!--QQ分享 模块-->
+        <activity
+            android:name="com.tencent.tauth.AuthActivity"
+            android:noHistory="true"
+            android:launchMode="singleTask" >
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="tencent1105597236" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name="com.tencent.connect.common.AssistActivity"
+            android:screenOrientation="behind"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            android:configChanges="orientation|keyboardHidden">
+        </activity>
+
     </application>
 
 </manifest>

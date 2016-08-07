@@ -37,7 +37,7 @@ android:layout_height="match_parent"
                 android:layout_centerInParent="true"
                 dist:progressBarImage="@drawable/con_progress_bar"
                 dist:progressBarImageScaleType="centerInside"
-                dist:progressBarAutoRotateInterval="5000"
+                dist:progressBarAutoRotateInterval="2000"
                 dist:placeholderImage="@drawable/ic_launcher"
                 />
         </FrameLayout>

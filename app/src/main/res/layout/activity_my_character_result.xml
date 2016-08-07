@@ -71,7 +71,7 @@
             android:layout_centerVertical="true"
             android:layout_marginTop="10dp"
             dist:placeholderImage="@drawable/icon"
-            dist:progressBarAutoRotateInterval="5000"
+            dist:progressBarAutoRotateInterval="2000"
             dist:progressBarImage="@drawable/con_progress_bar"
             dist:progressBarImageScaleType="centerInside"
             dist:roundAsCircle="true"
@@ -156,6 +156,7 @@
                 android:textSize="16sp" />
 
             <com.wuwo.im.view.RangeSeekBar
+                android:id="@+id/rs_character"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1" />

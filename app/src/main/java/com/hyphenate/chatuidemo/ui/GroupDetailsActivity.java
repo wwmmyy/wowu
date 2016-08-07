@@ -447,7 +447,7 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 			break;
 		case R.id.rl_search:
             startActivity(new Intent(this, GroupSearchMessageActivity.class).putExtra("groupId", groupId));
-            
+			 overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
             break;
 		default:
 			break;

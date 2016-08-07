@@ -361,18 +361,6 @@ public class RegisterStepFourActivity extends BaseLoadActivity {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
     /** 头像名称 */
     private static final String IMAGE_FILE_NAME = "image.jpg";
 

@@ -6,11 +6,18 @@
     android:background="@color/back_color"
     android:orientation="vertical">
 
-    <com.wuwo.im.view.SearchView
+
+    <include layout="@layout/ease_search_bar" />
+
+<!--    <com.wuwo.im.view.SearchView
         android:id="@+id/search_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:visibility="gone" />
+        android:visibility="gone" />-->
+
+
+
+
 
    <!-- <LinearLayout
         android:layout_width="match_parent"

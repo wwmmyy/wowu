@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.net.Uri;
 import android.view.View;
+import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.google.gson.Gson;
@@ -65,7 +66,20 @@ public class Portal_LocalFragment extends BasePortal_TabFragment {
                 viewHolder.setText(R.id.title, mainMessage.getName());
                 viewHolder.setText(R.id.project_code, mainMessage.getDistance()+" | "+ mainMessage.getBefore());
                 viewHolder.setText(R.id.yewu_type, mainMessage.getDisposition());
-                viewHolder.setText(R.id.yewu_type, mainMessage.getDisposition());
+                TextView genderm= (TextView) viewHolder.getView(R.id.tvage_gender_male);
+                TextView genderw= (TextView) viewHolder.getView(R.id.tvage_gender_female);
+                if(mainMessage.getGender()==0){
+                    genderm.setVisibility(View.VISIBLE);
+                    genderw.setVisibility(View.GONE);
+                    genderm.setText(mainMessage.getAge()+"");
+                }else{
+                    genderm.setVisibility(View.GONE);
+                    genderw.setVisibility(View.VISIBLE);
+                    genderw.setText(mainMessage.getAge()+"");
+                }
+
+
+
 
                 SimpleDraweeView portal_news_img = (SimpleDraweeView) viewHolder.getView(R.id.news_label_pic);
                 portal_news_img.setImageURI(Uri.parse(mainMessage.getPhotoUrl()));
@@ -83,7 +97,7 @@ public class Portal_LocalFragment extends BasePortal_TabFragment {
 //                CommRecyclerViewHolder holder = (CommRecyclerViewHolder) view.getTag();
 //                holder.getView(R.id.tv_choose);
                 Intent intent2 = new Intent(mContext, UserInfoEditActivity.class);
-                intent2.putExtra("localUser", meeting_userlist.get(position));
+                intent2.putExtra("localUser", (LocalUser.DataBean)(messageRAdapter.getData().get(position)));
                 startActivity(intent2);
                 mContext.overridePendingTransition(0, 0);
             }
@@ -108,7 +122,7 @@ public class Portal_LocalFragment extends BasePortal_TabFragment {
 
     @Override
     public String getURL() {
-        return WowuApp.GetNearbyUserURL+"?lon=" + WowuApp.longitude + "&lat=" + WowuApp.latitude;
+        return WowuApp.GetNearbyUserURL;//+"?lon=" + WowuApp.longitude + "&lat=" + WowuApp.latitude
     }
 
     @Override

@@ -47,8 +47,8 @@
                 android:id="@+id/clear_cache_layout0"
                 android:layout_width="fill_parent"
                 android:layout_height="55dp"
-                android:background="@drawable/item_background_find_selector">
-                <!--android:background="@drawable/item_background_selector_nocorn"-->
+                android:background="@drawable/setting_bg">
+                <!--android:background="@color/white"-->
 
                 <TextView
                     style="@style/setting_text_style"
@@ -75,9 +75,9 @@
             <RelativeLayout
                 android:layout_width="fill_parent"
                 android:layout_height="55dp"
-                android:background="@drawable/item_background_find_selector">
+                android:background="@drawable/setting_bg">
 
-                <!--android:background="@drawable/item_background_selector_nocorn"-->
+                <!--android:background="@color/white"-->
                 <TextView
                     android:id="@+id/tv_xingji"
                     style="@style/setting_text_style"
@@ -112,7 +112,7 @@
             <RelativeLayout
                 android:layout_width="fill_parent"
                 android:layout_height="55dp"
-                android:background="@drawable/item_background_selector_nocorn">
+                android:background="@color/white">
 
                 <!--                <ImageView
                                     android:layout_width="wrap_content"
@@ -185,7 +185,7 @@
                 android:id="@+id/clear_cache_layout"
                 android:layout_width="fill_parent"
                 android:layout_height="55dp"
-                android:background="@drawable/item_background_selector_nocorn">
+                android:background="@color/white">
 
                 <!--                <ImageView
                                     android:layout_width="wrap_content"
@@ -236,7 +236,7 @@
             <RelativeLayout
                 android:layout_width="fill_parent"
                 android:layout_height="55dp"
-                android:background="@drawable/item_background_selector_nocorn">
+                android:background="@color/white">
 
                 <!--                <ImageView
                                     android:layout_width="wrap_content"
@@ -257,7 +257,6 @@
 
 
                 <LinearLayout
-
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
@@ -286,7 +285,7 @@
             <RelativeLayout
                 android:layout_width="fill_parent"
                 android:layout_height="55dp"
-                android:background="@drawable/item_background_selector_nocorn">
+                android:background="@color/white">
 
                 <!--                <ImageView
                                     android:layout_width="wrap_content"
@@ -336,7 +335,7 @@
             <RelativeLayout
                 android:layout_width="fill_parent"
                 android:layout_height="55dp"
-                android:background="@drawable/item_background_selector_nocorn">
+                android:background="@color/white">
 
                 <!--                <ImageView
                                     android:layout_width="wrap_content"
@@ -385,7 +384,7 @@
             <RelativeLayout
                 android:layout_width="fill_parent"
                 android:layout_height="55dp"
-                android:background="@drawable/item_background_selector_nocorn">
+                android:background="@color/white">
 
                 <!--                <ImageView
                                     android:layout_width="wrap_content"
@@ -406,7 +405,6 @@
 
 
                 <LinearLayout
-
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
@@ -436,7 +434,7 @@
             <RelativeLayout
                 android:layout_width="fill_parent"
                 android:layout_height="55dp"
-                android:background="@drawable/item_background_selector_nocorn">
+                android:background="@color/white">
 
                 <!--                <ImageView
                                     android:layout_width="wrap_content"
@@ -457,7 +455,6 @@
 
 
                 <LinearLayout
-
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
@@ -487,7 +484,7 @@
             <RelativeLayout
                 android:layout_width="fill_parent"
                 android:layout_height="55dp"
-                android:background="@drawable/item_background_selector_nocorn">
+                android:background="@color/white">
 
 
                 <TextView
@@ -532,7 +529,7 @@
                 android:id="@+id/rt_zhiye"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/item_background_selector_nocorn"
+                android:background="@color/white"
                 android:paddingBottom="5dp"
                 android:paddingTop="5dp">
 
@@ -585,7 +582,7 @@
                 android:id="@+id/rt_school"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/item_background_selector_nocorn"
+                android:background="@color/white"
                 android:paddingBottom="5dp"
                 android:paddingTop="5dp">
 
@@ -676,7 +673,7 @@
                 android:id="@+id/rt_shenghuodidian"
                 android:layout_width="fill_parent"
                 android:layout_height="55dp"
-                android:background="@drawable/item_background_selector_nocorn">
+                android:background="@color/white">
 
                 <!--                <ImageView
                                     android:layout_width="wrap_content"
@@ -731,7 +728,7 @@
                 android:id="@+id/rt_gongzuodidian"
                 android:layout_width="fill_parent"
                 android:layout_height="55dp"
-                android:background="@drawable/item_background_selector_nocorn">
+                android:background="@color/white">
 
                 <!--                <ImageView
                                     android:layout_width="wrap_content"
@@ -782,7 +779,7 @@
                 android:id="@+id/rt_changchumodi"
                 android:layout_width="fill_parent"
                 android:layout_height="55dp"
-                android:background="@drawable/item_background_selector_nocorn">
+                android:background="@color/white">
 
                 <!--                <ImageView
                                     android:layout_width="wrap_content"
@@ -833,7 +830,7 @@
                 android:id="@+id/rt_quguo_jingdian"
                 android:layout_width="fill_parent"
                 android:layout_height="55dp"
-                android:background="@drawable/item_background_selector_nocorn">
+                android:background="@color/white">
 
                 <TextView
                     android:id="@+id/tv_quguo_jingdian0"

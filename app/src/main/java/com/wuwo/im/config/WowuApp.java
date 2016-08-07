@@ -12,6 +12,7 @@ import android.util.Log;
 import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClient;
+import com.baidu.mapapi.model.LatLng;
 import com.easemob.redpacketsdk.RedPacket;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.hyphenate.chat.EMClient;
@@ -21,8 +22,14 @@ import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.squareup.okhttp.MediaType;
+import com.squareup.okhttp.Request;
 import com.wuwo.im.util.UtilsTool;
 import com.zhy.http.okhttp.OkHttpUtils;
+import com.zhy.http.okhttp.builder.PostStringBuilder;
+import com.zhy.http.okhttp.callback.StringCallback;
+import com.zhy.http.okhttp.service.LoadserverdataService;
+
+import org.json.JSONObject;
 
 import java.util.Iterator;
 import java.util.List;
@@ -53,9 +60,9 @@ public class WowuApp extends Application {
     public static String XMPPserverIP = " ";
     public static int XMPPserverPort = 0;  // dist
 
-//环信
+    //环信
     public static Context applicationContext;
-    private static WowuApp instance;
+    public static WowuApp instance;
     // login user name
     public final String PREF_USERNAME = "username";
 
@@ -99,8 +106,6 @@ public class WowuApp extends Application {
         mLocationClient = new LocationClient(this.getApplicationContext());
         mMyLocationListener = new MyLocationListener();
         mLocationClient.registerLocationListener(mMyLocationListener);
-
-
 //加入环信
 
 
@@ -110,13 +115,12 @@ public class WowuApp extends Application {
 // 为了防止环信SDK被初始化2次，加此判断会保证SDK被初始化1次
 // 默认的APP会在以包名为默认的process name下运行，如果查到的process name不是APP的process name就立即返回
 
-        if (processAppName == null ||!processAppName.equalsIgnoreCase(applicationContext.getPackageName())) {
+        if (processAppName == null || !processAppName.equalsIgnoreCase(applicationContext.getPackageName())) {
             Log.e("WowuApp", "enter the service process!");
 
             // 则此application::onCreate 是被service 调用的，直接返回
             return;
         }
-
 
 
         //init demo helper
@@ -134,9 +138,9 @@ public class WowuApp extends Application {
     }
 
 
-//    登陆环信的用户名和密码：
+    //    登陆环信的用户名和密码：
 //    username=userid
-     public static  String hx_pwd ="EdenPassword";
+    public static String hx_pwd = "EdenPassword";
 
 
     private String getAppName(int pID) {
@@ -170,16 +174,41 @@ public class WowuApp extends Application {
     }
 
 
+//微信支付
+    public static final String WeChat_APP_ID = "wxc1cc2ed7c5a30810";
+//QQ分享
+    public static final String QQ_APP_ID = "1105597236";
+    public static final String QQ_APP_KEY = "FWJiDEZW9DUJm3lL";
+    public static final String shareURL = "http://weixin.imxianzhi.com/share?download=true";
+    public static String UserId = "";
+    public static String PhoneNumber = "";
+    public static String XianZhiNumber = "";
+    public static String Password = "";
+    public static String SmsValidateCode = "";
+    public static int Gender = 0;
+    public static String Name = "";
+    public static String iconPath = "";//用户头像路径
+
+
+
+
     //  记录位置坐标
-    public static String latitude = "716728";
-    public static String longitude = "31.196694";
+/*    public static String latitude = "0.1";
+    public static String longitude = "0.1";*/
     public static String Radius = "";
+    public static float LocationSpeed = 5;
+    public static int LocationTime = 60 * 1000;//表示定位时间间隔60 * 1000
 
     public static final String PREFERENCE_KEY = "com.wowu.im";
 //    public static String userId = "";
 //    public static String userName = "";
 
     public static final String ALL_CachePathDirTemp = "/mnt/sdcard/Downloads/";//下载文件的暂存路径
+
+//    /storage/emulated/0/Pictures/锁屏壁纸/I01020052.jpg
+    public static final String tempPicPath = "/Downloads/";//下载文件的暂存路径  /mnt/sdcard/Downloads/
+
+
     public static String userImagePath = OkHttpUtils.serverAbsolutePath + "/appIcon/userIcon/";  //头像缩略图
 
 
@@ -207,38 +236,42 @@ public class WowuApp extends Application {
     //    GET Account/GetDispositionInfo 获取用户的性格
     public static String GetDispositionInfoURL = OkHttpUtils.serverAbsolutePath + "Account/GetDispositionInfo";
     //    POST Account/SubmitLocation?lon={lon}&lat={lat} 提交位置
-    public static String SubmitLocationURL = OkHttpUtils.serverAbsolutePath + "Account/SubmitLocation?lon=" + longitude + "&lat=" + latitude;
+    public static String SubmitLocationURL = OkHttpUtils.serverAbsolutePath + "Account/SubmitLocation";
+
+
+    //    POST Account/VipInfo
+    public static String VipInfoURL = OkHttpUtils.serverAbsolutePath + "Account/VipInfo";
+
 
 
     //    GET 获取用户的照片
-    public static String GetPhotosURL= OkHttpUtils.serverAbsolutePath + "Account/GetPhotos";
+    public static String GetPhotosURL = OkHttpUtils.serverAbsolutePath + "Account/GetPhotos";
     //    POST  退出登录
-    public static String LogoutURL= OkHttpUtils.serverAbsolutePath + "Account/Logout";
+    public static String LogoutURL = OkHttpUtils.serverAbsolutePath + "Account/Logout";
     //    POST 修改密码 {    "OldPassword": "sample string 1","NewPassword": "sample string 2"}
-    public static String ChangePasswordURL= OkHttpUtils.serverAbsolutePath + "Account/ChangePassword";
+    public static String ChangePasswordURL = OkHttpUtils.serverAbsolutePath + "Account/ChangePassword";
     //    POST找回密码{ "NewPassword": "sample string 1", "SmsValidateCode": "sample string 2","PhoneNumber":"sample string 3"}
-    public static String FindPasswordURL=  OkHttpUtils.serverAbsolutePath + "Account/FindPassword";
-/*    //    POST 更新用户资料
-    {        "Name": "sample string 1",
-            "Birthday": "2016-07-08T13:59:47.103956+08:00",
-            "HomeId": 2,
-            "Description": "sample string 3",
-            "MaritalStatus": 4 情感状态,
-            "Job": "sample string 5",
-            "Company": "sample string 6",
-            "School": "sample string 7",
-            "JobAddress": "sample string 8",
-            "LifeAddress": "sample string 9",
-            "DailyAddress": "sample string 10",
-            "Photos": [        {   //更新的用户照片，第一个为头像
-            "PhotoId": "sample string 1",
-                "Base64Image": "sample string 2"
-        },        {
-            "PhotoId": "sample string 1",
-                "Base64Image": "sample string 2"
-        }        ]    }*/
-    public static String UpdateUserInfoURL= OkHttpUtils.serverAbsolutePath + "Account/UpdateUserInfo";
-
+    public static String FindPasswordURL = OkHttpUtils.serverAbsolutePath + "Account/FindPassword";
+    /*    //    POST 更新用户资料
+        {        "Name": "sample string 1",
+                "Birthday": "2016-07-08T13:59:47.103956+08:00",
+                "HomeId": 2,
+                "Description": "sample string 3",
+                "MaritalStatus": 4 情感状态,
+                "Job": "sample string 5",
+                "Company": "sample string 6",
+                "School": "sample string 7",
+                "JobAddress": "sample string 8",
+                "LifeAddress": "sample string 9",
+                "DailyAddress": "sample string 10",
+                "Photos": [        {   //更新的用户照片，第一个为头像
+                "PhotoId": "sample string 1",
+                    "Base64Image": "sample string 2"
+            },        {
+                "PhotoId": "sample string 1",
+                    "Base64Image": "sample string 2"
+            }        ]    }*/
+    public static String UpdateUserInfoURL = OkHttpUtils.serverAbsolutePath + "Account/UpdateUserInfo";
 
 
     //########Disposition   性格相关##########################################
@@ -252,59 +285,47 @@ public class WowuApp extends Application {
     public static String SubmitAnswerURL = OkHttpUtils.serverAbsolutePath + "Disposition/SubmitAnswer";
 
 
-
     //########Chat   聊天室##########################################
 //GET Chat/GetNearbyUser?lon={lon}&lat={lat}&pageIndex={pageIndex} 获取附近的用户
-    public static String GetNearbyUserURL = OkHttpUtils.serverAbsolutePath + "Chat/GetNearbyUser" ;
-//    GET 获取目标用户的信息
-    public static String GetUserInfoURL= OkHttpUtils.serverAbsolutePath + "Chat/GetUserInfo" ;//?userId={userId}
-//    POST 三观配
-    public static String MatchURL= OkHttpUtils.serverAbsolutePath + "Chat/Match";//?userId={userId}
-//    POST  根据一组用户ID获取用户的头像
+    public static String GetNearbyUserURL = OkHttpUtils.serverAbsolutePath + "Chat/GetNearbyUser";
+    //    GET 获取目标用户的信息
+    public static String GetUserInfoURL = OkHttpUtils.serverAbsolutePath + "Chat/GetUserInfo";//?userId={userId}
+    //    POST 三观配
+    public static String MatchURL = OkHttpUtils.serverAbsolutePath + "Chat/Match";//?userId={userId}
+    //    POST  根据一组用户ID获取用户的头像
     public static String UserPhotoURL = OkHttpUtils.serverAbsolutePath + "Chat/UserPhoto";
-
 
 
     //########Friend  好友相关##########################################
 //     获取好友列表
-    public static String GetFriendsURL = OkHttpUtils.serverAbsolutePath + "Friend/GetFriends" ;//?lon={lon}&lat={lat}
-//    POST   关注某人
-    public static String FocusFriendsURL = OkHttpUtils.serverAbsolutePath + "Friend/Focus" ;//userId={userId}
-//    POST 取消关注
-    public static String RemoveFocusURL = OkHttpUtils.serverAbsolutePath + "Friend/RemoveFocus" ;//?userId={userId}
-//    POST  删除好友
-    public static String RemoveFriendURL = OkHttpUtils.serverAbsolutePath + "Friend/RemoveFriend" ;//?friendId={friendId}
-
+    public static String GetFriendsURL = OkHttpUtils.serverAbsolutePath + "Friend/GetFriends";//?lon={lon}&lat={lat}
+    //    POST   关注某人
+    public static String FocusFriendsURL = OkHttpUtils.serverAbsolutePath + "Friend/Focus";//userId={userId}
+    //    POST 取消关注
+    public static String RemoveFocusURL = OkHttpUtils.serverAbsolutePath + "Friend/RemoveFocus";//?userId={userId}
+    //    POST  删除好友
+    public static String RemoveFriendURL = OkHttpUtils.serverAbsolutePath + "Friend/RemoveFriend";//?friendId={friendId}
 
 
     //######## Pay##########################################
 //    POST
-    public static String  WechatNotifyURL = OkHttpUtils.serverAbsolutePath +  "api/Pay/WechatNotify" ;
-//    POST
-    public static String AliypayNotifyURL = OkHttpUtils.serverAbsolutePath +  "api/Pay/AliypayNotify" ;
-//    GET
-    public static String  PayNotifyURL = OkHttpUtils.serverAbsolutePath +  "api/Pay/PayNotify";//?orderNumber={orderNumber}&payOk={payOk}
+    public static String WechatNotifyURL = OkHttpUtils.serverAbsolutePath + "api/Pay/WechatNotify";
+    //    POST
+    public static String AliypayNotifyURL = OkHttpUtils.serverAbsolutePath + "api/Pay/AliypayNotify";
+    //    GET
+    public static String PayNotifyURL = OkHttpUtils.serverAbsolutePath + "api/Pay/PayNotify";//?orderNumber={orderNumber}&payOk={payOk}
 
 
-    public static String UserId = "";
-    public static String PhoneNumber = "";
-    public static String Password = "";
-    public static String SmsValidateCode = "";
-    public static int Gender = 0;
-    public static String Name = "";
-    public static String iconPath = "";//用户头像路径
+//   购买VIP   POST { "VipType": 1,"PaymentMethod": "sample string 2"} PaymentMethod 支付方式,微信：wechat，支付宝：alipay
+//    return {"OrderId":"","OrderNumber":"","Total":0,"PrepayId":"","Wechat":{"AppId":"","PartnerId":"","PrepayId":"","PackageValue":"","NonceStr":"","TimeStamp":"1461397867","Sign":""}}
+public static String OrderBuyURL = OkHttpUtils.serverAbsolutePath + "Order/Buy";
+
 //    public static String token = "";
 
 
 ////        环信IM appkey
 //    public static String ClientId="YXA6HWVlsDtsEeae3XlMmSCTxA";
 //    public static String ClientSecret="YXA6URQvvr4B_mKfhXOnn3RsUdY62zU";
-
-
-
-
-
-
 
 
     // 创建服务用于捕获崩溃异常
@@ -351,25 +372,176 @@ public class WowuApp extends Application {
             Log.i("获取到的定位信息为：：：", location.getLatitude() + "：：：" + location.getLongitude());
 ////                    UtilsTool.saveErrorFile(sb.toString(), "获取到的坐标为11.txt");
 
-            latitude = location.getLatitude() + "";
-            longitude = location.getLongitude() + "";
-            Radius = location.getRadius() + "";
+            SharedPreferences.Editor   editor = settings.edit();
+            editor.putString("latitude",location.getLatitude() + "");
+            editor.putString("longitude", location.getLongitude() + "");
+            editor.commit();
 
-            mobileLocationLog();
+//将用户位置返回个服务器
+            mobileLocationLog(location.getLatitude(), location.getLongitude(), location.getSpeed());
+
         }
     }
 
 
+    int _minSpeed = 3;
+    int _minFilter = 5;
+    int _minInteval = 10;
+
+
+    //  登录以后即使不懂，也要同步一次位置到服务器
+    boolean uploadLocation = false;
+
+    public static final int ALIPAY = 10;
     /**
      * @Description: 将终端的位置坐标上传到服务器
      */
-    public void mobileLocationLog() {
-//        new Thread(new Runnable() {
-//            @Override
-//            public void run() {
-//                // TODO 自动生成的方法存根
+    public void mobileLocationLog(double mlatitude, double mlongitude, float speed) {
+//        /**
+//         *  规则: 如果速度小于minSpeed m/s 则把触发范围设定为5m
+//         *  否则将触发范围设定为minSpeed*minInteval
+//         *  此时若速度变化超过10% 则更新当前的触发范围(这里限制是因为不能不停的设置distanceFilter,
+//         *  否则uploadLocation会不停被触发)
+//         */
+//        - (void)adjustDistanceFilter:(CLLocationManager *)locationManager location:(CLLocation*)location{
+////        NSLog(@"adjust:%f",location.speed);
+//            if (location.speed < _minSpeed)
+//            {
+//                if (fabs(locationManager.distanceFilter - _minFilter) > 0.1f)
+//                {
+//                    locationManager.distanceFilter = _minFilter;
+//                }
 //            }
-//        }).start();
+//            else
+//            {
+//                CGFloat lastSpeed = locationManager.distanceFilter / _minInteval;
+//                if ((fabs(lastSpeed - location.speed) / lastSpeed > 0.1f) || (lastSpeed < 0)){
+//                    CGFloat newSpeed = (int)(location.speed + 0.5f);
+//                    CGFloat newFilter = newSpeed * _minInteval;
+//                    locationManager.distanceFilter = newFilter;
+//                }
+//            }
+//        }
+
+        Log.i("发送坐标位置给服务器0www：：：", OkHttpUtils.token + ":::::::" + getSharedPreferences(WowuApp.PREFERENCE_KEY, MODE_PRIVATE).getString("token", ""));
+        if (!uploadLocation) {
+            if(uploadLocation2Server(mlatitude, mlongitude))
+            {
+                uploadLocation=true;
+            }
+        } else {
+            LatLng start = new LatLng(Float.parseFloat(settings.getString("latitude", "")), Float.parseFloat(settings.getString("longitude", "") ));
+            LatLng end = new LatLng(mlatitude, mlongitude);
+            if (getDistance(start, end) > _minInteval) {
+//                uploadLoaction(mlatitude, mlongitude);
+                uploadLocation2Server(mlatitude, mlongitude);
+            }
+        }
+
+    }
+
+    private boolean uploadLocation2Server(double mlatitude, double mlongitude) {
+        if (! getSharedPreferences(WowuApp.PREFERENCE_KEY, MODE_PRIVATE).getString("token", "").equals("")) {
+            try {
+                JSONObject json = new JSONObject();
+                json.put("lon" , mlongitude + "");
+                json.put("lat", mlatitude + "");
+                new LoadserverdataService(null).loadPostJsonRequestData(WowuApp.JSON, WowuApp.SubmitLocationURL+"?lon="+mlongitude+"&lat="+mlatitude, json.toString(), 0);
+                Log.i("发送坐标位置给服务器：：1：", mlongitude + ":::::::" + mlatitude);
+//                uploadLocation=true;
+                return true;
+            } catch (Exception e) {
+                e.printStackTrace();
+                Log.i("发送坐标位置给服务器 异常：：：", mlongitude + ":::::::" + mlatitude);
+            }
+        }
+        return false;
+    }
+
+    private void uploadLoaction(final double mlatitude, final double mlongitude) {
+//        if (OkHttpUtils.token != null && !OkHttpUtils.token.equals("")) {
+//            try {
+//                JSONObject json = new JSONObject();
+//                json.put("lon", mlongitude + "");
+//                json.put("lat", mlatitude + "");
+//                new LoadserverdataService(null).loadPostJsonRequestData(WowuApp.JSON, WowuApp.SubmitLocationURL, json.toString(), 0);
+//                uploadLocation = true;
+//                Log.i("发送坐标位置给服务器：：：", mlongitude + ":::::::" + mlatitude);
+//
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//                Log.i("发送坐标位置给服务器 异常：：：", mlongitude + ":::::::" + mlatitude);
+//            }
+//        }
+
+        Log.i("发送坐标位置给服务器：：3：", mlongitude + ":::::::" + mlatitude);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                PostStringBuilder psb = OkHttpUtils.postString();
+//                判断是否已经有token了，有的话在请求头加上
+                Log.i("发送坐标位置给服务器00：：：",  getSharedPreferences(WowuApp.PREFERENCE_KEY, MODE_PRIVATE).getString("token", "")+ ":::::::" + mlatitude);
+                if (  ! getSharedPreferences(WowuApp.PREFERENCE_KEY, MODE_PRIVATE).getString("token", "").equals("")) {
+                    psb.addHeader("Authorization", "Bearer " +  getSharedPreferences(WowuApp.PREFERENCE_KEY, MODE_PRIVATE).getString("token", ""));
+                    try {
+                        Log.i("发送坐标位置给服务器001：：：",  getSharedPreferences(WowuApp.PREFERENCE_KEY, MODE_PRIVATE).getString("token", "") + ":::::::" + mlatitude);
+                        JSONObject json = new JSONObject();
+                        json.put("lon", mlongitude + "");
+                        json.put("lat", mlatitude + "");
+                        psb.addHeader("content-type", "application/json")
+                                .url(WowuApp.SubmitLocationURL+"?lon="+mlongitude+"&lat="+mlatitude)
+                                .mediaType(WowuApp.JSON)
+                                .content(json.toString())
+                                .build()
+                                .execute(new StringCallback() {
+                                    @Override
+                                    public void onError(Request request, Exception e) {
+                                        e.printStackTrace();
+                                        if (e.getMessage() != null) {
+                                            Log.i("发送坐标位置给服务器返回值：：：", e.getMessage() + ":::::::");
+                                        }
+                                    }
+                                    @Override
+                                    public void onResponse(String response) {
+                                        Log.i("发送坐标位置给服务器返回值2：：：", response + ":::::::");
+                                    }
+                                });
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
+        ).start();
+    }
+
+
+    /**
+     * 计算两点之间距离
+     *
+     * @param start
+     * @param end
+     * @return 米
+     */
+    public double getDistance(LatLng start, LatLng end) {
+        double lat1 = (Math.PI / 180) * start.latitude;
+        double lat2 = (Math.PI / 180) * end.latitude;
+
+        double lon1 = (Math.PI / 180) * start.longitude;
+        double lon2 = (Math.PI / 180) * end.longitude;
+
+//      double Lat1r = (Math.PI/180)*(gp1.getLatitudeE6()/1E6);
+//      double Lat2r = (Math.PI/180)*(gp2.getLatitudeE6()/1E6);
+//      double Lon1r = (Math.PI/180)*(gp1.getLongitudeE6()/1E6);
+//      double Lon2r = (Math.PI/180)*(gp2.getLongitudeE6()/1E6);
+
+        //地球半径
+        double R = 6371;
+
+        //两点间距离 km，如果想要米的话，结果*1000就可以了
+        double d = Math.acos(Math.sin(lat1) * Math.sin(lat2) + Math.cos(lat1) * Math.cos(lat2) * Math.cos(lon2 - lon1)) * R;
+        Log.i("发送坐标位置给服务器两者距离：：：", d + ":::::::");
+        return d * 1000;
     }
 
 

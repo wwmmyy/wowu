@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:dist="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="fill_parent"
+    android:background="#00000000"
+    android:gravity="center"
+    android:layout_gravity="center"
+    android:orientation="vertical"
+    android:padding="15dip">
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="35dp"
+        android:background="@drawable/open_gallery_selector">
+        <ImageView
+            android:id="@+id/iv_sanguan_close"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:paddingRight="9dp"
+            android:paddingTop="5dp"
+            android:paddingLeft="15dp"
+            android:layout_alignParentRight="true"
+            android:src="@drawable/close"/>
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="300dp"
+        android:background="@drawable/open_camera_selector"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:padding="5dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tvage_gender1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/item_background_pink_age"
+                android:gravity="center|left"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:singleLine="true"
+                android:text="21"
+                android:drawableRight="@drawable/male"
+                android:drawablePadding="5dp"
+                android:textColor="#ffff0000"
+                android:textSize="14sp" />
+
+  <!--          <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/text_margin_10dp"
+                android:src="@drawable/icon" />-->
+
+
+                  <com.facebook.drawee.view.SimpleDraweeView
+                        android:id="@+id/sdv_sanguan_pic1"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:layout_centerHorizontal="true"
+                        android:layout_centerInParent="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginTop="5dp"
+                        android:padding="10dp"
+                        dist:placeholderImage="@drawable/ease_default_avatar"
+                        dist:progressBarAutoRotateInterval="2000"
+                        dist:progressBarImage="@drawable/con_progress_bar"
+                        dist:progressBarImageScaleType="centerInside"
+                        dist:roundAsCircle="true"  />
+
+            <TextView
+                android:id="@+id/tv_sanguan_user1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="XXXXXXY" />Y
+
+        </LinearLayout>
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/mate"/>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tvage_gender2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/item_background_blue_age"
+                android:gravity="center|left"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:singleLine="true"
+                android:text="21"
+                android:drawableRight="@drawable/male"
+                android:drawablePadding="5dp"
+                android:textColor="#ffff0000"
+                android:textSize="14sp" />
+
+<!--            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/text_margin_10dp"
+                android:src="@drawable/icon" />-->
+
+
+                  <com.facebook.drawee.view.SimpleDraweeView
+                        android:id="@+id/sdv_sanguan_pic2"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:layout_centerHorizontal="true"
+                        android:layout_centerInParent="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginTop="5dp"
+                        android:padding="10dp"
+                        dist:placeholderImage="@drawable/ease_default_avatar"
+                        dist:progressBarAutoRotateInterval="2000"
+                        dist:progressBarImage="@drawable/con_progress_bar"
+                        dist:progressBarImageScaleType="centerInside"
+                        dist:roundAsCircle="true" />
+
+<!--            dist:roundingBorderColor="@color/white"
+            dist:roundingBorderWidth="2dp"-->
+
+            <TextView
+                android:id="@+id/tv_sanguan_user2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="XXXXXXC" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+
+        <TextView
+            android:id="@+id/tv_sanguan_result"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingBottom="15dp"
+            android:paddingTop="10dp"
+            android:textColor="#00B167"
+            android:text="完美三观互补"
+            android:textSize="21sp" />
+
+        <TextView
+            android:id="@+id/tv_sanguan_shuoming"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingBottom="10dp"
+            android:background="#e5e5e5"
+            android:padding="8dp"
+            android:text="完美三观互补完美三观互补完美三观互补完美三观互补完美三观互补完美三观互补完美三观互补完美三观互补完美三观互补完美三观互补"
+            android:textSize="15sp" />
+
+
+    </LinearLayout>
+
+
+</LinearLayout><!-- From: file:/D:/Program%20Files%20(x86)/android/AndroidStudioWorkPlace/WuWo/easeui/res/layout/dialog_sanguan_pick.xml --><!-- From: file:/D:/Program%20Files%20(x86)/android/AndroidStudioWorkPlace/WuWo/redpacketlibrary/build/intermediates/exploded-aar/WuWo/easeui/unspecified/res/layout/dialog_sanguan_pick.xml -->

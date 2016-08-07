@@ -89,5 +89,6 @@ public class PublicGroupsSeachActivity extends BaseActivity{
      */
     public void enterToDetails(View view){
         startActivity(new Intent(this, GroupSimpleDetailActivity.class));
+        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
     }
 }

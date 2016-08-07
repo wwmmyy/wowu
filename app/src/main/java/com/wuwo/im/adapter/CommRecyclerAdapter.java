@@ -35,6 +35,12 @@ public abstract class CommRecyclerAdapter<T> extends RecyclerView.Adapter<CommRe
         notifyDataSetChanged();
     }
 
+    public void setData2(List<T> list) {
+        this.mdate=list;
+        notifyDataSetChanged();
+    }
+
+
     public void addItem(T date) {
         mdate.add(date);
         notifyDataSetChanged();

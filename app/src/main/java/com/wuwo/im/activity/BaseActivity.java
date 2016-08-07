@@ -3,14 +3,15 @@ package com.wuwo.im.activity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-/** 
+
+/**
 *desc
 *@author 王明远
 *@日期： 2016/6/9 0:09
 *@版权:Copyright    All rights reserved.
 */
 
-public abstract class BaseActivity extends AppCompatActivity {
+public abstract class BaseActivity extends AppCompatActivity {  //
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -50,5 +51,6 @@ public abstract class BaseActivity extends AppCompatActivity {
     public void onBackPressed() {
         finish();
 //        overridePendingTransition(0, R.anim.slide_out_to_left);
+        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
     }
 }

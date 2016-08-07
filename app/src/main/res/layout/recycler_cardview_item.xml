@@ -31,6 +31,9 @@
                 android:layout_height="190dp"
                 android:layout_centerVertical="true"
                 android:scaleType="centerCrop"
+                cardview:progressBarImage="@drawable/con_progress_bar"
+                cardview:progressBarImageScaleType="centerInside"
+                cardview:progressBarAutoRotateInterval="2000"
                 cardview:placeholderImage="@drawable/default_1" />
 
 

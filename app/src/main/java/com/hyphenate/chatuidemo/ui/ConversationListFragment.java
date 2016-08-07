@@ -50,7 +50,7 @@ public class ConversationListFragment extends EaseConversationListFragment{
                 EMConversation conversation = conversationListView.getItem(position);
                 String username = conversation.getUserName();
                 if (username.equals(EMClient.getInstance().getCurrentUser()))
-                    Toast.makeText(getActivity(), R.string.Cant_chat_with_yourself, 0).show();
+                    Toast.makeText(getActivity(), R.string.Cant_chat_with_yourself, Toast.LENGTH_SHORT).show();
                 else {
                     // start chat acitivity
                     Intent intent = new Intent(getActivity(), ChatActivity.class);
@@ -66,6 +66,7 @@ public class ConversationListFragment extends EaseConversationListFragment{
                     // it's single chat
                     intent.putExtra(Constant.EXTRA_USER_ID, username);
                     startActivity(intent);
+                    getActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                 }
             }
         });
@@ -136,7 +137,7 @@ public class ConversationListFragment extends EaseConversationListFragment{
         refresh();
 
         // update unread count
-        ((MainActivity) getActivity()).updateUnreadLabel();
+        ((com.wuwo.im.activity.MainActivity) getActivity()).updateUnreadLabel();
         return true;
     }
 

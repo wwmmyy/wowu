@@ -1,5 +1,6 @@
 package com.wuwo.im.bean;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -9,9 +10,9 @@ import java.util.List;
 *@版权:Copyright    All rights reserved.
 */
 
-public class UserInfoDetail {
+public class UserInfoDetail implements Serializable {
 
-
+    private static final long serialVersionUID = 7060210544600465381L;
     /**
      * Id : 637e5acb638f46f5873ec86f0b4b49ce
      * Name : wmy
@@ -374,6 +375,15 @@ public class UserInfoDetail {
         private String FullUrl;
         private String Id;
         private boolean IsIcon;
+        private  String localPath;
+
+        public String getLocalPath() {
+            return localPath;
+        }
+
+        public void setLocalPath(String localPath) {
+            this.localPath = localPath;
+        }
 
         public String getUrl() {
             return Url;

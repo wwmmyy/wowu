@@ -100,17 +100,15 @@ abstract class BasePortal_TabFragment extends BaseAppFragment  implements loadSe
 
 
     Gson gson = new GsonBuilder().create();
-
     //    从网络加载流转日志数据并展示出来
     private void loadData() {
-
 
         try {
             if(postURL()!=null){
                 loadDataService.loadPostJsonRequestData(WowuApp.JSON, postURL(), postJsonObject().put("page", mCount + "").toString(), R.id.tv_register_two_sure);
             }else{
-                loadDataService.loadGetJsonRequestData(getURL()+"&pageIndex="+mCount ,0);
-                Log.d("获取到的请求服务器url为：：：",getURL()+"&pageIndex="+mCount);
+                loadDataService.loadGetJsonRequestData(getURL()+"?lon=" + mSettings.getString("longitude", "31.196566") + "&lat=" + mSettings.getString("latitude", "121.716738")+"&pageIndex="+mCount ,0);
+                Log.d("获取到的请求服务器url为：：：",getURL()+"?lon=" + mSettings.getString("longitude", "0")+ "&lat=" +mSettings.getString("latitude", "0")+"&pageIndex="+mCount);
             }
 
 

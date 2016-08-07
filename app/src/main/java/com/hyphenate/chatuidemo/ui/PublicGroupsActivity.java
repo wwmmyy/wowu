@@ -84,6 +84,7 @@ public class PublicGroupsActivity extends BaseActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 startActivity(new Intent(PublicGroupsActivity.this, GroupSimpleDetailActivity.class).
                         putExtra("groupinfo", adapter.getItem(position)));
+                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
             }
         });
         listView.setOnScrollListener(new OnScrollListener() {
@@ -110,7 +111,8 @@ public class PublicGroupsActivity extends BaseActivity {
 
 	public void search(View view){
 	    startActivity(new Intent(this, PublicGroupsSeachActivity.class));
-	}
+        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+    }
 	
 	private void loadAndShowData(){
 	    new Thread(new Runnable() {

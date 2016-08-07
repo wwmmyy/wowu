@@ -9,9 +9,10 @@
     <RelativeLayout
         android:id="@+id/user_info_detail"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="105dp"
         android:background="?attr/appbg"
         android:gravity="center_vertical"
+        android:paddingBottom="10dp"
         android:orientation="vertical">
 
         <!--           <FrameLayout
@@ -21,17 +22,19 @@
                    </FrameLayout>-->
         <com.facebook.drawee.view.SimpleDraweeView
             android:id="@+id/user_login_pic"
-            android:layout_width="82dp"
-            android:layout_height="82dp"
+            android:layout_width="84dp"
+            android:layout_height="84dp"
             android:layout_centerVertical="true"
             android:layout_marginLeft="20dp"
             dist:placeholderImage="@drawable/woman2"
-            dist:progressBarAutoRotateInterval="5000"
+            dist:progressBarAutoRotateInterval="2000"
             dist:progressBarImage="@drawable/con_progress_bar"
             dist:progressBarImageScaleType="centerInside"
             dist:roundAsCircle="true"
-            dist:roundingBorderColor="@color/white"
-            dist:roundingBorderWidth="2dp" />
+         />
+
+<!--        dist:roundingBorderColor="@color/white"
+        dist:roundingBorderWidth="2dp"-->
 
         <LinearLayout
             android:id="@+id/ln_user_info"
@@ -53,7 +56,7 @@
                 android:textSize="22sp" />
 
             <TextView
-                android:id="@+id/user_info_detail_edit"
+                android:id="@+id/tv_user_id"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
@@ -123,10 +126,12 @@
                 android:layout_height="0.1dp"
                 android:background="@color/black" />
 
+
+
             <RelativeLayout
-                android:id="@+id/update_pwd"
+                android:id="@+id/bind_pay"
                 android:layout_width="fill_parent"
-                android:layout_height="50dp"
+                android:layout_height="55dp"
                 android:background="@color/white">
 
                 <ImageView
@@ -134,8 +139,48 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="10dp"
-                    android:src="@drawable/ic_mima" />
+                    android:src="@drawable/crown_setting" />
 
+                <TextView
+                    style="@style/setting_text_style"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="20dp"
+                    android:text="先知会员"
+                    android:textColor="@color/black1" />
+
+                <TextView
+                    android:id="@+id/tv_usertype"
+                    style="@style/setting_text_style"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="15dip"
+                    android:drawablePadding="8dp"
+                    android:drawableRight="@drawable/morex"
+                    android:text="普通用户"
+                    android:textColor="@android:color/darker_gray" />
+
+
+            </RelativeLayout>
+
+
+
+            <RelativeLayout
+                android:id="@+id/update_pwd"
+                android:layout_width="fill_parent"
+                android:layout_height="55dp"
+                android:background="@color/white">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="10dp"
+                    android:src="@drawable/password" />
+                <!--android:src="@drawable/ic_mima"-->
                 <TextView
                     style="@style/setting_text_style"
                     android:layout_width="wrap_content"
@@ -163,7 +208,8 @@
             <RelativeLayout
                 android:id="@+id/bind_phone"
                 android:layout_width="fill_parent"
-                android:layout_height="50dp"
+                android:layout_height="55dp"
+                android:visibility="gone"
                 android:background="@color/white">
 
                 <ImageView
@@ -171,8 +217,8 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="10dp"
-                    android:src="@drawable/ic_dingyue" />
-
+                    android:src="@drawable/lockphone" />
+                <!--android:src="@drawable/ic_dingyue"-->
                 <TextView
                     style="@style/setting_text_style"
                     android:layout_width="wrap_content"
@@ -198,10 +244,12 @@
             </RelativeLayout>
 
 
+
+
             <RelativeLayout
                 android:id="@+id/message_warn"
                 android:layout_width="fill_parent"
-                android:layout_height="50dp"
+                android:layout_height="55dp"
                 android:background="@color/white">
 
                 <ImageView
@@ -209,8 +257,8 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="10dp"
-                    android:src="@drawable/ic_fankui" />
-
+                    android:src="@drawable/notice" />
+                <!--android:src="@drawable/ic_fankui"-->
                 <TextView
                     style="@style/setting_text_style"
                     android:layout_width="wrap_content"

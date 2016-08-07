@@ -35,13 +35,13 @@ import com.hyphenate.chatuidemo.widget.ChatRowVoiceCall;
 import com.hyphenate.easeui.EaseConstant;
 import com.hyphenate.easeui.ui.EaseChatFragment;
 import com.hyphenate.easeui.ui.EaseChatFragment.EaseChatFragmentHelper;
-import com.hyphenate.easeui.utils.EaseUserUtils;
 import com.hyphenate.easeui.widget.chatrow.EaseChatRow;
 import com.hyphenate.easeui.widget.chatrow.EaseCustomChatRowProvider;
 import com.hyphenate.easeui.widget.emojicon.EaseEmojiconMenu;
 import com.hyphenate.exceptions.HyphenateException;
 import com.hyphenate.util.EasyUtils;
 import com.hyphenate.util.PathUtil;
+import com.wuwo.im.activity.UserInfoEditActivity;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -106,9 +106,10 @@ public class ChatFragment extends EaseChatFragment implements EaseChatFragmentHe
                 if (EasyUtils.isSingleActivity(getActivity())) {
                     Intent intent = new Intent(getActivity(), MainActivity.class);
                     startActivity(intent);
-                    getActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                 }
                 getActivity().finish();
+                getActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+
             }
         });
 
@@ -272,9 +273,13 @@ public class ChatFragment extends EaseChatFragment implements EaseChatFragmentHe
 
     @Override
     public void onAvatarClick(String username) {
-        //handling when user click avatar
-        Intent intent = new Intent(getActivity(), UserProfileActivity.class);
-        intent.putExtra("username", username);
+        //handling when user click avatar此处应跳转到用户详情界面，或者三观配界面
+
+//        Intent intent = new Intent(getActivity(), UserProfileActivity.class);
+//        intent.putExtra("username", username);
+
+        Intent intent = new Intent(getActivity(), UserInfoEditActivity.class);
+        intent.putExtra("chatUserId", username);
         startActivity(intent);
         getActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
     }
@@ -314,6 +319,7 @@ public class ChatFragment extends EaseChatFragment implements EaseChatFragmentHe
         startActivityForResult((new Intent(getActivity(), ContextMenuActivity.class)).putExtra("message",message)
                 .putExtra("ischatroom", chatType == EaseConstant.CHATTYPE_CHATROOM),
                 REQUEST_CODE_CONTEXT_MENU);
+        getActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
     }
 
     @Override
@@ -322,6 +328,7 @@ public class ChatFragment extends EaseChatFragment implements EaseChatFragmentHe
         case ITEM_VIDEO:
             Intent intent = new Intent(getActivity(), ImageGridActivity.class);
             startActivityForResult(intent, REQUEST_CODE_SELECT_VIDEO);
+            getActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
             break;
         case ITEM_FILE: //file
             selectFileFromLocal();
@@ -369,6 +376,7 @@ public class ChatFragment extends EaseChatFragment implements EaseChatFragmentHe
                     .putExtra("isComingCall", false));
             // voiceCallBtn.setEnabled(false);
             inputMenu.hideExtendMenuContainer();
+            getActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         }
     }
     
@@ -383,6 +391,7 @@ public class ChatFragment extends EaseChatFragment implements EaseChatFragmentHe
                     .putExtra("isComingCall", false));
             // videoCallBtn.setEnabled(false);
             inputMenu.hideExtendMenuContainer();
+            getActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         }
     }
     

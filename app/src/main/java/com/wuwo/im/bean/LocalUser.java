@@ -65,13 +65,13 @@ public class LocalUser {
         private String Disposition;
         private String Description;
         private int Age;
-        private Object Gender;
+        private int Gender;
         private String Distance;
         private String Before;
         private String PhotoUrl;
         private String EasemobId;
         private static final long serialVersionUID = 9060527069391618394L;
-        public DataBean(String userId, String name, String disposition, String description, int age, Object gender, String distance, String before, String photoUrl, String easemobId) {
+        public DataBean(String userId, String name, String disposition, String description, int age, int gender, String distance, String before, String photoUrl, String easemobId) {
             UserId = userId;
             Name = name;
             Disposition = disposition;
@@ -124,11 +124,11 @@ public class LocalUser {
             this.Age = Age;
         }
 
-        public Object getGender() {
+        public int getGender() {
             return Gender;
         }
 
-        public void setGender(Object Gender) {
+        public void setGender(int Gender) {
             this.Gender = Gender;
         }
 

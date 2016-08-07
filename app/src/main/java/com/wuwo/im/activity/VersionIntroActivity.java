@@ -1,6 +1,5 @@
 package com.wuwo.im.activity;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -8,7 +7,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.Window;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -31,7 +29,7 @@ import im.wuwo.com.wuwo.R;
 *@版权:Copyright    All rights reserved.
 */
 
-public class VersionIntroActivity extends Activity implements OnClickListener {
+public class VersionIntroActivity extends BaseLoadActivity {
     Context mContext = VersionIntroActivity.this;
     String titlename;
     TextView feed_back_send;
@@ -165,4 +163,13 @@ public class VersionIntroActivity extends Activity implements OnClickListener {
         }
     };
 
+    @Override
+    public void loadServerData(String response, int flag) {
+
+    }
+
+    @Override
+    public void loadDataFailed(String response, int flag) {
+
+    }
 }

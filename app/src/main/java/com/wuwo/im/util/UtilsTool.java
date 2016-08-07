@@ -1292,7 +1292,7 @@ public class UtilsTool {
      * 发送消息到服务端，获取到服务器端返回的字符串
      *
      * @param params 请求参数
-     * @param   编码格式
+     * @param
      * @return
      * @throws Exception
      */
@@ -1504,7 +1504,7 @@ public class UtilsTool {
         return url.substring(i + 1);
     }
 
-    //获取文件格式名称
+    //获取文件格式名称 文件名
     public static String getFileName(String url) {
         int i = url.lastIndexOf("/");
         return url.substring(i + 1);
@@ -2473,6 +2473,20 @@ public class UtilsTool {
             e.printStackTrace();
         }
         return bitmap;
+    }
+
+
+    /**
+     * 隐藏键盘
+     * @param mContext
+     */
+    protected void hideSoftKeyboard(Activity mContext ) {
+        InputMethodManager inputMethodManager = (InputMethodManager) mContext.getSystemService(Context.INPUT_METHOD_SERVICE);
+        if ( mContext.getWindow().getAttributes().softInputMode != WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN) {
+            if (mContext.getCurrentFocus() != null)
+                inputMethodManager.hideSoftInputFromWindow(mContext.getCurrentFocus().getWindowToken(),
+                        InputMethodManager.HIDE_NOT_ALWAYS);
+        }
     }
 
 

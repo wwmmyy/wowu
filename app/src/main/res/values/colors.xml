@@ -3,10 +3,8 @@
     <color name="text_lgray">#808080</color>
     <color name="text_gray">#323232</color>
 
-
     <color name="black">#ff646464</color>
     <color name="tabcor">#B7C0C8</color>
-
     <color name="app_bg">#eeeeee</color>
     <color name="white">#ffffffff</color>
     <color name="tab_item_default">#fafafa</color>
@@ -24,7 +22,7 @@
     <color name="transparent_background">#ffffff</color>
     <color name="dialogtextcolor">#2DB5E5</color>
     <color name="background_tab_pressed">#6633B5E5</color>
-
+    <color name="province_line_border">#C7C7C7</color>
     <color name="login_btn_blue">#2298ef</color><!--#2298ef-->
     <!-- 透明色 -->
     <color name="fuxk_settle_black_mark">#1A000000</color>
