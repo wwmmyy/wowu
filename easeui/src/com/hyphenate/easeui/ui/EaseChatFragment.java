@@ -28,6 +28,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.facebook.drawee.view.SimpleDraweeView;
 import com.hyphenate.EMChatRoomChangeListener;
 import com.hyphenate.EMMessageListener;
 import com.hyphenate.EMValueCallBack;
@@ -45,6 +46,7 @@ import com.hyphenate.easeui.controller.EaseUI;
 import com.hyphenate.easeui.domain.EaseEmojicon;
 import com.hyphenate.easeui.model.EaseAtMessageHelper;
 import com.hyphenate.easeui.utils.EaseCommonUtils;
+import com.hyphenate.easeui.utils.EaseImageUtils;
 import com.hyphenate.easeui.utils.EaseUserUtils;
 import com.hyphenate.easeui.widget.EaseAlertDialog;
 import com.hyphenate.easeui.widget.EaseAlertDialog.AlertDialogUser;
@@ -141,19 +143,8 @@ public class EaseChatFragment extends EaseBaseFragment implements EMMessageListe
         // hold to record voice
         voiceRecorderView = (EaseVoiceRecorderView) getView().findViewById(R.id.voice_recorder);
 
-
         // hold to record voice
         iv_sanguan_pick = (ImageView) getView().findViewById(R.id.iv_sanguan_pick);
-//        iv_sanguan_pick.setImageResource(); 应该根据性别决定显示图片背景
-        iv_sanguan_pick.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(getActivity(), "xxxxxxxxxxxxxxxxxx",
-                        Toast.LENGTH_SHORT).show();
-
-                showSanguanPickDialog();
-            }
-        });
 
         // message list layout
         messageList = (EaseChatMessageList) getView().findViewById(R.id.message_list);
@@ -261,46 +252,6 @@ public class EaseChatFragment extends EaseBaseFragment implements EMMessageListe
         }
 
     }
-
-
-
-
-    /**
-     * 用户三观配显示，该模块后面要移到会话模块，暂时在这里测试
-     */
-    private void showSanguanPickDialog() {
-        View view = getActivity().getLayoutInflater().inflate(R.layout.dialog_sanguan_pick, null);
-        final Dialog dialog = new Dialog(getActivity(), R.style.transparentFrameWindowStyle);
-        dialog.setContentView(view, new ViewGroup.LayoutParams(android.view.ViewGroup.LayoutParams.FILL_PARENT,
-                android.view.ViewGroup.LayoutParams.WRAP_CONTENT));
-        Window window = dialog.getWindow();
-        view.findViewById(R.id.iv_sanguan_close).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View arg0) {
-                dialog.dismiss();
-            }
-        });
-
-
-
-        // 设置显示动画
-        window.setWindowAnimations(R.style.main_menu_animstyle);
-        WindowManager.LayoutParams wl = window.getAttributes();
-        wl.x = 0;
-        wl.y = getActivity().getWindowManager().getDefaultDisplay().getHeight();
-        // 以下这两句是为了保证按钮可以水平满屏
-        wl.width = ViewGroup.LayoutParams.MATCH_PARENT;
-        wl.height = ViewGroup.LayoutParams.MATCH_PARENT ;//WRAP_CONTENT
-
-        // 设置显示位置
-        dialog.onWindowAttributesChanged(wl);
-        // 设置点击外围解散
-        dialog.setCanceledOnTouchOutside(true);
-        dialog.show();
-    }
-
-
-
 
 
     /**

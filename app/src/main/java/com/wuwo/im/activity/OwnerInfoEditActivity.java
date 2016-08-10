@@ -1,5 +1,6 @@
 package com.wuwo.im.activity;
 
+import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -13,11 +14,14 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.provider.MediaStore;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
+import android.widget.DatePicker;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
@@ -27,11 +31,14 @@ import com.wuwo.im.adapter.CommRecyclerAdapter;
 import com.wuwo.im.adapter.CommRecyclerViewHolder;
 import com.wuwo.im.adapter.PicAdapter;
 import com.wuwo.im.bean.UserInfoDetail;
+import com.wuwo.im.config.ExitApp;
 import com.wuwo.im.config.WowuApp;
 import com.wuwo.im.util.MyToast;
 import com.wuwo.im.util.UtilsTool;
 import com.wuwo.im.view.SearchView;
 import com.zhy.http.okhttp.OkHttpUtils;
+import com.zhy.http.okhttp.service.LoadserverdataService;
+import com.zhy.http.okhttp.service.loadServerDataListener;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -40,6 +47,7 @@ import org.json.JSONObject;
 import java.io.File;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import im.wuwo.com.wuwo.R;
 
@@ -51,7 +59,10 @@ import im.wuwo.com.wuwo.R;
  * @版权:Copyright All rights reserved.  http://xzxj.oss-cn-shanghai.aliyuncs.com/user/7fe11e87-cd32-4684-8220-73c8bfc98431.jpg
  */
 
-public class OwnerInfoEditActivity extends BaseLoadActivity implements PicAdapter.OnItemClickLitener {
+public class OwnerInfoEditActivity extends FragmentActivity implements
+        DatePickerDialog.OnDateSetListener , View.OnClickListener, loadServerDataListener, PicAdapter.OnItemClickLitener  {
+    LoadserverdataService loadDataService;
+    Context mContext = null;
 
     Gson gson = new GsonBuilder().create();
     SharedPreferences mSettings;
@@ -77,7 +88,11 @@ public class OwnerInfoEditActivity extends BaseLoadActivity implements PicAdapte
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+         requestWindowFeature(Window.FEATURE_NO_TITLE);
         super.onCreate(savedInstanceState);
+        mContext = this;
+        loadDataService = new LoadserverdataService(this);
+        ExitApp.getInstance().addOpenedActivity(this);
         setContentView(R.layout.activity_owner_info_edit);
 
 //        Intent intent = getIntent();
@@ -527,6 +542,15 @@ public class OwnerInfoEditActivity extends BaseLoadActivity implements PicAdapte
                 });
 
 
+                viewHolder.getView(R.id.ln_birthday).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        showDatePickerDialog();
+
+                    }
+                });
+
+
             }
 
             @Override
@@ -712,10 +736,10 @@ public class OwnerInfoEditActivity extends BaseLoadActivity implements PicAdapte
         try {
             JSONObject json = new JSONObject();
             json.put("Name", mUserDetail.getName());
-            json.put("Birthday", mUserDetail.getBirthday());
+           // json.put("Birthday", new Date());//mUserDetail.getBirthday()
             json.put("Home", mUserDetail.getHome());
             json.put("Description", mUserDetail.getDescription());
-            json.put("MaritalStatus", mUserDetail.getMaritalStatus());
+            json.put("MaritalStatus", 1);//mUserDetail.getMaritalStatus()
             json.put("Job", mUserDetail.getJob());
             json.put("Company", mUserDetail.getCompany());
             json.put("School", mUserDetail.getSchool());
@@ -723,6 +747,7 @@ public class OwnerInfoEditActivity extends BaseLoadActivity implements PicAdapte
             json.put("LifeAddress", mUserDetail.getLifeAddress());
             json.put("DailyAddress", mUserDetail.getDailyAddress());
 
+            Log.i("上传到服务器的用户编辑资料为0：：：：：", json.toString());
 
 //
             if (userPicAdapter.getList() != null && userPicAdapter.getList().size() > 0) {
@@ -755,6 +780,35 @@ public class OwnerInfoEditActivity extends BaseLoadActivity implements PicAdapte
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        finish();
+//        overridePendingTransition(0, R.anim.slide_out_to_left);
+        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+    }
+
+
+    public void showDatePickerDialog() {
+        final Calendar c = Calendar.getInstance();
+        int year = c.get(Calendar.YEAR);
+        int month = c.get(Calendar.MONTH);
+        int day = c.get(Calendar.DAY_OF_MONTH);
+
+        // Create a new instance of DatePickerDialog and return it
+        DatePickerDialog datePickerDialog = new DatePickerDialog(this, this, year, month, day);
+        datePickerDialog.show();
+    }
+
+    @Override
+    public void onDateSet(DatePicker view, int year, int month, int day) {
+        Message msg = new Message();
+        msg.what = REFERSH_DATA;
+        mUserDetail.setBirthday(year +"年"+ month +"月"+day+"日");
+        mUserDetailList.remove(0);
+        mUserDetailList.add(mUserDetail);
+        mtotalHandler.sendMessage(msg);
     }
 
 

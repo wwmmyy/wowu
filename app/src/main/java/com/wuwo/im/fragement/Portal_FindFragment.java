@@ -337,22 +337,32 @@ public class Portal_FindFragment extends BaseAppFragment implements View.OnClick
 //        wxApi.sendReq(req);
 
 
-        //为了分享时将用户的头像分享出去做的设置，
+/*
+爆出异常，暂时屏蔽，以后找到原因开启！！！！！！！！！！！！！！
+//为了分享时将用户的头像分享出去做的设置，
         loadDataService.loadGetJsonRequestData(mSettings.getString("iconPath","http//#"),200);
+        <Code>InvalidArgument</Code>
+                08-08 23:26:15.962 615-615/im.wuwo.com.wuwo W/System.err:   <Message>Authorization header is invalid.</Message>
+                08-08 23:26:15.962 615-615/im.wuwo.com.wuwo W/System.err:   <RequestId>57A8A496E442C7CF1D8E902B</RequestId>
+                08-08 23:26:15.962 615-615/im.wuwo.com.wuwo W/System.err:   <HostId>xzxj.oss-cn-shanghai.aliyuncs.com</HostId>
+                08-08 23:26:15.962 615-615/im.wuwo.com.wuwo W/System.err:   <Authorization>Bearer 87917de3135e4feeb103ab0ac637603d5439d75a43ae41e0ad603b6c78ea42e0</Authorization>
+                08-08 23:26:15.962 615-615/im.wuwo.com.wuwo W/System.err: </Error>
+        */
 
 
-//        com.tencent.mm.sdk.modelmsg. WXWebpageObject webpage = new com.tencent.mm.sdk.modelmsg.WXWebpageObject();
-//        webpage.webpageUrl = WowuApp.shareURL;
-//        WXMediaMessage msg = new WXMediaMessage(webpage);
-//        msg.title ="快和我一起加入先知先觉，发现更多附近新奇";
-//        msg.description = "我在先知先觉，先知号："+WowuApp.XianZhiNumber;
-//        Bitmap thumb = BitmapFactory.decodeResource(getResources(), R.drawable.icon);
-//        msg.thumbData =  bmpToByteArray(thumb, true);
-//        SendMessageToWX.Req req = new SendMessageToWX.Req();
-//        req.transaction =  "transaction"+System.currentTimeMillis(); // transaction字段用于唯一标识一个请求
-//        req.message = msg;
-//        req.scene =flag;
-//        wxApi.sendReq(req);
+//       由于上面的接口无法用，暂时用这个代替
+        com.tencent.mm.sdk.modelmsg. WXWebpageObject webpage = new com.tencent.mm.sdk.modelmsg.WXWebpageObject();
+        webpage.webpageUrl = WowuApp.shareURL;
+        WXMediaMessage msg = new WXMediaMessage(webpage);
+        msg.title ="快和我一起加入先知先觉，发现更多附近新奇";
+        msg.description = "我在先知先觉，先知号："+WowuApp.XianZhiNumber;
+        Bitmap thumb = BitmapFactory.decodeResource(getResources(), R.drawable.icon);
+        msg.thumbData =  bmpToByteArray(thumb, true);
+        SendMessageToWX.Req req = new SendMessageToWX.Req();
+        req.transaction =  "transaction"+System.currentTimeMillis(); // transaction字段用于唯一标识一个请求
+        req.message = msg;
+        req.scene =flag;
+        wxApi.sendReq(req);
     }
 
 

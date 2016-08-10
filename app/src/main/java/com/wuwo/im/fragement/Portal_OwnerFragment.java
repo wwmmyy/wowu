@@ -433,7 +433,6 @@ public class Portal_OwnerFragment extends BaseAppFragment implements View.OnClic
         if(dialog!=null){
             dialog.dismiss();
         }
-        MyToast.show(mContext, response);
 
 
         if (flag==R.id.clear_cache_quit){
@@ -443,6 +442,7 @@ public class Portal_OwnerFragment extends BaseAppFragment implements View.OnClic
 //                                        editor.putBoolean("login_auto_check", false);
             editor.putBoolean("login_save_pwd_check",false);
             editor.commit();
+            MyToast.show(mContext, response);
 
             //            彻底退出应用程序，经测试，效果很好
             Intent startMain = new Intent(Intent.ACTION_MAIN);

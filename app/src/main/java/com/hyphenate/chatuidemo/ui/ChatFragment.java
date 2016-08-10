@@ -1,6 +1,7 @@
 package com.hyphenate.chatuidemo.ui;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.ClipData;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -15,13 +16,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.easemob.redpacketui.RedPacketConstant;
 import com.easemob.redpacketui.utils.RedPacketUtil;
 import com.easemob.redpacketui.widget.ChatRowRedPacket;
 import com.easemob.redpacketui.widget.ChatRowRedPacketAck;
+import com.facebook.drawee.view.SimpleDraweeView;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMCmdMessageBody;
 import com.hyphenate.chat.EMGroup;
@@ -35,6 +40,7 @@ import com.hyphenate.chatuidemo.widget.ChatRowVoiceCall;
 import com.hyphenate.easeui.EaseConstant;
 import com.hyphenate.easeui.ui.EaseChatFragment;
 import com.hyphenate.easeui.ui.EaseChatFragment.EaseChatFragmentHelper;
+import com.hyphenate.easeui.utils.EaseImageUtils;
 import com.hyphenate.easeui.widget.chatrow.EaseChatRow;
 import com.hyphenate.easeui.widget.chatrow.EaseCustomChatRowProvider;
 import com.hyphenate.easeui.widget.emojicon.EaseEmojiconMenu;
@@ -152,8 +158,71 @@ public class ChatFragment extends EaseChatFragment implements EaseChatFragmentHe
                 }).start();
             }
         }
+
+
+
+        // hold to record voice
+//        iv_sanguan_pick.setImageResource(); 应该根据性别决定显示图片背景
+        iv_sanguan_pick.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showSanguanPickDialog();
+            }
+        });
+
     }
-    
+
+
+
+
+    /**
+     * 用户三观配显示，该模块后面要移到会话模块，暂时在这里测试
+     */
+    private void showSanguanPickDialog() {
+        View view = getActivity().getLayoutInflater().inflate(com.hyphenate.easeui.R.layout.dialog_sanguan_pick, null);
+        final Dialog dialog = new Dialog(getActivity(), com.hyphenate.easeui.R.style.transparentFrameWindowStyle);
+        dialog.setContentView(view, new ViewGroup.LayoutParams(android.view.ViewGroup.LayoutParams.FILL_PARENT,
+                android.view.ViewGroup.LayoutParams.WRAP_CONTENT));
+        Window window = dialog.getWindow();
+        view.findViewById(com.hyphenate.easeui.R.id.iv_sanguan_close).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View arg0) {
+                dialog.dismiss();
+            }
+        });
+
+
+
+
+
+        SimpleDraweeView draweeView = (SimpleDraweeView) view.findViewById(com.hyphenate.easeui.R.id.sdv_sanguan_pic1);
+        draweeView.setImageURI(Uri.parse( EaseImageUtils.usersPhotoUrl.get(messageList.getItem(0).getTo() )));//"http://w
+
+        SimpleDraweeView draweeView2 = (SimpleDraweeView) view.findViewById(com.hyphenate.easeui.R.id.sdv_sanguan_pic2);
+        draweeView2.setImageURI(Uri.parse( EaseImageUtils.usersPhotoUrl.get(messageList.getItem(0).getFrom())));//"http://w
+
+
+
+        // 设置显示动画
+        window.setWindowAnimations(com.hyphenate.easeui.R.style.main_menu_animstyle);
+        WindowManager.LayoutParams wl = window.getAttributes();
+        wl.x = 0;
+        wl.y = getActivity().getWindowManager().getDefaultDisplay().getHeight();
+        // 以下这两句是为了保证按钮可以水平满屏
+        wl.width = ViewGroup.LayoutParams.MATCH_PARENT;
+        wl.height = ViewGroup.LayoutParams.MATCH_PARENT ;//WRAP_CONTENT
+
+        // 设置显示位置
+        dialog.onWindowAttributesChanged(wl);
+        // 设置点击外围解散
+        dialog.setCanceledOnTouchOutside(true);
+        dialog.show();
+    }
+
+
+
+
+
     @Override
     protected void registerExtendMenuItem() {
         //use the menu in base class
