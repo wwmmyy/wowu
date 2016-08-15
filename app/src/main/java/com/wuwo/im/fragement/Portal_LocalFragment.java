@@ -3,12 +3,15 @@ package com.wuwo.im.fragement;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.net.Uri;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.hyphenate.chatuidemo.db.DemoDBManager;
+import com.hyphenate.chatuidemo.db.UserDao;
 import com.wuwo.im.activity.UserInfoEditActivity;
 import com.wuwo.im.adapter.CommRecyclerAdapter;
 import com.wuwo.im.adapter.CommRecyclerViewHolder;
@@ -33,28 +36,46 @@ import im.wuwo.com.wuwo.R;
 @SuppressLint("ValidFragment")
 public class Portal_LocalFragment extends BasePortal_TabFragment {
 
-    private ArrayList<LocalUser.DataBean> meeting_userlist = new ArrayList<LocalUser.DataBean>(); //记录所有的最新消息
+    private ArrayList<LocalUser.DataBean> local_userlist = new ArrayList<LocalUser.DataBean>(); //记录所有的最新消息
     @Override
-    public void setLoadInfo(String totalresult) throws JSONException {
+    public void setLoadInfo(final String totalresult) throws JSONException {
 
         Gson gson = new GsonBuilder().create();
-        if (totalresult != null) {
 //            java.lang.reflect.Type type = new com.google.gson.reflect.TypeToken<List<DataBean>>() {
-            java.lang.reflect.Type type = new com.google.gson.reflect.TypeToken<LocalUser>() {
-            }.getType();
+        java.lang.reflect.Type type = new com.google.gson.reflect.TypeToken<LocalUser>() {  }.getType();
 
+        Log.i("Portal_LocalFragment:",totalresult+" ;");
+
+        if (totalresult != null) {
             LocalUser  temp = gson.fromJson(totalresult, type);
-            meeting_userlist=  temp.getData();
+            local_userlist=  temp.getData();
+//          缓存到数据库
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    DemoDBManager.getInstance().saveCacheJson(UserDao.CACHE_MAIN_LOCAL,totalresult);
+                    Log.i("Portal_LocalFragment:","保存数据库缓存");
+                }
+            }).start();;
+        }else{
+            if(mCount==0){//说明不是下拉更多请求
+//            读取缓存信息
+                String CacheJsonString = DemoDBManager.getInstance().getCacheJson(UserDao.CACHE_MAIN_LOCAL);
+                LocalUser  temp = gson.fromJson(CacheJsonString, type);
+                local_userlist=  temp.getData();
+                Log.i("Portal_LocalFragment:","获取数据库缓存"+CacheJsonString.length()+"内容条数："+local_userlist.size());
+            }else{
+                local_userlist.clear();
+            }
         }
-
     }
 
     @Override
     public ArrayList<?> getLoadInfo() {
-//        ArrayList<DataBean> temp = (ArrayList<DataBean>) meeting_userlist.clone();
+//        ArrayList<DataBean> temp = (ArrayList<DataBean>) local_userlist.clone();
 //        return temp;
 
-        return meeting_userlist;
+        return local_userlist;
     }
 
     @Override
@@ -66,6 +87,8 @@ public class Portal_LocalFragment extends BasePortal_TabFragment {
                 viewHolder.setText(R.id.title, mainMessage.getName());
                 viewHolder.setText(R.id.project_code, mainMessage.getDistance()+" | "+ mainMessage.getBefore());
                 viewHolder.setText(R.id.yewu_type, mainMessage.getDisposition());
+                viewHolder.setText(R.id.tv_descri, mainMessage.getDescription());
+
                 TextView genderm= (TextView) viewHolder.getView(R.id.tvage_gender_male);
                 TextView genderw= (TextView) viewHolder.getView(R.id.tvage_gender_female);
                 if(mainMessage.getGender()==0){

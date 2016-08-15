@@ -2385,13 +2385,12 @@ public class UtilsTool {
         string = Base64.encodeToString(bytes, Base64.DEFAULT);
 
 //        Log.i("获取到的图片大小为　２：：：：：",":　"+string);
-
 //        saveStringToSD(string);
 
         return string;
     }
 
-    private static void saveStringToSD   (String toSaveString) {
+    public static void saveStringToSD   (String toSaveString) {
 
         try {
             Writer info = new StringWriter();
@@ -2480,7 +2479,7 @@ public class UtilsTool {
      * 隐藏键盘
      * @param mContext
      */
-    protected void hideSoftKeyboard(Activity mContext ) {
+    public static void hideSoftKeyboard(Activity mContext ) {
         InputMethodManager inputMethodManager = (InputMethodManager) mContext.getSystemService(Context.INPUT_METHOD_SERVICE);
         if ( mContext.getWindow().getAttributes().softInputMode != WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN) {
             if (mContext.getCurrentFocus() != null)
@@ -2489,5 +2488,24 @@ public class UtilsTool {
         }
     }
 
+    //图片压缩
+    public static byte[] bmpToByteArray(final Bitmap bmp,
+                                        final boolean needRecycle) {
+        ByteArrayOutputStream output = new ByteArrayOutputStream();
+        int WX_THUMB_SIZE = 120;
+        Bitmap thumbBmp = Bitmap.createScaledBitmap(bmp, WX_THUMB_SIZE, WX_THUMB_SIZE, true);
+        bmp.recycle();
 
+        thumbBmp.compress(Bitmap.CompressFormat.PNG, 80, output);
+        if (needRecycle) {
+            thumbBmp.recycle();
+        }
+        byte[] result = output.toByteArray();
+        try {
+            output.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
 }

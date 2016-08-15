@@ -90,15 +90,8 @@ import im.wuwo.com.wuwo.R;
  */
 public class MainActivity extends BaseFragementActivity implements MyTabWidget.OnTabSelectedListener, OnClickListener {
 
-    //	private static final String TAG = "MainActivity";
-    //	private HomeFragment mHomeFragment;
-    //	private FragmentManager mFragmentManager;
     Context mContext = MainActivity.this;
-
     public static final String TAG = "MainActivity";
-    //    private Activity mActivity;
-//    private TextView mTitleTv;
-//    private ViewPager mViewPager;
     private MyTabWidget mTopIndicator;
     //    private TextView fagui;
     private String username_fromserver;
@@ -110,8 +103,6 @@ public class MainActivity extends BaseFragementActivity implements MyTabWidget.O
     public List<Fragment> fragments = new ArrayList<Fragment>();
     private FragmentManager fragmentManager;
 
-//    private LocationClient mLocationClient;
-
     private Bus mOttoBus;
     private ImageView return_back_igw;
     private TextView title_tv;
@@ -121,9 +112,7 @@ public class MainActivity extends BaseFragementActivity implements MyTabWidget.O
     //    private RelativeLayout title_bar;
     private TitlePopup titlePopup;
     private int currentTabIndex;
-
     private boolean isCurrentAccountRemoved = false;
-
     // user logged into another device
     public boolean isConflict = false;
 
@@ -138,7 +127,7 @@ public class MainActivity extends BaseFragementActivity implements MyTabWidget.O
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //make sure activity will not in background if user is logged into another device or removed
-        if (savedInstanceState != null && savedInstanceState.getBoolean(Constant.ACCOUNT_REMOVED, false)) {
+/*        if (savedInstanceState != null && savedInstanceState.getBoolean(Constant.ACCOUNT_REMOVED, false)) {
             DemoHelper.getInstance().logout(false, null);
             finish();
             startActivity(new Intent(this, com.hyphenate.chatuidemo.ui.LoginActivity.class));
@@ -147,7 +136,7 @@ public class MainActivity extends BaseFragementActivity implements MyTabWidget.O
             finish();
             startActivity(new Intent(this, com.hyphenate.chatuidemo.ui.LoginActivity.class));
             return;
-        }
+        }*/
 
 
         requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -162,7 +151,6 @@ public class MainActivity extends BaseFragementActivity implements MyTabWidget.O
 ////      启动消息推送接收服务
 //        Intent intent = new Intent(this,XMPPService.class);
 //        startService(intent);
-
 //        启动对话IM功能
 //        chatLogin();
 
@@ -172,14 +160,13 @@ public class MainActivity extends BaseFragementActivity implements MyTabWidget.O
 
 //      弹出浮动小控件
 //        popBut();
-
 //        showPopBar();
 
         //注册广播
 //        registerBoradcastReceiver();
 
 ////        启动终端定位服务 1
-//        Intent startServiceIntent = new Intent(getApplicationContext(), LocationServiceeeee.class);
+//        Intent startServiceIntent = new Intent(getApplicationContext(), LocationService.class);
 //        startServiceIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 //        getApplicationContext().startService(startServiceIntent);
 
@@ -200,13 +187,10 @@ public class MainActivity extends BaseFragementActivity implements MyTabWidget.O
         mOttoBus.register(this);
 
         init();
-
     }
 
     //    private ContactListFragment contactListFragment;
     private void initIM() {
-
-
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             String packageName = getPackageName();
             PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
@@ -233,11 +217,8 @@ public class MainActivity extends BaseFragementActivity implements MyTabWidget.O
         userDao = new UserDao(this);
 
 //        contactListFragment = new ContactListFragment();
-
-
         //register broadcast receiver to receive the change of group from DemoHelper
         registerBroadcastReceiver();
-
 
         EMClient.getInstance().contactManager().setContactListener(new MyContactListener());
         //debug purpose only
@@ -255,14 +236,13 @@ public class MainActivity extends BaseFragementActivity implements MyTabWidget.O
 
             @Override
             public void onDenied(String permission) {
-                //Toast.makeText(MainActivity.this, "Permission " + permission + " has been denied", Toast.LENGTH_SHORT).show();
+//              Toast.makeText(MainActivity.this, "Permission " + permission + " has been denied", Toast.LENGTH_SHORT).show();
             }
         });
     }
 
 
     EMMessageListener messageListener = new EMMessageListener() {
-
         @Override
         public void onMessageReceived(List<EMMessage> messages) {
             // notify new message
@@ -320,7 +300,6 @@ public class MainActivity extends BaseFragementActivity implements MyTabWidget.O
         intentFilter.addAction(Constant.ACTION_GROUP_CHANAGED);
         intentFilter.addAction(RedPacketConstant.REFRESH_GROUP_RED_PACKET_ACTION);
         broadcastReceiver = new BroadcastReceiver() {
-
             @Override
             public void onReceive(Context context, Intent intent) {
                 updateUnreadLabel();
@@ -527,9 +506,9 @@ public class MainActivity extends BaseFragementActivity implements MyTabWidget.O
             try {
                 if (conflictBuilder == null)
                     conflictBuilder = new android.app.AlertDialog.Builder(MainActivity.this);
-                conflictBuilder.setTitle(st);
-                conflictBuilder.setMessage(R.string.connect_conflict);
-                conflictBuilder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                    conflictBuilder.setTitle(st);
+                    conflictBuilder.setMessage(R.string.connect_conflict);
+                    conflictBuilder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
 
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -621,7 +600,6 @@ public class MainActivity extends BaseFragementActivity implements MyTabWidget.O
                             public void run() {
                                 finish();
                                 startActivity(new Intent(MainActivity.this, com.hyphenate.chatuidemo.ui.LoginActivity.class));
-
                             }
                         });
                     }
@@ -1027,13 +1005,13 @@ public class MainActivity extends BaseFragementActivity implements MyTabWidget.O
 //    }
 
 
-     @Override
+    @Override
     public void onBackPressed() {
-         Intent home = new Intent(Intent.ACTION_MAIN);
-         home.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-         home.addCategory(Intent.CATEGORY_HOME);
-         startActivity(home);
-     }
+        Intent home = new Intent(Intent.ACTION_MAIN);
+        home.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        home.addCategory(Intent.CATEGORY_HOME);
+        startActivity(home);
+    }
 
 
 
@@ -1389,16 +1367,6 @@ public class MainActivity extends BaseFragementActivity implements MyTabWidget.O
     }
 
 
-
-
-
-
-
-
-
-
-
-
     /*在fragment的管理类中，我们要实现这部操作，而他的主要作用是，当D这个activity回传数据到
 这里碎片管理器下面的fragnment中时，往往会经过这个管理器中的onActivityResult的方法。*/
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -1408,7 +1376,7 @@ public class MainActivity extends BaseFragementActivity implements MyTabWidget.O
             switch (requestCode) {
                 case WowuApp.ALIPAY:
               /*在这里，我们通过碎片管理器中的Tag，就是每个碎片的名称，来获取对应的fragment*/
-                    Fragment f = fragmentManager.findFragmentByTag( fragments.get(4).getClass().getSimpleName());
+                    Fragment f = fragmentManager.findFragmentByTag(fragments.get(4).getClass().getSimpleName());
               /*然后在碎片中调用重写的onActivityResult方法*/
                     f.onActivityResult(requestCode, resultCode, data);
                     break;

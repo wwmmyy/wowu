@@ -33,10 +33,12 @@ public class DemoDBManager {
         }
         return dbMgr;
     }
-    
+
+
+
     /**
      * save contact list
-     * 
+     *
      * @param contactList
      */
     synchronized public void saveContactList(List<EaseUser> contactList) {
@@ -54,6 +56,51 @@ public class DemoDBManager {
             }
         }
     }
+
+
+
+
+
+
+
+
+
+    /**
+     * 除环信聊天模块的其他缓存
+     *
+     */
+    synchronized public void saveCacheJson(int type , String json) {
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        if (db.isOpen()) {
+            db.execSQL("replace into "+UserDao.CACHE_TABLE_NAME+"("+UserDao.CACHE_COLUMN_NAME_TYPE+","+UserDao.CACHE_COLUMN_NAME_JSON+") values(" + type + ",' " + json + "')");
+            db.close();
+        }
+    }
+
+
+
+    /**
+     * 除环信聊天模块的其他缓存
+     *
+     */
+    synchronized public String getCacheJson(int type) {
+        String json=null;
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+//        if (db.isOpen()) {
+//            //		没有找到该表，插入进去
+//            db.execSQL(DbOpenHelper.DROP_CACHE_TABLE);
+//            db.execSQL(DbOpenHelper.CREATE_CACHE_TABLE);
+             Cursor cursor = db.rawQuery("select * from "+UserDao.CACHE_TABLE_NAME+" where "+UserDao.CACHE_COLUMN_NAME_TYPE+" = " + type, null);
+            if (cursor.moveToFirst()) {
+                  json = cursor.getString(cursor.getColumnIndex(UserDao.CACHE_COLUMN_NAME_JSON));
+            }
+            cursor.close();
+            db.close();
+//        }
+        return json;
+    }
+
+
 
     /**
      * get contact list

@@ -9,22 +9,22 @@ package com.wuwo.im.bean;
 
 public class Contact {
 
-    private String contactName;
-    private String phoneNumber;
+    private String Name;
+    private String PhoneNumber;
 
-    public String getContactName() {
-        return contactName;
+    public String getName() {
+        return Name;
     }
 
-    public void setContactName(String contactName) {
-        this.contactName = contactName;
+    public void setName(String name) {
+        Name = name;
     }
 
     public String getPhoneNumber() {
-        return phoneNumber;
+        return PhoneNumber;
     }
 
     public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
+        PhoneNumber = phoneNumber;
     }
-}  
+}

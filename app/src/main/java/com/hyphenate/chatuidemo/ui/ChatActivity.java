@@ -25,7 +25,7 @@ public class ChatActivity extends BaseActivity{
         super.onCreate(arg0);
         setContentView(R.layout.em_activity_chat);
         activityInstance = this;
-        //get user id or group id
+        //get user id or group id   将要聊天者的userid
         toChatUsername = getIntent().getExtras().getString(EaseConstant.EXTRA_USER_ID);
         //use EaseChatFratFragment
         chatFragment = new ChatFragment();

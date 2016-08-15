@@ -40,8 +40,8 @@ abstract class BasePortal_TabFragment extends BaseAppFragment  implements loadSe
       Activity mContext;
       SharedPreferences mSettings;
       Editor editor;
-    private PullLoadMoreRecyclerView mPullLoadMoreRecyclerView;
-    private int mCount = 0;
+    public PullLoadMoreRecyclerView mPullLoadMoreRecyclerView;
+    public int mCount = 0;
       LoadserverdataService loadDataService;
 
       CommRecyclerAdapter messageRAdapter;
@@ -108,12 +108,8 @@ abstract class BasePortal_TabFragment extends BaseAppFragment  implements loadSe
                 loadDataService.loadPostJsonRequestData(WowuApp.JSON, postURL(), postJsonObject().put("page", mCount + "").toString(), R.id.tv_register_two_sure);
             }else{
                 loadDataService.loadGetJsonRequestData(getURL()+"?lon=" + mSettings.getString("longitude", "31.196566") + "&lat=" + mSettings.getString("latitude", "121.716738")+"&pageIndex="+mCount ,0);
-                Log.d("获取到的请求服务器url为：：：",getURL()+"?lon=" + mSettings.getString("longitude", "0")+ "&lat=" +mSettings.getString("latitude", "0")+"&pageIndex="+mCount);
+                Log.d("BasePortal_TabFragment：",getURL()+"?lon=" + mSettings.getString("longitude", "0")+ "&lat=" +mSettings.getString("latitude", "0")+"&pageIndex="+mCount);
             }
-
-
-
-
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -142,9 +138,9 @@ abstract class BasePortal_TabFragment extends BaseAppFragment  implements loadSe
             switch (msg.what) {
                 // 正在下载
                 case DOWNLOADED_NEWSMESSAGE:
+                    Log.i("BasePortal_TabFragm：：", "返回过来的条数值"+act.getLoadInfo().size());
                     if (act.messageRAdapter == null) {
                         act.initAdapter();
-
                         act.messageRAdapter.setData(act.getLoadInfo());
                         act. mPullLoadMoreRecyclerView.setAdapter(act.messageRAdapter);
                     } else {
@@ -209,36 +205,43 @@ abstract class BasePortal_TabFragment extends BaseAppFragment  implements loadSe
     @Override
     public void loadServerData(String response, int flag) {
 //        MyToast.show(mContext, "返回的结果为：：：：" + response);
-        Log.i("返回的结果为", response.toString());
-
-
+        Log.i("BasePortal_TabFragm：：", response.toString());
         try {
-            if (response != null) {
-                setLoadInfo(response);
-            }
+            setLoadInfo(response);
+
             Message msg = new Message();
             msg.what = DOWNLOADED_NEWSMESSAGE;
             mtotalHandler.sendMessage(msg);
         } catch (Exception e) {
 //                                    e.printStackTrace();
-            Message msg = new Message();
-            msg.what = DOWNLOADED_ERROR;
-            mtotalHandler.sendMessage(msg);
+            loadError();
         }
-
-
     }
+
+
 
     @Override
     public void loadDataFailed(String request,int flag) {
         MyToast.show(mContext, "返回值失败" + request.toString());
-        Log.i("返回值失败", request.toString());
+        Log.i("BasePortal_TabFragm：：", request.toString());
+        try {
+            setLoadInfo(null);
 
+            Message msg = new Message();
+            msg.what = DOWNLOADED_NEWSMESSAGE;
+            mtotalHandler.sendMessage(msg);
+        } catch (Exception e) {
+            loadError();
+            return;
+        }
+        loadError();
 
+    }
+
+    private void loadError() {
         Message msg = new Message();
         msg.what = DOWNLOADED_ERROR;
         mtotalHandler.sendMessage(msg);
-
     }
 
     public abstract void setLoadInfo(String info) throws JSONException;

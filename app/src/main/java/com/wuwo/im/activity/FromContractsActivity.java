@@ -5,59 +5,72 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.provider.ContactsContract;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.squareup.okhttp.Request;
+import com.hyphenate.chatuidemo.db.DemoDBManager;
+import com.hyphenate.chatuidemo.db.UserDao;
 import com.wuwo.im.adapter.CommRecyclerAdapter;
 import com.wuwo.im.adapter.CommRecyclerViewHolder;
 import com.wuwo.im.bean.Contact;
+import com.wuwo.im.bean.ContactFriend;
+import com.wuwo.im.config.WowuApp;
 import com.wuwo.im.util.ContactsTool;
 import com.wuwo.im.util.MyToast;
-import com.zhy.http.okhttp.OkHttpUtils;
-import com.zhy.http.okhttp.callback.StringCallback;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.List;
 
 import im.wuwo.com.wuwo.R;
-/** 
-*desc
-*@author 王明远
-*@日期： 2016/6/9 0:08
-*@版权:Copyright    All rights reserved.
-*/
+
+/**
+ * desc
+ *
+ * @author 王明远
+ * @日期： 2016/6/9 0:08
+ * @版权:Copyright All rights reserved.
+ */
 
 public class FromContractsActivity extends BaseLoadActivity {
     Cursor cursor;
     Context mContext = FromContractsActivity.this;
     ArrayList<Contact> mContacts = new ArrayList<Contact>();
-    ArrayList<Contact> mYaoqingContacts = new ArrayList<Contact>();
-    RecyclerView mRecyclerViewTianjia, mRecyclerViewYaoqing;
+    ArrayList<ContactFriend> mYaoqing_Contacts = new ArrayList<ContactFriend>();
+    ArrayList<ContactFriend> mTianJia_Contacts = new ArrayList<ContactFriend>();
+    RecyclerView mRecyclerView_Tianjia, mRecyclerView_Yaoqing;
     //    ContactAdapter mContactAdapter;
     CommRecyclerAdapter tianjiaRAdapter, yaoqingRAdapter;
-    private static final String[] PHONES_PROJECTION = new String[]{
-//            Phone.DISPLAY_NAME, Phone.NUMBER, Phone.PHOTO_ID,Phone.CONTACT_ID };
-            ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME, ContactsContract.CommonDataKinds.Phone.NUMBER};
     Gson gson = new GsonBuilder().create();
+    private mHandlerWeak mtotalHandler;
+
+    public static final int LOAD_RECOMMEND_DATA = 1;
+    public static final int SYNC_CONTACTS_DATA = 2;
+    private TextView tv_contact_tianjia, tv_contact_yaoqing;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_from_contracts);
-        mRecyclerViewTianjia = (RecyclerView) this.findViewById(R.id.recycler_view_tianjia);
-        mRecyclerViewYaoqing = (RecyclerView) this.findViewById(R.id.recycler_view_yaoqing);
+        mRecyclerView_Tianjia = (RecyclerView) this.findViewById(R.id.recycler_view_tianjia);
+        mRecyclerView_Yaoqing = (RecyclerView) this.findViewById(R.id.recycler_view_yaoqing);
+        tv_contact_tianjia = (TextView) this.findViewById(R.id.tv_contact_tianjia);
+        tv_contact_yaoqing = (TextView) this.findViewById(R.id.tv_contact_yaoqing);
+
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext);
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        mRecyclerViewTianjia.setLayoutManager(linearLayoutManager);
+        mRecyclerView_Tianjia.setLayoutManager(linearLayoutManager);
 
-        loadPhoneContacts();
-        initiAdapter();
+        LinearLayoutManager linearLayoutManager2 = new LinearLayoutManager(mContext);
+        linearLayoutManager2.setOrientation(LinearLayoutManager.VERTICAL);
+        mRecyclerView_Yaoqing.setLayoutManager(linearLayoutManager2);
+
 
         ((TextView) findViewById(R.id.top_title)).setText("添加通讯录好友");
         findViewById(R.id.return_back).setOnClickListener(new View.OnClickListener() {
@@ -66,18 +79,64 @@ public class FromContractsActivity extends BaseLoadActivity {
                 finish();
             }
         });
+        mtotalHandler = new mHandlerWeak(this);
+        initiAdapter();
 
+
+//        1.判断是否已经同步过通讯好友到服务器，如果本地变更了联系人列表也要同步
+        syncContacts();
+
+
+//        loadPhoneContacts();
+//        loadRecommendFriends();
 
     }
 
-    private void initiAdapter() {
-        tianjiaRAdapter = new CommRecyclerAdapter<Contact>(mContext, R.layout.item_phonecontact_list) {
+    //    同步通讯录到服务器
+    private void syncContacts() {
+        new Thread(new Runnable() {
             @Override
-            public void convert(CommRecyclerViewHolder viewHolder, Contact mainMessage) {
-                viewHolder.setText(R.id.contact_user, mainMessage.getContactName());
+            public void run() {
+                try {
+                    ContactsTool ct = new ContactsTool();
+                    mContacts = ct.getPhoneContacts(mContext);
+
+                    String CacheJsonString = DemoDBManager.getInstance().getCacheJson(UserDao.CONTRACTS_FRIENDS);
+                    //说明之前已经保存同步通讯录，且没有变更
+                    Log.i("FromContractsActivity表a", "：" + CacheJsonString.trim().length() + ":" + gson.toJson(mContacts).length());
+                    if (CacheJsonString != null && CacheJsonString.trim().length() == gson.toJson(mContacts).length()) {
+                        Log.i("FromContractsActivity列表", "：：" + "说明之前已经保存同步通讯录，且没有变更");
+//                        直接获取当前待添加信息
+                        loadRecommendFriends();
+                    } else {
+                        //[{"Name":"*0*","PhoneNumber":"*0*"},{"Name":"+8613875073163","PhoneNumber":"+488613875073163"}]
+//                        Log.i("FromContractsActivity列表", "：" + gson.toJson(mContacts.subList(2, 6)));
+                        loadDataService.loadPostJsonRequestData(WowuApp.JSON, WowuApp.FriendSyncContactsURL, gson.toJson(mContacts.subList(0, 30)), SYNC_CONTACTS_DATA);//
+//                      //将新的通讯录保存到缓存数据库
+                        DemoDBManager.getInstance().saveCacheJson(UserDao.CONTRACTS_FRIENDS, gson.toJson(mContacts));
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+    }
+
+    /**
+     * 获取待添加和待邀请好友
+     */
+    private void loadRecommendFriends() {
+        loadDataService.loadGetJsonRequestData(WowuApp.FriendContactsRecommendURL, LOAD_RECOMMEND_DATA);
+    }
+
+    private void initiAdapter() {
+        tianjiaRAdapter = new CommRecyclerAdapter<ContactFriend>(mContext, R.layout.item_phonecontact_list) {
+            @Override
+            public void convert(CommRecyclerViewHolder viewHolder, ContactFriend mainMessage) {
+                viewHolder.setText(R.id.contact_user, mainMessage.getName());
                 viewHolder.setText(R.id.contact_phone, mainMessage.getPhoneNumber());
 
-                final Contact fMainMessage = mainMessage;
+                final ContactFriend fMainMessage = mainMessage;
                 viewHolder.getView(R.id.fl_contact_add).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -93,13 +152,13 @@ public class FromContractsActivity extends BaseLoadActivity {
 //            }
 //        });
 
-        yaoqingRAdapter = new CommRecyclerAdapter<Contact>(mContext, R.layout.item_phonecontact_list) {
+        yaoqingRAdapter = new CommRecyclerAdapter<ContactFriend>(mContext, R.layout.item_phonecontact_list) {
             @Override
-            public void convert(CommRecyclerViewHolder viewHolder, Contact mainMessage) {
-                viewHolder.setText(R.id.contact_user, mainMessage.getContactName());
+            public void convert(CommRecyclerViewHolder viewHolder, ContactFriend mainMessage) {
+                viewHolder.setText(R.id.contact_user, mainMessage.getName());
                 viewHolder.setText(R.id.contact_phone, mainMessage.getPhoneNumber());
                 viewHolder.setText(R.id.contact_add, "邀请");
-                final Contact fMainMessage = mainMessage;
+                final ContactFriend fMainMessage = mainMessage;
                 viewHolder.getView(R.id.fl_contact_add).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -108,82 +167,63 @@ public class FromContractsActivity extends BaseLoadActivity {
                 });
             }
         };
-
     }
 
-    /**
-     * 从通讯录中加载联系疼人列表
-     */
-    public void loadPhoneContacts() {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                ContactsTool ct = new ContactsTool();
-                mContacts = ct.getPhoneContacts(mContext);
-                Message msg = new Message();
-                msg.what = DOWNLOADED_Contact;
-                mtotalHandler.sendMessage(msg);
-            }
-        }).start();
-    }
+//    /**
+//     * 从通讯录中加载联系人列表
+//     */
+//    public void loadPhoneContacts() {
+//        new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//                ContactsTool ct = new ContactsTool();
+//                mContacts = ct.getPhoneContacts(mContext);
+//                Message msg = new Message();
+//                msg.what = DOWNLOADED_Contact;
+//                mtotalHandler.sendMessage(msg);
+//            }
+//        }).start();
+//    }
 
 
-    //    /从网络加载该user的好友信息
-    private void loadData() {
-        OkHttpUtils
-                .post()
-                .url("http://58.246.138.178:8000/DistMobile/mobileMeeting!getAllMeeting.action")
-                .addParams("newsMessageId", "4028826f505a3b0f01506553b0c80c3a")
-//                .addParams("page", mCount + "")
-                .build()
-                .execute(new StringCallback() {
-                    @Override
-                    public void onError(Request request, Exception e) {
-                        MyToast.show(mContext, "获取服务器信息失败", Toast.LENGTH_LONG);
-                    }
-
-                    @Override
-                    public void onResponse(String response) {
-                        if (response != null) {
-//                            java.lang.reflect.Type type = new com.google.gson.reflect.TypeToken<List<newsMessage>>() {
-//                            }.getType();
-//                            newsMessage_userlist = gson.fromJson(response, type);
-//                            //在view界面上展示结果
-                            Message msg = new Message();
-                            msg.what = REFRESH_DATA;
-                            mtotalHandler.sendMessage(msg);
-                        }
-                    }
-                });
-
-    }
-
-
-    public static final int DOWNLOADED_Contact = 0;
+    public static final int DOWNLOADED_Contact = 1;
     public static final int REFRESH_DATA = 2;
     //创建一个handler，内部完成处理消息方法
-    Handler mtotalHandler = new Handler() {
+
+    private static class mHandlerWeak extends Handler {
+        private WeakReference<FromContractsActivity> activity = null;
+
+        public mHandlerWeak(FromContractsActivity act) {
+            super();
+            this.activity = new WeakReference<FromContractsActivity>(act);
+        }
+
         @Override
         public void handleMessage(Message msg) {
+            FromContractsActivity act = activity.get();
+            if (null == act) {
+                return;
+            }
             switch (msg.what) {
-                // 正在下载
                 case DOWNLOADED_Contact:
-                    tianjiaRAdapter.setData(mContacts);
-                    mRecyclerViewTianjia.setAdapter(tianjiaRAdapter);
+                    if (act != null) {
+                        act.yaoqingRAdapter.setData(act.mYaoqing_Contacts);
+                        act.mRecyclerView_Yaoqing.setAdapter(act.yaoqingRAdapter);
+                        act.tianjiaRAdapter.setData(act.mTianJia_Contacts);
+                        act.mRecyclerView_Tianjia.setAdapter(act.tianjiaRAdapter);
+
+                        act.tv_contact_tianjia.setText(act.mTianJia_Contacts.size() + "个好友待添加");
+                        act.tv_contact_yaoqing.setText(act.mYaoqing_Contacts.size() + "个好友待邀请");
+                    }
                     break;
                 case REFRESH_DATA:
-//                    如果网络返回数据，在加载显示，现在测试阶段，测试下功能，下面都要屏蔽掉
-                    mRecyclerViewYaoqing.setVisibility(View.GONE);
-//                    yaoqingRAdapter.setData(mContacts);
-//                    mRecyclerViewYaoqing.setAdapter(yaoqingRAdapter);
-
+                    act.mRecyclerView_Yaoqing.setVisibility(View.GONE);
                     break;
                 default:
                     break;
             }
         }
-    };
-
+    }
 
     @Override
     public void onClick(View v) {
@@ -191,12 +231,47 @@ public class FromContractsActivity extends BaseLoadActivity {
     }
 
     @Override
-    public void loadServerData(String response, int flag) {
+    public void loadServerData(final String response, int flag) {
+
+        switch (flag) {
+            case LOAD_RECOMMEND_DATA:
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Log.i("获取带邀请好友列表", "：：" + response);
+                        Gson gson = new GsonBuilder().create();
+                        java.lang.reflect.Type type = new com.google.gson.reflect.TypeToken<List<ContactFriend>>() {
+                        }.getType();
+//                事实上这里要将好友区分出来，分为待添加和带邀请两类，分别放在两个数组中，然后刷新列表  xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+                        mTianJia_Contacts = gson.fromJson(response, type);
+
+                        mYaoqing_Contacts = mTianJia_Contacts;
+
+                        Message msg = new Message();
+                        msg.what = DOWNLOADED_Contact;
+                        mtotalHandler.sendMessage(msg);
+                    }
+                }).start();
+
+                break;
+            case SYNC_CONTACTS_DATA://同步通讯录后的返回值
+                Log.i("获取同步好友列表结果", "：：" + response);
+                //说明成功同步，开始加载待添加和待邀请好友
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        loadRecommendFriends();
+                    }
+                }
+                ).start();
+
+                break;
+        }
 
     }
 
     @Override
     public void loadDataFailed(String response, int flag) {
-
+        MyToast.show(mContext, response);
     }
 }

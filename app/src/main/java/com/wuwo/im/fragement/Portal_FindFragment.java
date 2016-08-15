@@ -28,12 +28,11 @@ import com.wuwo.im.activity.MyCharacterResultActivity;
 import com.wuwo.im.activity.VersionIntroActivity;
 import com.wuwo.im.config.WowuApp;
 import com.wuwo.im.util.MyToast;
+import com.wuwo.im.util.UtilsTool;
 import com.zhy.http.okhttp.service.LoadserverdataService;
 import com.zhy.http.okhttp.service.loadServerDataListener;
 
 import org.json.JSONObject;
-
-import java.io.ByteArrayOutputStream;
 
 import im.wuwo.com.wuwo.R;
 
@@ -98,8 +97,6 @@ public class Portal_FindFragment extends BaseAppFragment implements View.OnClick
 
         wxApi = WXAPIFactory.createWXAPI(mContext, WowuApp.WeChat_APP_ID, false);
         wxApi.registerApp(WowuApp.WeChat_APP_ID);
-
-
         // 其中APP_ID是分配给第三方应用的appid，类型为String。
         mTencent = Tencent.createInstance(WowuApp.QQ_APP_ID, mContext.getApplicationContext());
 
@@ -357,7 +354,7 @@ public class Portal_FindFragment extends BaseAppFragment implements View.OnClick
         msg.title ="快和我一起加入先知先觉，发现更多附近新奇";
         msg.description = "我在先知先觉，先知号："+WowuApp.XianZhiNumber;
         Bitmap thumb = BitmapFactory.decodeResource(getResources(), R.drawable.icon);
-        msg.thumbData =  bmpToByteArray(thumb, true);
+        msg.thumbData =   UtilsTool.bmpToByteArray(thumb, true);
         SendMessageToWX.Req req = new SendMessageToWX.Req();
         req.transaction =  "transaction"+System.currentTimeMillis(); // transaction字段用于唯一标识一个请求
         req.message = msg;
@@ -425,7 +422,7 @@ public class Portal_FindFragment extends BaseAppFragment implements View.OnClick
             Bitmap thumb =   BitmapFactory.decodeByteArray(bitmapArray, 0,
                             bitmapArray.length);
 
-            msg.thumbData =  bmpToByteArray(thumb, true);
+            msg.thumbData =  UtilsTool.bmpToByteArray(thumb, true);
             SendMessageToWX.Req req = new SendMessageToWX.Req();
             req.transaction =  "transaction"+System.currentTimeMillis(); // transaction字段用于唯一标识一个请求
             req.message = msg;
@@ -471,26 +468,7 @@ public class Portal_FindFragment extends BaseAppFragment implements View.OnClick
 
 
 
-    //图片压缩
-    public static byte[] bmpToByteArray(final Bitmap bmp,
-                                        final boolean needRecycle) {
-        ByteArrayOutputStream output = new ByteArrayOutputStream();
-        int WX_THUMB_SIZE = 120;
-        Bitmap thumbBmp = Bitmap.createScaledBitmap(bmp, WX_THUMB_SIZE, WX_THUMB_SIZE, true);
-        bmp.recycle();
 
-        thumbBmp.compress(Bitmap.CompressFormat.PNG, 80, output);
-        if (needRecycle) {
-            thumbBmp.recycle();
-        }
-        byte[] result = output.toByteArray();
-        try {
-            output.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return result;
-    }
 
 
 

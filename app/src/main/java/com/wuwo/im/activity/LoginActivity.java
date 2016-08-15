@@ -25,10 +25,12 @@ import com.hyphenate.EMCallBack;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chatuidemo.DemoHelper;
 import com.hyphenate.chatuidemo.db.DemoDBManager;
+import com.hyphenate.chatuidemo.db.UserDao;
 import com.hyphenate.easeui.utils.EaseCommonUtils;
 import com.wuwo.im.config.WowuApp;
 import com.wuwo.im.util.MyToast;
 import com.wuwo.im.util.UpdateManager;
+import com.wuwo.im.util.UtilsTool;
 import com.zhy.http.okhttp.OkHttpUtils;
 
 import org.json.JSONException;
@@ -113,7 +115,7 @@ public class LoginActivity extends BaseLoadActivity {
                 WowuApp.Name = settings.getString("Name", "");
 
                 if(!WowuApp.PhoneNumber.equals("") &&!WowuApp.Password.equals("") ){
-                    startLogin();
+                        startLogin();
                 }
 
             }
@@ -156,18 +158,30 @@ public class LoginActivity extends BaseLoadActivity {
      *
      */
     private void startLogin() {
-        Message msg = new Message();
-        msg.what = Loading;
-        mHandler.sendMessage(msg);
-        try {
-            JSONObject json = new JSONObject();
+        if (UtilsTool.checkNet(mContext)) {
+            Message msg = new Message();
+            msg.what = Loading;
+            mHandler.sendMessage(msg);
+            try {
+                JSONObject json = new JSONObject();
 //                    json.put("PhoneNumber", "15000659340");
 //                    json.put("Password", "123456");
-            json.put("PhoneNumber", WowuApp.PhoneNumber);
-            json.put("Password", WowuApp.Password);
-            loadDataService.loadPostJsonRequestData(WowuApp.JSON, WowuApp.LoginURL, json.toString(), R.id.imap_login_userlogin);
-        } catch (Exception e) {
-            e.printStackTrace();
+                json.put("PhoneNumber", WowuApp.PhoneNumber);
+                json.put("Password", WowuApp.Password);
+                loadDataService.loadPostJsonRequestData(WowuApp.JSON, WowuApp.LoginURL, json.toString(), R.id.imap_login_userlogin);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else {
+            String CacheJsonString = DemoDBManager.getInstance().getCacheJson(UserDao.CACHE_MAIN_LOCAL);
+            Intent intent =null;
+            if (CacheJsonString!=null && CacheJsonString.length()>0){
+                //说明之前有缓存
+                intent = new Intent(mContext, MainActivity.class);
+                startActivity(intent);
+                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                finish();
+            }
         }
     }
 

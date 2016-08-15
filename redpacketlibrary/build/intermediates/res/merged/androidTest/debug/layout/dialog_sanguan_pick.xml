@@ -27,7 +27,7 @@
 
     <LinearLayout
         android:layout_width="fill_parent"
-        android:layout_height="300dp"
+        android:layout_height="305dp"
         android:background="@drawable/open_camera_selector"
         android:gravity="center_horizontal"
         android:orientation="vertical"
@@ -62,39 +62,12 @@
                 android:textColor="#ffff0000"
                 android:textSize="14sp" />
 
-  <!--          <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="@dimen/text_margin_10dp"
-                android:src="@drawable/icon" />-->
-
-
-                  <com.facebook.drawee.view.SimpleDraweeView
-                        android:id="@+id/sdv_sanguan_pic1"
-                        android:layout_width="80dp"
-                        android:layout_height="80dp"
-                        android:layout_centerHorizontal="true"
-                        android:layout_centerInParent="true"
-                        android:layout_centerVertical="true"
-                        android:layout_marginTop="5dp"
-                        android:padding="10dp"
-                        dist:placeholderImage="@drawable/ease_default_avatar"
-                        dist:progressBarAutoRotateInterval="2000"
-                        dist:progressBarImage="@drawable/con_progress_bar"
-                        dist:progressBarImageScaleType="centerInside"
-                        dist:roundAsCircle="true"  />
-
-            <TextView
-                android:id="@+id/tv_sanguan_user1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="XXXXXXY" />Y
-
         </LinearLayout>
 
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:visibility="invisible"
                 android:src="@drawable/mate"/>
 
         <LinearLayout
@@ -118,41 +91,99 @@
                 android:drawablePadding="5dp"
                 android:textColor="#ffff0000"
                 android:textSize="14sp" />
+        </LinearLayout>
+    </LinearLayout>
 
-<!--            <ImageView
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="85dp"
+            android:background="@drawable/ease_sanguan_pick"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <com.facebook.drawee.view.SimpleDraweeView
+                    android:id="@+id/sdv_sanguan_pic1"
+                    android:layout_width="85dp"
+                    android:layout_height="85dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerInParent="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginTop="5dp"
+                    android:padding="10dp"
+                    dist:placeholderImage="@drawable/ease_default_avatar"
+                    dist:progressBarAutoRotateInterval="2000"
+                    dist:progressBarImage="@drawable/con_progress_bar"
+                    dist:progressBarImageScaleType="centerInside"
+                    dist:roundAsCircle="true"  />
+
+            </LinearLayout>
+
+            <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="@dimen/text_margin_10dp"
-                android:src="@drawable/icon" />-->
+                android:src="@drawable/mate"/>
 
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical">
 
-                  <com.facebook.drawee.view.SimpleDraweeView
-                        android:id="@+id/sdv_sanguan_pic2"
-                        android:layout_width="80dp"
-                        android:layout_height="80dp"
-                        android:layout_centerHorizontal="true"
-                        android:layout_centerInParent="true"
-                        android:layout_centerVertical="true"
-                        android:layout_marginTop="5dp"
-                        android:padding="10dp"
-                        dist:placeholderImage="@drawable/ease_default_avatar"
-                        dist:progressBarAutoRotateInterval="2000"
-                        dist:progressBarImage="@drawable/con_progress_bar"
-                        dist:progressBarImageScaleType="centerInside"
-                        dist:roundAsCircle="true" />
+                <com.facebook.drawee.view.SimpleDraweeView
+                    android:id="@+id/sdv_sanguan_pic2"
+                    android:layout_width="85dp"
+                    android:layout_height="85dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerInParent="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginTop="5dp"
+                    android:padding="10dp"
+                    dist:placeholderImage="@drawable/ease_default_avatar"
+                    dist:progressBarAutoRotateInterval="2000"
+                    dist:progressBarImage="@drawable/con_progress_bar"
+                    dist:progressBarImageScaleType="centerInside"
+                    dist:roundAsCircle="true" />
 
-<!--            dist:roundingBorderColor="@color/white"
-            dist:roundingBorderWidth="2dp"-->
-
-            <TextView
-                android:id="@+id/tv_sanguan_user2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="XXXXXXC" />
-
+            </LinearLayout>
         </LinearLayout>
 
-    </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tv_sanguan_user1"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:layout_height="wrap_content"
+                    android:text="XXXXXXY" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="invisible"
+                android:src="@drawable/mate"/>
+
+                <TextView
+                    android:id="@+id/tv_sanguan_user2"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:layout_height="wrap_content"
+                    android:text="XXXXXXC" />
+        </LinearLayout>
 
 
 
@@ -171,10 +202,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingBottom="10dp"
-            android:background="#e5e5e5"
             android:padding="8dp"
             android:text="完美三观互补完美三观互补完美三观互补完美三观互补完美三观互补完美三观互补完美三观互补完美三观互补完美三观互补完美三观互补"
             android:textSize="15sp" />
+        <!--android:background="#e5e5e5"-->
 
 
     </LinearLayout>

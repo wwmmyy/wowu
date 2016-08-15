@@ -82,7 +82,7 @@ public class EaseChatFragment extends EaseBaseFragment implements EMMessageListe
      */
     protected Bundle fragmentArgs;
     protected int chatType;
-    protected String toChatUsername,toChatUserName_Show;
+    protected String toChatUsername,toChatUserName_Show;// toChatUsername  这个应该是聊天者的userid了
     protected EaseChatMessageList messageList;
     protected EaseChatInputMenu inputMenu;
 
@@ -128,7 +128,7 @@ public class EaseChatFragment extends EaseBaseFragment implements EMMessageListe
         fragmentArgs = getArguments();
         // check if single chat or group chat
         chatType = fragmentArgs.getInt(EaseConstant.EXTRA_CHAT_TYPE, EaseConstant.CHATTYPE_SINGLE);
-        // userId you are chat with or group id
+        // userId you are chat with or group id  这个应该是聊天者的userid了
         toChatUsername = fragmentArgs.getString(EaseConstant.EXTRA_USER_ID);
         toChatUserName_Show = fragmentArgs.getString( EaseConstant.EXTRA_USER_NAME);
 

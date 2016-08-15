@@ -1,5 +1,6 @@
 package com.wuwo.im.activity;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -12,6 +13,8 @@ import android.os.Message;
 import android.provider.MediaStore;
 import android.view.View;
 import android.view.Window;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.GridView;
@@ -75,8 +78,20 @@ public class FeedbackActivity extends BaseLoadActivity {
         Attach_gridView.setAdapter(Attach_adapter);
         Attach_gridView.setOnItemClickListener(new MyOnItemClickListener());
 
+
+        hideSoftKeyboard(this);
+
     }
 
+
+    protected void hideSoftKeyboard(Activity activity) {
+        InputMethodManager inputMethodManager = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+        if (activity.getWindow().getAttributes().softInputMode != WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN) {
+            if (activity.getCurrentFocus() != null)
+                inputMethodManager.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(),
+                        InputMethodManager.HIDE_NOT_ALWAYS);
+        }
+    }
     @Override
     public void onClick(View v) {
         // TODO 自动生成的方法存根

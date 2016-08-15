@@ -128,7 +128,7 @@ public class CharacterTestActivity extends BaseLoadActivity {
 
 
         TextView tx_top_right = (TextView) findViewById(R.id.tx_top_right);
-        tx_top_right.setVisibility(View.VISIBLE);
+//        tx_top_right.setVisibility(View.VISIBLE);
         tx_top_right.setOnClickListener(this);
         tv_question_sure = (TextView) findViewById(R.id.tv_question_sure);
         tv_question = (TextView) findViewById(R.id.tv_question);
@@ -315,11 +315,11 @@ public class CharacterTestActivity extends BaseLoadActivity {
         MyToast.show(mContext, response);
     }
 
-    @Override
+/*    @Override
     public void onDestroy() {
         //  If null, all callbacks and messages will be removed.
         mHandler.removeCallbacksAndMessages(null);
-    }
+    }*/
 
 }
 

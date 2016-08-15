@@ -5,7 +5,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.provider.ContactsContract;
 import android.text.TextUtils;
-import android.util.Log;
 
 import com.wuwo.im.bean.Contact;
 
@@ -55,7 +54,7 @@ public class ContactsTool {
 
     public ArrayList<Contact> getPhoneContacts(Context mContext) {
 
-        Log.i("ContactsTool","获取到的联系人列表为：：：：2000");
+//        Log.i("ContactsTool","获取到的联系人列表为：：：：2000");
         ArrayList<Contact> mContacts = new ArrayList<Contact>();
         ContentResolver resolver = mContext.getContentResolver();
         // 获取手机联系人
@@ -93,7 +92,7 @@ public class ContactsTool {
 //                mContactsPhonto.add(contactPhoto);
 
                 Contact temp=new Contact();
-                temp.setContactName(contactName);
+                temp.setName(contactName);
                 temp.setPhoneNumber(phoneNumber);
                 mContacts.add(temp);
 

@@ -125,6 +125,7 @@
             android:screenOrientation="portrait" />
         <activity
             android:name="com.wuwo.im.activity.AddFriendActivity"
+            android:windowSoftInputMode="stateHidden"
             android:screenOrientation="portrait" />
         <activity
             android:name="com.wuwo.im.activity.OwnerInfoEditActivity"

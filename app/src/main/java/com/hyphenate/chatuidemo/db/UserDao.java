@@ -13,13 +13,13 @@
  */
 package com.hyphenate.chatuidemo.db;
 
-import java.util.List;
-import java.util.Map;
-
 import android.content.Context;
 
 import com.hyphenate.chatuidemo.domain.RobotUser;
 import com.hyphenate.easeui.domain.EaseUser;
+
+import java.util.List;
+import java.util.Map;
 
 public class UserDao {
 	public static final String TABLE_NAME = "uers";
@@ -35,7 +35,24 @@ public class UserDao {
 	public static final String ROBOT_COLUMN_NAME_ID = "username";
 	public static final String ROBOT_COLUMN_NAME_NICK = "nick";
 	public static final String ROBOT_COLUMN_NAME_AVATAR = "avatar";
-	
+
+
+//除了自带环信聊天模块之外的其他模块缓存
+//	db.execSQL("create table if not exists CacheList (id INTEGER primary key autoincrement,date INTEGER unique,json text)");
+	public static final String CACHE_TABLE_NAME = "CacheJson";
+	public static final String CACHE_COLUMN_NAME_ID = "id";
+	public static final String CACHE_COLUMN_NAME_TYPE = "cache_type";
+	public static final String CACHE_COLUMN_NAME_JSON = "json";
+
+	//用于标记通讯录联系人的缓存
+	public static final int CONTRACTS_FRIENDS = 100;
+
+//	附近的人
+	public static final int CACHE_MAIN_LOCAL = 102;
+
+	//	联系人
+	public static final int CACHE_MAIN_CONTRACT = 104;
+
 	
 	public UserDao(Context context) {
 	}

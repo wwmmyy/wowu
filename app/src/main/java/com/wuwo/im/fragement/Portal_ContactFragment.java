@@ -24,6 +24,8 @@ import android.widget.TextView;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.hyphenate.chatuidemo.db.DemoDBManager;
+import com.hyphenate.chatuidemo.db.UserDao;
 import com.wuwo.im.activity.UserInfoEditActivity;
 import com.wuwo.im.adapter.CommRecyclerAdapter;
 import com.wuwo.im.adapter.CommRecyclerViewHolder;
@@ -129,18 +131,16 @@ public class Portal_ContactFragment extends BaseAppFragment implements View.OnCl
 //            }
 //        });
 
-        query = (EditText) view.findViewById(R.id.query);
-        // button to clear content in search bar
-        clearSearch = (ImageButton) view.findViewById(R.id.search_clear);
 
-
-        initQuery();
-
+        initQuery(view);
 
     }
     List<LocalUser.DataBean> searchList=new ArrayList<LocalUser.DataBean>() ;
     String currentSearchInfo="";
-    private void initQuery() {
+    private void initQuery(View view) {
+        query = (EditText) view.findViewById(R.id.query);
+        // button to clear content in search bar
+        clearSearch = (ImageButton) view.findViewById(R.id.search_clear);
 
         query.addTextChangedListener(new TextWatcher() {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
@@ -193,10 +193,8 @@ public class Portal_ContactFragment extends BaseAppFragment implements View.OnCl
                         mtotalHandler.sendMessage(msg);
                     }
                 }
-
             }
         }).start();
-
     }
 
     protected void hideSoftKeyboard() {
@@ -250,9 +248,7 @@ public class Portal_ContactFragment extends BaseAppFragment implements View.OnCl
     private final int LOAD_DATA=1;
     //    从网络加载流转日志数据并展示出来
     private void loadData() {
-
         loadDataService.loadGetJsonRequestData( WowuApp.GetFriendsURL+"?lon=" + mSettings.getString("longitude", "0") + "&lat=" + mSettings.getString("latitude", "0") ,LOAD_DATA);//+ "&userId=" + WowuApp.UserId+ "&PhoneNumber="+WowuApp.PhoneNumber
-
     }
 
     public static final int DOWNLOADED_LocalUser= 0;
@@ -263,59 +259,52 @@ public class Portal_ContactFragment extends BaseAppFragment implements View.OnCl
     @Override
     public void onClick(View v) {
 
-
-
-
     }
 
     @Override
     public void loadServerData(String response, int flag) {
-        Log.i("获取好友列表::::",response+" ;");
-
-
+        Log.i("Portal_ContactFragment:",response+" ;");
         switch (flag){
             case LOAD_DATA:
                 try {
-                    if (response != null) {
-                        setLoadInfo(response);
-                    }
+                    setLoadInfo(response);
                     Message msg = new Message();
                     msg.what = DOWNLOADED_LocalUser;
                     mtotalHandler.sendMessage(msg);
                 } catch (Exception e) {
 //                                    e.printStackTrace();
-                    Message msg = new Message();
-                    msg.what = DOWNLOADED_ERROR;
-                    mtotalHandler.sendMessage(msg);
+                    loadError();
                 }
                 break;
         }
-
-
-
     }
 
     @Override
     public void loadDataFailed(String response, int flag) {
-
         switch (flag){
             case LOAD_DATA:
-                Message msg = new Message();
-                msg.what = DOWNLOADED_ERROR;
-                mtotalHandler.sendMessage(msg);
+                try {
+                    setLoadInfo(null);
+
+                    Message msg = new Message();
+                    msg.what = DOWNLOADED_LocalUser;
+                    mtotalHandler.sendMessage(msg);
+                } catch (Exception e) {
+                    loadError();
+                    return;
+                }
+//                loadError();
                 break;
         }
-
-
-
-
-
-
     }
 
 
 
-
+    private void loadError() {
+        Message msg = new Message();
+        msg.what = DOWNLOADED_ERROR;
+        mtotalHandler.sendMessage(msg);
+    }
 
 
     private static class mHandlerWeak extends Handler {
@@ -403,14 +392,24 @@ public class Portal_ContactFragment extends BaseAppFragment implements View.OnCl
     }
 
 
-    public void setLoadInfo(String totalresult) throws JSONException {
-        Gson gson = new GsonBuilder().create();
-        if (totalresult != null) {
-            java.lang.reflect.Type type = new com.google.gson.reflect.TypeToken<List<LocalUser.DataBean>>() {
-            }.getType();
-            chat_userlist = gson.fromJson(totalresult, type);
-        }
+    public void setLoadInfo(final String totalresult) throws JSONException {
 
+        Gson gson = new GsonBuilder().create();
+        java.lang.reflect.Type type = new com.google.gson.reflect.TypeToken<List<LocalUser.DataBean>>() {}.getType();
+        if (totalresult != null) {
+            chat_userlist = gson.fromJson(totalresult, type);
+//          缓存到数据库
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    DemoDBManager.getInstance().saveCacheJson(UserDao.CACHE_MAIN_CONTRACT,totalresult);
+                }
+            }).start();
+        }else{
+//            读取缓存信息
+            String CacheJsonString = DemoDBManager.getInstance().getCacheJson(UserDao.CACHE_MAIN_CONTRACT);
+            chat_userlist = gson.fromJson(CacheJsonString, type);
+        }
     }
 
 
@@ -432,7 +431,7 @@ public class Portal_ContactFragment extends BaseAppFragment implements View.OnCl
 
                 TextView genderm= (TextView) viewHolder.getView(R.id.contact_gender_male);
                 TextView genderw= (TextView) viewHolder.getView(R.id.contact_gender_female);
-                if(mainMessage.getGender()==0){
+                if(mainMessage.getGender()==1){
                     genderm.setVisibility(View.VISIBLE);
                     genderw.setVisibility(View.GONE);
                     genderm.setText(mainMessage.getAge()+"");
@@ -441,11 +440,8 @@ public class Portal_ContactFragment extends BaseAppFragment implements View.OnCl
                     genderw.setVisibility(View.VISIBLE);
                     genderw.setText(mainMessage.getAge()+"");
                 }
-
-
                 SimpleDraweeView portal_news_img = (SimpleDraweeView) viewHolder.getView(R.id.news_label_pic);
                 portal_news_img.setImageURI(Uri.parse(mainMessage.getPhotoUrl()));
-
             }
 
             @Override
@@ -457,7 +453,6 @@ public class Portal_ContactFragment extends BaseAppFragment implements View.OnCl
         messageRAdapter.setOnItemClick(new CommRecyclerAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-
 
                 Intent intent2 = new Intent(mContext, UserInfoEditActivity.class);
                 intent2.putExtra("localUser", chat_userlist.get(position));

@@ -17,7 +17,6 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import com.hyphenate.chat.EMChatManager;
 import com.hyphenate.chatuidemo.DemoHelper;
 
 public class DbOpenHelper extends SQLiteOpenHelper{
@@ -54,6 +53,19 @@ public class DbOpenHelper extends SQLiteOpenHelper{
             + UserDao.PREF_TABLE_NAME + " ("
             + UserDao.COLUMN_NAME_DISABLED_GROUPS + " TEXT, "
             + UserDao.COLUMN_NAME_DISABLED_IDS + " TEXT);";
+
+//除环信聊天模块的其他缓存
+	public static final String CREATE_CACHE_TABLE = "CREATE TABLE if not exists "
+			+ UserDao.CACHE_TABLE_NAME + " ("
+//			+ UserDao.CACHE_COLUMN_NAME_ID + " INTEGER primary key autoincrement, "
+			+ UserDao.CACHE_COLUMN_NAME_TYPE + " INTEGER unique, "
+			+ UserDao.CACHE_COLUMN_NAME_JSON + " TEXT);";
+
+	public static final String DROP_CACHE_TABLE = "DROP TABLE "+UserDao.CACHE_TABLE_NAME ;
+
+
+
+
 	
 	private DbOpenHelper(Context context) {
 		super(context, getUserDatabaseName(), null, DATABASE_VERSION);
@@ -76,6 +88,7 @@ public class DbOpenHelper extends SQLiteOpenHelper{
 		db.execSQL(INIVTE_MESSAGE_TABLE_CREATE);
 		db.execSQL(CREATE_PREF_TABLE);
 		db.execSQL(ROBOT_TABLE_CREATE);
+		db.execSQL(CREATE_CACHE_TABLE);
 		
 	}
 

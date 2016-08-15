@@ -209,7 +209,7 @@ public class WowuApp extends Application {
     public static final String tempPicPath = "/Downloads/";//下载文件的暂存路径  /mnt/sdcard/Downloads/
 
 
-    public static String userImagePath = OkHttpUtils.serverAbsolutePath + "/appIcon/userIcon/";  //头像缩略图
+    public static String userImagePath = OkHttpUtils.serverAbsolutePath + "/Downloads/userIcon/";  //头像缩略图
 
 
     //表示请求服务器类型
@@ -289,7 +289,7 @@ public class WowuApp extends Application {
 //GET Chat/GetNearbyUser?lon={lon}&lat={lat}&pageIndex={pageIndex} 获取附近的用户
     public static String GetNearbyUserURL = OkHttpUtils.serverAbsolutePath + "Chat/GetNearbyUser";
     //    GET 获取目标用户的信息
-    public static String GetUserInfoURL = OkHttpUtils.serverAbsolutePath + "Chat/GetUserInfo";//?userId={userId}
+    public static String GetUserInfoURL = OkHttpUtils.serverAbsolutePath + "Chat/GetUserInfo";//?userId={userId}  userId={userId}&lon={lon}&lat={lat}
     //    POST 三观配
     public static String MatchURL = OkHttpUtils.serverAbsolutePath + "Chat/Match";//?userId={userId}
     //    POST  根据一组用户ID获取用户的头像
@@ -305,6 +305,19 @@ public class WowuApp extends Application {
     public static String RemoveFocusURL = OkHttpUtils.serverAbsolutePath + "Friend/RemoveFocus";//?userId={userId}
     //    POST  删除好友
     public static String RemoveFriendURL = OkHttpUtils.serverAbsolutePath + "Friend/RemoveFriend";//?friendId={friendId}
+
+
+//    POST Friend/SyncContacts  同步通讯录好友
+    public static String FriendSyncContactsURL = OkHttpUtils.serverAbsolutePath + "Friend/SyncContacts";//?friendId={friendI
+
+//    GET Friend/ContactsRecommend  获取通讯录推荐
+    public static String FriendContactsRecommendURL = OkHttpUtils.serverAbsolutePath + "Friend/ContactsRecommend";//?friendId={friendI
+
+
+
+
+   //  GET   推荐好友
+   public static String  ChatRecommendFriendURL = OkHttpUtils.serverAbsolutePath + "Chat/RecommendFriend";
 
 
     //######## Pay##########################################

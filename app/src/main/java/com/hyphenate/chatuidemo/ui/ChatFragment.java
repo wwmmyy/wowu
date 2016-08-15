@@ -19,7 +19,6 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.easemob.redpacketui.RedPacketConstant;
@@ -48,6 +47,7 @@ import com.hyphenate.exceptions.HyphenateException;
 import com.hyphenate.util.EasyUtils;
 import com.hyphenate.util.PathUtil;
 import com.wuwo.im.activity.UserInfoEditActivity;
+import com.wuwo.im.config.WowuApp;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -191,15 +191,12 @@ public class ChatFragment extends EaseChatFragment implements EaseChatFragmentHe
             }
         });
 
-
-
-
-
         SimpleDraweeView draweeView = (SimpleDraweeView) view.findViewById(com.hyphenate.easeui.R.id.sdv_sanguan_pic1);
-        draweeView.setImageURI(Uri.parse( EaseImageUtils.usersPhotoUrl.get(messageList.getItem(0).getTo() )));//"http://w
-
+        if(toChatUsername!=null){
+            draweeView.setImageURI(Uri.parse( EaseImageUtils.usersPhotoUrl.get(toChatUsername)));//"http://w messageList.getItem(0).getTo()
+        }
         SimpleDraweeView draweeView2 = (SimpleDraweeView) view.findViewById(com.hyphenate.easeui.R.id.sdv_sanguan_pic2);
-        draweeView2.setImageURI(Uri.parse( EaseImageUtils.usersPhotoUrl.get(messageList.getItem(0).getFrom())));//"http://w
+        draweeView2.setImageURI(Uri.parse( EaseImageUtils.usersPhotoUrl.get( getActivity().getSharedPreferences(WowuApp.PREFERENCE_KEY,getActivity().MODE_PRIVATE).getString("UserId", "http://#"))));//"http://w messageList.getItem(0).getFrom() WowuApp.UserId EMClient.getInstance().getCurrentUser()
 
 
 

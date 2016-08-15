@@ -63,7 +63,7 @@ public class ConversationListFragment extends EaseConversationListFragment{
                         }
                         
                     }
-                    // it's single chat
+                    // it's single chat   这个应该是聊天者的userid了
                     intent.putExtra(Constant.EXTRA_USER_ID, username);
                     startActivity(intent);
                     getActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);

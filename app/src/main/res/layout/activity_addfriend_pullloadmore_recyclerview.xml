@@ -15,11 +15,13 @@
     </LinearLayout>
 
 
-    <com.wuwo.im.view.SearchView
+<!--    <com.wuwo.im.view.SearchView
         android:id="@+id/search_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-          />
+          />-->
+
+    <include layout="@layout/ease_search_bar" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -52,7 +54,7 @@
                     fresco:actualImageScaleType="focusCrop"
                     fresco:fadeDuration="1000"
                     fresco:failureImageScaleType="centerInside"
-                    fresco:placeholderImage="@drawable/icon"
+                    fresco:placeholderImage="@drawable/contact"
                     fresco:placeholderImageScaleType="fitCenter"
                     fresco:progressBarAutoRotateInterval="1000"
                     fresco:progressBarImage="@drawable/con_progress_bar"
@@ -86,7 +88,7 @@
                     fresco:actualImageScaleType="focusCrop"
                     fresco:fadeDuration="1000"
                     fresco:failureImageScaleType="centerInside"
-                    fresco:placeholderImage="@drawable/woman2"
+                    fresco:placeholderImage="@drawable/wechatpay"
                     fresco:placeholderImageScaleType="fitCenter"
                     fresco:progressBarAutoRotateInterval="2000"
                     fresco:progressBarImage="@drawable/con_progress_bar"
@@ -121,7 +123,7 @@
                     fresco:actualImageScaleType="focusCrop"
                     fresco:fadeDuration="1000"
                     fresco:failureImageScaleType="centerInside"
-                    fresco:placeholderImage="@drawable/woman3"
+                    fresco:placeholderImage="@drawable/qq"
                     fresco:placeholderImageScaleType="fitCenter"
                     fresco:progressBarAutoRotateInterval="1000"
                     fresco:progressBarImage="@drawable/con_progress_bar"

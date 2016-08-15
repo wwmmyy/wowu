@@ -174,9 +174,7 @@ public class UserInfoEditActivity extends BaseLoadActivity {
                         }
                     }, true).show();
 
-                    //发送一句对话给他，让他去关注你
-
-
+  //发送一句对话给他，让他去关注你
 //                    发送文本消息
 //创建一条文本消息，content为消息文字内容，toChatUsername为对方用户或者群聊的id，后文皆是如此
                     EMMessage message = EMMessage.createTxtSendMessage(WowuApp.Name+"关注了你哦", mLocalUser.getUserId());

@@ -15,6 +15,8 @@ import com.easemob.redpacketsdk.RPCallback;
 import com.easemob.redpacketsdk.RedPacket;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chatuidemo.DemoHelper;
+import com.hyphenate.chatuidemo.db.DemoDBManager;
+import com.hyphenate.chatuidemo.db.UserDao;
 import com.wuwo.im.config.WowuApp;
 import com.wuwo.im.service.LocationService;
 import com.wuwo.im.util.UtilsTool;
@@ -75,7 +77,15 @@ public class LoadingActivity extends com.wuwo.im.activity.BaseActivity {
                     startActivity();
                 } else {
                     Toast.makeText(mContext, "没有网络连接!", Toast.LENGTH_LONG).show();
-                    Intent intent = new Intent(mContext, LoginChooseActivity.class);
+
+                    String CacheJsonString = DemoDBManager.getInstance().getCacheJson(UserDao.CACHE_MAIN_LOCAL);
+                    Intent intent =null;
+                    if (CacheJsonString!=null && CacheJsonString.length()>0){
+                        //说明之前有缓存
+                         intent = new Intent(mContext, LoginActivity.class);
+                    }else{
+                         intent = new Intent(mContext, LoginChooseActivity.class);
+                    }
                     startActivity(intent);
                     overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                     finish();

@@ -51,6 +51,7 @@
         android:layout_width="fill_parent"
         android:layout_height="60dp"
         android:layout_marginTop="15dp"
+        android:visibility="gone"
         android:background="@drawable/item_background_find_selector">
 
         <!--fresco:backgroundImage="@android:color/holo_orange_light"-->
@@ -163,7 +164,7 @@
             android:layout_centerVertical="true"
             android:layout_toRightOf="@+id/find_share_f_ic2"
             android:paddingLeft="10dp"
-            android:text="邀请好友参加性格测试" />
+            android:text="邀请好友" />
     </RelativeLayout>
 
     <RelativeLayout

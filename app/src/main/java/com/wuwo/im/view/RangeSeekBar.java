@@ -144,7 +144,9 @@ public class RangeSeekBar extends View {
     	viewWidth = measureWidth(widthMeasureSpec);
     	viewHeight = measureHeight(heightMeasureSpec);
         setMeasuredDimension(viewWidth,viewHeight);
-        
+
+
+		Log.d(TAG,"viewWidth ：：："+viewWidth);
         // 
         thumbHalf = (orientation == VERTICAL) ? (thumbHeight/2) : (thumbWidth/2);
 //    	pixelRangeMin = 0 + thumbHalf;
@@ -402,6 +404,8 @@ public class RangeSeekBar extends View {
             area1.bottom = getMeasuredHeight() - getPaddingBottom();
     		track.setBounds(area1);
     		track.draw(canvas);
+
+			Log.d(TAG,"gutterbg: "+area1.left +":::"+area1.right);
     	}
     }
     
@@ -427,7 +431,9 @@ public class RangeSeekBar extends View {
 	    	if(thumbs.size() == 1)
 	    		thLow = new Thumb();
 	    	Log.d(TAG,"l: "+thLow.pos+" h: "+thHigh.pos);
-	    	
+//			此处可以改变现实的初始值xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+			thLow.pos=100;
+			thHigh.pos=300;
 	    	if(range != null) {
 	    		Rect area1 = new Rect();
 	    		

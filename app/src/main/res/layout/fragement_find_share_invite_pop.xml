@@ -68,7 +68,7 @@
         android:text="微信好友"
         android:textSize="14sp" />
 
-        <TextView
+ <!--       <TextView
             android:id="@+id/share_f_sms"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -79,7 +79,7 @@
             android:paddingRight="8dp"
             android:gravity="center_horizontal"
             android:text="  信息  "
-            android:textSize="14sp" />
+            android:textSize="14sp" />-->
     </LinearLayout>
 
     <LinearLayout

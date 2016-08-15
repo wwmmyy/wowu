@@ -60,7 +60,7 @@ import im.wuwo.com.wuwo.R;
  */
 
 public class OwnerInfoEditActivity extends FragmentActivity implements
-        DatePickerDialog.OnDateSetListener , View.OnClickListener, loadServerDataListener, PicAdapter.OnItemClickLitener  {
+        DatePickerDialog.OnDateSetListener, View.OnClickListener, loadServerDataListener, PicAdapter.OnItemClickLitener {
     LoadserverdataService loadDataService;
     Context mContext = null;
 
@@ -77,6 +77,7 @@ public class OwnerInfoEditActivity extends FragmentActivity implements
 
     mHandlerWeak mtotalHandler;
 
+    private SharedPreferences settings;
 
     UserInfoDetail mUserDetail = new UserInfoDetail();
     ArrayList<UserInfoDetail> mUserDetailList = new ArrayList<UserInfoDetail>(); //记录所有的最新消息
@@ -88,7 +89,7 @@ public class OwnerInfoEditActivity extends FragmentActivity implements
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-         requestWindowFeature(Window.FEATURE_NO_TITLE);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
         super.onCreate(savedInstanceState);
         mContext = this;
         loadDataService = new LoadserverdataService(this);
@@ -99,6 +100,7 @@ public class OwnerInfoEditActivity extends FragmentActivity implements
 //        if(getIntent()!=null){
 //            mUserDetail = (UserInfoDetail)intent.getSerializableExtra("UserDetail");
 //        }
+        settings = this.getSharedPreferences(WowuApp.PREFERENCE_KEY, MODE_PRIVATE);
 
         initView();
 
@@ -141,7 +143,15 @@ public class OwnerInfoEditActivity extends FragmentActivity implements
                 break;
 
             case R.id.tx_top_right:
-                upload2Server();
+                pd = UtilsTool.initProgressDialog(mContext, "请稍后...");
+                pd.show();
+
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        upload2Server();
+                    }
+                }).start();
 
                 break;
         }
@@ -178,6 +188,7 @@ public class OwnerInfoEditActivity extends FragmentActivity implements
                 }
                 break;
             case R.id.tx_top_right:
+                MyToast.show(mContext, "修改成功");
                 if (pd != null) {
                     pd.dismiss();
                 }
@@ -194,7 +205,7 @@ public class OwnerInfoEditActivity extends FragmentActivity implements
                 mtotalHandler.sendMessage(msg);
                 break;
             case R.id.tx_top_right:
-                MyToast.show(mContext,response);
+                MyToast.show(mContext, response);
                 if (pd != null) {
                     pd.dismiss();
                 }
@@ -228,7 +239,7 @@ public class OwnerInfoEditActivity extends FragmentActivity implements
 //        String url = "http://img1.imgtn.bdimg.com/it/u=4033491868,3189899599&fm=21&gp=0.jpg";
 //        String url = "http://xzxj.oss-cn-shanghai.aliyuncs.com/user/97f28a44-2bab-4140-963a-b5277351ae74.jpg";
 
-        Log.i("为什么不显示呢，你麻痹", "：：" + WowuApp.tempPicPath + name + "." + UtilsTool.getFileType(url));
+//        Log.i("为什么不显示呢，你麻痹", "：：" + WowuApp.tempPicPath + name + "." + UtilsTool.getFileType(url));
 
         Intent intent = new Intent(context, EaseShowBigImageActivity.class);
         File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + WowuApp.tempPicPath + name + "." + UtilsTool.getFileType(url));
@@ -736,7 +747,10 @@ public class OwnerInfoEditActivity extends FragmentActivity implements
         try {
             JSONObject json = new JSONObject();
             json.put("Name", mUserDetail.getName());
-           // json.put("Birthday", new Date());//mUserDetail.getBirthday()
+            json.put("EnglishName", mUserDetail.getEnglishName());
+            json.put("Birthday",mUserDetail.getBirthday());
+            // json.put("Birthday", new Date());//mUserDetail.getBirthday()
+            json.put("Home", mUserDetail.getHome());
             json.put("Home", mUserDetail.getHome());
             json.put("Description", mUserDetail.getDescription());
             json.put("MaritalStatus", 1);//mUserDetail.getMaritalStatus()
@@ -747,7 +761,12 @@ public class OwnerInfoEditActivity extends FragmentActivity implements
             json.put("LifeAddress", mUserDetail.getLifeAddress());
             json.put("DailyAddress", mUserDetail.getDailyAddress());
 
-            Log.i("上传到服务器的用户编辑资料为0：：：：：", json.toString());
+            json.put("userId", WowuApp.UserId);
+            json.put("lon", settings.getString("latitude", ""));
+            json.put("lat", settings.getString("longitude", ""));
+
+
+//            Log.i("上传到服务器的用户编辑资料为0：：：：：", json.toString());
 
 //
             if (userPicAdapter.getList() != null && userPicAdapter.getList().size() > 0) {
@@ -755,12 +774,12 @@ public class OwnerInfoEditActivity extends FragmentActivity implements
                 for (int i = 0; i < userPicAdapter.getList().size(); i++) {
                     if (((UserInfoDetail.PhotosBean) userPicAdapter.getList().get(i)).getLocalPath() != null) {//说明是刚增加的图片
 
-                        JSONObject tempjson = new JSONObject();
+                        JSONObject tempjson0 = new JSONObject();
 //                        tempjson.put("PhotoId", ((UserInfoDetail.PhotosBean) userPicAdapter.getList().get(i)).getId());
-                        json.put("Base64Image", UtilsTool.bitmaptoString(BitmapFactory.decodeFile(
+                        tempjson0.put("Base64Image", UtilsTool.bitmaptoString(BitmapFactory.decodeFile(
                                 ((UserInfoDetail.PhotosBean) userPicAdapter.getList().get(i)).getLocalPath()
                         )));
-                        jarry.put(tempjson);
+                        jarry.put(tempjson0);
                     } else {//说明是之前已经有过的图片
 
                         JSONObject tempjson = new JSONObject();
@@ -769,14 +788,14 @@ public class OwnerInfoEditActivity extends FragmentActivity implements
                         jarry.put(tempjson);
                     }
                 }
-                json.put("Photos", jarry.toString());
+                json.put("Photos", jarry);//.toString()
 
             }
 
-            pd = UtilsTool.initProgressDialog(mContext, "请稍后...");
-            pd.show();
-            Log.i("上传到服务器的用户编辑资料为：：：：：", json.toString());
+//            Log.i("上传到服务器的用户编辑资料为：：：：：", json.toString());
+//            UtilsTool.saveStringToSD(json.toString());
             loadDataService.loadPostJsonRequestData(WowuApp.JSON, WowuApp.UpdateUserInfoURL, json.toString(), R.id.tx_top_right);
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -805,7 +824,7 @@ public class OwnerInfoEditActivity extends FragmentActivity implements
     public void onDateSet(DatePicker view, int year, int month, int day) {
         Message msg = new Message();
         msg.what = REFERSH_DATA;
-        mUserDetail.setBirthday(year +"年"+ month +"月"+day+"日");
+        mUserDetail.setBirthday(year + " " + month + " " + day );
         mUserDetailList.remove(0);
         mUserDetailList.add(mUserDetail);
         mtotalHandler.sendMessage(msg);
