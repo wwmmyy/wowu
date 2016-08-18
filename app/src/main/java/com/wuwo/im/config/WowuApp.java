@@ -22,11 +22,8 @@ import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.squareup.okhttp.MediaType;
-import com.squareup.okhttp.Request;
 import com.wuwo.im.util.UtilsTool;
 import com.zhy.http.okhttp.OkHttpUtils;
-import com.zhy.http.okhttp.builder.PostStringBuilder;
-import com.zhy.http.okhttp.callback.StringCallback;
 import com.zhy.http.okhttp.service.LoadserverdataService;
 
 import org.json.JSONObject;
@@ -107,6 +104,15 @@ public class WowuApp extends Application {
         mMyLocationListener = new MyLocationListener();
         mLocationClient.registerLocationListener(mMyLocationListener);
 //加入环信
+
+
+
+        //假如空指针的话application保存的东西就会清空重新加载
+        settings = this.getSharedPreferences(WowuApp.PREFERENCE_KEY, MODE_PRIVATE);
+        UserId=settings.getString("UserId", "") ;
+        OkHttpUtils.token=settings.getString("token", "") ;
+        iconPath=settings.getString("iconPath", "") ;
+        Gender=settings.getInt("Gender", 0) ;
 
 
         int pid = android.os.Process.myPid();
@@ -242,7 +248,8 @@ public class WowuApp extends Application {
     //    POST Account/VipInfo
     public static String VipInfoURL = OkHttpUtils.serverAbsolutePath + "Account/VipInfo";
 
-
+    //    POST Account/SubmitSuggestion   提交意见
+    public static String SubmitSuggestionURL = OkHttpUtils.serverAbsolutePath + "Account/SubmitSuggestion";
 
     //    GET 获取用户的照片
     public static String GetPhotosURL = OkHttpUtils.serverAbsolutePath + "Account/GetPhotos";
@@ -294,6 +301,9 @@ public class WowuApp extends Application {
     public static String MatchURL = OkHttpUtils.serverAbsolutePath + "Chat/Match";//?userId={userId}
     //    POST  根据一组用户ID获取用户的头像
     public static String UserPhotoURL = OkHttpUtils.serverAbsolutePath + "Chat/UserPhoto";
+
+//    POST Logger/Write            写日志
+    public static String LoggerWriteURL = OkHttpUtils.serverAbsolutePath + "Logger/Write";
 
 
     //########Friend  好友相关##########################################
@@ -471,7 +481,12 @@ public static String OrderBuyURL = OkHttpUtils.serverAbsolutePath + "Order/Buy";
         return false;
     }
 
-    private void uploadLoaction(final double mlatitude, final double mlongitude) {
+    /**
+     *也是发送坐标，暂时不用这个
+     * @param mlatitude
+     * @param mlongitude
+     */
+/*    private void uploadLoaction(final double mlatitude, final double mlongitude) {
 //        if (OkHttpUtils.token != null && !OkHttpUtils.token.equals("")) {
 //            try {
 //                JSONObject json = new JSONObject();
@@ -526,7 +541,7 @@ public static String OrderBuyURL = OkHttpUtils.serverAbsolutePath + "Order/Buy";
             }
         }
         ).start();
-    }
+    }*/
 
 
     /**

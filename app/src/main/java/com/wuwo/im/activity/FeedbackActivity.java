@@ -25,14 +25,11 @@ import android.widget.Toast;
 
 import com.wuwo.im.adapter.MailGridViewAdapter;
 import com.wuwo.im.bean.Attachment;
+import com.wuwo.im.config.WowuApp;
 import com.wuwo.im.util.MyToast;
 import com.wuwo.im.util.UtilsTool;
-import com.zhy.http.okhttp.OkHttpUtils;
 
 import org.json.JSONObject;
-
-import java.util.HashMap;
-import java.util.Map;
 
 import im.wuwo.com.wuwo.R;
 
@@ -56,8 +53,7 @@ public class FeedbackActivity extends BaseLoadActivity {
 
         setContentView(R.layout.activity_feedback);
 
-        mSettings = getSharedPreferences("com.dist.iportal.password",
-                Context.MODE_PRIVATE);
+        mSettings = getSharedPreferences(WowuApp.PREFERENCE_KEY, MODE_PRIVATE);
 
         feed_back_send = (TextView) findViewById(R.id.tx_top_right);
         feed_back_content = (EditText) findViewById(R.id.feed_back_edit);
@@ -70,6 +66,9 @@ public class FeedbackActivity extends BaseLoadActivity {
 
         ImageView return_back0_feedback = (ImageView) findViewById(R.id.return_back);
         return_back0_feedback.setOnClickListener(this);
+        findViewById(R.id.bt_feedback_submit).setOnClickListener(this);
+
+
 
 
 //      附件材料
@@ -97,6 +96,7 @@ public class FeedbackActivity extends BaseLoadActivity {
         // TODO 自动生成的方法存根
         switch (v.getId()) {
             case R.id.tx_top_right:
+            case R.id.bt_feedback_submit:
                 sendToServer();
                 break;
             case R.id.return_back:
@@ -115,47 +115,19 @@ public class FeedbackActivity extends BaseLoadActivity {
      * @Title: sendToServer
      * @Description: 上传到服务器
      */
+    ProgressDialog pb;
     public void sendToServer() {
-        final String requestURL = OkHttpUtils.serverAbsolutePath + "/mobile/app-feedBack.action";
 
-        Thread t = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                //                    if (file != null) {
-                Message msg = new Message();
-                msg.what = Loading;
-                mHandler.sendMessage(msg);
-                try {
+        pb= UtilsTool.initProgressDialog(mContext,"请稍后...");
+        pb.show();
+        try {
+            JSONObject json = new JSONObject();
+            json.put("Text", feed_back_content.getText().toString());// WowuApp.UserId
+            loadDataService.loadPostJsonRequestData(WowuApp.JSON, WowuApp.SubmitSuggestionURL, json.toString(), R.id.contact_add);//
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
-                    //请求普通信息
-                    Map<String, String> map = new HashMap<String, String>();
-                    map.put("userId", mSettings.getString("userid", ""));//用户登录以后获取用户的userID并保存
-                    map.put("content", feed_back_content.getText().toString());
-//                    map.put("appidentify", "com.dist.iportal");                    
-                    String totalresult = UtilsTool.getStringFromServer(requestURL, map);
-                    Message msg2 = new Message();
-
-                    if (totalresult != null && !totalresult.equals("")) {
-                        JSONObject obj = new JSONObject(totalresult);
-                        if (obj.optBoolean("state")) {
-                            msg2.what = END;
-                        } else {
-                            msg2.what = WRONG;
-                        }
-                    } else {
-                        msg2.what = WRONG;
-                    }
-
-                    mHandler.sendMessage(msg2);
-                } catch (Exception e) {
-                    // TODO 自动生成的 catch 块
-                    e.printStackTrace();
-                }
-
-                //                    }
-            }
-        });
-        t.start();
     }
 
     ProgressDialog pg;
@@ -232,6 +204,13 @@ public class FeedbackActivity extends BaseLoadActivity {
 
     @Override
     public void loadServerData(String response, int flag) {
+        if(pb!=null &&pb.isShowing()){
+            pb.dismiss();
+        }
+
+        this.finish();
+        MyToast.show(mContext,"反馈成功~");
+        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
 
     }
 

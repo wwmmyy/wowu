@@ -103,7 +103,7 @@ public class FromContractsActivity extends BaseLoadActivity {
 
                     String CacheJsonString = DemoDBManager.getInstance().getCacheJson(UserDao.CONTRACTS_FRIENDS);
                     //说明之前已经保存同步通讯录，且没有变更
-                    Log.i("FromContractsActivity表a", "：" + CacheJsonString.trim().length() + ":" + gson.toJson(mContacts).length());
+//                    Log.i("FromContractsActivity表a", "：" + CacheJsonString.trim().length() + ":" + gson.toJson(mContacts).length());
                     if (CacheJsonString != null && CacheJsonString.trim().length() == gson.toJson(mContacts).length()) {
                         Log.i("FromContractsActivity列表", "：：" + "说明之前已经保存同步通讯录，且没有变更");
 //                        直接获取当前待添加信息

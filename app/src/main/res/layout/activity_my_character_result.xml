@@ -80,27 +80,27 @@
 
 
         <TextView
-            android:id="@+id/user_login_name"
+            android:id="@+id/tv_user_typename"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/user_login_pic"
             android:layout_centerHorizontal="true"
             android:gravity="center"
             android:singleLine="true"
-            android:text="诸葛亮"
+            android:text="。。。"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="@color/white"
             android:textSize="22sp" />
 
         <TextView
-            android:id="@+id/user_info_detail_edit"
+            android:id="@+id/tv_user_typeintro"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/user_login_name"
+            android:layout_below="@id/tv_user_typename"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="8dp"
             android:gravity="center"
-            android:text="三国时期著名的策略家，军事家"
+            android:text="。。。。。。。。。。。"
             android:textColor="@color/white"
             android:textSize="13sp" />
 
@@ -114,6 +114,7 @@
         android:orientation="horizontal">
 
         <TextView
+            android:id="@+id/tv_user_result"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="倾向程度："
@@ -185,6 +186,7 @@
                 android:textSize="16sp" />
 
             <com.wuwo.im.view.RangeSeekBar
+                android:id="@+id/rs_character1"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1" />
@@ -212,6 +214,7 @@
                 android:textSize="16sp" />
 
             <com.wuwo.im.view.RangeSeekBar
+                android:id="@+id/rs_character2"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1" />
@@ -239,6 +242,7 @@
                 android:textSize="16sp" />
 
             <com.wuwo.im.view.RangeSeekBar
+                android:id="@+id/rs_character3"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1" />

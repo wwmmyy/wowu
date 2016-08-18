@@ -432,8 +432,13 @@ public class RangeSeekBar extends View {
 	    		thLow = new Thumb();
 	    	Log.d(TAG,"l: "+thLow.pos+" h: "+thHigh.pos);
 //			此处可以改变现实的初始值xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-			thLow.pos=100;
-			thHigh.pos=300;
+//			thLow.pos=100;
+//			thHigh.pos=300;
+			int width=getMeasuredWidth() - getPaddingRight()-getPaddingLeft();
+			thLow.pos=getCharacterLeft()*width;
+			thHigh.pos=getCharacterRight()*width;
+
+
 	    	if(range != null) {
 	    		Rect area1 = new Rect();
 	    		
@@ -451,11 +456,35 @@ public class RangeSeekBar extends View {
 	    		}
 	    		range.setBounds(area1);
 	    		range.draw(canvas);
+
+				if(characterRight!=0.901f && currentCount<2){
+					currentCount++;
+					invalidate();
+				}
 	    	}
     	}
     }
-    
-    private void drawThumbs(Canvas canvas) {
+
+	float characterLeft=0.05f;
+	float characterRight=0.901f;
+	int currentCount=0;
+	private float getCharacterLeft() {
+		return characterLeft;
+	}
+	private float getCharacterRight() {
+		return characterRight;
+	}
+
+	public void setCharacter(float characterLeft,float characterRight){
+		this.characterLeft=characterLeft;
+		this.characterRight=characterRight;
+		this.invalidate();
+	}
+
+
+
+
+	private void drawThumbs(Canvas canvas) {
     	if(!thumbs.isEmpty()) {
     		//Paint p = new Paint();
     		

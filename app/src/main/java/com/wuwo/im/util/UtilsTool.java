@@ -45,6 +45,9 @@ import com.google.gson.JsonParseException;
 import com.google.gson.JsonParser;
 import com.wuwo.im.activity.LoginChooseActivity;
 import com.wuwo.im.config.WowuApp;
+import com.zhy.http.okhttp.service.LoadserverdataService;
+
+import org.json.JSONObject;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -2249,7 +2252,7 @@ public class UtilsTool {
                 cause.printStackTrace(printWriter);
                 cause = cause.getCause();
             }
-            String toSaveString = info.toString();
+            final String toSaveString = info.toString();
             printWriter.close();
             if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
                 InputStream is = StringTOInputStream(toSaveString);
@@ -2272,6 +2275,25 @@ public class UtilsTool {
                 fos.close();
                 is.close();
             }
+
+//将异常信息发送给服务器
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        JSONObject json = new JSONObject();
+                        json.put("Level" , 40);
+                        json.put("ShortMessage" ,"Android crash");
+                        json.put("FullMessage" ,toSaveString);
+                        new LoadserverdataService(null).loadPostJsonRequestData(WowuApp.JSON, WowuApp.LoggerWriteURL, json.toString(), 0);
+                        Log.i("发送异常给服务器：：1：", ":::::::" );
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        Log.i("发送异常给服务器 异常：：：",  ":::::::");
+                    }
+                }
+            }).start();
+
         } catch (Exception e2) {
             // TODO: handle exception
             e.printStackTrace();

@@ -25,6 +25,7 @@ import com.tencent.tauth.Tencent;
 import com.tencent.tauth.UiError;
 import com.wuwo.im.activity.FeedbackActivity;
 import com.wuwo.im.activity.MyCharacterResultActivity;
+import com.wuwo.im.activity.ShareToContractsActivity;
 import com.wuwo.im.activity.VersionIntroActivity;
 import com.wuwo.im.config.WowuApp;
 import com.wuwo.im.util.MyToast;
@@ -161,6 +162,10 @@ public class Portal_FindFragment extends BaseAppFragment implements View.OnClick
         view.findViewById(R.id.share_f_contact).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
+                Intent temp2Intent=new Intent(mContext, ShareToContractsActivity.class);
+                startActivity(temp2Intent);
+                mContext.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+
                 dialog.dismiss();
             }
         });
@@ -249,6 +254,9 @@ public class Portal_FindFragment extends BaseAppFragment implements View.OnClick
         view.findViewById(R.id.share_f_contact).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
+                Intent temp2Intent=new Intent(mContext, ShareToContractsActivity.class);
+                startActivity(temp2Intent);
+                mContext.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                 dialog.dismiss();
             }
         });

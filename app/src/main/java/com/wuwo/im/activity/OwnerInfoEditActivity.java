@@ -18,7 +18,6 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.DatePicker;
@@ -26,6 +25,8 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.hyphenate.chatuidemo.db.DemoDBManager;
+import com.hyphenate.chatuidemo.db.UserDao;
 import com.hyphenate.easeui.ui.EaseShowBigImageActivity;
 import com.wuwo.im.adapter.CommRecyclerAdapter;
 import com.wuwo.im.adapter.CommRecyclerViewHolder;
@@ -160,7 +161,30 @@ public class OwnerInfoEditActivity extends FragmentActivity implements
     private final int LOAD_DATA = 1;
 
     private void loadData() {
-        loadDataService.loadGetJsonRequestData(OkHttpUtils.GetUserInfoURL + "?userId=" + WowuApp.UserId, LOAD_DATA);
+
+        if (UtilsTool.checkNet(mContext)) {
+            loadDataService.loadGetJsonRequestData(OkHttpUtils.GetUserInfoURL + "?userId=" + WowuApp.UserId, LOAD_DATA);
+        } else {
+
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+//            读取缓存信息
+                        String CacheJsonString = DemoDBManager.getInstance().getCacheJson(UserDao.CACHE_MAIN_OWNERINFO);
+                        if (CacheJsonString != null) {
+                            setLoadInfo(CacheJsonString);
+                        }
+                        Message msg = new Message();
+                        msg.what = DOWNLOADED_LocalUser;
+                        mtotalHandler.sendMessage(msg);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }).start();
+        }
+
     }
 
 
@@ -170,12 +194,18 @@ public class OwnerInfoEditActivity extends FragmentActivity implements
     public static final int ADD_ATTACHMENT = 1000;
 
     @Override
-    public void loadServerData(String response, int flag) {
+    public void loadServerData(final String response, int flag) {
         switch (flag) {
             case LOAD_DATA:
                 try {
                     if (response != null) {
                         setLoadInfo(response);
+                        new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                DemoDBManager.getInstance().saveCacheJson(UserDao.CACHE_MAIN_OWNERINFO, response);
+                            }
+                        }).start();
                     }
                     Message msg = new Message();
                     msg.what = DOWNLOADED_LocalUser;
@@ -219,7 +249,7 @@ public class OwnerInfoEditActivity extends FragmentActivity implements
             addAttachment();
         } else {
             if (((UserInfoDetail.PhotosBean) userPicAdapter.getList().get(position)).getLocalPath() != null) {
-                Log.i("为什么不显示呢，本地", "：：" + ((UserInfoDetail.PhotosBean) userPicAdapter.getList().get(position)).getLocalPath());
+//                Log.i("为什么不显示呢，本地", "：：" + ((UserInfoDetail.PhotosBean) userPicAdapter.getList().get(position)).getLocalPath());
                 Intent intent = new Intent(mContext, EaseShowBigImageActivity.class);
                 File file = new File(((UserInfoDetail.PhotosBean) userPicAdapter.getList().get(position)).getLocalPath());
                 if (file.exists()) {
@@ -236,9 +266,6 @@ public class OwnerInfoEditActivity extends FragmentActivity implements
 
 
     protected void onBubbleClick(Context context, String url, String name) {
-//        String url = "http://img1.imgtn.bdimg.com/it/u=4033491868,3189899599&fm=21&gp=0.jpg";
-//        String url = "http://xzxj.oss-cn-shanghai.aliyuncs.com/user/97f28a44-2bab-4140-963a-b5277351ae74.jpg";
-
 //        Log.i("为什么不显示呢，你麻痹", "：：" + WowuApp.tempPicPath + name + "." + UtilsTool.getFileType(url));
 
         Intent intent = new Intent(context, EaseShowBigImageActivity.class);
@@ -748,7 +775,7 @@ public class OwnerInfoEditActivity extends FragmentActivity implements
             JSONObject json = new JSONObject();
             json.put("Name", mUserDetail.getName());
             json.put("EnglishName", mUserDetail.getEnglishName());
-            json.put("Birthday",mUserDetail.getBirthday());
+            json.put("Birthday", mUserDetail.getBirthday());
             // json.put("Birthday", new Date());//mUserDetail.getBirthday()
             json.put("Home", mUserDetail.getHome());
             json.put("Home", mUserDetail.getHome());
@@ -824,7 +851,7 @@ public class OwnerInfoEditActivity extends FragmentActivity implements
     public void onDateSet(DatePicker view, int year, int month, int day) {
         Message msg = new Message();
         msg.what = REFERSH_DATA;
-        mUserDetail.setBirthday(year + " " + month + " " + day );
+        mUserDetail.setBirthday(year + " " + month + " " + day);
         mUserDetailList.remove(0);
         mUserDetailList.add(mUserDetail);
         mtotalHandler.sendMessage(msg);

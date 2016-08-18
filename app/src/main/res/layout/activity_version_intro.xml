@@ -34,7 +34,7 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/edit_bg_all"
                 android:gravity="top"
-                android:text="留下你宝贵意见，我们会努力完善留下你宝贵意见，我们会努力完善"
+                android:text="版本预告，版本预告，版本预告，版本预告，版本预告，版本预告"
                 android:minLines="10"
                 android:textSize="15sp" />
 <!--

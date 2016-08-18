@@ -53,6 +53,9 @@ public class UserDao {
 	//	联系人
 	public static final int CACHE_MAIN_CONTRACT = 104;
 
+	//	登录者资料
+	public static final int CACHE_MAIN_OWNERINFO = 105;
+
 	
 	public UserDao(Context context) {
 	}

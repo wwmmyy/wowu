@@ -14,12 +14,6 @@ import android.widget.Toast;
 
 import com.wuwo.im.util.MyToast;
 import com.wuwo.im.util.UtilsTool;
-import com.zhy.http.okhttp.OkHttpUtils;
-
-import org.json.JSONObject;
-
-import java.util.HashMap;
-import java.util.Map;
 
 import im.wuwo.com.wuwo.R;
 /** 
@@ -72,6 +66,7 @@ public class VersionIntroActivity extends BaseLoadActivity {
             break;
         case R.id.return_back:
             VersionIntroActivity.this.finish();
+            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
             break;
         default:
             break;
@@ -87,46 +82,6 @@ public class VersionIntroActivity extends BaseLoadActivity {
      * @throws
      */
     public void sendToServer() {
-        final String requestURL = OkHttpUtils.serverAbsolutePath + "/mobile/app-feedBack.action";
-
-        Thread t = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                //                    if (file != null) {
-                Message msg = new Message();
-                msg.what = Loading;
-                mHandler.sendMessage(msg);
-                try {
-
-                    //请求普通信息
-                    Map<String, String> map = new HashMap<String, String>();
-                    map.put("userId", mSettings.getString("userid", ""));//用户登录以后获取用户的userID并保存
-                    map.put("content", feed_back_content.getText().toString());
-//                    map.put("appidentify", "com.dist.iportal");                    
-                    String totalresult = UtilsTool.getStringFromServer(requestURL, map );
-                    Message msg2 = new Message();
-
-                    if (totalresult != null && !totalresult.equals("")) {
-                        JSONObject obj = new JSONObject(totalresult);
-                        if (obj.optBoolean("state")) {
-                            msg2.what = END;
-                        } else {
-                            msg2.what = WRONG;
-                        }
-                    } else {
-                        msg2.what = WRONG;
-                    }
-
-                    mHandler.sendMessage(msg2);
-                } catch (Exception e) {
-                    // TODO 自动生成的 catch 块
-                    e.printStackTrace();
-                }
-
-                //                    }
-            }
-        });
-        t.start();
     }
 
     ProgressDialog pg;
