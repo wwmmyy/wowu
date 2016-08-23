@@ -91,7 +91,7 @@ public class Portal_LocalFragment extends BasePortal_TabFragment {
 
                 TextView genderm= (TextView) viewHolder.getView(R.id.tvage_gender_male);
                 TextView genderw= (TextView) viewHolder.getView(R.id.tvage_gender_female);
-                if(mainMessage.getGender()==0){
+                if(mainMessage.getGender()==1){
                     genderm.setVisibility(View.VISIBLE);
                     genderw.setVisibility(View.GONE);
                     genderm.setText(mainMessage.getAge()+"");

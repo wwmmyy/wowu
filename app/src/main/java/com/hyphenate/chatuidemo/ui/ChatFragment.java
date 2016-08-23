@@ -275,7 +275,7 @@ public class ChatFragment extends EaseChatFragment implements EaseChatFragmentHe
 
 
         SimpleDraweeView draweeView = (SimpleDraweeView) view.findViewById(com.hyphenate.easeui.R.id.sdv_sanguan_pic1);
-        if(toChatUsername!=null){
+        if(toChatUsername!=null && EaseImageUtils.usersPhotoUrl.get(toChatUsername)!=null ){
             draweeView.setImageURI(Uri.parse( EaseImageUtils.usersPhotoUrl.get(toChatUsername)));//"http://w messageList.getItem(0).getTo()
         }
         SimpleDraweeView draweeView2 = (SimpleDraweeView) view.findViewById(com.hyphenate.easeui.R.id.sdv_sanguan_pic2);

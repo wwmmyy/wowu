@@ -18,6 +18,7 @@
         android:layout_marginLeft="10dp"
         fresco:actualImageScaleType="focusCrop"
         fresco:fadeDuration="1000"
+        fresco:placeholderImage="@drawable/icon"
         fresco:failureImageScaleType="centerInside"
         fresco:placeholderImageScaleType="fitCenter"
         fresco:progressBarAutoRotateInterval="1000"

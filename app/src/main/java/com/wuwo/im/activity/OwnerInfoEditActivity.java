@@ -259,9 +259,31 @@ public class OwnerInfoEditActivity extends FragmentActivity implements
                 mContext.startActivity(intent);
                 overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
             } else {
-                onBubbleClick(mContext, ((UserInfoDetail.PhotosBean) userPicAdapter.getList().get(position)).getFullUrl(), ((UserInfoDetail.PhotosBean) userPicAdapter.getList().get(position)).getId());
+                //                onBubbleClick(mContext, ((UserInfoDetail.PhotosBean) userPicAdapter.getList().get(position)).getFullUrl(), ((UserInfoDetail.PhotosBean) userPicAdapter.getList().get(position)).getId());
+                ArrayList<String> tempimageUrls = new ArrayList<String>();
+                for (int i = 0; i < userPicAdapter.getList().size(); i++) {
+                    tempimageUrls.add(((UserInfoDetail.PhotosBean) userPicAdapter.getList().get(i)).getFullUrl());
+                }
+                imageBrower(position,tempimageUrls);
             }
         }
+    }
+
+
+
+
+    /**
+     * 打开图片查看器
+     *
+     * @param position
+     * @param urls2
+     */
+    protected void imageBrower(int position, ArrayList<String> urls2) {
+        Intent intent = new Intent(mContext, PhotoViewImagePagerActivity.class);
+        // 图片url,为了演示这里使用常量，一般从数据库中或网络中获取
+        intent.putExtra(PhotoViewImagePagerActivity.EXTRA_IMAGE_URLS, urls2);
+        intent.putExtra(PhotoViewImagePagerActivity.EXTRA_IMAGE_INDEX, position);
+        startActivity(intent);
     }
 
 

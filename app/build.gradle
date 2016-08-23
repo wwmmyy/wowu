@@ -42,9 +42,9 @@ dependencies {
     compile 'com.android.support:recyclerview-v7:23.0.1'
     compile 'com.android.support:design:23.0.1'
     /*    compile('com.facebook.fresco:fresco:0.8.1') {
-                            exclude group: 'com.parse.bolts',
-                                    module: 'bolts-android'
-                        }*/
+                                exclude group: 'com.parse.bolts',
+                                        module: 'bolts-android'
+                            }*/
     compile 'com.android.support:multidex:1.0.0'
     compile 'com.android.support:cardview-v7:23.0.1'
     compile files('libs/gson-2.2.4.jar')
@@ -54,8 +54,8 @@ dependencies {
     //    compile project(':okhttputils')
     compile 'com.android.support:support-v4:23.0.1'
     /*    compile files('libs/ShareSDK-Wechat-2.6.4.jar')
-        compile files('libs/ShareSDK-Wechat-Core-2.6.4.jar')
-        compile files('libs/ShareSDK-Wechat-Moments-2.6.4.jar')*/
+            compile files('libs/ShareSDK-Wechat-Core-2.6.4.jar')
+            compile files('libs/ShareSDK-Wechat-Moments-2.6.4.jar')*/
     compile files('libs/bolts-tasks-1.4.0.jar')
     compile files('libs/umeng-analytics-v5.2.4.jar')
     compile files('libs/umeng-update-v2.6.0.1.jar')
@@ -64,4 +64,5 @@ dependencies {
     compile files('libs/libammsdk.jar')
     compile files('libs/open_sdk_r5756.jar')
     compile files('libs/mta-sdk-1.6.2.jar')
+    compile project(':PhotoViewlibrary')
 }

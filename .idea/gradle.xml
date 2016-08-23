@@ -9,6 +9,7 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/PhotoViewlibrary" />
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/easeui" />
             <option value="$PROJECT_DIR$/okhttputils" />
@@ -18,6 +19,7 @@
         <option name="myModules">
           <set>
             <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/PhotoViewlibrary" />
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/easeui" />
             <option value="$PROJECT_DIR$/okhttputils" />

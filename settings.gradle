@@ -1,2 +1,2 @@
-include ':app', ':okhttputils', ':redpacketlibrary', ':easeui'
+include ':app', ':okhttputils', ':redpacketlibrary', ':easeui', ':PhotoViewlibrary'
 
