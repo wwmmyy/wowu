@@ -67,7 +67,7 @@
 
                     <TextView
                         android:id="@+id/tv_zhongwen_nicheng1"
-                        style="@style/user_info_detail_text_style"
+                        style="@style/owner_info_detail_text_style"
                         android:layout_toRightOf="@id/tv_zhongwen_nicheng"
                         android:text="用户的昵称" />
 
@@ -91,6 +91,7 @@
                            android:background="@color/gray" />  -->
 
             <RelativeLayout
+                android:id="@+id/rt_yingwen_nicheng"
                 android:layout_width="fill_parent"
                 android:layout_height="55dp"
                 android:visibility="gone">
@@ -122,7 +123,7 @@
 
                     <TextView
                         android:id="@+id/ln_yingwen_nicheng"
-                        style="@style/user_info_detail_text_style"
+                        style="@style/owner_info_detail_text_style"
                         android:text=" " />
 
                     <!--                    <TextView
@@ -170,8 +171,8 @@
 
                     <TextView
                         android:id="@+id/ln_birthday"
-                        style="@style/user_info_detail_text_style"
-                        android:text="1898-07-23   26岁  射手座" />
+                        style="@style/owner_info_detail_text_style"
+                        android:text="暂无" />
 
                     <!--                    <TextView
                                             style="@style/setting_text_style"
@@ -217,7 +218,7 @@
 
                     <TextView
                         android:id="@+id/ln_feeling"
-                        style="@style/user_info_detail_text_style"
+                        style="@style/owner_info_detail_text_style"
                         android:text="未婚" />
 
                     <!--                    <TextView
@@ -236,7 +237,8 @@
 
             <RelativeLayout
                 android:layout_width="fill_parent"
-                android:layout_height="55dp">
+                android:minHeight="55dp"
+                android:layout_height="wrap_content">
 
                 <!--                <ImageView
                                     android:layout_width="wrap_content"
@@ -252,7 +254,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="3dp"
-                    android:text="家 乡:     "
+                    android:text="家 乡:"
                     android:textColor="@android:color/darker_gray" />
 
 
@@ -265,8 +267,8 @@
 
                     <TextView
                         android:id="@+id/ln_jiaxiang"
-                        style="@style/user_info_detail_text_style"
-                        android:text="福建/莆田" />
+                        style="@style/owner_info_detail_text_style"
+                        android:text="暂无" />
 
                     <!--                    <TextView
                                             style="@style/setting_text_style"
@@ -314,8 +316,8 @@
 
                     <TextView
                         android:id="@+id/ln_geren_jieshao"
-                        style="@style/user_info_detail_text_style"
-                        android:text="性格社交创始人" />
+                        style="@style/owner_info_detail_text_style"
+                        android:text="暂无" />
 
                     <!--                    <TextView
                                             style="@style/setting_text_style"
@@ -367,8 +369,8 @@
 
                     <TextView
                         android:id="@+id/ln_shenfenbiaoqian"
-                        style="@style/user_info_detail_text_style"
-                        android:text="白领/创业者/创始人" />
+                        style="@style/owner_info_detail_text_style"
+                        android:text="暂无" />
 
                     <!--                   <TextView
                                            style="@style/setting_text_style"
@@ -417,8 +419,8 @@
 
                     <TextView
                         android:id="@+id/ln_zhiye"
-                        style="@style/user_info_detail_text_style"
-                        android:text="白领/创业者/创始人 " />
+                        style="@style/owner_info_detail_text_style"
+                        android:text="暂无 " />
                 </LinearLayout>
             </RelativeLayout>
 
@@ -455,8 +457,8 @@
 
                     <TextView
                         android:id="@+id/ln_school"
-                        style="@style/user_info_detail_text_style"
-                        android:text="白领/创业者/创始人 " />
+                        style="@style/owner_info_detail_text_style"
+                        android:text="暂无 " />
 
                     <!--                    <TextView
                                             style="@style/setting_text_style"
@@ -542,8 +544,8 @@
 
                     <TextView
                         android:id="@+id/tv_shenghuodidian"
-                        style="@style/user_info_detail_text_style"
-                        android:text="宁和小区" />
+                        style="@style/owner_info_detail_text_style"
+                        android:text="暂无" />
 
                     <!--                    <TextView
                                             style="@style/setting_text_style"
@@ -597,8 +599,8 @@
 
                     <TextView
                         android:id="@+id/ln_gongzuodidian"
-                        style="@style/user_info_detail_text_style"
-                        android:text="大宁商业广场" />
+                        style="@style/owner_info_detail_text_style"
+                        android:text="暂无" />
 
                     <!--                    <TextView
                                             style="@style/setting_text_style"
@@ -646,8 +648,8 @@
 
                     <TextView
                         android:id="@+id/ln_changchumodi"
-                        style="@style/user_info_detail_text_style"
-                        android:text="上海、北京" />
+                        style="@style/owner_info_detail_text_style"
+                        android:text="暂无" />
 
                     <!--                    <TextView
                                             android:id="@+id/tv_changchumodi"
@@ -696,8 +698,8 @@
 
                     <TextView
                         android:id="@+id/tv_quguo_jingdian"
-                        style="@style/user_info_detail_text_style"
-                        android:text="黄山、桂林、厦门" />
+                        style="@style/owner_info_detail_text_style"
+                        android:text="暂无" />
 
                     <!--                    <TextView
                                             style="@style/setting_text_style"

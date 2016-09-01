@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 
+import com.wuwo.im.config.ExitApp;
+
 /** 
 *desc
 *@author 王明远
@@ -49,7 +51,7 @@ public class BaseFragementActivity extends FragmentActivity {
 //        }
 
         super.onCreate(savedInstanceState);
-
+        ExitApp.getInstance().addOpenedActivity(this);
         Log.i("BaseActivity", "BaseActivity onCreate");
     }
 

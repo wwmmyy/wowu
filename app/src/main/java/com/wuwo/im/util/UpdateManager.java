@@ -17,6 +17,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ProgressBar;
 
+import com.wuwo.im.config.WowuApp;
+import com.zhy.http.okhttp.service.LoadserverdataService;
+import com.zhy.http.okhttp.service.loadServerDataListener;
+
 import org.json.JSONObject;
 
 import java.io.File;
@@ -24,8 +28,6 @@ import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Properties;
 
 import im.wuwo.com.wuwo.R;
@@ -33,7 +35,7 @@ import im.wuwo.com.wuwo.R;
 /**
  * 检查更新
  */
-public class UpdateManager {
+public class UpdateManager implements loadServerDataListener {
     /* 下载中 */
     private static final int DOWNLOAD = 1;
     /* 下载结束 */
@@ -53,7 +55,7 @@ public class UpdateManager {
     private Dialog mDownloadDialog;
 
     //      新版本最新下载地址
-    String new_version_url="";
+    String new_version_url = "";
     //      新apk的保存名称
     String apkname;
 
@@ -72,7 +74,9 @@ public class UpdateManager {
                 default:
                     break;
             }
-        };
+        }
+
+        ;
     };
 
     public UpdateManager(Context context) {
@@ -80,53 +84,14 @@ public class UpdateManager {
     }
 
 
-
     //      final String  versionCode = getVersionCode(mContext)+"";
-    String  versionCode ="";
-    String  info ="";
+    String versionCode = "";
+    String info = "";
+
     public void checkUpdateMe() {
-        // TODO 自动生成的方法存根
-        new Thread(new Runnable() {
-            //http://192.168.1.49/yt/serviceprovider.ashx?type=sys
-//                String url = "http://192.168.1.49/yt/serviceprovider.ashx";DistApp.serverAbsolutePath
-            String  url="http://58.246.138.178:8081/DistMobile"+ "/mobile/app-checkCversion.action?appPackageName="+mContext.getPackageName();
-            //                  String url =getServerCheckUrl("");
-            @Override
-            public void run() {
-                Map<String, String> map = new HashMap<String, String>();
-                map.put("type", "sys");
-//                    map.put("device", DistAndroidApp.ALL_deviceid);
-                try {
-
-                    Log.d("检测版本访问的网址为：：：", url);
-                    String totalresult = UtilsTool.getStringFromServer(url, map);
-                    if (null != totalresult) {
-                        JSONObject obj = new JSONObject(totalresult);
-                        String currentversion=(String) obj.opt("version");
-//                          versionCode = getVersionCode(mContext)+"";
-                        info=(String) obj.opt("info");
-                        versionCode ="1.0.5";
-//                              // 版本判断
-                        if (! currentversion.trim() .equals(versionCode.trim() ) ) {
-                            Log.d("获取到的当前版本号为：：：", currentversion+"app版本："+versionCode);
-                            //拼接将要下载安装文件的网址
-//                                  new_version_url=getServerCheckUrl("?type=install");
-                            //DistApp.serverAbsolutePath
-                            new_version_url="http://58.246.138.178:8081/DistMobile"+ "/appIcon/upload/"+mContext.getPackageName()+".apk";
-
-                            handler.sendEmptyMessage(0);
-                        }
-                    }
-                } catch (Exception e) {
-                    // TODO: handle exception
-                    e.printStackTrace();
-                    return;
-                }
-            }
-        }).start();
-
+        LoadserverdataService loadDataService = new LoadserverdataService(this);
+        loadDataService.loadGetJsonRequestData(WowuApp.SystemVersionInfoURL, 100);
     }
-
 
 
 //      /**
@@ -162,8 +127,8 @@ public class UpdateManager {
 //      }
 
 
-    public void  showUpdateDialog(String url ){
-        new_version_url=url;
+    public void showUpdateDialog(String url) {
+        new_version_url = url;
 //               new_version_url="http://gdown.baidu.com/data/wisegame/69eddab391f8296e/shoujibaidu_16787211.apk";
         new Thread(new Runnable() {
             @Override
@@ -177,31 +142,31 @@ public class UpdateManager {
 
 
     //定义Handler对象
-    private Handler handler =new Handler(){
+    private Handler handler = new Handler() {
         @Override
         //当有消息发送出来的时候就执行Handler的这个方法
-        public void handleMessage(Message msg){
+        public void handleMessage(Message msg) {
             super.handleMessage(msg);
             //处理UI
-            if(! NotOpenDialog){  showNoticeDialog();    }
+            if (!NotOpenDialog) {
+                showNoticeDialog();
+            }
         }
     };
 
 
-
-
-
     /**
      * 获取最新版本的下载地址
-     * @Title: getApkDownloadUrl
-     * @Description: TODO
+     *
      * @param @return
      * @return String
      * @throws
+     * @Title: getApkDownloadUrl
+     * @Description: TODO
      */
-    public  String getServerCheckUrl(String type){
+    public String getServerCheckUrl(String type) {
 
-        String url="";
+        String url = "";
         Properties props = new Properties();
         //放在assets中的文件读取方法
         try {
@@ -211,13 +176,13 @@ public class UpdateManager {
             //InputStream in = PropertiesUtill.class.getResourceAsStream("/assets/  setting.properties "));
             props.load(in);
 
-            String  serverProtocol = props.getProperty("serverProtocol", "http");
-            String  serverHost = props.getProperty("serverHost", "");
-            String  serverPort = props.getProperty("serverPort", "80");
-            String  serverContext = props.getProperty("serverContext", "");
+            String serverProtocol = props.getProperty("serverProtocol", "http");
+            String serverHost = props.getProperty("serverHost", "");
+            String serverPort = props.getProperty("serverPort", "80");
+            String serverContext = props.getProperty("serverContext", "");
             String serverProvider = props.getProperty("serverProvider", "");
 
-            url=serverProtocol + "://" + serverHost + ":" + serverPort + serverContext+serverProvider+type;
+            url = serverProtocol + "://" + serverHost + ":" + serverPort + serverContext + serverProvider + type;
 
             Log.i("拼接成的ip地址为：：", url);
 
@@ -228,8 +193,6 @@ public class UpdateManager {
 
         return url;
     }
-
-
 
 
     /**
@@ -254,9 +217,10 @@ public class UpdateManager {
      * 显示软件更新对话框
      */
     AlertDialog noticeDialog;
+
     private void showNoticeDialog() {
         // 构造对话框
-        AlertDialog.Builder builder = new   AlertDialog.Builder(mContext);
+        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
             /*    noticeDialog = new AlertDialog(mContext);
                 noticeDialog.setTitle(R.string.soft_update_title);
 
@@ -359,6 +323,44 @@ public class UpdateManager {
         new downloadApkThread().start();
     }
 
+
+    @Override
+    public void loadServerData(final String response, int flag) {
+/*        app版本：{"AndroidVersionName":"内测版","AndroidVersionCode":"1.0","AndroidDescription":"","AndroidUpdateTime":"2016-08-25",
+                "AndroidDownloadUrl":"http://www.imxianzhi.com/先知先觉.apk",
+                "AndroidRequrie":false,"IosVersionName":"内测版","IosVersionCode":"1.0",
+                "IosDescription":"","IosUpdateTime":"2016-08-25","IosRequrie":false,"VersionPreview":"<p>这个版本好啊。</p>\n"}*/
+        Log.d("UpdateManager获取的当前版本：", "app版本：" + response);
+        // TODO 自动生成的方法存根
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    JSONObject obj = new JSONObject(response);
+                    String currentversion = (String) obj.opt("AndroidVersionCode");
+                    new_version_url = obj.optString("AndroidDownloadUrl");
+                    info = obj.optString("AndroidDescription");
+                    versionCode = getVersionCode(mContext)+"";;
+//                              // 版本判断
+                    if (!currentversion.trim().equals(versionCode.trim())) {
+                        handler.sendEmptyMessage(0);
+                    }
+                } catch (Exception e) {
+                    // TODO: handle exception
+                    e.printStackTrace();
+                    return;
+                }
+            }
+        }).start();
+
+
+    }
+
+    @Override
+    public void loadDataFailed(String response, int flag) {
+
+    }
+
     /**
      * 下载文件线程
      *
@@ -398,8 +400,8 @@ public class UpdateManager {
                         file.mkdir();
                     }
 //                                      File apkFile = new File(mSavePath, mHashMap.get("name")+".apk");
-                    apkname="chengdu"+System.currentTimeMillis()+".apk";
-                    File apkFile = new File(mSavePath,apkname );
+                    apkname = "chengdu" + System.currentTimeMillis() + ".apk";
+                    File apkFile = new File(mSavePath, apkname);
                     FileOutputStream fos = new FileOutputStream(apkFile);
                     int count = 0;
                     // 缓存
@@ -423,7 +425,7 @@ public class UpdateManager {
                     fos.close();
                     is.close();
                 }
-            } catch ( Exception e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
             // 取消下载对话框显示
@@ -444,14 +446,16 @@ public class UpdateManager {
                 }
             }
         }
-    };
+    }
+
+    ;
 
     /**
      * 安装APK文件
      */
     private void installApk() {
 //              File apkfile = new File(mSavePath, mHashMap.get("name")+".apk");
-        File apkfile = new File(mSavePath,apkname );
+        File apkfile = new File(mSavePath, apkname);
         if (!apkfile.exists()) {
             return;
         }
@@ -464,19 +468,16 @@ public class UpdateManager {
     }
 
 
-
-    boolean NotOpenDialog=false;//activity销毁时不要打开升级弹出框
+    boolean NotOpenDialog = false;//activity销毁时不要打开升级弹出框
 
     public void closeDialog() {
         // TODO Auto-generated method stub
-        NotOpenDialog=true;
-        if (noticeDialog != null && noticeDialog.isShowing())
-        {
+        NotOpenDialog = true;
+        if (noticeDialog != null && noticeDialog.isShowing()) {
             noticeDialog.dismiss();
         }
 
-        if (mDownloadDialog != null && mDownloadDialog.isShowing())
-        {
+        if (mDownloadDialog != null && mDownloadDialog.isShowing()) {
             mDownloadDialog.dismiss();
         }
 

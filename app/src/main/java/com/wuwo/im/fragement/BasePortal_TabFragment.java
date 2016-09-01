@@ -16,7 +16,6 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.wuwo.im.adapter.CommRecyclerAdapter;
 import com.wuwo.im.config.WowuApp;
-import com.wuwo.im.util.MyToast;
 import com.wuwo.im.view.PullLoadMoreRecyclerView;
 import com.zhy.http.okhttp.service.LoadserverdataService;
 import com.zhy.http.okhttp.service.loadServerDataListener;
@@ -222,8 +221,8 @@ abstract class BasePortal_TabFragment extends BaseAppFragment  implements loadSe
 
     @Override
     public void loadDataFailed(String request,int flag) {
-        MyToast.show(mContext, "返回值失败" + request.toString());
-        Log.i("BasePortal_TabFragm：：", request.toString());
+ /*       MyToast.show(mContext, "返回值失败" + request.toString());
+        Log.i("BasePortal_TabFragm：：", request.toString());*/
         try {
             setLoadInfo(null);
 

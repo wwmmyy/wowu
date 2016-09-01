@@ -18,7 +18,7 @@ import im.wuwo.com.wuwo.R;
 public class ChatActivity extends BaseActivity{
     public static ChatActivity activityInstance;
     private EaseChatFragment chatFragment;
-    public String toChatUsername;
+    public String toChatUsername,iconPath;
 
     @Override
     protected void onCreate(Bundle arg0) {
@@ -27,6 +27,7 @@ public class ChatActivity extends BaseActivity{
         activityInstance = this;
         //get user id or group id   将要聊天者的userid
         toChatUsername = getIntent().getExtras().getString(EaseConstant.EXTRA_USER_ID);
+        iconPath= getIntent().getExtras().getString(EaseConstant.EXTRA_USER_ICONPATH);
         //use EaseChatFratFragment
         chatFragment = new ChatFragment();
         //pass parameters to chat fragment

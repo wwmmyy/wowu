@@ -148,9 +148,6 @@ public class RegisterStepOneActivity extends BaseLoadActivity  {
                 break;
             case R.id.tv_register_one_sure:
                 ValidateSms();
-                 temp2 = new Intent(this, RegisterStepTwoActivity.class);
-                this.startActivity(temp2);
-                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                 break;
             case R.id.user_register_tiaokuan:
                 temp2 = new Intent(this, RegisterPolicyActivity.class);
@@ -170,11 +167,15 @@ public class RegisterStepOneActivity extends BaseLoadActivity  {
 
     @Override
     public void loadServerData(String response,int flag) {
-        MyToast.show(mContext, "返回的结果为：：：：" + response);
+//        MyToast.show(mContext, "返回的结果为：：：：" + response);
+
+        temp2 = new Intent(this, RegisterStepTwoActivity.class);
+        this.startActivity(temp2);
+        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
     }
 
     @Override
     public void loadDataFailed(String response,int flag) {
-        MyToast.show(mContext, "返回值失败" + response.toString());
+        MyToast.show(mContext,  response.toString()+".");
     }
 }

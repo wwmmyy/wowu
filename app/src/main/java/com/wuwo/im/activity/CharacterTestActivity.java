@@ -178,7 +178,7 @@ public class CharacterTestActivity extends BaseLoadActivity {
         }
 
         //记录答案
-        anwsers.put(Questions.get(currentPosition).getId(), position + "");
+        anwsers.put(Questions.get(currentPosition).getId(), position==0 ?"A": "B");
         //判断是否是最后一个问题
         if (currentPosition == (Questions.size() - 1)) {
             Message msg = Message.obtain();

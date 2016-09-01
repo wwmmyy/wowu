@@ -187,12 +187,12 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/whatsnew_left" />
+                  />
 
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/whatsnew_left_m" />
+                 />
         </LinearLayout>
 
         <LinearLayout
@@ -203,12 +203,12 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/whatsnew_right_m" />
+                />
 
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/whatsnew_right" />
+                  />
         </LinearLayout>
     </LinearLayout>
 

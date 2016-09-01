@@ -3,12 +3,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/login_bg"
+    android:background="@drawable/bg_top_title"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     tools:context="com.wuwo.im.activity.LoginChooseActivity">
 
-
+    <!--android:background="@drawable/login_bg"-->
 
  <ImageView
     android:layout_width="wrap_content"
@@ -21,11 +21,11 @@
         android:id="@+id/tv_welcome_choose"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingBottom="100dp"
-        android:paddingTop="20dp"
+        android:paddingBottom="80dp"
+        android:paddingTop="40dp"
         android:layout_centerInParent="true"
-        android:text="欢迎来到先知先觉\n激情不再擦肩而过"
-        android:lineSpacingExtra="8dp"
+        android:text="一阳指三观配\n人美，心更美"
+        android:lineSpacingExtra="10dp"
         android:textSize="22sp"
         android:textColor="@color/white"/>
 
@@ -58,10 +58,10 @@
         android:layout_marginTop="30dp"
         android:layout_below="@+id/tv_welcome_register"
         android:layout_centerHorizontal="true"
-        android:textColor="?attr/appbg"
+        android:textColor="@color/white"
         android:background="@drawable/bt_border_choose_login_selector"
         android:textSize="20sp"
         />
-    <!--android:textColor="@drawable/bt_textcolor_register_selector"-->
+    <!--android:textColor="@drawable/bt_textcolor_register_selector"  android:textColor="?attr/appbg"-->
 
 </RelativeLayout>

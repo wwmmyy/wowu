@@ -2,6 +2,7 @@ package com.hyphenate.chatuidemo.ui;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.ClipData;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -10,6 +11,8 @@ import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -52,26 +55,25 @@ import com.hyphenate.util.EasyUtils;
 import com.hyphenate.util.PathUtil;
 import com.wuwo.im.activity.UserInfoEditActivity;
 import com.wuwo.im.bean.SanGuan;
-import com.wuwo.im.bean.UserInfoDetail;
 import com.wuwo.im.config.WowuApp;
 import com.wuwo.im.util.MyToast;
-import com.zhy.http.okhttp.OkHttpUtils;
+import com.wuwo.im.util.UtilsTool;
 import com.zhy.http.okhttp.service.LoadserverdataService;
 import com.zhy.http.okhttp.service.loadServerDataListener;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.lang.ref.WeakReference;
 import java.util.List;
 import java.util.Map;
 
 import im.wuwo.com.wuwo.R;
 
-public class ChatFragment extends EaseChatFragment implements EaseChatFragmentHelper,loadServerDataListener {
+public class ChatFragment extends EaseChatFragment implements EaseChatFragmentHelper, loadServerDataListener {
 
-	// constant start from 11 to avoid conflict with constant in base class
+    // constant start from 11 to avoid conflict with constant in base class
     private static final int ITEM_VIDEO = 11;
     private static final int ITEM_FILE = 12;
     private static final int ITEM_VOICE_CALL = 13;
@@ -83,7 +85,7 @@ public class ChatFragment extends EaseChatFragment implements EaseChatFragmentHe
     private static final int REQUEST_CODE_GROUP_DETAIL = 13;
     private static final int REQUEST_CODE_CONTEXT_MENU = 14;
     private static final int REQUEST_CODE_SELECT_AT_USER = 15;
-    
+
     private static final int REQUEST_CODE_SEND_MONEY = 16;
 
     private static final int MESSAGE_TYPE_SENT_VOICE_CALL = 1;
@@ -100,17 +102,20 @@ public class ChatFragment extends EaseChatFragment implements EaseChatFragmentHe
     LoadserverdataService loadDataService;
     private final int LOAD_DATA = 100;
     private final int SANGUAN_PICK = 200;
+    private final int SANGUAN_PICK2 = 202;
+
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         loadDataService = new LoadserverdataService(this);
+        mtotalHandler = new mHandlerWeak(this);
     }
-    
+
     /**
-     * if it is chatBot 
+     * if it is chatBot
      */
     private boolean isRobot;
-    
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return super.onCreateView(inflater, container, savedInstanceState);
@@ -119,9 +124,9 @@ public class ChatFragment extends EaseChatFragment implements EaseChatFragmentHe
     @Override
     protected void setUpView() {
         setChatFragmentListener(this);
-        if (chatType == Constant.CHATTYPE_SINGLE) { 
-            Map<String,RobotUser> robotMap = DemoHelper.getInstance().getRobotList();
-            if(robotMap!=null && robotMap.containsKey(toChatUsername)){
+        if (chatType == Constant.CHATTYPE_SINGLE) {
+            Map<String, RobotUser> robotMap = DemoHelper.getInstance().getRobotList();
+            if (robotMap != null && robotMap.containsKey(toChatUsername)) {
                 isRobot = true;
             }
         }
@@ -141,33 +146,35 @@ public class ChatFragment extends EaseChatFragment implements EaseChatFragmentHe
             }
         });
 
-        if(toChatUserName_Show !=null ){
+        if (toChatUserName_Show != null) {
             titleBar.setTitle(toChatUserName_Show);
         }
 
 
-        ((EaseEmojiconMenu)inputMenu.getEmojiconMenu()).addEmojiconGroup(EmojiconExampleGroupData.getData());
-        if(chatType == EaseConstant.CHATTYPE_GROUP){
+        ((EaseEmojiconMenu) inputMenu.getEmojiconMenu()).addEmojiconGroup(EmojiconExampleGroupData.getData());
+        if (chatType == EaseConstant.CHATTYPE_GROUP) {
             inputMenu.getPrimaryMenu().getEditText().addTextChangedListener(new TextWatcher() {
-                
+
                 @Override
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    if(count == 1 && "@".equals(String.valueOf(s.charAt(start)))){
+                    if (count == 1 && "@".equals(String.valueOf(s.charAt(start)))) {
                         startActivityForResult(new Intent(getActivity(), PickAtUserActivity.class).
                                 putExtra("groupId", toChatUsername), REQUEST_CODE_SELECT_AT_USER);
                     }
                 }
+
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                    
+
                 }
+
                 @Override
                 public void afterTextChanged(Editable s) {
-                    
-                } 
+
+                }
             });
             EMGroup group = EMClient.getInstance().groupManager().getGroup(toChatUsername);
-            if(group == null || group.getAffiliationsCount() <= 0){
+            if (group == null || group.getAffiliationsCount() <= 0) {
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
@@ -182,35 +189,48 @@ public class ChatFragment extends EaseChatFragment implements EaseChatFragmentHe
         }
 
 
-
-
 //        loadDataService.loadGetJsonRequestData(OkHttpUtils.GetUserInfoURL + "?userId=" + toChatUsername, LOAD_DATA);
         // hold to record voice
 //        iv_sanguan_pick.setImageResource(); 应该根据性别决定显示图片背景
         iv_sanguan_pick.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                showSanguanPickDialog();
+
+                if (mSanGuan != null && mSanGuan.getTitle() != null) { //说明起始加载三观配内容成功
+                    showSanguanPickDialog();
+                } else {
+
+                    pd = UtilsTool.initProgressDialog(getActivity(), "请稍后...");
+                    pd.show();
+                    loadSanGuan(SANGUAN_PICK2);
+                }
+
+
             }
         });
+        loadSanGuan(SANGUAN_PICK);
 
+    }
 
+    private ProgressDialog pd;
+
+    private void loadSanGuan(final int SANGUAN_PICK0) {
+        final String mchatUserId = ((toChatUsername != null && !toChatUsername.equals("")) == true ? toChatUsername : chatUserId);
         new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
                     JSONObject json = new JSONObject();
-                    json.put("userId",toChatUsername);
-                    loadDataService.loadPostJsonRequestData(WowuApp.JSON, WowuApp.MatchURL+"?userId="+toChatUsername, json.toString(), SANGUAN_PICK);
+                    json.put("userId", mchatUserId);
+                    loadDataService.loadPostJsonRequestData(WowuApp.JSON, WowuApp.MatchURL + "?userId=" + mchatUserId, json.toString(), SANGUAN_PICK0);
+
+                    Log.i("ChatFragment::", WowuApp.MatchURL + "?userId=" + mchatUserId + "toChatUsername::" + toChatUsername);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
         }).start();
-
     }
-
-
 
 
     /**
@@ -230,57 +250,58 @@ public class ChatFragment extends EaseChatFragment implements EaseChatFragmentHe
         });
 
 
-        TextView tv_sanguan_user1= (TextView) view.findViewById(com.hyphenate.easeui.R.id.tv_sanguan_user1);
-        TextView tv_sanguan_user2= (TextView) view.findViewById(com.hyphenate.easeui.R.id.tv_sanguan_user2);
-        tv_sanguan_user2.setText(getActivity().getSharedPreferences(WowuApp.PREFERENCE_KEY,getActivity().MODE_PRIVATE).getString("Name", "http://#"));
-       if(mSanGuan!=null){
-           tv_sanguan_user1.setText(mSanGuan.getUserName2());
-       }
+        TextView tv_sanguan_user1 = (TextView) view.findViewById(com.hyphenate.easeui.R.id.tv_sanguan_user1);
+        TextView tv_sanguan_user2 = (TextView) view.findViewById(com.hyphenate.easeui.R.id.tv_sanguan_user2);
+        tv_sanguan_user2.setText(getActivity().getSharedPreferences(WowuApp.PREFERENCE_KEY, getActivity().MODE_PRIVATE).getString("Name", "http://#"));
+        if (mSanGuan != null) {
+            tv_sanguan_user1.setText(mSanGuan.getUserName2());
+        }
 
 
-        TextView genderm= (TextView) view.findViewById(com.hyphenate.easeui.R.id.tvage_gender1_male);
-        TextView genderw= (TextView) view.findViewById(com.hyphenate.easeui.R.id.tvage_gender1_female);
-        if(mSanGuan.getUserGender2()==0){
+        TextView genderm = (TextView) view.findViewById(com.hyphenate.easeui.R.id.tvage_gender1_male);
+        TextView genderw = (TextView) view.findViewById(com.hyphenate.easeui.R.id.tvage_gender1_female);
+        if (mSanGuan.getUserGender2() == 0) {
             genderm.setVisibility(View.VISIBLE);
             genderw.setVisibility(View.GONE);
-            genderm.setText(mSanGuan.getUserAge2()+"");
-        }else{
+            genderm.setText(mSanGuan.getUserAge2() + "");
+        } else {
             genderm.setVisibility(View.GONE);
             genderw.setVisibility(View.VISIBLE);
-            genderw.setText(mSanGuan.getUserAge2()+"");
+            genderw.setText(mSanGuan.getUserAge2() + "");
         }
 
 
-        TextView genderm1= (TextView) view.findViewById(com.hyphenate.easeui.R.id.tvage_gender2_male);
-        TextView genderw1= (TextView) view.findViewById(com.hyphenate.easeui.R.id.tvage_gender2_female);
-        if(getActivity().getSharedPreferences(WowuApp.PREFERENCE_KEY,getActivity().MODE_PRIVATE).getInt("Gender", 0)==0){
+        TextView genderm1 = (TextView) view.findViewById(com.hyphenate.easeui.R.id.tvage_gender2_male);
+        TextView genderw1 = (TextView) view.findViewById(com.hyphenate.easeui.R.id.tvage_gender2_female);
+        if (getActivity().getSharedPreferences(WowuApp.PREFERENCE_KEY, getActivity().MODE_PRIVATE).getInt("Gender", 0) == 0) {
             genderm1.setVisibility(View.VISIBLE);
             genderw1.setVisibility(View.GONE);
-            genderm1.setText(getActivity().getSharedPreferences(WowuApp.PREFERENCE_KEY,getActivity().MODE_PRIVATE).getInt("Gender", 0)+"");
-        }else{
+            genderm1.setText(getActivity().getSharedPreferences(WowuApp.PREFERENCE_KEY, getActivity().MODE_PRIVATE).getInt("Gender", 0) + "");
+        } else {
             genderm1.setVisibility(View.GONE);
             genderw1.setVisibility(View.VISIBLE);
-            genderw1.setText(getActivity().getSharedPreferences(WowuApp.PREFERENCE_KEY,getActivity().MODE_PRIVATE).getInt("Gender", 0)+"");
+            genderw1.setText(getActivity().getSharedPreferences(WowuApp.PREFERENCE_KEY, getActivity().MODE_PRIVATE).getInt("Gender", 0) + "");
         }
 
-        TextView tv_sanguan_result= (TextView) view.findViewById(com.hyphenate.easeui.R.id.tv_sanguan_result);
-        TextView tv_sanguan_shuoming= (TextView) view.findViewById(com.hyphenate.easeui.R.id.tv_sanguan_shuoming);
+        TextView tv_sanguan_result = (TextView) view.findViewById(com.hyphenate.easeui.R.id.tv_sanguan_result);
+        TextView tv_sanguan_shuoming = (TextView) view.findViewById(com.hyphenate.easeui.R.id.tv_sanguan_shuoming);
 
 
-        if(mSanGuan!=null){
+        if (mSanGuan != null) {
             tv_sanguan_result.setText(mSanGuan.getTitle());
             tv_sanguan_shuoming.setText(mSanGuan.getDescription());
         }
 
 
-
         SimpleDraweeView draweeView = (SimpleDraweeView) view.findViewById(com.hyphenate.easeui.R.id.sdv_sanguan_pic1);
-        if(toChatUsername!=null && EaseImageUtils.usersPhotoUrl.get(toChatUsername)!=null ){
-            draweeView.setImageURI(Uri.parse( EaseImageUtils.usersPhotoUrl.get(toChatUsername)));//"http://w messageList.getItem(0).getTo()
+        if (toChatUsername != null && EaseImageUtils.usersPhotoUrl.get(toChatUsername) != null) {
+            draweeView.setImageURI(Uri.parse(EaseImageUtils.usersPhotoUrl.get(toChatUsername)));//"http://w messageList.getItem(0).getTo()
+        } else if (iconPath != null) {
+            draweeView.setImageURI(Uri.parse(iconPath));//"http://w messageList.getItem(0).getTo()
         }
         SimpleDraweeView draweeView2 = (SimpleDraweeView) view.findViewById(com.hyphenate.easeui.R.id.sdv_sanguan_pic2);
-        draweeView2.setImageURI(Uri.parse( EaseImageUtils.usersPhotoUrl.get( getActivity().getSharedPreferences(WowuApp.PREFERENCE_KEY,getActivity().MODE_PRIVATE).getString("UserId", "http://#"))));//"http://w messageList.getItem(0).getFrom() WowuApp.UserId EMClient.getInstance().getCurrentUser()
-
+//        draweeView2.setImageURI(Uri.parse( EaseImageUtils.usersPhotoUrl.get( getActivity().getSharedPreferences(WowuApp.PREFERENCE_KEY,getActivity().MODE_PRIVATE).getString("UserId", "http://#"))));//"http://w messageList.getItem(0).getFrom() WowuApp.UserId EMClient.getInstance().getCurrentUser()
+        draweeView2.setImageURI(Uri.parse(WowuApp.iconPath));
 
 
         // 设置显示动画
@@ -290,7 +311,7 @@ public class ChatFragment extends EaseChatFragment implements EaseChatFragmentHe
         wl.y = getActivity().getWindowManager().getDefaultDisplay().getHeight();
         // 以下这两句是为了保证按钮可以水平满屏
         wl.width = ViewGroup.LayoutParams.MATCH_PARENT;
-        wl.height = ViewGroup.LayoutParams.MATCH_PARENT ;//WRAP_CONTENT
+        wl.height = ViewGroup.LayoutParams.MATCH_PARENT;//WRAP_CONTENT
 
         // 设置显示位置
         dialog.onWindowAttributesChanged(wl);
@@ -300,109 +321,107 @@ public class ChatFragment extends EaseChatFragment implements EaseChatFragmentHe
     }
 
 
-
-
-
     @Override
     protected void registerExtendMenuItem() {
         //use the menu in base class
         super.registerExtendMenuItem();
         //extend menu items
-        inputMenu.registerExtendMenuItem(R.string.attach_video, R.drawable.em_chat_video_selector, ITEM_VIDEO, extendMenuItemClickListener);
-        inputMenu.registerExtendMenuItem(R.string.attach_file, R.drawable.em_chat_file_selector, ITEM_FILE, extendMenuItemClickListener);
-        if(chatType == Constant.CHATTYPE_SINGLE){
-            inputMenu.registerExtendMenuItem(R.string.attach_voice_call, R.drawable.em_chat_voice_call_selector, ITEM_VOICE_CALL, extendMenuItemClickListener);
-            inputMenu.registerExtendMenuItem(R.string.attach_video_call, R.drawable.em_chat_video_call_selector, ITEM_VIDEO_CALL, extendMenuItemClickListener);
-        }
-        //no red packet in chatroom
-        if (chatType != Constant.CHATTYPE_CHATROOM) {
-            inputMenu.registerExtendMenuItem(R.string.attach_red_packet, R.drawable.em_chat_red_packet_selector, ITEM_RED_PACKET, extendMenuItemClickListener);
-        }
+//        暂时屏蔽掉扩展的功能
+//        inputMenu.registerExtendMenuItem(R.string.attach_video, R.drawable.em_chat_video_selector, ITEM_VIDEO, extendMenuItemClickListener);
+//        inputMenu.registerExtendMenuItem(R.string.attach_file, R.drawable.em_chat_file_selector, ITEM_FILE, extendMenuItemClickListener);
+//        if (chatType == Constant.CHATTYPE_SINGLE) {
+//            inputMenu.registerExtendMenuItem(R.string.attach_voice_call, R.drawable.em_chat_voice_call_selector, ITEM_VOICE_CALL, extendMenuItemClickListener);
+//            inputMenu.registerExtendMenuItem(R.string.attach_video_call, R.drawable.em_chat_video_call_selector, ITEM_VIDEO_CALL, extendMenuItemClickListener);
+//        }
+//        //no red packet in chatroom
+//        if (chatType != Constant.CHATTYPE_CHATROOM) {
+//            inputMenu.registerExtendMenuItem(R.string.attach_red_packet, R.drawable.em_chat_red_packet_selector, ITEM_RED_PACKET, extendMenuItemClickListener);
+//        }
     }
-    
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_CODE_CONTEXT_MENU) {
             switch (resultCode) {
-            case ContextMenuActivity.RESULT_CODE_COPY: // copy
-                clipboard.setPrimaryClip(ClipData.newPlainText(null, 
-                        ((EMTextMessageBody) contextMenuMessage.getBody()).getMessage()));
-                break;
-            case ContextMenuActivity.RESULT_CODE_DELETE: // delete
-                conversation.removeMessage(contextMenuMessage.getMsgId());
-                messageList.refresh();
-                break;
+                case ContextMenuActivity.RESULT_CODE_COPY: // copy
+                    clipboard.setPrimaryClip(ClipData.newPlainText(null,
+                            ((EMTextMessageBody) contextMenuMessage.getBody()).getMessage()));
+                    break;
+                case ContextMenuActivity.RESULT_CODE_DELETE: // delete
+                    conversation.removeMessage(contextMenuMessage.getMsgId());
+                    messageList.refresh();
+                    break;
 
-            case ContextMenuActivity.RESULT_CODE_FORWARD: // forward
-                Intent intent = new Intent(getActivity(), ForwardMessageActivity.class);
-                intent.putExtra("forward_msg_id", contextMenuMessage.getMsgId());
-                startActivity(intent);
-                getActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-                break;
+                case ContextMenuActivity.RESULT_CODE_FORWARD: // forward
+                    Intent intent = new Intent(getActivity(), ForwardMessageActivity.class);
+                    intent.putExtra("forward_msg_id", contextMenuMessage.getMsgId());
+                    startActivity(intent);
+                    getActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                    break;
 
-            default:
-                break;
+                default:
+                    break;
             }
         }
-        if(resultCode == Activity.RESULT_OK){
+        if (resultCode == Activity.RESULT_OK) {
             switch (requestCode) {
-            case REQUEST_CODE_SELECT_VIDEO: //send the video
-                if (data != null) {
-                    int duration = data.getIntExtra("dur", 0);
-                    String videoPath = data.getStringExtra("path");
-                    File file = new File(PathUtil.getInstance().getImagePath(), "thvideo" + System.currentTimeMillis());
-                    try {
-                        FileOutputStream fos = new FileOutputStream(file);
-                        Bitmap ThumbBitmap = ThumbnailUtils.createVideoThumbnail(videoPath, 3);
-                        ThumbBitmap.compress(CompressFormat.JPEG, 100, fos);
-                        fos.close();
-                        sendVideoMessage(videoPath, file.getAbsolutePath(), duration);
-                    } catch (Exception e) {
-                        e.printStackTrace();
+                case REQUEST_CODE_SELECT_VIDEO: //send the video
+                    if (data != null) {
+                        int duration = data.getIntExtra("dur", 0);
+                        String videoPath = data.getStringExtra("path");
+                        File file = new File(PathUtil.getInstance().getImagePath(), "thvideo" + System.currentTimeMillis());
+                        try {
+                            FileOutputStream fos = new FileOutputStream(file);
+                            Bitmap ThumbBitmap = ThumbnailUtils.createVideoThumbnail(videoPath, 3);
+                            ThumbBitmap.compress(CompressFormat.JPEG, 100, fos);
+                            fos.close();
+                            sendVideoMessage(videoPath, file.getAbsolutePath(), duration);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                     }
-                }
-                break;
-            case REQUEST_CODE_SELECT_FILE: //send the file
-                if (data != null) {
-                    Uri uri = data.getData();
-                    if (uri != null) {
-                        sendFileByUri(uri);
+                    break;
+                case REQUEST_CODE_SELECT_FILE: //send the file
+                    if (data != null) {
+                        Uri uri = data.getData();
+                        if (uri != null) {
+                            sendFileByUri(uri);
+                        }
                     }
-                }
-                break;
-            case REQUEST_CODE_SELECT_AT_USER:
-                if(data != null){
-                    String username = data.getStringExtra("username");
-                    inputAtUsername(username, false);
-                }
-                break;
+                    break;
+                case REQUEST_CODE_SELECT_AT_USER:
+                    if (data != null) {
+                        String username = data.getStringExtra("username");
+                        inputAtUsername(username, false);
+                    }
+                    break;
 
-            case REQUEST_CODE_SEND_MONEY:
-                if (data != null){
-                    sendMessage(RedPacketUtil.createRPMessage(getActivity(), data, toChatUsername));
-                }
-                break;
-            default:
-                break;
+                case REQUEST_CODE_SEND_MONEY:
+                    if (data != null) {
+                        sendMessage(RedPacketUtil.createRPMessage(getActivity(), data, toChatUsername));
+                    }
+                    break;
+                default:
+                    break;
             }
         }
-        
+
     }
-    
+
     @Override
     public void onSetMessageAttributes(EMMessage message) {
-        if(isRobot){
+        if (isRobot) {
             //set message extension
             message.setAttribute("em_robot_message", isRobot);
         }
     }
-    
+
     @Override
     public EaseCustomChatRowProvider onSetCustomChatRowProvider() {
         return new CustomChatRowProvider();
     }
-  
+
 
     @Override
     public void onEnterToChatDetails() {
@@ -415,8 +434,8 @@ public class ChatFragment extends EaseChatFragment implements EaseChatFragmentHe
             startActivityForResult(
                     (new Intent(getActivity(), GroupDetailsActivity.class).putExtra("groupId", toChatUsername)),
                     REQUEST_CODE_GROUP_DETAIL);
-        }else if(chatType == Constant.CHATTYPE_CHATROOM){
-        	startActivityForResult(new Intent(getActivity(), ChatRoomDetailsActivity.class).putExtra("roomId", toChatUsername), REQUEST_CODE_GROUP_DETAIL);
+        } else if (chatType == Constant.CHATTYPE_CHATROOM) {
+            startActivityForResult(new Intent(getActivity(), ChatRoomDetailsActivity.class).putExtra("roomId", toChatUsername), REQUEST_CODE_GROUP_DETAIL);
         }
     }
 
@@ -432,17 +451,17 @@ public class ChatFragment extends EaseChatFragment implements EaseChatFragmentHe
         startActivity(intent);
         getActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
     }
-    
+
     @Override
     public void onAvatarLongClick(String username) {
         inputAtUsername(username);
     }
-    
-    
+
+
     @Override
     public boolean onMessageBubbleClick(EMMessage message) {
-    	//open red packet if the message is red packet
-        if (message.getBooleanAttribute(RedPacketConstant.MESSAGE_ATTR_IS_RED_PACKET_MESSAGE, false)){
+        //open red packet if the message is red packet
+        if (message.getBooleanAttribute(RedPacketConstant.MESSAGE_ATTR_IS_RED_PACKET_MESSAGE, false)) {
             RedPacketUtil.openRedPacket(getActivity(), chatType, message, toChatUsername, messageList);
             return true;
         }
@@ -454,7 +473,7 @@ public class ChatFragment extends EaseChatFragment implements EaseChatFragmentHe
         for (EMMessage message : messages) {
             EMCmdMessageBody cmdMsgBody = (EMCmdMessageBody) message.getBody();
             String action = cmdMsgBody.action();//get user defined action
-            if (action.equals(RedPacketConstant.REFRESH_GROUP_RED_PACKET_ACTION) && message.getChatType() == EMMessage.ChatType.GroupChat){
+            if (action.equals(RedPacketConstant.REFRESH_GROUP_RED_PACKET_ACTION) && message.getChatType() == EMMessage.ChatType.GroupChat) {
                 RedPacketUtil.receiveRedPacketAckMessage(message);
                 messageList.refresh();
             }
@@ -464,9 +483,9 @@ public class ChatFragment extends EaseChatFragment implements EaseChatFragmentHe
 
     @Override
     public void onMessageBubbleLongClick(EMMessage message) {
-    	// no message forward when in chat room
-        startActivityForResult((new Intent(getActivity(), ContextMenuActivity.class)).putExtra("message",message)
-                .putExtra("ischatroom", chatType == EaseConstant.CHATTYPE_CHATROOM),
+        // no message forward when in chat room
+        startActivityForResult((new Intent(getActivity(), ContextMenuActivity.class)).putExtra("message", message)
+                        .putExtra("ischatroom", chatType == EaseConstant.CHATTYPE_CHATROOM),
                 REQUEST_CODE_CONTEXT_MENU);
         getActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
     }
@@ -474,30 +493,30 @@ public class ChatFragment extends EaseChatFragment implements EaseChatFragmentHe
     @Override
     public boolean onExtendMenuItemClick(int itemId, View view) {
         switch (itemId) {
-        case ITEM_VIDEO:
-            Intent intent = new Intent(getActivity(), ImageGridActivity.class);
-            startActivityForResult(intent, REQUEST_CODE_SELECT_VIDEO);
-            getActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-            break;
-        case ITEM_FILE: //file
-            selectFileFromLocal();
-            break;
-        case ITEM_VOICE_CALL:
-            startVoiceCall();
-            break;
-        case ITEM_VIDEO_CALL:
-            startVideoCall();
-            break;
-        case ITEM_RED_PACKET:
-            RedPacketUtil.startRedPacketActivityForResult(this, chatType, toChatUsername, REQUEST_CODE_SEND_MONEY);
-            break;
-        default:
-            break;
+            case ITEM_VIDEO:
+                Intent intent = new Intent(getActivity(), ImageGridActivity.class);
+                startActivityForResult(intent, REQUEST_CODE_SELECT_VIDEO);
+                getActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                break;
+            case ITEM_FILE: //file
+                selectFileFromLocal();
+                break;
+            case ITEM_VOICE_CALL:
+                startVoiceCall();
+                break;
+            case ITEM_VIDEO_CALL:
+                startVideoCall();
+                break;
+            case ITEM_RED_PACKET:
+                RedPacketUtil.startRedPacketActivityForResult(this, chatType, toChatUsername, REQUEST_CODE_SEND_MONEY);
+                break;
+            default:
+                break;
         }
         //keep exist extend menu
         return false;
     }
-    
+
     /**
      * select file
      */
@@ -513,7 +532,7 @@ public class ChatFragment extends EaseChatFragment implements EaseChatFragmentHe
         }
         startActivityForResult(intent, REQUEST_CODE_SELECT_FILE);
     }
-    
+
     /**
      * make a voice call
      */
@@ -528,7 +547,7 @@ public class ChatFragment extends EaseChatFragment implements EaseChatFragmentHe
             getActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         }
     }
-    
+
     /**
      * make a video call
      */
@@ -544,9 +563,9 @@ public class ChatFragment extends EaseChatFragment implements EaseChatFragmentHe
         }
     }
 
-//    UserInfoDetail mUserDetail = new UserInfoDetail();
-    SanGuan  mSanGuan = new SanGuan();
-//    public void setLoadInfo(String totalresult) throws JSONException {
+    //    UserInfoDetail mUserDetail = new UserInfoDetail();
+    SanGuan mSanGuan = new SanGuan();
+    //    public void setLoadInfo(String totalresult) throws JSONException {
 //        Gson gson = new GsonBuilder().create();
 //        if (totalresult != null) {
 //            java.lang.reflect.Type type = new com.google.gson.reflect.TypeToken<UserInfoDetail>() {
@@ -554,13 +573,38 @@ public class ChatFragment extends EaseChatFragment implements EaseChatFragmentHe
 //            mUserDetail = gson.fromJson(totalresult, type);
 //         }
 //    }
+    mHandlerWeak mtotalHandler;
+    public static final int DOWNLOADED = 2;
+
+    private static class mHandlerWeak extends Handler {
+        private WeakReference<ChatFragment> activity = null;
+
+        public mHandlerWeak(ChatFragment act) {
+            super();
+            this.activity = new WeakReference<ChatFragment>(act);
+        }
+
+        @Override
+        public void handleMessage(Message msg) {
+            ChatFragment act = activity.get();
+            if (null == act) {
+                return;
+            }
+            switch (msg.what) {
+                // 正在下载
+                case DOWNLOADED:
+                    act.showSanguanPickDialog();
+                    break;
+            }
+        }
+    }
 
     @Override
     public void loadServerData(final String response, int flag) {
 
-        Log.i("ChatFragment :::","::"+response);
+        Log.i("ChatFragment :::", "::" + response);
 
-
+        Gson gson = new GsonBuilder().create();
 //        ::{"Id":"dcae97ff67114b609980d1df61726051","Name":"maggie","PhoneNumber":"18321730153","EnglishName":null,
 //                "Disposition":"INFJ劝告者","DispositionId":"dbf9f079-3b79-4170-969d-77ccba6af0fd",
 //                "EasemobId":"16a0ae60-5ecb-11e6-a072-c38b2db750a9","Birthday":null,
@@ -590,50 +634,63 @@ public class ChatFragment extends EaseChatFragment implements EaseChatFragmentHe
             case SANGUAN_PICK:
 //            {"Successfully":1,"Title":"三观貌合神离","Description":"双方可以谈论很多共同的话题，相互交流能够激发对方隐藏的盲点和攻击点，彼此印象深刻惺惺相惜相见恨晚。但是需要意识到各自的目的和行动是相反的，一个南辕一个北辙，不能邯郸学步，否则便开始误解，渐渐感到不能信任彼此。","UserName1":"wmy","UserPhotoUrl1":"http://xzxj.oss-cn-shanghai.aliyuncs.com/user/ae95c3fd-8577-4f39-8d16-0a10e0ad51c7x480.jpg","UserAge1":1,"UserGender1":0,"UserName2":"maggie","UserPhotoUrl2":"http://xzxj.oss-cn-shanghai.aliyuncs.com/user/2b92e72d-5eb3-4253-9f47-d2f5a999fe10x480.jpg","UserAge2":0,"UserGender2":0}
 
-                Gson gson = new GsonBuilder().create();
+
                 if (response != null) {
                     java.lang.reflect.Type type = new com.google.gson.reflect.TypeToken<SanGuan>() {
                     }.getType();
                     mSanGuan = gson.fromJson(response, type);
                 }
-            break;
+                Log.i("ChatFragment:w:", response + ":::::=" + toChatUsername);
+                break;
+            case SANGUAN_PICK2:
+//            {"Successfully":1,"Title":"三观貌合神离","Description":"双方可以谈论很多共同的话题，相互交流能够激发对方隐藏的盲点和攻击点，彼此印象深刻惺惺相惜相见恨晚。但是需要意识到各自的目的和行动是相反的，一个南辕一个北辙，不能邯郸学步，否则便开始误解，渐渐感到不能信任彼此。","UserName1":"wmy","UserPhotoUrl1":"http://xzxj.oss-cn-shanghai.aliyuncs.com/user/ae95c3fd-8577-4f39-8d16-0a10e0ad51c7x480.jpg","UserAge1":1,"UserGender1":0,"UserName2":"maggie","UserPhotoUrl2":"http://xzxj.oss-cn-shanghai.aliyuncs.com/user/2b92e72d-5eb3-4253-9f47-d2f5a999fe10x480.jpg","UserAge2":0,"UserGender2":0}
+                if (pd != null) {
+                    pd.dismiss();
+                }
+                if (response != null) {
+                    java.lang.reflect.Type type = new com.google.gson.reflect.TypeToken<SanGuan>() {
+                    }.getType();
+                    mSanGuan = gson.fromJson(response, type);
+                }
+                Log.i("ChatFragment:w:", response + ":::::=" + toChatUsername);
 
+                Message msg = new Message();
+                msg.what = DOWNLOADED;
+                mtotalHandler.sendMessage(msg);
+                break;
         }
-
     }
 
     @Override
     public void loadDataFailed(String response, int flag) {
-        MyToast.show(getActivity(),response);
+        MyToast.show(getActivity(), response + ".");
+        if (pd != null) {
+            pd.dismiss();
+        }
     }
 
 
-
-
-
-
     /**
-     * chat row provider 
-     *
+     * chat row provider
      */
     private final class CustomChatRowProvider implements EaseCustomChatRowProvider {
         @Override
         public int getCustomChatRowTypeCount() {
             //here the number is the message type in EMMessage::Type
-        	//which is used to count the number of different chat row
+            //which is used to count the number of different chat row
             return 8;
         }
 
         @Override
         public int getCustomChatRowType(EMMessage message) {
-            if(message.getType() == EMMessage.Type.TXT){
+            if (message.getType() == EMMessage.Type.TXT) {
                 //voice call
-                if (message.getBooleanAttribute(Constant.MESSAGE_ATTR_IS_VOICE_CALL, false)){
+                if (message.getBooleanAttribute(Constant.MESSAGE_ATTR_IS_VOICE_CALL, false)) {
                     return message.direct() == EMMessage.Direct.RECEIVE ? MESSAGE_TYPE_RECV_VOICE_CALL : MESSAGE_TYPE_SENT_VOICE_CALL;
-                }else if (message.getBooleanAttribute(Constant.MESSAGE_ATTR_IS_VIDEO_CALL, false)){
+                } else if (message.getBooleanAttribute(Constant.MESSAGE_ATTR_IS_VIDEO_CALL, false)) {
                     //video call
                     return message.direct() == EMMessage.Direct.RECEIVE ? MESSAGE_TYPE_RECV_VIDEO_CALL : MESSAGE_TYPE_SENT_VIDEO_CALL;
-                }else if (message.getBooleanAttribute(RedPacketConstant.MESSAGE_ATTR_IS_RED_PACKET_MESSAGE, false)) {
+                } else if (message.getBooleanAttribute(RedPacketConstant.MESSAGE_ATTR_IS_RED_PACKET_MESSAGE, false)) {
                     //sent redpacket message
                     return message.direct() == EMMessage.Direct.RECEIVE ? MESSAGE_TYPE_RECV_MONEY : MESSAGE_TYPE_SEND_MONEY;
                 } else if (message.getBooleanAttribute(RedPacketConstant.MESSAGE_ATTR_IS_RED_PACKET_ACK_MESSAGE, false)) {
@@ -646,12 +703,12 @@ public class ChatFragment extends EaseChatFragment implements EaseChatFragmentHe
 
         @Override
         public EaseChatRow getCustomChatRow(EMMessage message, int position, BaseAdapter adapter) {
-            if(message.getType() == EMMessage.Type.TXT){
+            if (message.getType() == EMMessage.Type.TXT) {
                 // voice call or video call
                 if (message.getBooleanAttribute(Constant.MESSAGE_ATTR_IS_VOICE_CALL, false) ||
-                    message.getBooleanAttribute(Constant.MESSAGE_ATTR_IS_VIDEO_CALL, false)){
+                        message.getBooleanAttribute(Constant.MESSAGE_ATTR_IS_VIDEO_CALL, false)) {
                     return new ChatRowVoiceCall(getActivity(), message, position, adapter);
-                }else if (message.getBooleanAttribute(RedPacketConstant.MESSAGE_ATTR_IS_RED_PACKET_MESSAGE, false)) {//send redpacket
+                } else if (message.getBooleanAttribute(RedPacketConstant.MESSAGE_ATTR_IS_RED_PACKET_MESSAGE, false)) {//send redpacket
                     return new ChatRowRedPacket(getActivity(), message, position, adapter);
                 } else if (message.getBooleanAttribute(RedPacketConstant.MESSAGE_ATTR_IS_RED_PACKET_ACK_MESSAGE, false)) {//open redpacket message
                     return new ChatRowRedPacketAck(getActivity(), message, position, adapter);

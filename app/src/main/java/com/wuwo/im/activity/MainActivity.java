@@ -65,6 +65,7 @@ import com.wuwo.im.fragement.Portal_ContactFragment;
 import com.wuwo.im.fragement.Portal_FindFragment;
 import com.wuwo.im.fragement.Portal_LocalFragment;
 import com.wuwo.im.fragement.Portal_OwnerFragment;
+import com.wuwo.im.util.UpdateManager;
 import com.wuwo.im.util.UtilsTool;
 import com.wuwo.im.view.ActionItem;
 import com.wuwo.im.view.MyTabWidget;
@@ -116,6 +117,8 @@ public class MainActivity extends BaseFragementActivity implements MyTabWidget.O
     // user logged into another device
     public boolean isConflict = false;
 
+
+    UpdateManager manager;
     /**
      * check if current user account was remove
      */
@@ -187,6 +190,10 @@ public class MainActivity extends BaseFragementActivity implements MyTabWidget.O
         mOttoBus.register(this);
 
         init();
+
+        // 检查文件更新
+        manager = new UpdateManager(mContext);
+        manager.checkUpdateMe();
     }
 
     //    private ContactListFragment contactListFragment;
@@ -371,7 +378,7 @@ public class MainActivity extends BaseFragementActivity implements MyTabWidget.O
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
+        manager.closeDialog();
         if (conflictBuilder != null) {
             conflictBuilder.create().dismiss();
             conflictBuilder = null;
@@ -391,9 +398,9 @@ public class MainActivity extends BaseFragementActivity implements MyTabWidget.O
     public void updateUnreadLabel() {
         int count = getUnreadMsgCountTotal();
         if (count > 0) {
-            mTopIndicator.setIndicateDisplay(3, true, "" + count);
+            mTopIndicator.setIndicateDisplay(1, true, "" + count);
         } else {
-            mTopIndicator.setIndicateDisplay(3, false, "");
+            mTopIndicator.setIndicateDisplay(1, false, "");
         }
     }
 
@@ -476,14 +483,14 @@ public class MainActivity extends BaseFragementActivity implements MyTabWidget.O
         super.onSaveInstanceState(outState);
     }
 
-    @Override
+ /*   @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
             moveTaskToBack(false);
             return true;
         }
         return super.onKeyDown(keyCode, event);
-    }
+    }*/
 
     private android.app.AlertDialog.Builder conflictBuilder;
     private android.app.AlertDialog.Builder accountRemovedBuilder;
@@ -882,7 +889,7 @@ public class MainActivity extends BaseFragementActivity implements MyTabWidget.O
 
 
     // 底部菜单的文字数组
-    private CharSequence[] mLabels = {"附近", "发现", "联系人", "消息", "我"};
+    private CharSequence[] mLabels = {"附近","消息", "先知", "联系人",  "我"};
 
     private void init() {
 
@@ -893,12 +900,13 @@ public class MainActivity extends BaseFragementActivity implements MyTabWidget.O
         conversationListFragment = new ConversationListFragment();
 //        fragments.add(new Portal_NewsFragment());
         fragments.add(new Portal_LocalFragment());
+        fragments.add(conversationListFragment);
         fragments.add(new Portal_FindFragment());
         fragments.add(new Portal_ContactFragment());
 //        fragments.add(contactListFragment);
 
 //        fragments.add(new Portal_XiaoXiFragment());
-        fragments.add(conversationListFragment);
+
 
         fragments.add(new Portal_OwnerFragment());
 
@@ -1012,6 +1020,18 @@ public class MainActivity extends BaseFragementActivity implements MyTabWidget.O
         home.addCategory(Intent.CATEGORY_HOME);
         startActivity(home);
     }
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        switch (keyCode) {
+            case KeyEvent.KEYCODE_BACK:
+                Intent home = new Intent(Intent.ACTION_MAIN);
+                home.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                home.addCategory(Intent.CATEGORY_HOME);
+                startActivity(home);
+                break;
+        }
+        return true;
+    }
 
 
 
@@ -1055,7 +1075,7 @@ public class MainActivity extends BaseFragementActivity implements MyTabWidget.O
     public void onTabSelected(int index) {
         // TODO 自动生成的方法存根
 //        点击导航条后，页面跳转
-        mViewPager.setCurrentItem(index);
+        mViewPager.setCurrentItem(index,false);
         return_back_igw.setVisibility(View.GONE);
 
     }
@@ -1131,7 +1151,7 @@ public class MainActivity extends BaseFragementActivity implements MyTabWidget.O
     }
 
 
-//    MaterialDialog materialDialog;
+//
 
     /**
      * @param @param mContext

@@ -42,7 +42,7 @@ public class MyTabWidget extends LinearLayout {
     }
 
     // 底部菜单的文字数组
-    private CharSequence[] mLabels = {"附近", "发现", "联系人", "消息", "个人"};
+    private CharSequence[] mLabels = {"附近", "消息", "先知", "联系人", " 我 "};
 
 
 

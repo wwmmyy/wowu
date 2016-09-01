@@ -25,6 +25,7 @@ public class LoginChooseActivity extends BaseActivity implements View.OnClickLis
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+//        getWindow().setFlags(WindowManager.LayoutParams.FILL_PARENT, WindowManager.LayoutParams.FILL_PARENT);  //设置全屏
         setContentView(R.layout.activity_login_choose);
         ExitApp.getInstance().addOpenedActivity(this);
         initView();

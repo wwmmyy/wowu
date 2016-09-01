@@ -8,9 +8,17 @@
     		90 ：从下往上开始渐变
     		0 ：从左往右开始渐变
      -->
-    <gradient
+<!--    <gradient
         android:startColor="#00A86D"
         android:endColor="?attr/appbg"
         android:angle="45"
+        />-->
+
+
+    <gradient
+        android:startColor="#1ABEC0"
+        android:endColor="#5DAE8B"
+        android:angle="45"
         />
+
 </shape>

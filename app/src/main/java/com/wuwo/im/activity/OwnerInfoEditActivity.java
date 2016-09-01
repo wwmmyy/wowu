@@ -218,10 +218,14 @@ public class OwnerInfoEditActivity extends FragmentActivity implements
                 }
                 break;
             case R.id.tx_top_right:
-                MyToast.show(mContext, "修改成功");
+//                MyToast.show(mContext, "修改成功");
                 if (pd != null) {
                     pd.dismiss();
                 }
+                WowuApp.iconPath = mUserDetail.getIcon().getUrl();
+                editor = getSharedPreferences(WowuApp.PREFERENCE_KEY, MODE_PRIVATE).edit();
+                editor.putString("iconPath", WowuApp.iconPath);
+                editor.commit();
                 break;
         }
     }
@@ -264,12 +268,10 @@ public class OwnerInfoEditActivity extends FragmentActivity implements
                 for (int i = 0; i < userPicAdapter.getList().size(); i++) {
                     tempimageUrls.add(((UserInfoDetail.PhotosBean) userPicAdapter.getList().get(i)).getFullUrl());
                 }
-                imageBrower(position,tempimageUrls);
+                imageBrower(position, tempimageUrls);
             }
         }
     }
-
-
 
 
     /**
@@ -433,7 +435,6 @@ public class OwnerInfoEditActivity extends FragmentActivity implements
                 viewHolder.setText(R.id.tv_zhongwen_nicheng1, mainMessage.getName());
                 viewHolder.setText(R.id.ln_yingwen_nicheng, mainMessage.getEnglishName() + "");
                 viewHolder.setText(R.id.ln_birthday, mainMessage.getBirthday() + "");
-                viewHolder.setText(R.id.ln_feeling, mainMessage.getMaritalStatus() + "");
                 viewHolder.setText(R.id.ln_jiaxiang, mainMessage.getHome());
                 viewHolder.setText(R.id.ln_geren_jieshao, mainMessage.getDescription());
                 viewHolder.setText(R.id.ln_shenfenbiaoqian, mainMessage.getDisposition());
@@ -443,6 +444,28 @@ public class OwnerInfoEditActivity extends FragmentActivity implements
                 viewHolder.setText(R.id.ln_gongzuodidian, mainMessage.getJobAddress());
                 viewHolder.setText(R.id.ln_changchumodi, mainMessage.getDailyAddress());
                 viewHolder.setText(R.id.tv_quguo_jingdian, mainMessage.getVisitedAttractions());
+
+//                @"保密", @"单身",@"恋爱中", @"已婚", @"同性",
+                viewHolder.setText(R.id.ln_feeling, mainMessage.getMaritalStatus() + "");
+
+
+                switch (mainMessage.getMaritalStatus()) {
+                    case 0:
+                        viewHolder.setText(R.id.ln_feeling, "保密");
+                        break;
+                    case 1:
+                        viewHolder.setText(R.id.ln_feeling, "单身");
+                        break;
+                    case 2:
+                        viewHolder.setText(R.id.ln_feeling, "恋爱中");
+                        break;
+                    case 3:
+                        viewHolder.setText(R.id.ln_feeling, "已婚");
+                        break;
+                    case 4:
+                        viewHolder.setText(R.id.ln_feeling, "同性");
+                        break;
+                }
 
 
                 final String description = mainMessage.getDescription();
@@ -457,6 +480,12 @@ public class OwnerInfoEditActivity extends FragmentActivity implements
                 final String visitedAttractions = mainMessage.getVisitedAttractions();
                 final String Home = mainMessage.getHome();
 
+                viewHolder.getView(R.id.ln_feeling).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        showFeelDialog();
+                    }
+                });
 
                 viewHolder.getView(R.id.ln_yingwen_nicheng).setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -620,6 +649,30 @@ public class OwnerInfoEditActivity extends FragmentActivity implements
         };
         return null;
     }
+
+
+    public void showFeelDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+        builder.setTitle("选择情感状态");
+
+        String[] dialogItems = new String[]{"保密", "单身", "恋爱中", "已婚", "同性"};
+        builder.setItems(dialogItems, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+                mUserDetail.setMaritalStatus(which);
+                mUserDetailList.remove(0);
+                mUserDetailList.add(mUserDetail);
+
+                Message msg = new Message();
+                msg.what = REFERSH_DATA;
+                mtotalHandler.sendMessage(msg);
+            }
+        });
+
+        builder.create().show();
+    }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

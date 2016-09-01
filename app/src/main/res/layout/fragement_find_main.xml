@@ -3,8 +3,9 @@
     xmlns:fresco="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/app_bg"
+    android:background="@null"
     android:orientation="vertical">
+    <!--android:background="@color/app_bg"-->
 
     <!--<include layout="@layout/top_title_bar" />-->
     <RelativeLayout
@@ -17,8 +18,8 @@
         <!--fresco:backgroundImage="@android:color/holo_orange_light"-->
         <com.facebook.drawee.view.SimpleDraweeView
             android:id="@+id/user_login_pic"
-            android:layout_width="45dp"
-            android:layout_height="45dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:layout_centerVertical="true"
             fresco:actualImageScaleType="focusCrop"
             android:layout_marginLeft="10dp"
@@ -40,7 +41,7 @@
             android:layout_centerVertical="true"
             android:layout_toRightOf="@+id/user_login_pic"
             android:paddingLeft="10dp"
-            android:text="性格" />
+            android:text="我的性格" />
     </RelativeLayout>
 
 
@@ -57,8 +58,8 @@
         <!--fresco:backgroundImage="@android:color/holo_orange_light"-->
         <com.facebook.drawee.view.SimpleDraweeView
             android:id="@+id/find_share_f_ic"
-            android:layout_width="45dp"
-            android:layout_height="45dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:layout_centerVertical="true"
             fresco:actualImageScaleType="focusCrop"
             android:layout_marginLeft="10dp"
@@ -107,8 +108,8 @@
         &lt;!&ndash;fresco:backgroundImage="@android:color/holo_orange_light"&ndash;&gt;
         <com.facebook.drawee.view.SimpleDraweeView
             android:id="@+id/find_share_f_ic1"
-            android:layout_width="45dp"
-            android:layout_height="45dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:layout_centerVertical="true"
             fresco:actualImageScaleType="focusCrop"
             android:layout_marginLeft="10dp"
@@ -141,21 +142,21 @@
 
         <com.facebook.drawee.view.SimpleDraweeView
             android:id="@+id/find_share_f_ic2"
-            android:layout_width="45dp"
-            android:layout_height="45dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:layout_centerVertical="true"
             fresco:actualImageScaleType="focusCrop"
             fresco:fadeDuration="1000"
             android:layout_marginLeft="10dp"
             fresco:failureImageScaleType="centerInside"
-            fresco:placeholderImage="@drawable/invite"
+            fresco:placeholderImage="@drawable/wechat"
             fresco:placeholderImageScaleType="fitCenter"
             fresco:progressBarAutoRotateInterval="1500"
             fresco:progressBarImage="@drawable/con_progress_bar"
             fresco:progressBarImageScaleType="centerInside"
             fresco:retryImageScaleType="centerCrop"
             fresco:roundedCornerRadius="5dp" />
-
+        <!--fresco:placeholderImage="@drawable/invite"-->
 
         <TextView
             style="@style/find_share_text_style"
@@ -176,8 +177,8 @@
 
         <com.facebook.drawee.view.SimpleDraweeView
             android:id="@+id/find_share_f_ic3"
-            android:layout_width="45dp"
-            android:layout_height="45dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:layout_centerVertical="true"
             fresco:actualImageScaleType="focusCrop"
             fresco:fadeDuration="1000"
@@ -210,21 +211,21 @@
 
         <com.facebook.drawee.view.SimpleDraweeView
             android:id="@+id/find_share_f_ic4"
-            android:layout_width="45dp"
-            android:layout_height="45dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:layout_centerVertical="true"
             fresco:actualImageScaleType="focusCrop"
             android:layout_marginLeft="10dp"
             fresco:fadeDuration="1000"
             fresco:failureImageScaleType="centerInside"
-            fresco:placeholderImage="@drawable/edition"
+            fresco:placeholderImage="@drawable/banbenyugao"
             fresco:placeholderImageScaleType="fitCenter"
             fresco:progressBarAutoRotateInterval="1500"
             fresco:progressBarImage="@drawable/con_progress_bar"
             fresco:progressBarImageScaleType="centerInside"
             fresco:retryImageScaleType="centerCrop"
             fresco:roundedCornerRadius="5dp" />
-
+        <!--fresco:placeholderImage="@drawable/edition"-->
         <TextView
             style="@style/find_share_text_style"
             android:layout_width="wrap_content"
@@ -245,21 +246,21 @@
 
         <com.facebook.drawee.view.SimpleDraweeView
             android:id="@+id/find_share_f_ic5"
-            android:layout_width="45dp"
-            android:layout_height="45dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:layout_centerVertical="true"
             fresco:actualImageScaleType="focusCrop"
             fresco:fadeDuration="1000"
             android:layout_marginLeft="10dp"
             fresco:failureImageScaleType="centerInside"
-            fresco:placeholderImage="@drawable/feedback"
+            fresco:placeholderImage="@drawable/yijianfankui"
             fresco:placeholderImageScaleType="fitCenter"
             fresco:progressBarAutoRotateInterval="1500"
             fresco:progressBarImage="@drawable/con_progress_bar"
             fresco:progressBarImageScaleType="centerInside"
             fresco:retryImageScaleType="centerCrop"
             fresco:roundedCornerRadius="5dp" />
-
+        <!--fresco:placeholderImage="@drawable/feedback"-->
         <TextView
             style="@style/find_share_text_style"
             android:layout_width="wrap_content"
@@ -268,5 +269,39 @@
             android:layout_toRightOf="@+id/find_share_f_ic5"
             android:paddingLeft="10dp"
             android:text="意见反馈" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/find_aboutus"
+        android:layout_width="fill_parent"
+        android:layout_height="60dp"
+        android:layout_marginTop="-3dp"
+        android:background="@drawable/item_background_find_selector">
+
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:id="@+id/find_share_f_ic6"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_centerVertical="true"
+            fresco:actualImageScaleType="focusCrop"
+            fresco:fadeDuration="1000"
+            android:layout_marginLeft="10dp"
+            fresco:failureImageScaleType="centerInside"
+            fresco:placeholderImage="@drawable/aboutme"
+            fresco:placeholderImageScaleType="fitCenter"
+            fresco:progressBarAutoRotateInterval="1500"
+            fresco:progressBarImage="@drawable/con_progress_bar"
+            fresco:progressBarImageScaleType="centerInside"
+            fresco:retryImageScaleType="centerCrop"
+            fresco:roundedCornerRadius="5dp" />
+        <!--fresco:placeholderImage="@drawable/feedback"-->
+        <TextView
+            style="@style/find_share_text_style"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/find_share_f_ic6"
+            android:paddingLeft="10dp"
+            android:text="关于我们" />
     </RelativeLayout>
 </LinearLayout>

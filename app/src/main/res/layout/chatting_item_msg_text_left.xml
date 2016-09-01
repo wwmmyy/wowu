@@ -32,7 +32,7 @@
 		           android:focusable="false" 
 		           android:layout_alignParentLeft="true" 
                    android:layout_alignParentTop="true" 
-		           android:background="@drawable/woman2"/>
+		           android:background="@drawable/icon"/>
  				
  				<TextView 
 	            android:id="@+id/tv_chatcontent" 

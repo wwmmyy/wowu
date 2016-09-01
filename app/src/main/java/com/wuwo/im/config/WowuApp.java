@@ -96,6 +96,7 @@ public class WowuApp extends Application {
         settings = this.getSharedPreferences(PREFERENCE_KEY, MODE_PRIVATE);
         PhoneNumber = settings.getString("PhoneNumber", "");
         Name = settings.getString("Name", "");
+        XianZhiNumber = settings.getString("userNumber", "");
         Thread.setDefaultUncaughtExceptionHandler(restartHandler); // 程序崩溃时触发线程  以下用来捕获程序崩溃异常
 
 
@@ -323,8 +324,8 @@ public class WowuApp extends Application {
 //    GET Friend/ContactsRecommend  获取通讯录推荐
     public static String FriendContactsRecommendURL = OkHttpUtils.serverAbsolutePath + "Friend/ContactsRecommend";//?friendId={friendI
 
-
-
+//    GET System/VersionInfo           版本信息
+    public static String SystemVersionInfoURL = OkHttpUtils.serverAbsolutePath + "System/VersionInfo";
 
    //  GET   推荐好友
    public static String  ChatRecommendFriendURL = OkHttpUtils.serverAbsolutePath + "Chat/RecommendFriend";

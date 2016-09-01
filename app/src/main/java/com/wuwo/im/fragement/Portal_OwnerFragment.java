@@ -24,15 +24,14 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.hyphenate.EMCallBack;
 import com.hyphenate.chatuidemo.DemoHelper;
-import com.wuwo.im.activity.UserPayActivity;
 import com.wuwo.im.activity.OwnerInfoEditActivity;
 import com.wuwo.im.activity.UserBindPhoneActivity;
 import com.wuwo.im.activity.UserModifyPasswdActivity;
+import com.wuwo.im.activity.UserPayActivity;
 import com.wuwo.im.activity.UserSetWarnActivity;
 import com.wuwo.im.bean.UserInfoDetail;
 import com.wuwo.im.config.ExitApp;
 import com.wuwo.im.config.WowuApp;
-import com.wuwo.im.util.MyToast;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.service.LoadserverdataService;
 import com.zhy.http.okhttp.service.loadServerDataListener;
@@ -58,7 +57,7 @@ public class Portal_OwnerFragment extends BaseAppFragment implements View.OnClic
     SharedPreferences mSettings;
     SharedPreferences.Editor editor;
     LoadserverdataService loadDataService;
-    TextView tv_user_id,tv_usertype;
+    TextView tv_user_id, tv_usertype;
 
     @Override
     public void onAttach(Activity activity) {
@@ -111,14 +110,13 @@ public class Portal_OwnerFragment extends BaseAppFragment implements View.OnClic
         view.findViewById(R.id.bind_pay).setOnClickListener(this);
 
 
-          tv_user_id = (TextView) view.findViewById(R.id.tv_user_id);
-          tv_usertype = (TextView) view.findViewById(R.id.tv_usertype);
-            loadData();
+        tv_user_id = (TextView) view.findViewById(R.id.tv_user_id);
+        tv_usertype = (TextView) view.findViewById(R.id.tv_usertype);
+        loadData();
     }
 
 
-
-    private  final int LOADDATA=11;
+    private final int LOADDATA = 11;
 
     private void loadData() {
         loadDataService.loadGetJsonRequestData(OkHttpUtils.GetUserInfoURL + "?userId=" + WowuApp.UserId, LOADDATA);
@@ -139,7 +137,8 @@ public class Portal_OwnerFragment extends BaseAppFragment implements View.OnClic
     }
 
     Intent intent2 = new Intent();
-      AlertDialog dialog;
+    AlertDialog dialog;
+
     public void onClick(View v) {
         // TODO 自动生成的方法存根
 
@@ -154,23 +153,15 @@ public class Portal_OwnerFragment extends BaseAppFragment implements View.OnClic
                                 new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
-//                                        SharedPreferences.Editor editor = mSettings.edit();
-//                                        editor.putString("username", "");
-//                                        editor.putString("password", "");
-////                                        editor.putBoolean("login_auto_check", false);
-//                                        editor.putBoolean("login_save_pwd_check",false);
-//                                        editor.commit();
-//
-//                                        //            彻底退出应用程序，经测试，效果很好
-//                                        Intent startMain = new Intent(Intent.ACTION_MAIN);
-//                                        startMain.addCategory(Intent.CATEGORY_HOME);
-//                                        startMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//                                        ExitApp.getInstance().exit();
-//                                        startActivity(startMain);
-//                                        System.exit(0);
-//                                        dialog.dismiss();
 
-                                        DemoHelper.getInstance().logout(false, new EMCallBack(){
+                                        try {
+                                            JSONObject json = new JSONObject();
+                                            loadDataService.loadPostJsonRequestData(WowuApp.JSON, WowuApp.LogoutURL, json.toString(), R.id.clear_cache_quit);
+                                        } catch (Exception e) {
+                                            e.printStackTrace();
+                                        }
+
+/*                                        DemoHelper.getInstance().logout(false, new EMCallBack(){
                                             @Override
                                             public void onSuccess() {
                                             }
@@ -180,14 +171,7 @@ public class Portal_OwnerFragment extends BaseAppFragment implements View.OnClic
                                             @Override
                                             public void onProgress(int i, String s) {
                                             }
-                                        });
-
-                                        try {
-                                            JSONObject json = new JSONObject();
-                                            loadDataService.loadPostJsonRequestData(WowuApp.JSON, WowuApp.LogoutURL, json.toString(), R.id.clear_cache_quit);
-                                        } catch (Exception e) {
-                                            e.printStackTrace();
-                                        }
+                                        });*/
 
                                     }
                                 })
@@ -287,8 +271,8 @@ public class Portal_OwnerFragment extends BaseAppFragment implements View.OnClic
                         Intent startMain = new Intent(Intent.ACTION_MAIN);
                         startMain.addCategory(Intent.CATEGORY_HOME);
                         startMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        ExitApp.getInstance().exit();
                         startActivity(startMain);
+                        ExitApp.getInstance().exit();
                         System.exit(0);
 
                     }
@@ -321,36 +305,30 @@ public class Portal_OwnerFragment extends BaseAppFragment implements View.OnClic
     }
 
 
-
-
     UserInfoDetail mUserDetail = new UserInfoDetail();
     mHandlerWeak mtotalHandler;
     public static final int DOWNLOADED_LocalUser = 0;
-
-
-
-
 
 
     @Override
     public void loadServerData(String response, int flag) {
         switch (flag) {
             case R.id.clear_cache_quit:
-                                        SharedPreferences.Editor editor = mSettings.edit();
-                                        editor.putString("username", "");
-                                        editor.putString("password", "");
+                SharedPreferences.Editor editor = mSettings.edit();
+                editor.putString("username", "");
+                editor.putString("password", "");
 //                                        editor.putBoolean("login_auto_check", false);
-                                        editor.putBoolean("login_save_pwd_check",false);
-                                        editor.commit();
+                editor.putBoolean("login_save_pwd_check", false);
+                editor.commit();
 
-                                        //            彻底退出应用程序，经测试，效果很好
-                                        Intent startMain = new Intent(Intent.ACTION_MAIN);
-                                        startMain.addCategory(Intent.CATEGORY_HOME);
-                                        startMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                        ExitApp.getInstance().exit();
-                                        startActivity(startMain);
-                                        System.exit(0);
-                                        dialog.dismiss();
+                //            彻底退出应用程序，经测试，效果很好
+                Intent startMain = new Intent(Intent.ACTION_MAIN);
+                startMain.addCategory(Intent.CATEGORY_HOME);
+                startMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(startMain);
+                ExitApp.getInstance().exit();
+                System.exit(0);
+                dialog.dismiss();
                 break;
 
             case LOADDATA:
@@ -369,10 +347,6 @@ public class Portal_OwnerFragment extends BaseAppFragment implements View.OnClic
     }
 
 
-
-
-
-
     public void setLoadInfo(String totalresult) throws JSONException {
         Gson gson = new GsonBuilder().create();
         if (totalresult != null) {
@@ -381,16 +355,16 @@ public class Portal_OwnerFragment extends BaseAppFragment implements View.OnClic
             mUserDetail = gson.fromJson(totalresult, type);
 // 保存用户信息到sp
             SharedPreferences.Editor editor = mSettings.edit();
-            editor.putString("userNumber",mUserDetail.getUserNumber());
-            editor.putBoolean("isVip",mUserDetail.isIsVip());
+            editor.putString("userNumber", mUserDetail.getUserNumber());
+            editor.putBoolean("isVip", mUserDetail.isIsVip());
             editor.commit();
         }
     }
 
 
-
     private static class mHandlerWeak extends Handler {
         private WeakReference<Portal_OwnerFragment> activity = null;
+
         public mHandlerWeak(Portal_OwnerFragment act) {
             super();
             this.activity = new WeakReference<Portal_OwnerFragment>(act);
@@ -414,9 +388,9 @@ public class Portal_OwnerFragment extends BaseAppFragment implements View.OnClic
 //                        act.userPicAdapter.setData(act.getUserInfoDetail().getPhotos());
 //                    }
 
-                    WowuApp.XianZhiNumber=act.mUserDetail.getUserNumber();
-                    act.tv_user_id.setText(act.mUserDetail.getUserNumber());
-                    act.tv_usertype.setText(act.mUserDetail.isIsVip()==true?"会员用户":"普通用户");
+                    WowuApp.XianZhiNumber = act.mUserDetail.getUserNumber();
+                    act.tv_user_id.setText( WowuApp.XianZhiNumber);
+                    act.tv_usertype.setText(act.mUserDetail.isIsVip() == true ? "会员用户" : "普通用户");
 
                     break;
             }
@@ -424,32 +398,29 @@ public class Portal_OwnerFragment extends BaseAppFragment implements View.OnClic
     }
 
 
-
-
-
     @Override
     public void loadDataFailed(String response, int flag) {
 
-        if(dialog!=null){
+        if (dialog != null) {
             dialog.dismiss();
         }
 
 
-        if (flag==R.id.clear_cache_quit){
+        if (flag == R.id.clear_cache_quit) {
             SharedPreferences.Editor editor = mSettings.edit();
             editor.putString("username", "");
             editor.putString("password", "");
 //                                        editor.putBoolean("login_auto_check", false);
-            editor.putBoolean("login_save_pwd_check",false);
+            editor.putBoolean("login_save_pwd_check", false);
             editor.commit();
-            MyToast.show(mContext, response);
+//            MyToast.show(mContext, response);
 
             //            彻底退出应用程序，经测试，效果很好
             Intent startMain = new Intent(Intent.ACTION_MAIN);
             startMain.addCategory(Intent.CATEGORY_HOME);
             startMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+             startActivity(startMain);
             ExitApp.getInstance().exit();
-            startActivity(startMain);
             System.exit(0);
         }
     }

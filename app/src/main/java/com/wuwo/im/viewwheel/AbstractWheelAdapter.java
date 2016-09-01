@@ -24,7 +24,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * Abstract Wheel adapter.
+ *此包用于选择地区等联动查询
  */
 public abstract class AbstractWheelAdapter implements WheelViewAdapter {
     // Observers

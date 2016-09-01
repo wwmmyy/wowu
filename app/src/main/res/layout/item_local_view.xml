@@ -81,7 +81,7 @@
                     android:paddingRight="10dp"
                     android:drawableRight="@drawable/male"
                     android:text="0"
-                    android:textColor="@color/red"
+                    android:textColor="@color/white"
                     android:textSize="14sp" />
                 <TextView
                     android:id="@+id/tvage_gender_female"
@@ -95,7 +95,7 @@
                     android:drawableRight="@drawable/female"
                     android:visibility="gone"
                     android:text="0"
-                    android:textColor="@color/red"
+                    android:textColor="@color/white"
                     android:textSize="14sp" />
 
                 <TextView
@@ -111,12 +111,23 @@
                     android:textSize="14sp" />
 
                 <ImageView
-                    android:id="@+id/yewu_code"
+                    android:id="@+id/yewu_code_m"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
                     android:src="@drawable/mate_b"
                     android:gravity="center|right" />
+
+                <ImageView
+                    android:id="@+id/yewu_code_w"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:src="@drawable/mate_r"
+                    android:visibility="gone"
+                    android:gravity="center|right" />
+
+
             </LinearLayout>
 
             <LinearLayout

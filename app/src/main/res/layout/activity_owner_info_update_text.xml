@@ -47,6 +47,7 @@
             android:layout_height="match_parent"
             android:layout_marginLeft="5dp"
             android:textSize="17sp"
+            android:singleLine="true"
             android:background="@color/white"/>
     </LinearLayout>
 

@@ -26,10 +26,11 @@ import javax.xml.parsers.SAXParserFactory;
 
 import im.wuwo.com.wuwo.R;
 /**
- *
- * @author zhy
- *
- */
+*desc  地点选择
+*@author 王明远
+*@日期： 2016/8/27 12:25
+*/
+
 public class OwnerInfoUpdateChooseActivity  extends Activity  implements View.OnClickListener, OnWheelChangedListener
 {
     /**
@@ -126,9 +127,13 @@ public class OwnerInfoUpdateChooseActivity  extends Activity  implements View.On
         } else if (wheel == mViewCity) {
             updateAreas();
         } else if (wheel == mViewDistrict) {
-            mCurrentDistrictName = mDistrictDatasMap.get(mCurrentCityName)[newValue];
-            mCurrentZipCode = mZipcodeDatasMap.get(mCurrentDistrictName);
+            updateDistricts(newValue);
         }
+    }
+
+    private void updateDistricts(int newValue) {
+        mCurrentDistrictName = mDistrictDatasMap.get(mCurrentCityName)[newValue];
+        mCurrentZipCode = mZipcodeDatasMap.get(mCurrentDistrictName);
     }
 
     /**
@@ -142,8 +147,11 @@ public class OwnerInfoUpdateChooseActivity  extends Activity  implements View.On
         if (areas == null) {
             areas = new String[] { "" };
         }
+
         mViewDistrict.setViewAdapter(new ArrayWheelAdapter<String>(this, areas));
         mViewDistrict.setCurrentItem(0);
+
+        mCurrentDistrictName = mDistrictDatasMap.get(mCurrentCityName)[0];
     }
 
     /**
@@ -191,15 +199,6 @@ public class OwnerInfoUpdateChooseActivity  extends Activity  implements View.On
         finish();//此处一定要调用finish()方法
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
     }
-
-
-
-
-
-
-
-
-
 
 
     /**

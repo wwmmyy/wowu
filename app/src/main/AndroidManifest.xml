@@ -70,7 +70,7 @@
     <application
         android:name="com.wuwo.im.config.WowuApp"
         android:allowBackup="true"
-        android:icon="@drawable/icon"
+        android:icon="@drawable/icon0"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">

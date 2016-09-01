@@ -114,13 +114,13 @@
         android:orientation="horizontal">
 
         <TextView
-            android:id="@+id/tv_user_result"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="倾向程度："
             android:textSize="17sp" />
 
         <TextView
+            android:id="@+id/tv_user_result"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="6dp"
@@ -133,19 +133,50 @@
     </LinearLayout>
 
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
+        android:layout_height="240dp"
         android:background="@color/app_bg"
-        android:paddingBottom="@dimen/activity_vertical_margin"
-        android:paddingLeft="@dimen/activity_horizontal_margin"
-        android:paddingRight="@dimen/activity_horizontal_margin"
-        android:paddingTop="@dimen/activity_vertical_margin">
+        android:gravity="center"
+        android:layout_marginTop="@dimen/activity_horizontal_margin"
+         android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin">
 
         <LinearLayout
+            android:id="@+id/ll_character1_dec"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:paddingTop="@dimen/activity_vertical_margin">
+
+            <TextView
+                android:id="@+id/tv_dec1_l"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="50dp"
+                android:layout_weight="1"
+                android:gravity="left|center"
+                android:textColor="@color/holo_red_light"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/tv_dec1_r"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="50dp"
+                android:layout_weight="1"
+                android:gravity="right|center"
+                android:textColor="@color/holo_red_light"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/ll_character1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/ll_character1_dec"
             android:gravity="center"
             android:orientation="horizontal">
 
@@ -170,11 +201,41 @@
                 android:textSize="16sp" />
         </LinearLayout>
 
-
         <LinearLayout
+            android:id="@+id/ll_character2_dec"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_below="@id/ll_character1"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tv_dec2_l"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="50dp"
+                android:layout_weight="1"
+                android:gravity="left|center"
+                android:textColor="@color/holo_red_light"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/tv_dec2_r"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="50dp"
+                android:layout_weight="1"
+                android:gravity="right|center"
+                android:textColor="@color/holo_red_light"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_character2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/ll_character2_dec"
             android:gravity="center"
             android:orientation="horizontal">
 
@@ -199,10 +260,42 @@
                 android:textSize="16sp" />
         </LinearLayout>
 
+
         <LinearLayout
+            android:id="@+id/ll_character3_dec"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_below="@id/ll_character2"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tv_dec3_l"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="50dp"
+                android:layout_weight="1"
+                android:gravity="left|center"
+                android:textColor="@color/holo_red_light"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/tv_dec3_r"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="50dp"
+                android:layout_weight="1"
+                android:gravity="right|center"
+                android:textColor="@color/holo_red_light"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_character3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/ll_character3_dec"
             android:gravity="center"
             android:orientation="horizontal">
 
@@ -228,10 +321,42 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/ll_character4_dec"
+            android:layout_marginTop="10dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
+            android:layout_below="@id/ll_character3"
             android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tv_dec4_l"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="50dp"
+                android:layout_weight="1"
+                android:gravity="left|center"
+                android:textColor="@color/holo_red_light"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/tv_dec4_r"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="50dp"
+                android:layout_weight="1"
+                android:gravity="right|center"
+                android:textColor="@color/holo_red_light"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_character4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/ll_character4_dec"
+            android:gravity="center"
+            android:layout_marginBottom="10dp"
             android:orientation="horizontal">
 
             <TextView
@@ -255,7 +380,15 @@
                 android:textSize="16sp" />
         </LinearLayout>
 
-    </LinearLayout>
+
+        <View
+            android:layout_width="5dp"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:background="@color/red_color"
+            android:src="@drawable/mate_blue3" />
+
+    </RelativeLayout>
 
 
 </LinearLayout>

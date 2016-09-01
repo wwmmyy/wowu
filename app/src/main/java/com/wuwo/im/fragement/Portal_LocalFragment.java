@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
@@ -91,14 +92,23 @@ public class Portal_LocalFragment extends BasePortal_TabFragment {
 
                 TextView genderm= (TextView) viewHolder.getView(R.id.tvage_gender_male);
                 TextView genderw= (TextView) viewHolder.getView(R.id.tvage_gender_female);
+                ImageView yewu_code_m= (ImageView) viewHolder.getView(R.id.yewu_code_m);
+                ImageView yewu_code_w= (ImageView) viewHolder.getView(R.id.yewu_code_w);
+
+
                 if(mainMessage.getGender()==1){
                     genderm.setVisibility(View.VISIBLE);
                     genderw.setVisibility(View.GONE);
                     genderm.setText(mainMessage.getAge()+"");
+                    yewu_code_m.setVisibility(View.VISIBLE);
+                    yewu_code_w.setVisibility(View.GONE);
+
                 }else{
                     genderm.setVisibility(View.GONE);
                     genderw.setVisibility(View.VISIBLE);
                     genderw.setText(mainMessage.getAge()+"");
+                    yewu_code_m.setVisibility(View.GONE);
+                    yewu_code_w.setVisibility(View.VISIBLE);
                 }
 
 

@@ -26,7 +26,7 @@
             android:layout_height="84dp"
             android:layout_centerVertical="true"
             android:layout_marginLeft="20dp"
-            dist:placeholderImage="@drawable/woman2"
+            dist:placeholderImage="@drawable/icon"
             dist:progressBarAutoRotateInterval="2000"
             dist:progressBarImage="@drawable/con_progress_bar"
             dist:progressBarImageScaleType="centerInside"
@@ -323,10 +323,10 @@
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:layout_marginTop="40dp"
-        card_view:cardBackgroundColor="@android:color/white"
         card_view:cardCornerRadius="10dp"
+        android:background="@null"
         card_view:cardElevation="0dp">
-
+        <!--card_view:cardBackgroundColor="@android:color/white"-->
         <RelativeLayout
             android:id="@+id/clear_cache_quit"
             android:layout_width="fill_parent"

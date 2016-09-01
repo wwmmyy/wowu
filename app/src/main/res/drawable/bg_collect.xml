@@ -6,7 +6,7 @@
     --> 
     <!--<item android:drawable="@drawable/btn_huiyi_highlight" android:state_checked="true"/>-->
     <!--<item android:drawable="@drawable/btn_huiyi_normal"/>-->
-    <item android:drawable="@drawable/contact_st" android:state_checked="true"/>
-    <item android:drawable="@drawable/contact_nor"/>
+    <item android:drawable="@drawable/xianzhi_st" android:state_checked="true"/>
+    <item android:drawable="@drawable/xianzhi_nor"/>
 
 </selector>

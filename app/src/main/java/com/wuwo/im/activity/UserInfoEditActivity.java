@@ -90,18 +90,12 @@ public class UserInfoEditActivity extends BaseLoadActivity {
                 chatUserId=mLocalUser.getUserId();
             }
 
-
-
-//            ((TextView) findViewById(R.id.contact_gender)).setText(mLocalUser.getGender() == null ? "男" : (Integer.parseInt(mLocalUser.getGender() + "") == 1 ? "男" : "女"));
-
             if(mLocalUser!=null){
                 ((TextView) findViewById(R.id.contact_gender)).setText(mLocalUser.getGender() == 1 ?  "男" : "女");
                 ((TextView) findViewById(R.id.tv_username)).setText(mLocalUser.getName());
                 ((TextView) findViewById(R.id.tv_dis_time)).setText(mLocalUser.getDistance() + "|" + mLocalUser.getBefore());
             }
-
         }
-
         initView();
 
     }
@@ -152,6 +146,8 @@ public class UserInfoEditActivity extends BaseLoadActivity {
                 intent2 = new Intent(mContext, ChatActivity.class);
                 intent2.putExtra(EaseConstant.EXTRA_USER_ID, mLocalUser.getUserId());
                 intent2.putExtra(EaseConstant.EXTRA_USER_NAME, mLocalUser.getName());
+                intent2.putExtra(EaseConstant.EXTRA_USER_ICONPATH, mLocalUser.getPhotoUrl());
+                intent2.putExtra(EaseConstant.EXTRA_CHAT_USER_ID, mLocalUser.getUserId());
                 startActivity(intent2);
                 overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                 break;
@@ -336,11 +332,50 @@ public class UserInfoEditActivity extends BaseLoadActivity {
                 viewHolder.setText(R.id.tv_zhongwen_nicheng, mainMessage.getName());
 
                 viewHolder.setText(R.id.ln_yingwen_nicheng, mainMessage.getEnglishName() + "");
-                viewHolder.setText(R.id.ln_birthday, mainMessage.getBirthday() + "");
-                viewHolder.setText(R.id.ln_feeling, mainMessage.getMaritalStatus() + "");
+//                viewHolder.setText(R.id.ln_birthday, mainMessage.getBirthday() + "");
+//                viewHolder.setText(R.id.ln_feeling, mainMessage.getMaritalStatus() + "");
                 viewHolder.setText(R.id.ln_jiaxiang, mainMessage.getDailyAddress());
                 viewHolder.setText(R.id.ln_geren_jieshao, mainMessage.getDescription());
                 viewHolder.setText(R.id.ln_shenfenbiaoqian, mainMessage.getDisposition());
+
+
+
+                //                @"保密", @"单身",@"恋爱中", @"已婚", @"同性",
+                viewHolder.setText(R.id.ln_feeling, mainMessage.getMaritalStatus() + "");
+
+
+                switch (mainMessage.getMaritalStatus()) {
+                    case 0:
+                        viewHolder.setText(R.id.ln_feeling, "保密");
+                        break;
+                    case 1:
+                        viewHolder.setText(R.id.ln_feeling, "单身");
+                        break;
+                    case 2:
+                        viewHolder.setText(R.id.ln_feeling, "恋爱中");
+                        break;
+                    case 3:
+                        viewHolder.setText(R.id.ln_feeling, "已婚");
+                        break;
+                    case 4:
+                        viewHolder.setText(R.id.ln_feeling, "同性");
+                        break;
+                }
+
+
+                if (mainMessage.getEnglishName() != null && !mainMessage.getEnglishName().equals("null")) {
+                    viewHolder.setText(R.id.ln_yingwen_nicheng, mainMessage.getEnglishName() + "");
+                } else {
+                    viewHolder.getView(R.id.rt_yingwen_nicheng).setVisibility(View.GONE);
+                }
+
+
+                if (mainMessage.getBirthday() != null && !mainMessage.getBirthday().equals("null")) {
+                    viewHolder.setText(R.id.ln_birthday, mainMessage.getBirthday() + "");
+                } else {
+                    viewHolder.getView(R.id.ln_birthday).setVisibility(View.GONE);
+                }
+
 
 
                 if (mainMessage.getJob() != null) {
@@ -371,13 +406,13 @@ public class UserInfoEditActivity extends BaseLoadActivity {
                 if (mainMessage.getVisitedAttractions() != null) {
                     viewHolder.setText(R.id.ln_changchumodi, mainMessage.getVisitedAttractions());
                 } else {
-                    viewHolder.getView(R.id.rt_changchumodi).setVisibility(View.GONE);
+//                    viewHolder.getView(R.id.rt_changchumodi).setVisibility(View.GONE);
                 }
 
                 if (mainMessage.getVisitedAttractions() != null) {
                     viewHolder.setText(R.id.tv_quguo_jingdian, mainMessage.getVisitedAttractions());
                 } else {
-                    viewHolder.getView(R.id.rt_quguo_jingdian).setVisibility(View.GONE);
+//                    viewHolder.getView(R.id.rt_quguo_jingdian).setVisibility(View.GONE);
                 }
 
 
