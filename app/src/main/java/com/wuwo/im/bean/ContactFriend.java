@@ -7,24 +7,28 @@ package com.wuwo.im.bean;
  */
 
 public class ContactFriend {
-
-
     /**
-     * PhoneNumber : +85282038863
+     * PhoneNumber : *0*
      * UserId : 637e5acb638f46f5873ec86f0b4b49ce
      * ContactsUserId : null
-     * Name : 索尼愛立信香港客戶服務熱線
-     * CreateOnUtc : 2016-08-13T09:21:01.083
-     * IsFriend : false
-     * Id : 0c6284ea-c18d-4336-a0c3-2363266c531b
+     * Ninkname : null
+     * Name : *0*
+     * CreateOnUtc : 2016-09-06T15:47:29.7
+     * Registered : false
+     * PhotoUrl : null
+     * DisplayIndex : 0
+     * Id : 368ad08d-90b3-407a-a769-54d425b05313
      */
 
     private String PhoneNumber;
     private String UserId;
     private Object ContactsUserId;
+    private Object Ninkname;
     private String Name;
     private String CreateOnUtc;
-    private boolean IsFriend;
+    private boolean Registered;
+    private Object PhotoUrl;
+    private int DisplayIndex;
     private String Id;
 
     public String getPhoneNumber() {
@@ -51,6 +55,14 @@ public class ContactFriend {
         this.ContactsUserId = ContactsUserId;
     }
 
+    public Object getNinkname() {
+        return Ninkname;
+    }
+
+    public void setNinkname(Object Ninkname) {
+        this.Ninkname = Ninkname;
+    }
+
     public String getName() {
         return Name;
     }
@@ -67,12 +79,28 @@ public class ContactFriend {
         this.CreateOnUtc = CreateOnUtc;
     }
 
-    public boolean isIsFriend() {
-        return IsFriend;
+    public boolean isRegistered() {
+        return Registered;
     }
 
-    public void setIsFriend(boolean IsFriend) {
-        this.IsFriend = IsFriend;
+    public void setRegistered(boolean Registered) {
+        this.Registered = Registered;
+    }
+
+    public Object getPhotoUrl() {
+        return PhotoUrl;
+    }
+
+    public void setPhotoUrl(Object PhotoUrl) {
+        this.PhotoUrl = PhotoUrl;
+    }
+
+    public int getDisplayIndex() {
+        return DisplayIndex;
+    }
+
+    public void setDisplayIndex(int DisplayIndex) {
+        this.DisplayIndex = DisplayIndex;
     }
 
     public String getId() {
@@ -82,4 +110,11 @@ public class ContactFriend {
     public void setId(String Id) {
         this.Id = Id;
     }
+
+
+
+
+
+
+
 }

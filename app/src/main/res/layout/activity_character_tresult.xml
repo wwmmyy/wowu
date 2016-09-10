@@ -5,10 +5,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="center_horizontal"
-    android:background="@drawable/login_bg"
+    android:background="@drawable/bg_top_title"
     android:orientation="vertical"
     tools:context="com.wuwo.im.activity.CharacterTResultActivity">
-    <!--
+    <!--  android:background="@drawable/login_bg"
       android:background="@color/app_bg"
     android:paddingBottom="@dimen/activity_vertical_margin"
         android:paddingLeft="@dimen/activity_horizontal_margin"
@@ -22,14 +22,21 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/line_temp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="30dp"
         android:gravity="center"
         android:text="恭喜你完成性格测试"
         android:textColor="@color/lightgrey"
         android:textSize="18sp" />
 
 
-
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="20dp"
+    android:layout_marginRight="20dp"
+    android:layout_marginTop="30dp"
+    android:background="@drawable/bt_border_register_press_r10"
+    android:orientation="vertical">
 
     <com.facebook.drawee.view.SimpleDraweeView
         android:id="@+id/user_label_pic"
@@ -40,7 +47,7 @@
         android:layout_marginTop="30dp"
         dist:placeholderImage="@drawable/ic_launcher"
         dist:roundAsCircle="true"
-        dist:roundingBorderColor="@color/white"
+        dist:roundingBorderColor="@color/colorPrimary"
         dist:roundingBorderWidth="1dp" />
 
     <TextView
@@ -71,7 +78,7 @@
         android:layout_marginTop="30dp"
         android:gravity="center"
         android:text="INTJ策划者"
-        android:textColor="@android:color/holo_green_light"
+        android:textColor="@color/colorPrimary"
         android:textSize="22dp" />
 
 
@@ -83,29 +90,30 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="45dp"
-        android:background="@drawable/bt_background_selector"
+        android:background="@drawable/bt_border_register_normal"
         android:paddingBottom="5dp"
         android:paddingLeft="25dp"
         android:paddingRight="25dp"
         android:paddingTop="5dp"
-        android:textColor="@color/mediumseagreen"
+        android:textColor="@color/colorPrimary"
+        android:layout_marginBottom="85dp"
         android:text="分享到朋友圈"
         android:textSize="20sp" />
-
+</LinearLayout>
 
     <Button
         android:id="@+id/tv_user_types_enter"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="25dp"
-        android:background="@drawable/bt_background_selector"
+        android:layout_marginTop="-25dp"
+        android:background="@drawable/bt_border_register_normal3"
         android:paddingBottom="5dp"
         android:paddingLeft="50dp"
         android:paddingRight="50dp"
         android:paddingTop="5dp"
         android:text="进入先知先觉"
-        android:textColor="@android:color/holo_green_light"
+        android:textColor="@android:color/white"
         android:textSize="20sp" />
 
 </LinearLayout>

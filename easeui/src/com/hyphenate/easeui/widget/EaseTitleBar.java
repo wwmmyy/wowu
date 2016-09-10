@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.facebook.drawee.view.SimpleDraweeView;
 import com.hyphenate.easeui.R;
 
 /**
@@ -23,6 +24,7 @@ public class EaseTitleBar extends RelativeLayout{
     protected ImageView rightImage;
     protected TextView titleView;
     protected RelativeLayout titleLayout;
+    protected SimpleDraweeView right_image_user;
 
     public EaseTitleBar(Context context, AttributeSet attrs, int defStyle) {
         this(context, attrs);
@@ -46,6 +48,7 @@ public class EaseTitleBar extends RelativeLayout{
         rightImage = (ImageView) findViewById(R.id.right_image);
         titleView = (TextView) findViewById(R.id.title);
         titleLayout = (RelativeLayout) findViewById(R.id.root);
+        right_image_user = (SimpleDraweeView) findViewById(R.id.right_image_user);
         
         parseStyle(context, attrs);
     }
@@ -107,7 +110,10 @@ public class EaseTitleBar extends RelativeLayout{
         return titleView;
     }
 
-    
+    public SimpleDraweeView getRight_image_user() {
+        return right_image_user;
+    }
+
     public void setBackgroundColor(int color){
         titleLayout.setBackgroundColor(color);
     }

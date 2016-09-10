@@ -18,6 +18,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -114,13 +115,15 @@ public abstract class EaseChatRow extends LinearLayout {
                 }
             }
         }
+
+/*        //加载图片
         //set nickname and avatar
         if(message.direct() == Direct.SEND){
             EaseUserUtils.setUserAvatar(context, EMClient.getInstance().getCurrentUser(), userAvatarView);
         }else{
             EaseUserUtils.setUserAvatar(context, message.getFrom(), userAvatarView);
             EaseUserUtils.setUserNick(message.getFrom(), usernickView);
-        }
+        }*/
         
         if(deliveredView != null){
             if (message.isDelivered()) {
@@ -143,9 +146,12 @@ public abstract class EaseChatRow extends LinearLayout {
         
 
         if (adapter instanceof EaseMessageAdapter) {
-            if (((EaseMessageAdapter) adapter).isShowAvatar())
+            if (((EaseMessageAdapter) adapter).isShowAvatar()) {
                 userAvatarView.setVisibility(View.VISIBLE);
-            else
+/*                ViewGroup.LayoutParams temp=  userAvatarView.getLayoutParams();
+                temp.width=0;
+                userAvatarView.setLayoutParams(temp);*/
+            }else
                 userAvatarView.setVisibility(View.GONE);
             if (usernickView != null) {
                 if (((EaseMessageAdapter) adapter).isShowUserNick())

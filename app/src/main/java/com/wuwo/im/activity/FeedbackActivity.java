@@ -18,7 +18,6 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.GridView;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -64,8 +63,7 @@ public class FeedbackActivity extends BaseLoadActivity {
         ((TextView) findViewById(R.id.top_title)).setText("意见反馈");
 
 
-        ImageView return_back0_feedback = (ImageView) findViewById(R.id.return_back);
-        return_back0_feedback.setOnClickListener(this);
+        findViewById(R.id.return_back).setOnClickListener(this);
         findViewById(R.id.bt_feedback_submit).setOnClickListener(this);
 
 

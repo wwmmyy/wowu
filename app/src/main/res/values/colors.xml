@@ -71,7 +71,7 @@
     <color name="gray_light">#f5f5f5</color>
 
     <!-- E3E3E3 -->
-    <color name="semi_transparent">#7f000000</color>
+    <color name="semi_transparent">#9f000000</color>
     <color name="red_color">#ff0000</color>
     <color name="color_bai">#ffffffff</color>
     <color name="text_shadow_color">#66000000</color>
@@ -424,35 +424,21 @@
 
 
 
-
-
-
-
-
-
     <!--<color name="colorPrimary">#125688</color>-->
     <!--<color name="colorPrimary">#2298ef</color>-->
-    <color name="colorPrimary">#1FBBA6</color>
-    <color name="top_bar_normal_bg">#1FBBA6</color>
+    <color name="colorPrimary">#26BCB5</color>
+    <color name="top_bar_normal_bg">#26BCB5</color>
     <color name="colorPrimary1">#2298ef</color>
     <color name="colorPrimary2">#24ceff</color>
     <color name="colorPrimary3">#0fe7ff</color>
     <!--<color name="colorPrimaryDark">#125688</color>-->
     <!--<color name="colorPrimaryDark">#2298ef</color>-->
-    <color name="colorPrimaryDark">#1FBBA6</color>
+    <color name="colorPrimaryDark">#26BCB5</color>
     <color name="textColorPrimary">#FFFFFF</color>
     <color name="windowBackground">#FFFFFF</color>
     <color name="navigationBarColor">#000000</color>
     <color name="colorAccent">#c8e8ff</color>
     <color name="welcome_bg">#3ED6F2</color>
-
-
-
-
-
-
-
-
 
     <color name="common_top_bar_blue">#4ebcd3</color>
     <color name="btn_login_normal">#00acff</color>

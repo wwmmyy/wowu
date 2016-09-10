@@ -37,7 +37,7 @@ public class LoadingActivity extends com.wuwo.im.activity.BaseActivity {
         setContentView(R.layout.activity_start_loading);
 
         iv_start = (ImageView) findViewById(R.id.iv_start);
-        iv_start.setImageResource(R.drawable.start);
+//        iv_start.setImageResource(R.drawable.start);
 
 //        // 闪屏的核心代码
 //        new Handler().postDelayed(new Runnable() {

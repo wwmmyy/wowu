@@ -7,19 +7,20 @@ package com.wuwo.im.bean;
  */
 public class SanGuan {
 
-
     /**
      * Successfully : 1
-     * Title : 三观貌合神离
-     * Description : 双方可以谈论很多共同的话题，相互交流能够激发对方隐藏的盲点和攻击点，彼此印象深刻惺惺相惜相见恨晚。但是需要意识到各自的目的和行动是相反的，一个南辕一个北辙，不能邯郸学步，否则便开始误解，渐渐感到不能信任彼此。
+     * Title : 三观恩荣并济
+     * Description : 紧密关系中会形成恩师和徒弟的关系，你是恩师，会主动激发和增强Ta的攻击能力，而Ta将心怀感激地景仰你、讨好你、情不自禁地想要取悦你，并为你排忧解难顺应你的期望。爱徒还是逆徒，取决于你的能力是否还能满足Ta对功力和平等的需求。
      * UserName1 : wmy
      * UserPhotoUrl1 : http://xzxj.oss-cn-shanghai.aliyuncs.com/user/ae95c3fd-8577-4f39-8d16-0a10e0ad51c7x480.jpg
-     * UserAge1 : 1
+     * UserAge1 : 29
      * UserGender1 : 0
-     * UserName2 : maggie
-     * UserPhotoUrl2 : http://xzxj.oss-cn-shanghai.aliyuncs.com/user/2b92e72d-5eb3-4253-9f47-d2f5a999fe10x480.jpg
-     * UserAge2 : 0
-     * UserGender2 : 0
+     * UserDisposition1 : ISTP 手艺者
+     * UserName2 : baobao
+     * UserPhotoUrl2 : http://xzxj.oss-cn-shanghai.aliyuncs.com/user/eb92aa7e-53ba-4061-b7f8-209b72d4d1a4x480.jpg
+     * UserAge2 : 28
+     * UserGender2 : 1
+     * UserDisposition2 : INTJ策划者
      */
 
     private int Successfully;
@@ -29,10 +30,12 @@ public class SanGuan {
     private String UserPhotoUrl1;
     private int UserAge1;
     private int UserGender1;
+    private String UserDisposition1;
     private String UserName2;
     private String UserPhotoUrl2;
     private int UserAge2;
     private int UserGender2;
+    private String UserDisposition2;
 
     public int getSuccessfully() {
         return Successfully;
@@ -90,6 +93,14 @@ public class SanGuan {
         this.UserGender1 = UserGender1;
     }
 
+    public String getUserDisposition1() {
+        return UserDisposition1;
+    }
+
+    public void setUserDisposition1(String UserDisposition1) {
+        this.UserDisposition1 = UserDisposition1;
+    }
+
     public String getUserName2() {
         return UserName2;
     }
@@ -120,5 +131,13 @@ public class SanGuan {
 
     public void setUserGender2(int UserGender2) {
         this.UserGender2 = UserGender2;
+    }
+
+    public String getUserDisposition2() {
+        return UserDisposition2;
+    }
+
+    public void setUserDisposition2(String UserDisposition2) {
+        this.UserDisposition2 = UserDisposition2;
     }
 }

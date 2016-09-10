@@ -9,20 +9,22 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.provider.MediaStore;
-import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Window;
 import android.widget.DatePicker;
 import android.widget.Toast;
 
+import com.facebook.drawee.view.SimpleDraweeView;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.hyphenate.chatuidemo.db.DemoDBManager;
@@ -60,7 +62,7 @@ import im.wuwo.com.wuwo.R;
  * @版权:Copyright All rights reserved.  http://xzxj.oss-cn-shanghai.aliyuncs.com/user/7fe11e87-cd32-4684-8220-73c8bfc98431.jpg
  */
 
-public class OwnerInfoEditActivity extends FragmentActivity implements
+public class OwnerInfoEditActivity extends BaseLoadActivity implements
         DatePickerDialog.OnDateSetListener, View.OnClickListener, loadServerDataListener, PicAdapter.OnItemClickLitener {
     LoadserverdataService loadDataService;
     Context mContext = null;
@@ -87,6 +89,7 @@ public class OwnerInfoEditActivity extends FragmentActivity implements
 
     RecyclerView rlist_view_content;
     CommRecyclerAdapter contentRAdapter;
+    SimpleDraweeView user_pic;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -111,6 +114,18 @@ public class OwnerInfoEditActivity extends FragmentActivity implements
         findViewById(R.id.return_back).setOnClickListener(this);
         findViewById(R.id.tx_top_right).setOnClickListener(this);
 
+        Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        mToolbar.setTitle("");
+        setSupportActionBar(mToolbar);
+        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                onBackPressed();
+            }
+        });
+
+
         mPicRecyclerView = (RecyclerView) findViewById(R.id.pullLoadMoreRecyclerView);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext);
         linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
@@ -126,6 +141,10 @@ public class OwnerInfoEditActivity extends FragmentActivity implements
         rlist_view_content.setVerticalScrollBarEnabled(true);
 
 //        initTopPicAdapter();
+
+        user_pic = (SimpleDraweeView) findViewById(R.id.user_pic);
+        user_pic.setOnClickListener(this);
+
 
         userPicAdapter = new PicAdapter(mContext, null);
         userPicAdapter.setOnItemClickLitener(this);
@@ -153,10 +172,40 @@ public class OwnerInfoEditActivity extends FragmentActivity implements
                         upload2Server();
                     }
                 }).start();
+                break;
+            case R.id.user_pic://点击展示头像
+
+
+                if (((UserInfoDetail.PhotosBean) userPicAdapter.getList().get(currentPosition)).getLocalPath() != null) {
+//                Log.i("为什么不显示呢，本地", "：：" + ((UserInfoDetail.PhotosBean) userPicAdapter.getList().get(position)).getLocalPath());
+                    Intent intent = new Intent(mContext, EaseShowBigImageActivity.class);
+                    File file = new File(((UserInfoDetail.PhotosBean) userPicAdapter.getList().get(currentPosition)).getLocalPath());
+                    if (file.exists()) {
+                        Uri uri = Uri.fromFile(file);
+                        intent.putExtra("uri", uri);
+                    }
+                    mContext.startActivity(intent);
+                    overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                }else{
+
+                    ArrayList<String> tempimageUrls = new ArrayList<String>();
+                    if (currentPosition == -1) {//说明没有换过头像
+                        tempimageUrls.add(mUserDetailList.get(0).getIcon().getUrl());
+                    }
+                    for (int i = 0; i < userPicAdapter.getList().size(); i++) {
+                        tempimageUrls.add(((UserInfoDetail.PhotosBean) userPicAdapter.getList().get(i)).getFullUrl());
+                    }
+                    imageBrower(currentPosition, tempimageUrls);
+                }
+
 
                 break;
         }
     }
+
+
+    //用于表示默认的头像展示
+    private int currentPosition = -1;
 
     private final int LOAD_DATA = 1;
 
@@ -252,6 +301,8 @@ public class OwnerInfoEditActivity extends FragmentActivity implements
         if (position == userPicAdapter.getList().size()) {
             addAttachment();
         } else {
+
+
             if (((UserInfoDetail.PhotosBean) userPicAdapter.getList().get(position)).getLocalPath() != null) {
 //                Log.i("为什么不显示呢，本地", "：：" + ((UserInfoDetail.PhotosBean) userPicAdapter.getList().get(position)).getLocalPath());
                 Intent intent = new Intent(mContext, EaseShowBigImageActivity.class);
@@ -263,12 +314,14 @@ public class OwnerInfoEditActivity extends FragmentActivity implements
                 mContext.startActivity(intent);
                 overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
             } else {
-                //                onBubbleClick(mContext, ((UserInfoDetail.PhotosBean) userPicAdapter.getList().get(position)).getFullUrl(), ((UserInfoDetail.PhotosBean) userPicAdapter.getList().get(position)).getId());
+/*                //                onBubbleClick(mContext, ((UserInfoDetail.PhotosBean) userPicAdapter.getList().get(position)).getFullUrl(), ((UserInfoDetail.PhotosBean) userPicAdapter.getList().get(position)).getId());
                 ArrayList<String> tempimageUrls = new ArrayList<String>();
                 for (int i = 0; i < userPicAdapter.getList().size(); i++) {
                     tempimageUrls.add(((UserInfoDetail.PhotosBean) userPicAdapter.getList().get(i)).getFullUrl());
                 }
-                imageBrower(position, tempimageUrls);
+                imageBrower(position, tempimageUrls);*/
+                currentPosition=position;
+                user_pic.setImageURI(Uri.parse(((UserInfoDetail.PhotosBean) userPicAdapter.getList().get(position)).getFullUrl()));
             }
         }
     }
@@ -346,11 +399,22 @@ public class OwnerInfoEditActivity extends FragmentActivity implements
 
 
     private void addAttachment() {
-        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-        intent.setType("image/*");
-        intent.addCategory(Intent.CATEGORY_OPENABLE);
+//        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+//        intent.setType("image/*");
+
+//        Intent intent = new Intent(Intent.ACTION_PICK,android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+//        intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,"image/*");
+//        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        Intent intentFromGallery = new Intent();
+        if (Build.VERSION.SDK_INT < 19) {
+            intentFromGallery = new Intent(Intent.ACTION_GET_CONTENT);
+            intentFromGallery.setType("image/*");
+        } else {
+            intentFromGallery = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        }
+
         try {
-            startActivityForResult(Intent.createChooser(intent, "Select a File to Upload"), ADD_ATTACHMENT);
+            startActivityForResult(Intent.createChooser(intentFromGallery, "请选择要上传的图片"), ADD_ATTACHMENT);
         } catch (android.content.ActivityNotFoundException ex) {
             Toast.makeText(this, "无法选择文件，请先安装文件管理器", Toast.LENGTH_SHORT).show();
         }
@@ -384,6 +448,14 @@ public class OwnerInfoEditActivity extends FragmentActivity implements
 //                    }
                     act.userPicAdapter.setData(act.getUserInfoDetail().getPhotos());
                     act.contentRAdapter.setData(act.mUserDetailList);
+
+                    if (act.mUserDetailList != null && act.mUserDetailList.size() > 0) {
+                        act.user_pic.setImageURI(Uri.parse(act.mUserDetailList.get(0).getIcon().getUrl()));
+                    }
+
+
+                    act.mPicRecyclerView.smoothScrollToPosition(act.getUserInfoDetail().getPhotos().size());
+
                     break;
                 case ADD_ATTACHMENT:
                     UserInfoDetail.PhotosBean temp = new UserInfoDetail.PhotosBean();
@@ -414,16 +486,16 @@ public class OwnerInfoEditActivity extends FragmentActivity implements
     }
 
 
-    public static final int ln_yingwen_nicheng = 100;
+//    public static final int ln_yingwen_nicheng = 100;
     public static final int tv_zhongwen_nicheng1 = 101;
     public static final int ln_geren_jieshao = 102;
-    public static final int ln_shenfenbiaoqian = 103;
+//    public static final int ln_shenfenbiaoqian = 103;
     public static final int ln_zhiye = 104;
     public static final int ln_school = 105;
     public static final int tv_shenghuodidian = 106;
     public static final int ln_gongzuodidian = 107;
     public static final int ln_changchumodi = 108;
-    public static final int tv_quguo_jingdian = 109;
+//    public static final int tv_quguo_jingdian = 109;
     public static final int ln_jiaxiang = 110;
 
 
@@ -432,23 +504,46 @@ public class OwnerInfoEditActivity extends FragmentActivity implements
             @Override
             public void convert(CommRecyclerViewHolder viewHolder, UserInfoDetail mainMessage) {
 
-                viewHolder.setText(R.id.tv_zhongwen_nicheng1, mainMessage.getName());
-                viewHolder.setText(R.id.ln_yingwen_nicheng, mainMessage.getEnglishName() + "");
-                viewHolder.setText(R.id.ln_birthday, mainMessage.getBirthday() + "");
-                viewHolder.setText(R.id.ln_jiaxiang, mainMessage.getHome());
-                viewHolder.setText(R.id.ln_geren_jieshao, mainMessage.getDescription());
-                viewHolder.setText(R.id.ln_shenfenbiaoqian, mainMessage.getDisposition());
-                viewHolder.setText(R.id.ln_zhiye, mainMessage.getJob() + "");
-                viewHolder.setText(R.id.ln_school, mainMessage.getSchool());
-                viewHolder.setText(R.id.tv_shenghuodidian, mainMessage.getLifeAddress());
-                viewHolder.setText(R.id.ln_gongzuodidian, mainMessage.getJobAddress());
-                viewHolder.setText(R.id.ln_changchumodi, mainMessage.getDailyAddress());
-                viewHolder.setText(R.id.tv_quguo_jingdian, mainMessage.getVisitedAttractions());
+                int temp_huiyuan=0;
+                if( mainMessage.getUserNumber()!=null){
+                    temp_huiyuan++;
+                    viewHolder.setText(R.id.tv_xianzhihao, mainMessage.getUserNumber());}
+
+                if( mainMessage.isIsVip()){
+                    temp_huiyuan++;
+                    viewHolder.setText(R.id.tv_xianzhi_huiyuan, "会员用户");}
+
+                viewHolder.setText(R.id.tv_huiyuan_info,temp_huiyuan+"/2");
+
+
+                int temp_jiben=0;
+                if( mainMessage.getName()!=null){
+                    temp_jiben++;
+                    viewHolder.setText(R.id.tv_zhongwen_nicheng1, mainMessage.getName());}
+
+
+                if(  mainMessage.getBirthday()!=null){
+                    temp_jiben++;
+                    viewHolder.setText(R.id.ln_birthday, mainMessage.getBirthday() + "");}
+
+                if(mainMessage.getHome()!=null){
+                    temp_jiben++;
+                    viewHolder.setText(R.id.ln_jiaxiang, mainMessage.getHome());}
+
+                if( mainMessage.getDescription()!=null){
+                    temp_jiben++;
+                    viewHolder.setText(R.id.ln_geren_jieshao, mainMessage.getDescription());}
+
+                if( mainMessage.getJob()!=null){
+                    temp_jiben++;
+                    viewHolder.setText(R.id.ln_zhiye, mainMessage.getJob() + "");}
+
+                if( mainMessage.getSchool()!=null){
+                    temp_jiben++;
+                    viewHolder.setText(R.id.ln_school, mainMessage.getSchool());}
+
 
 //                @"保密", @"单身",@"恋爱中", @"已婚", @"同性",
-                viewHolder.setText(R.id.ln_feeling, mainMessage.getMaritalStatus() + "");
-
-
                 switch (mainMessage.getMaritalStatus()) {
                     case 0:
                         viewHolder.setText(R.id.ln_feeling, "保密");
@@ -466,6 +561,23 @@ public class OwnerInfoEditActivity extends FragmentActivity implements
                         viewHolder.setText(R.id.ln_feeling, "同性");
                         break;
                 }
+                if( mainMessage.getMaritalStatus()!=0){
+                    temp_jiben++;}
+
+                viewHolder.setText(R.id.tv_jiben_info,temp_jiben+"/7");
+
+                int temp_qita=0;
+                if( mainMessage.getLifeAddress()!=null){
+                    temp_qita++;
+                    viewHolder.setText(R.id.tv_shenghuodidian, mainMessage.getLifeAddress());}
+                if( mainMessage.getJobAddress()!=null){
+                    temp_qita++;
+                    viewHolder.setText(R.id.ln_gongzuodidian, mainMessage.getJobAddress());}
+                if( mainMessage.getDailyAddress()!=null){
+                    temp_qita++;
+                    viewHolder.setText(R.id.ln_changchumodi, mainMessage.getDailyAddress());}
+
+                viewHolder.setText(R.id.tv_qita_info,temp_qita+"/3");
 
 
                 final String description = mainMessage.getDescription();
@@ -487,7 +599,7 @@ public class OwnerInfoEditActivity extends FragmentActivity implements
                     }
                 });
 
-                viewHolder.getView(R.id.ln_yingwen_nicheng).setOnClickListener(new View.OnClickListener() {
+/*                viewHolder.getView(R.id.ln_yingwen_nicheng).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         Intent intent = new Intent(OwnerInfoEditActivity.this, OwnerInfoUpdateTextActivity.class);
@@ -498,7 +610,7 @@ public class OwnerInfoEditActivity extends FragmentActivity implements
                         startActivityForResult(intent, ln_yingwen_nicheng);
                         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                     }
-                });
+                });*/
 
                 viewHolder.getView(R.id.tv_zhongwen_nicheng1).setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -524,7 +636,7 @@ public class OwnerInfoEditActivity extends FragmentActivity implements
                         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                     }
                 });
-                viewHolder.getView(R.id.ln_shenfenbiaoqian).setOnClickListener(new View.OnClickListener() {
+/*                viewHolder.getView(R.id.ln_shenfenbiaoqian).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         Intent intent = new Intent(OwnerInfoEditActivity.this, OwnerInfoUpdateTextActivity.class);
@@ -535,7 +647,7 @@ public class OwnerInfoEditActivity extends FragmentActivity implements
                         startActivityForResult(intent, ln_shenfenbiaoqian);
                         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                     }
-                });
+                });*/
 
                 viewHolder.getView(R.id.ln_zhiye).setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -602,7 +714,7 @@ public class OwnerInfoEditActivity extends FragmentActivity implements
                     }
                 });
 
-                viewHolder.getView(R.id.tv_quguo_jingdian).setOnClickListener(new View.OnClickListener() {
+/*                viewHolder.getView(R.id.tv_quguo_jingdian).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
 //                        Intent intent = new Intent(OwnerInfoEditActivity.this, OwnerInfoUpdateTextActivity.class);
@@ -614,7 +726,7 @@ public class OwnerInfoEditActivity extends FragmentActivity implements
                         startActivityForResult(intent, tv_quguo_jingdian);
                         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                     }
-                });
+                });*/
 
                 viewHolder.getView(R.id.ln_jiaxiang).setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -699,24 +811,25 @@ public class OwnerInfoEditActivity extends FragmentActivity implements
                         }
                     }
                 }
-                cursor.close();
+                 if(cursor!=null)cursor.close();
 
                 Message msg = new Message();
                 msg.what = ADD_ATTACHMENT;
                 msg.obj = photoPath;
                 mtotalHandler.sendMessage(msg);
 
-
-//                Attachment affInfos = Attachment.GetFileInfo(photoPath);
-//                Attach_adapter.appendToList(affInfos);
-//                int a = Attach_adapter.getList().size();
-//                int count = (int) Math.ceil(a / 2.0);
-//                Attach_gridView.setLayoutParams(new android.widget.LinearLayout.LayoutParams(
-//                        LinearLayout.LayoutParams.MATCH_PARENT,
-//                        (int) (120 * 1.5 * count)));
-
             }
         }
+
+
+
+
+
+
+
+
+
+
 
 
         if (data != null && data.getExtras() != null && resultCode == RESULT_OK) {
@@ -725,7 +838,7 @@ public class OwnerInfoEditActivity extends FragmentActivity implements
             msg.what = REFERSH_DATA;
 
             switch (requestCode) {
-                case ln_yingwen_nicheng:
+/*                case ln_yingwen_nicheng:
                     MyToast.show(mContext, b.getString("info"));
                     mUserDetail.setEnglishName(b.getString("info"));
 
@@ -733,7 +846,7 @@ public class OwnerInfoEditActivity extends FragmentActivity implements
                     mUserDetailList.add(mUserDetail);
                     mtotalHandler.sendMessage(msg);
 
-                    break;
+                    break;*/
                 case tv_zhongwen_nicheng1:
                     MyToast.show(mContext, b.getString("info"));
 
@@ -750,14 +863,14 @@ public class OwnerInfoEditActivity extends FragmentActivity implements
                     mUserDetailList.add(mUserDetail);
                     mtotalHandler.sendMessage(msg);
                     break;
-                case ln_shenfenbiaoqian:
+/*                case ln_shenfenbiaoqian:
                     MyToast.show(mContext, b.getString("info"));
 
                     mUserDetail.setTag(b.getString("info"));
                     mUserDetailList.remove(0);
                     mUserDetailList.add(mUserDetail);
                     mtotalHandler.sendMessage(msg);
-                    break;
+                    break;*/
 
                 case ln_zhiye:
                     MyToast.show(mContext, b.getString("info"));
@@ -801,14 +914,14 @@ public class OwnerInfoEditActivity extends FragmentActivity implements
                     mUserDetailList.add(mUserDetail);
                     mtotalHandler.sendMessage(msg);
                     break;
-                case tv_quguo_jingdian:
+/*                case tv_quguo_jingdian:
                     MyToast.show(mContext, b.getString("info"));
 
                     mUserDetail.setVisitedAttractions(b.getString("info"));
                     mUserDetailList.remove(0);
                     mUserDetailList.add(mUserDetail);
                     mtotalHandler.sendMessage(msg);
-                    break;
+                    break;*/
                 case ln_jiaxiang:
                     MyToast.show(mContext, b.getString("info"));
                     mUserDetail.setHome(b.getString("info"));

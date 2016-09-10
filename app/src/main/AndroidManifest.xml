@@ -51,7 +51,7 @@
     <uses-permission android:name="android.permission.BROADCAST_STICKY" />
     <uses-permission android:name="android.permission.WRITE_SETTINGS" />
     <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" />
-    <uses-permission  android:name="android.permission.RECORD_AUDIO"/>
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <!-- GCM required, remember replace "com.hyphenate.chatuidemo" to your own package -->
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
 
@@ -80,7 +80,6 @@
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -91,7 +90,8 @@
             android:label="@string/title_activity_register" />
         <activity
             android:name="com.wuwo.im.activity.RegisterStepFourActivity"
-            android:label="@string/title_activity_register" />
+            android:label="@string/title_activity_register" > er>
+        </activity>
         <activity
             android:name="com.wuwo.im.activity.MainActivity"
             android:launchMode="singleTask" />
@@ -99,9 +99,12 @@
         <activity android:name="com.wuwo.im.chat.ChatedActivty" />
         <activity android:name="com.wuwo.im.chat.NotificationActivity" />
         <activity android:name="com.wuwo.im.chat.ChatListActivity" />
-        <activity android:name="com.wuwo.im.activity.CharacterChooseActivity" />
+        <activity android:name="com.wuwo.im.activity.CharacterChooseActivity"
+            android:theme="@style/MyStatusbarStyle"/>
         <activity android:name="com.wuwo.im.activity.CharacterTestActivity" />
-        <activity android:name="com.wuwo.im.activity.CharacterTResultActivity" />
+        <activity android:name="com.wuwo.im.activity.CharacterTResultActivity"
+            android:theme="@style/MyFullscreenStyle">
+        </activity>
         <activity android:name="com.wuwo.im.activity.OwnerInfoDetailActivity" />
         <activity android:name="com.wuwo.im.activity.FromContractsActivity" />
         <activity
@@ -112,6 +115,8 @@
             android:screenOrientation="portrait" />
         <activity
             android:name="com.wuwo.im.activity.LoginChooseActivity"
+            android:launchMode="singleTask"
+            android:theme="@style/MyFullscreenStyle"
             android:screenOrientation="portrait" />
         <activity
             android:name="com.wuwo.im.activity.RegisterPolicyActivity"
@@ -124,6 +129,7 @@
             android:screenOrientation="portrait" />
         <activity
             android:name="com.wuwo.im.activity.UserInfoEditActivity"
+            android:theme="@style/MyFullscreenStyle"
             android:screenOrientation="portrait" />
         <activity
             android:name="com.wuwo.im.activity.AddFriendActivity"
@@ -131,9 +137,11 @@
             android:windowSoftInputMode="stateHidden" />
         <activity
             android:name="com.wuwo.im.activity.OwnerInfoEditActivity"
+            android:theme="@style/MyFullscreenStyle"
             android:screenOrientation="portrait" />
         <activity
             android:name="com.wuwo.im.activity.MyCharacterResultActivity"
+            android:theme="@style/MyStatusbarStyle"
             android:screenOrientation="portrait" />
         <!-- meta-data需要写在application中 -->
         <meta-data
@@ -192,7 +200,7 @@
             android:name="com.hyphenate.chatuidemo.ui.ChatActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
-            android:theme="@style/horizontal_slide"
+            android:theme="@style/horizontal_slide2"
             android:windowSoftInputMode="adjustResize" />
         <!-- 聊天页面 -->
         <activity
@@ -586,10 +594,11 @@
             android:name="com.tencent.connect.common.AssistActivity"
             android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="behind"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar"></activity>
-        <activity android:name="com.wuwo.im.activity.ShareToContractsActivity"></activity>
-        <activity android:name="com.wuwo.im.activity.ShareToContractBySmsActivity"></activity>
-        <activity android:name="com.wuwo.im.activity.PhotoViewImagePagerActivity"></activity>
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <activity android:name="com.wuwo.im.activity.ShareToContractsActivity" />
+        <activity android:name="com.wuwo.im.activity.ShareToContractBySmsActivity" />
+        <activity android:name="com.wuwo.im.activity.PhotoViewImagePagerActivity"
+            android:theme="@style/MyFullscreenStyle"/>
+        <activity android:name="com.wuwo.im.activity.WebviewDetailActivity"></activity>
     </application>
-
 </manifest>

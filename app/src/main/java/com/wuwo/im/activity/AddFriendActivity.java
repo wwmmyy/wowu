@@ -452,7 +452,7 @@ public class AddFriendActivity extends BaseLoadActivity {
                 }).start();
                 break;
               case 200:
-                MyToast.show(mContext,"进入了分享");
+//                MyToast.show(mContext,"进入了分享");
                 com.tencent.mm.sdk.modelmsg. WXWebpageObject webpage = new com.tencent.mm.sdk.modelmsg.WXWebpageObject();
                 webpage.webpageUrl = WowuApp.shareURL;
                 WXMediaMessage msg = new WXMediaMessage(webpage);

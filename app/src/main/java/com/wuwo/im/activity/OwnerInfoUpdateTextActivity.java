@@ -2,14 +2,13 @@ package com.wuwo.im.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import im.wuwo.com.wuwo.R;
 
-public class OwnerInfoUpdateTextActivity extends AppCompatActivity implements View.OnClickListener {
+public class OwnerInfoUpdateTextActivity extends BaseActivity implements View.OnClickListener {
     TextView tv_item_title, tv_item_sure;
     EditText et_item_info;
 

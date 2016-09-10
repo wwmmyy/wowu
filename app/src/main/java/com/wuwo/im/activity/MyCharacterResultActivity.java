@@ -109,7 +109,7 @@ public class MyCharacterResultActivity extends BaseLoadActivity  {
 //                        Gson gson = new GsonBuilder().create();
 //                        java.lang.reflect.Type type = new com.google.gson.reflect.TypeToken<List<ContactFriend>>() {
 //                        }.getType();
-//                事实上这里要将好友区分出来，分为待添加和带邀请两类，分别放在两个数组中，然后刷新列表  xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+//                事实上这里要将好友区分出来，分为待添加和带邀请两类，分别放在两个数组中，然后刷新列表  xx
 //                        mTianJia_Contacts = gson.fromJson(response, type);
 
                         Gson gson = new GsonBuilder().create();

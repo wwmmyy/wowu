@@ -7,12 +7,12 @@
         android:id="@+id/tv_choose"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginRight="1dp"
-        android:layout_marginBottom="1dp"
         android:background="@drawable/item_background_selector_grid_nocorn"
         android:gravity="center"
         android:textColor="@color/white"
-        android:padding="12dp"
-        android:textSize="16sp" />
+        android:padding="10dp"
+        android:textSize="15sp" />
+<!--    android:layout_marginRight="1dp"
+    android:layout_marginBottom="1dp"-->
     <!--  android:background="@drawable/bt_border_register_normal" @drawable/bg_bordergray-->
 </RelativeLayout>

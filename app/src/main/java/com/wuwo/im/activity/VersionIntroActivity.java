@@ -8,7 +8,6 @@ import android.os.Handler;
 import android.os.Message;
 import android.view.View;
 import android.view.Window;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -51,9 +50,7 @@ public class VersionIntroActivity extends BaseLoadActivity {
 //        feed_back_send.setText("发送");
         ((TextView) findViewById(R.id.top_title)).setText("版本预告");
 
-        
-        ImageView   return_back0_feedback = (ImageView) findViewById(R.id.return_back);
-        return_back0_feedback.setOnClickListener(this);
+        findViewById(R.id.return_back).setOnClickListener(this);
 
     }
 

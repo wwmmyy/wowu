@@ -19,11 +19,12 @@
 
         <ImageView
             android:id="@+id/iv_userhead"
-            android:layout_width="@dimen/size_avatar"
+            android:layout_width="0dp"
             android:layout_height="@dimen/size_avatar"
             android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"
             android:layout_marginRight="@dimen/margin_chat_activity"
+            android:visibility="gone"
             android:background="@drawable/ease_default_avatar"
             android:scaleType="fitXY" />
 

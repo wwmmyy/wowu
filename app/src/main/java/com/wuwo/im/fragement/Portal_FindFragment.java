@@ -8,13 +8,18 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.TextView;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.tencent.connect.share.QQShare;
 import com.tencent.mm.sdk.modelmsg.SendMessageToWX;
 import com.tencent.mm.sdk.modelmsg.WXMediaMessage;
@@ -24,9 +29,10 @@ import com.tencent.tauth.IUiListener;
 import com.tencent.tauth.Tencent;
 import com.tencent.tauth.UiError;
 import com.wuwo.im.activity.FeedbackActivity;
+import com.wuwo.im.activity.FromContractsActivity;
 import com.wuwo.im.activity.MyCharacterResultActivity;
-import com.wuwo.im.activity.ShareToContractsActivity;
-import com.wuwo.im.activity.VersionIntroActivity;
+import com.wuwo.im.activity.WebviewDetailActivity;
+import com.wuwo.im.bean.Characters;
 import com.wuwo.im.config.WowuApp;
 import com.wuwo.im.util.MyToast;
 import com.wuwo.im.util.UtilsTool;
@@ -34,6 +40,8 @@ import com.zhy.http.okhttp.service.LoadserverdataService;
 import com.zhy.http.okhttp.service.loadServerDataListener;
 
 import org.json.JSONObject;
+
+import java.lang.ref.WeakReference;
 
 import im.wuwo.com.wuwo.R;
 
@@ -45,16 +53,20 @@ import im.wuwo.com.wuwo.R;
 
 @SuppressLint("ValidFragment")
 public class Portal_FindFragment extends BaseAppFragment implements View.OnClickListener,loadServerDataListener {
-    Activity mContext;
-    SharedPreferences mSettings;
-    SharedPreferences.Editor editor;
+    private Activity mContext;
+    private SharedPreferences mSettings;
+    private SharedPreferences.Editor editor;
     private int mCount = 1;
 
-    IWXAPI wxApi;
-    int scenePengYouQuan = SendMessageToWX.Req.WXSceneTimeline;
-    int sceneHaoYou = SendMessageToWX.Req.WXSceneSession;
-    Tencent mTencent;
-    LoadserverdataService loadDataService;
+    private IWXAPI wxApi;
+    private int scenePengYouQuan = SendMessageToWX.Req.WXSceneTimeline;
+    private int sceneHaoYou = SendMessageToWX.Req.WXSceneSession;
+    private Tencent mTencent;
+    private LoadserverdataService loadDataService;
+
+    private Characters mCharacter=null;
+    mHandlerWeak mtotalHandler;
+    private TextView tv_my_character;
 
     @Override
     public void onAttach(Activity activity) {
@@ -63,6 +75,8 @@ public class Portal_FindFragment extends BaseAppFragment implements View.OnClick
         mSettings = mContext.getSharedPreferences(WowuApp.PREFERENCE_KEY,
                 android.content.Context.MODE_PRIVATE);
         loadDataService = new LoadserverdataService(this);
+
+        mtotalHandler = new mHandlerWeak(this);
     }
 
     @Override
@@ -83,7 +97,7 @@ public class Portal_FindFragment extends BaseAppFragment implements View.OnClick
 //        initViews(view);
     }
 
-
+    public static final int LOAD_RECOMMEND_DATA = 1;
     private void initViews(View view) {
 
         view.findViewById(R.id.user_info_detail).setOnClickListener(this);
@@ -93,13 +107,16 @@ public class Portal_FindFragment extends BaseAppFragment implements View.OnClick
         view.findViewById(R.id.find_share_friendcircle).setOnClickListener(this);
         view.findViewById(R.id.find_version_will).setOnClickListener(this);
         view.findViewById(R.id.find_feedback).setOnClickListener(this);
-
+        tv_my_character = (TextView) view.findViewById(R.id.tv_my_character);
 
 
         wxApi = WXAPIFactory.createWXAPI(mContext, WowuApp.WeChat_APP_ID, false);
         wxApi.registerApp(WowuApp.WeChat_APP_ID);
         // 其中APP_ID是分配给第三方应用的appid，类型为String。
         mTencent = Tencent.createInstance(WowuApp.QQ_APP_ID, mContext.getApplicationContext());
+
+
+        loadDataService.loadGetJsonRequestData(WowuApp.GetDispositionInfoURL, LOAD_RECOMMEND_DATA);
 
     }
 
@@ -117,8 +134,6 @@ public class Portal_FindFragment extends BaseAppFragment implements View.OnClick
                 Intent temp1Intent=new Intent(mContext, MyCharacterResultActivity.class);
                 startActivity(temp1Intent);
                 mContext.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-
-
                 break;
             case R.id.find_share_f:
                 showSharefDialog();
@@ -132,9 +147,16 @@ public class Portal_FindFragment extends BaseAppFragment implements View.OnClick
                 wechatShare(scenePengYouQuan);
                  break;
             case R.id.find_version_will:
-                Intent temp2Intent=new Intent(mContext, VersionIntroActivity.class);
+/*                Intent temp2Intent=new Intent(mContext, VersionIntroActivity.class);
                 startActivity(temp2Intent);
+                mContext.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);*/
+
+                Intent  temp2 = new Intent(mContext, WebviewDetailActivity.class);
+                temp2.putExtra("url",WowuApp.YuLanURL);
+                temp2.putExtra("titlename","版本预告");
+                this.startActivity(temp2);
                 mContext.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+
                 break;
             case R.id.find_feedback:
                 Intent tempIntent=new Intent(mContext, FeedbackActivity.class);
@@ -162,7 +184,8 @@ public class Portal_FindFragment extends BaseAppFragment implements View.OnClick
         view.findViewById(R.id.share_f_contact).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
-                Intent temp2Intent=new Intent(mContext, ShareToContractsActivity.class);
+//                Intent temp2Intent=new Intent(mContext, ShareToContractsActivity.class);
+                Intent temp2Intent=new Intent(mContext, FromContractsActivity.class);
                 startActivity(temp2Intent);
                 mContext.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
 
@@ -254,7 +277,8 @@ public class Portal_FindFragment extends BaseAppFragment implements View.OnClick
         view.findViewById(R.id.share_f_contact).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
-                Intent temp2Intent=new Intent(mContext, ShareToContractsActivity.class);
+//                Intent temp2Intent=new Intent(mContext, ShareToContractsActivity.class);
+                Intent temp2Intent=new Intent(mContext, FromContractsActivity.class);
                 startActivity(temp2Intent);
                 mContext.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                 dialog.dismiss();
@@ -412,8 +436,10 @@ public class Portal_FindFragment extends BaseAppFragment implements View.OnClick
         mTencent.onActivityResult(requestCode, resultCode, data);
     }
 
+
+
     @Override
-    public void loadServerData(String response, int flag) {
+    public void loadServerData(final String response, int flag) {
 
         if(flag==200){
             MyToast.show(mContext,"进入了分享");
@@ -436,9 +462,71 @@ public class Portal_FindFragment extends BaseAppFragment implements View.OnClick
             req.message = msg;
             req.scene =flag;
             wxApi.sendReq(req);
+        }else if(LOAD_RECOMMEND_DATA ==flag){
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+
+
+//                        {"PhotoUrl":"http://xzxj.oss-cn-shanghai.aliyuncs.com/celebrity/6cbeca3a-989f-4756-8b46-bc781a1d123a.jpg",
+//                                "Celebrity":"莎士比亚","CelebrityDescription":"英国文学史上最杰出的戏剧家","Name":"INFP","Title":"化解者",
+//                                "Score":{"UserId":"637e5acb638f46f5873ec86f0b4b49ce",
+//                                "E":0,"I":0,"S":0,"N":0,"T":0,"F":0,"J":0,"P":0,"PropensityScore":0.0,
+//                                "EI_PropensityScore":0.0,"SN_PropensityScore":0.0,"TF_PropensityScore":0.0,
+//                                "JP_PropensityScore":0.0,"PropensityDescription":"轻微","Id":"16967133-1356-4dfb-8ad4-abecdf755ca6"}}
+
+//                        Gson gson = new GsonBuilder().create();
+//                        java.lang.reflect.Type type = new com.google.gson.reflect.TypeToken<List<ContactFriend>>() {
+//                        }.getType();
+//                事实上这里要将好友区分出来，分为待添加和带邀请两类，分别放在两个数组中，然后刷新列表  xx
+//                        mTianJia_Contacts = gson.fromJson(response, type);
+
+                    Gson gson = new GsonBuilder().create();
+                    java.lang.reflect.Type type = new com.google.gson.reflect.TypeToken<Characters>() {
+                    }.getType();
+                    mCharacter = gson.fromJson(response, type);
+
+
+                    Message msg = new Message();
+                    msg.what = 100;
+                    msg.obj=response;
+                    mtotalHandler.sendMessage(msg);
+
+                }
+            }).start();
         }
 
     }
+
+
+    private static class mHandlerWeak extends Handler {
+        private WeakReference<Portal_FindFragment> activity = null;
+
+        public mHandlerWeak(Portal_FindFragment act) {
+            super();
+            this.activity = new WeakReference<Portal_FindFragment>(act);
+        }
+
+        @Override
+        public void handleMessage(Message msg) {
+            Portal_FindFragment act = activity.get();
+            if (null == act) {
+                return;
+            }
+            switch (msg.what) { 
+                case 100:
+                    act.tv_my_character.setText(act.mCharacter.getName()+act.mCharacter.getTitle());
+                    break;
+            }
+        }
+    }
+
+
+
+
+
+
+
 
     @Override
     public void loadDataFailed(String response, int flag) {

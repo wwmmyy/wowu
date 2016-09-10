@@ -1,46 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:fresco="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/app_bg"
     android:orientation="vertical">
 
-    <RelativeLayout
-        android:id="@+id/rt_top"
-        android:layout_width="fill_parent"
-        android:layout_height="50dp"
-        android:background="?attr/appbg">
-        <ImageView
-            android:id="@+id/return_back"
-            android:layout_width="100dp"
-            android:layout_height="50dp"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="-32dp"
-            android:clickable="true"
-            android:gravity="center_vertical"
-            android:padding="8dp"
-            android:src="@drawable/back_a" />
-
-
-        <TextView
-            android:id="@+id/title_tv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:gravity="center_horizontal"
-            android:text="个人资料"
-            android:textColor="#ffffff"
-            android:textSize="20sp" />
-    </RelativeLayout>
-
 
     <android.support.design.widget.CoordinatorLayout
         android:id="@+id/main_content"
-        android:layout_width="match_parent"
-        android:layout_below="@id/rt_top"
+        android:layout_width="match_parent" 
         android:layout_height="match_parent" >
-        <!--
+        <!--    android:layout_below="@id/rt_top_intro"
           下面使用 appbar_scrolling_view_behavior 这个 Behavior，
           要收缩的 view 必须要放到 AppBarLayout 这个 design 库的 layout 中
         -->
@@ -50,56 +21,189 @@
             android:layout_height="wrap_content"
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
             <!-- 滑动收缩的 view 给他指定一个 layout_scrollFlags 的属性 -->
-
-
+            <android.support.design.widget.CollapsingToolbarLayout
+                android:id="@+id/collapsingToolbar"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:fitsSystemWindows="true"
+                fresco:expandedTitleGravity="center"
+                fresco:collapsedTitleTextAppearance="@style/GreyText"
+                fresco:collapsedTitleGravity="center"
+                fresco:expandedTitleTextAppearance="@style/TransparentText"
+                fresco:contentScrim="@color/white"
+                fresco:layout_scrollFlags="scroll|exitUntilCollapsed">
+                <!--fresco:title="个人资料"-->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:background="?attr/appbg"
+                android:background="@color/white"
                 android:orientation="vertical"
                 android:paddingBottom="3dp"
-                app:layout_scrollFlags="scroll|enterAlways">
+                fresco:layout_scrollFlags="scroll|enterAlways">
+                <!--android:background="?attr/appbg"-->
 
-                <LinearLayout
-                    android:layout_width="match_parent"
+                <RelativeLayout
+                    android:id="@+id/rt_top"
+                    android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:gravity="center_horizontal"
-                    android:orientation="horizontal"
-                    android:paddingBottom="3dp">
+                    android:background="@color/white">
+                    <!--android:background="?attr/appbg"-->
+                    <ImageView
+                        android:id="@+id/return_back"
+                        android:layout_width="100dp"
+                        android:layout_height="42dp"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="-32dp"
+                        android:clickable="true"
+                        android:gravity="center_vertical"
+                        android:padding="8dp"
+                        android:visibility="gone"
+                        android:src="@drawable/returnx" />
+                    <!--android:src="@drawable/back_a"-->
 
-                    <TextView
-                        android:id="@+id/contact_gender"
+                    <!-- <TextView
+                         android:id="@+id/title_tv"
+                         android:layout_width="wrap_content"
+                         android:layout_height="wrap_content"
+                         android:layout_centerInParent="true"
+                         android:gravity="center_horizontal"
+                         android:text="个人资料"
+                         android:textColor="#ffffff"
+                         android:textSize="20sp" />-->
+
+
+                    <com.facebook.drawee.view.SimpleDraweeView
+                        android:id="@+id/user_pic"
+                        android:layout_width="120dp"
+                        android:layout_height="120dp"
+                        android:layout_centerInParent="true"
+                        android:layout_gravity="center"
+                        android:gravity="center_horizontal"
+                        fresco:placeholderImage="@drawable/icon"
+                        fresco:roundedCornerRadius="5dp"
+                        fresco:roundTopLeft="false"
+                        fresco:roundTopRight="false"
+                        fresco:roundBottomLeft="true"
+                        fresco:roundBottomRight="true"/>
+<!--                    fresco:progressBarAutoRotateInterval="2000"
+                    fresco:progressBarImage="@drawable/con_progress_bar"
+                    fresco:progressBarImageScaleType="centerInside"-->
+                </RelativeLayout>
+                <RelativeLayout
+                    android:id="@+id/rt_top_intro"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/rt_top"
+                    android:background="@color/white">
+
+                    <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/item_background_user_age"
-                        android:gravity="center|left"
-                        android:paddingLeft="10dp"
-                        android:paddingRight="10dp"
-                        android:singleLine="true"
-                        android:text="21"
-                        android:textColor="@color/red"
-                        android:textSize="12sp" />
+                        android:orientation="vertical"
+                        android:gravity="center"
+                        android:layout_centerInParent="true">
+                        <TextView
+                            android:id="@+id/tv_name"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingLeft="10dp"
+                            android:paddingRight="10dp"
+                            android:singleLine="true"
+                            android:textColor="@color/darkgray"
+                            android:textSize="18sp"
+                            />
 
-                    <TextView
-                        android:id="@+id/tv_username"
+                        <!--            android:text="21"
+                                    android:textColor="@color/red"
+                                    android:textSize="12sp"
+                                    android:background="@drawable/item_background_user_age"
+                                    android:gravity="center|left"-->
+                        <TextView
+                            android:id="@+id/tv_user_character"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:text="NHJD XX者"
+                            android:textColor="@color/darkgray"
+                            android:textSize="15sp" />
+
+
+                    </LinearLayout>
+
+                    <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="5dp"
-                        android:text="NHJD XX者"
-                        android:textColor="@color/white"
-                        android:textSize="13sp" />
+                        android:orientation="vertical"
+                        android:gravity="center_vertical|right"
+                        android:layout_marginRight="5dp"
+                        android:layout_alignParentRight="true">
 
-                </LinearLayout>
+                        <ImageView
+                            android:id="@+id/iv_sanguan_pick"
+                            android:layout_marginTop="5dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/mate_blue"/>
+
+                        <TextView
+                            android:id="@+id/tv_dis_time"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:padding="4dp"
+                            android:text="0.1KM | 10分钟"
+                            android:textColor="@color/darkgray"
+                            android:textSize="13sp" />
+
+                    </LinearLayout>
+
+                </RelativeLayout>
+
+
+
+
+
+
+                <!--        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:gravity="center_horizontal"
+                            android:orientation="horizontal"
+                            android:paddingBottom="3dp">
+
+                            <TextView
+                                android:id="@+id/contact_gender"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:background="@drawable/item_background_user_age"
+                                android:gravity="center|left"
+                                android:paddingLeft="10dp"
+                                android:paddingRight="10dp"
+                                android:singleLine="true"
+                                android:text="21"
+                                android:textColor="@color/red"
+                                android:textSize="12sp" />
+
+                            <TextView
+                                android:id="@+id/tv_username"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="5dp"
+                                android:text="NHJD XX者"
+                                android:textColor="@color/white"
+                                android:textSize="13sp" />
+
+                        </LinearLayout>-->
 
 
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/pullLoadMoreRecyclerView"
                     android:layout_width="match_parent"
-                    android:layout_height="100dp" />
+                    android:layout_height="80dp" />
 
-                <TextView
+<!--                <TextView
                     android:id="@+id/tv_dis_time"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -107,10 +211,34 @@
                     android:padding="4dp"
                     android:text="0.1KM | 10分钟"
                     android:textColor="@color/white"
-                    android:textSize="13sp" />
+                    android:textSize="13sp" />-->
 
             </LinearLayout>
 
+                <android.support.v7.widget.Toolbar
+                    android:id="@+id/toolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    fresco:layout_collapseMode="pin"
+                    fresco:navigationIcon="@drawable/return2"
+                    android:navigationIcon="@drawable/return_back"
+                    fresco:popupTheme="@style/AppTheme.PopupOverlay">
+
+
+
+                    <TextView
+                        android:id="@+id/tv_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:textSize="18sp"
+                        android:visibility="invisible"
+                        android:text="个人资料"/>
+
+                </android.support.v7.widget.Toolbar>
+
+
+            </android.support.design.widget.CollapsingToolbarLayout>
         </android.support.design.widget.AppBarLayout>
 
         <!-- 下面的 list 指定 behavior   提供滑动的 view 支持 ListView、GridView、RecyclerView -->
@@ -118,7 +246,7 @@
             android:id="@+id/rlist_view_content"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+            fresco:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
     </android.support.design.widget.CoordinatorLayout>
 

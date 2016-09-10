@@ -5,6 +5,7 @@ import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 
 import com.wuwo.im.config.ExitApp;
+import com.wuwo.im.util.Helper;
 
 /** 
 *desc
@@ -24,6 +25,8 @@ public class BaseFragementActivity extends FragmentActivity {
 //            setTheme(R.style.AppBaseTheme);
 //        }
 
+//      改变状态栏字体颜色
+        Helper.statusBarLightMode(BaseFragementActivity.this);
 
 //        int currentTheme = getSharedPreferences("theme", Context.MODE_PRIVATE).getInt("currentTheme", 0);
 //        switch (currentTheme) {

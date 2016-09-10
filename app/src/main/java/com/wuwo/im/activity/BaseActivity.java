@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
+import com.wuwo.im.util.Helper;
+
 /**
 *desc
 *@author 王明远
@@ -42,9 +44,14 @@ public abstract class BaseActivity extends AppCompatActivity {  //
 
 
         super.onCreate(savedInstanceState);
-
+//      改变状态栏字体颜色
+        Helper.statusBarLightMode(BaseActivity.this);
         Log.i("BaseActivity", "BaseActivity onCreate");
     }
+
+
+
+
 
 
     @Override

@@ -30,6 +30,7 @@ import com.easemob.redpacketui.RedPacketConstant;
 import com.easemob.redpacketui.utils.RedPacketUtil;
 import com.easemob.redpacketui.widget.ChatRowRedPacket;
 import com.easemob.redpacketui.widget.ChatRowRedPacketAck;
+import com.facebook.drawee.generic.GenericDraweeHierarchy;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -46,7 +47,6 @@ import com.hyphenate.chatuidemo.widget.ChatRowVoiceCall;
 import com.hyphenate.easeui.EaseConstant;
 import com.hyphenate.easeui.ui.EaseChatFragment;
 import com.hyphenate.easeui.ui.EaseChatFragment.EaseChatFragmentHelper;
-import com.hyphenate.easeui.utils.EaseImageUtils;
 import com.hyphenate.easeui.widget.chatrow.EaseChatRow;
 import com.hyphenate.easeui.widget.chatrow.EaseCustomChatRowProvider;
 import com.hyphenate.easeui.widget.emojicon.EaseEmojiconMenu;
@@ -54,6 +54,7 @@ import com.hyphenate.exceptions.HyphenateException;
 import com.hyphenate.util.EasyUtils;
 import com.hyphenate.util.PathUtil;
 import com.wuwo.im.activity.UserInfoEditActivity;
+import com.wuwo.im.bean.LocalUser;
 import com.wuwo.im.bean.SanGuan;
 import com.wuwo.im.config.WowuApp;
 import com.wuwo.im.util.MyToast;
@@ -150,6 +151,26 @@ public class ChatFragment extends EaseChatFragment implements EaseChatFragmentHe
             titleBar.setTitle(toChatUserName_Show);
         }
 
+//        toChatUsername
+
+//
+
+        titleBar.getRight_image_user().setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent2 = new Intent(getActivity(), UserInfoEditActivity.class);
+                LocalUser.DataBean temp=new LocalUser.DataBean();
+                temp.setUserId((toChatUsername != null && !toChatUsername.equals("")) == true ? toChatUsername : chatUserId);
+                if(mSanGuan!=null){
+                    temp.setPhotoUrl(mSanGuan.getUserPhotoUrl2());
+                }
+                intent2.putExtra("localUser",temp);
+                startActivity(intent2);
+                getActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+            }
+        });
+
+
 
         ((EaseEmojiconMenu) inputMenu.getEmojiconMenu()).addEmojiconGroup(EmojiconExampleGroupData.getData());
         if (chatType == EaseConstant.CHATTYPE_GROUP) {
@@ -209,7 +230,6 @@ public class ChatFragment extends EaseChatFragment implements EaseChatFragmentHe
             }
         });
         loadSanGuan(SANGUAN_PICK);
-
     }
 
     private ProgressDialog pd;
@@ -248,7 +268,12 @@ public class ChatFragment extends EaseChatFragment implements EaseChatFragmentHe
                 dialog.dismiss();
             }
         });
-
+        view.findViewById(com.hyphenate.easeui.R.id.tv_sanguan_close).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View arg0) {
+                dialog.dismiss();
+            }
+        });
 
         TextView tv_sanguan_user1 = (TextView) view.findViewById(com.hyphenate.easeui.R.id.tv_sanguan_user1);
         TextView tv_sanguan_user2 = (TextView) view.findViewById(com.hyphenate.easeui.R.id.tv_sanguan_user2);
@@ -259,19 +284,35 @@ public class ChatFragment extends EaseChatFragment implements EaseChatFragmentHe
 
 
         TextView genderm = (TextView) view.findViewById(com.hyphenate.easeui.R.id.tvage_gender1_male);
-        TextView genderw = (TextView) view.findViewById(com.hyphenate.easeui.R.id.tvage_gender1_female);
-        if (mSanGuan.getUserGender2() == 0) {
-            genderm.setVisibility(View.VISIBLE);
-            genderw.setVisibility(View.GONE);
-            genderm.setText(mSanGuan.getUserAge2() + "");
-        } else {
-            genderm.setVisibility(View.GONE);
-            genderw.setVisibility(View.VISIBLE);
-            genderw.setText(mSanGuan.getUserAge2() + "");
-        }
+//        TextView genderw = (TextView) view.findViewById(com.hyphenate.easeui.R.id.tvage_gender1_female);
+//        if (mSanGuan.getUserGender2() == 0) {
+//            genderm.setVisibility(View.VISIBLE);
+//            genderw.setVisibility(View.GONE);
+//            genderm.setText(mSanGuan.getUserAge2() + "");
+//        } else {
+//            genderm.setVisibility(View.GONE);
+//            genderw.setVisibility(View.VISIBLE);
+//            genderw.setText(mSanGuan.getUserAge2() + "");
+//        }
+
+        genderm.setText(mSanGuan.getUserAge2() + " | " + mSanGuan.getUserDisposition2());
+
+        TextView genderm2 = (TextView) view.findViewById(com.hyphenate.easeui.R.id.tvage_gender2_male);
+//        TextView genderw2 = (TextView) view.findViewById(com.hyphenate.easeui.R.id.tvage_gender2_female);
+//        if (mSanGuan.getUserGender1() == 0) {
+//            genderm2.setVisibility(View.VISIBLE);
+//            genderw2.setVisibility(View.GONE);
+//            genderm2.setText(mSanGuan.getUserAge1() + "");
+//        } else {
+//            genderm2.setVisibility(View.GONE);
+//            genderw2.setVisibility(View.VISIBLE);
+//            genderw2.setText(mSanGuan.getUserAge1() + "");
+//        }
+
+        genderm2.setText(mSanGuan.getUserAge1() + " | " + mSanGuan.getUserDisposition1());
 
 
-        TextView genderm1 = (TextView) view.findViewById(com.hyphenate.easeui.R.id.tvage_gender2_male);
+/*        TextView genderm1 = (TextView) view.findViewById(com.hyphenate.easeui.R.id.tvage_gender2_male);
         TextView genderw1 = (TextView) view.findViewById(com.hyphenate.easeui.R.id.tvage_gender2_female);
         if (getActivity().getSharedPreferences(WowuApp.PREFERENCE_KEY, getActivity().MODE_PRIVATE).getInt("Gender", 0) == 0) {
             genderm1.setVisibility(View.VISIBLE);
@@ -281,7 +322,7 @@ public class ChatFragment extends EaseChatFragment implements EaseChatFragmentHe
             genderm1.setVisibility(View.GONE);
             genderw1.setVisibility(View.VISIBLE);
             genderw1.setText(getActivity().getSharedPreferences(WowuApp.PREFERENCE_KEY, getActivity().MODE_PRIVATE).getInt("Gender", 0) + "");
-        }
+        }*/
 
         TextView tv_sanguan_result = (TextView) view.findViewById(com.hyphenate.easeui.R.id.tv_sanguan_result);
         TextView tv_sanguan_shuoming = (TextView) view.findViewById(com.hyphenate.easeui.R.id.tv_sanguan_shuoming);
@@ -290,18 +331,36 @@ public class ChatFragment extends EaseChatFragment implements EaseChatFragmentHe
         if (mSanGuan != null) {
             tv_sanguan_result.setText(mSanGuan.getTitle());
             tv_sanguan_shuoming.setText(mSanGuan.getDescription());
-        }
 
 
-        SimpleDraweeView draweeView = (SimpleDraweeView) view.findViewById(com.hyphenate.easeui.R.id.sdv_sanguan_pic1);
-        if (toChatUsername != null && EaseImageUtils.usersPhotoUrl.get(toChatUsername) != null) {
-            draweeView.setImageURI(Uri.parse(EaseImageUtils.usersPhotoUrl.get(toChatUsername)));//"http://w messageList.getItem(0).getTo()
-        } else if (iconPath != null) {
-            draweeView.setImageURI(Uri.parse(iconPath));//"http://w messageList.getItem(0).getTo()
-        }
-        SimpleDraweeView draweeView2 = (SimpleDraweeView) view.findViewById(com.hyphenate.easeui.R.id.sdv_sanguan_pic2);
+            SimpleDraweeView draweeView = (SimpleDraweeView) view.findViewById(com.hyphenate.easeui.R.id.sdv_sanguan_pic2 );
+//        if (toChatUsername != null && EaseImageUtils.usersPhotoUrl.get(toChatUsername) != null) {
+//            draweeView.setImageURI(Uri.parse(EaseImageUtils.usersPhotoUrl.get(toChatUsername)));//"http://w messageList.getItem(0).getTo()
+//        } else if (iconPath != null) {
+//            draweeView.setImageURI(Uri.parse(iconPath));//"http://w messageList.getItem(0).getTo()
+//        }
+
+
+            draweeView.setImageURI(Uri.parse(mSanGuan.getUserPhotoUrl1()));
+            SimpleDraweeView draweeView2 = (SimpleDraweeView) view.findViewById(com.hyphenate.easeui.R.id.sdv_sanguan_pic1);
 //        draweeView2.setImageURI(Uri.parse( EaseImageUtils.usersPhotoUrl.get( getActivity().getSharedPreferences(WowuApp.PREFERENCE_KEY,getActivity().MODE_PRIVATE).getString("UserId", "http://#"))));//"http://w messageList.getItem(0).getFrom() WowuApp.UserId EMClient.getInstance().getCurrentUser()
-        draweeView2.setImageURI(Uri.parse(WowuApp.iconPath));
+//        draweeView2.setImageURI(Uri.parse(WowuApp.iconPath));
+            draweeView2.setImageURI(Uri.parse(mSanGuan.getUserPhotoUrl2()));
+            GenericDraweeHierarchy hierarchy2 = draweeView.getHierarchy();
+            GenericDraweeHierarchy hierarchy1 = draweeView2.getHierarchy();
+
+            if (mSanGuan.getUserGender1() == 1) {
+                hierarchy1.setControllerOverlay(getResources().getDrawable(R.drawable.overlay_male));
+            } else {
+                hierarchy1.setControllerOverlay(getResources().getDrawable(R.drawable.overlay_fmale));
+            }
+
+            if (mSanGuan.getUserGender2() == 1) {
+                hierarchy2.setControllerOverlay(getResources().getDrawable(R.drawable.overlay_male));
+            } else {
+                hierarchy2.setControllerOverlay(getResources().getDrawable(R.drawable.overlay_fmale));
+            }
+        }
 
 
         // 设置显示动画
@@ -428,7 +487,7 @@ public class ChatFragment extends EaseChatFragment implements EaseChatFragmentHe
         if (chatType == Constant.CHATTYPE_GROUP) {
             EMGroup group = EMClient.getInstance().groupManager().getGroup(toChatUsername);
             if (group == null) {
-                Toast.makeText(getActivity(), R.string.gorup_not_found, 0).show();
+                Toast.makeText(getActivity(), R.string.gorup_not_found, Toast.LENGTH_SHORT).show();
                 return;
             }
             startActivityForResult(
@@ -538,7 +597,7 @@ public class ChatFragment extends EaseChatFragment implements EaseChatFragmentHe
      */
     protected void startVoiceCall() {
         if (!EMClient.getInstance().isConnected()) {
-            Toast.makeText(getActivity(), R.string.not_connect_to_server, 0).show();
+            Toast.makeText(getActivity(), R.string.not_connect_to_server,  Toast.LENGTH_SHORT).show();
         } else {
             startActivity(new Intent(getActivity(), VoiceCallActivity.class).putExtra("username", toChatUsername)
                     .putExtra("isComingCall", false));
@@ -553,7 +612,7 @@ public class ChatFragment extends EaseChatFragment implements EaseChatFragmentHe
      */
     protected void startVideoCall() {
         if (!EMClient.getInstance().isConnected())
-            Toast.makeText(getActivity(), R.string.not_connect_to_server, 0).show();
+            Toast.makeText(getActivity(), R.string.not_connect_to_server,  Toast.LENGTH_SHORT).show();
         else {
             startActivity(new Intent(getActivity(), VideoCallActivity.class).putExtra("username", toChatUsername)
                     .putExtra("isComingCall", false));
@@ -575,7 +634,7 @@ public class ChatFragment extends EaseChatFragment implements EaseChatFragmentHe
 //    }
     mHandlerWeak mtotalHandler;
     public static final int DOWNLOADED = 2;
-
+    public static final int DOWNLOADED_INIT = 1;
     private static class mHandlerWeak extends Handler {
         private WeakReference<ChatFragment> activity = null;
 
@@ -594,6 +653,19 @@ public class ChatFragment extends EaseChatFragment implements EaseChatFragmentHe
                 // 正在下载
                 case DOWNLOADED:
                     act.showSanguanPickDialog();
+                    act.titleBar.getRight_image_user().setImageURI(Uri.parse(act.mSanGuan.getUserPhotoUrl2()));
+
+
+                    break;
+                case DOWNLOADED_INIT:
+                    act.titleBar.getRight_image_user().setImageURI(Uri.parse(act.mSanGuan.getUserPhotoUrl2()));
+
+                    if(act.mSanGuan.getUserGender2()==0){
+                        act.iv_sanguan_pick.setImageResource(R.drawable.mate_red3);
+                    }else{
+                        act.iv_sanguan_pick.setImageResource(R.drawable.mate_blue3);
+                    }
+
                     break;
             }
         }
@@ -641,6 +713,10 @@ public class ChatFragment extends EaseChatFragment implements EaseChatFragmentHe
                     mSanGuan = gson.fromJson(response, type);
                 }
                 Log.i("ChatFragment:w:", response + ":::::=" + toChatUsername);
+                Message msg = new Message();
+                msg.what = DOWNLOADED_INIT;
+                mtotalHandler.sendMessage(msg);
+
                 break;
             case SANGUAN_PICK2:
 //            {"Successfully":1,"Title":"三观貌合神离","Description":"双方可以谈论很多共同的话题，相互交流能够激发对方隐藏的盲点和攻击点，彼此印象深刻惺惺相惜相见恨晚。但是需要意识到各自的目的和行动是相反的，一个南辕一个北辙，不能邯郸学步，否则便开始误解，渐渐感到不能信任彼此。","UserName1":"wmy","UserPhotoUrl1":"http://xzxj.oss-cn-shanghai.aliyuncs.com/user/ae95c3fd-8577-4f39-8d16-0a10e0ad51c7x480.jpg","UserAge1":1,"UserGender1":0,"UserName2":"maggie","UserPhotoUrl2":"http://xzxj.oss-cn-shanghai.aliyuncs.com/user/2b92e72d-5eb3-4253-9f47-d2f5a999fe10x480.jpg","UserAge2":0,"UserGender2":0}
@@ -654,9 +730,9 @@ public class ChatFragment extends EaseChatFragment implements EaseChatFragmentHe
                 }
                 Log.i("ChatFragment:w:", response + ":::::=" + toChatUsername);
 
-                Message msg = new Message();
-                msg.what = DOWNLOADED;
-                mtotalHandler.sendMessage(msg);
+                Message msg2 = new Message();
+                msg2.what = DOWNLOADED;
+                mtotalHandler.sendMessage(msg2);
                 break;
         }
     }

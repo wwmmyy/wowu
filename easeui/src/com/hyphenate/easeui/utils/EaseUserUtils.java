@@ -6,6 +6,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.facebook.drawee.generic.GenericDraweeHierarchy;
+import com.facebook.drawee.view.SimpleDraweeView;
+import com.hyphenate.easeui.R;
 import com.hyphenate.easeui.controller.EaseUI;
 import com.hyphenate.easeui.controller.EaseUI.EaseUserProfileProvider;
 import com.hyphenate.easeui.domain.EaseUser;
@@ -19,69 +22,72 @@ import org.json.JSONObject;
 import java.lang.ref.WeakReference;
 
 public class EaseUserUtils {
-    
+
     static EaseUserProfileProvider userProvider;
-    
+
     static {
         userProvider = EaseUI.getInstance().getUserProfileProvider();
     }
-    
+
     /**
      * get EaseUser according username
+     *
      * @param username
      * @return
      */
-    public static EaseUser getUserInfo(String username){
-        if(userProvider != null)
+    public static EaseUser getUserInfo(String username) {
+        if (userProvider != null)
             return userProvider.getUser(username);
-        
+
         return null;
     }
-    
+
     /**
      * set user avatar
-     * @param username
+     *
+     * @param username // 也就是在环信的 userid
      */
-    public static void setUserAvatar(final Context context, final String username, final ImageView imageView){
+    public static void setUserAvatar(final Context context, final String username, final ImageView imageView) {
 
-       if( EaseImageUtils.usersPhotoUrl.get(username) !=null){
-           Glide.with(new WeakReference<Context>(context).get()).load(Uri.parse( EaseImageUtils.usersPhotoUrl.get(username))).into(imageView);
-       }else{
-           new LoadserverdataService(new loadServerDataListener(){
-               @Override
-               public void loadServerData(String response, int flag) {
-                   try {
-                       JSONObject temp=new JSONObject(response);
-                       if(temp!=null){
-                           EaseImageUtils.usersNickName.put(username,temp.optString("Name"));
+        if (EaseImageUtils.usersPhotoUrl.get(username) != null) {
+            Glide.with(new WeakReference<Context>(context).get()).load(Uri.parse(EaseImageUtils.usersPhotoUrl.get(username))).into(imageView);
+        } else {
+            new LoadserverdataService(new loadServerDataListener() {
+                @Override
+                public void loadServerData(String response, int flag) {
+                    try {
+                        JSONObject temp = new JSONObject(response);
+                        if (temp != null) {
+                            EaseImageUtils.usersNickName.put(username, temp.optString("Name"));
+                            EaseImageUtils.usersNickGender.put(username, temp.optString("Gender"));
 
-                           JSONObject icon=new JSONObject( temp.optString("Icon"));
-                           if(icon!=null){
+                            JSONObject icon = new JSONObject(temp.optString("Icon"));
+                            if (icon != null) {
 //                                    * Icon : {"Url":"http://xzxj.oss-cn-shanghai.aliyuncs.com/user/35b5090b-aaf4-4c6d-b46f-e42073e11f4ex128.jpg","FullUrl":"http://xzxj.oss-cn-shanghai.aliyuncs.com/user/35b5090b-aaf4-4c6d-b46f-e42073e11f4e.jpg","Id":"dc3df506-e657-4643-bdbc-71b09e7b1afe","IsIcon":true}
-                                if(context!=null && new WeakReference<Context>(context).get() !=null){
-                                    try{
-                                        Glide.with(new WeakReference<Context>(context).get()).load(Uri.parse( icon.optString("FullUrl"))).into(imageView);
-                                    }catch (Exception e){
+                                if (context != null && new WeakReference<Context>(context).get() != null) {
+                                    try {
+                                        Glide.with(new WeakReference<Context>(context).get()).load(Uri.parse(icon.optString("FullUrl"))).into(imageView);
+                                    } catch (Exception e) {
                                         e.printStackTrace();
                                     }
                                 }
-                               EaseImageUtils.usersPhotoUrl.put(username,icon.optString("FullUrl"));
-                               return;
-                           }
-                       }
+                                EaseImageUtils.usersPhotoUrl.put(username, icon.optString("FullUrl"));
+                                return;
+                            }
+                        }
 //                       Glide.with(context).load(R.drawable.ease_default_avatar).into(imageView);
 
-                   } catch (JSONException e) {
-                       e.printStackTrace();
-                   }
-               }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
 
-               @Override
-               public void loadDataFailed(String response, int flag) {
-               }
-           }) .loadGetJsonRequestData( OkHttpUtils.GetUserInfoURL+"?userId=" + username ,0);
+                @Override
+                public void loadDataFailed(String response, int flag) {
+                }
+            }).loadGetJsonRequestData(OkHttpUtils.GetUserInfoURL + "?userId=" + username, 0);
 
-       }
+        }
 
 //        Glide.with(context).load(Uri.parse("http://www.gog.com.cn/pic/0/10/91/11/10911138_955870.jpg")).into(imageView);
 
@@ -100,55 +106,115 @@ public class EaseUserUtils {
     }
 
 
-
-
-
-
-
-    
     /**
-     * set user's nickname
+     * set user avatar
+     *
+     * @param username // 也就是在环信的 userid
      */
-    public static void setUserNick(String username,TextView textView){
-        if(textView != null){
-        	EaseUser user = getUserInfo(username);
-        	if(user != null && user.getNick() != null){
-        		textView.setText(user.getNick());
-        	}else{
-        		textView.setText(  EaseImageUtils.usersNickName.get(username)!=null ?  EaseImageUtils.usersNickName.get(username):username);
-        	}
-        }
-    }
+    public static void setUserAvatar(final Context context, final String username, final SimpleDraweeView imageView) {
 
-    public static void setUserShowName(final Context context, final String username, final TextView textView) {
+        if (EaseImageUtils.usersPhotoUrl.get(username) != null) {
+//            Glide.with(new WeakReference<Context>(context).get()).load(Uri.parse( EaseImageUtils.usersPhotoUrl.get(username))).into(imageView);
+            imageView.setImageURI(Uri.parse(EaseImageUtils.usersPhotoUrl.get(username)));
+            GenericDraweeHierarchy hierarchy = imageView.getHierarchy();
+            if (EaseImageUtils.usersNickGender.get(username) != null && EaseImageUtils.usersNickGender.get(username).equals("1")) {
+                hierarchy.setControllerOverlay(context.getResources().getDrawable(R.drawable.overlay_male));
+            } else {
+                hierarchy.setControllerOverlay(context.getResources().getDrawable(R.drawable.overlay_fmale));
+            }
 
-        if( EaseImageUtils.usersNickName.get(username) !=null){
-            textView.setText( EaseImageUtils.usersNickName.get(username));
-        }else{
-            new LoadserverdataService(new loadServerDataListener(){
+
+        } else {
+            new LoadserverdataService(new loadServerDataListener() {
                 @Override
                 public void loadServerData(String response, int flag) {
                     try {
-                        JSONObject temp=new JSONObject(response);
-                        if(temp!=null){
-                            EaseImageUtils.usersNickName.put(username,temp.optString("Name"));
-                            textView .setText( EaseImageUtils.usersNickName.get(username));
-                            JSONObject icon=new JSONObject( temp.optString("Icon"));
-                            if(icon!=null){
-                                  EaseImageUtils.usersPhotoUrl.put(username,icon.optString("FullUrl"));
-                             }
+                        if (response != null) {
+                            JSONObject temp = new JSONObject(response);
+                            if (temp != null) {
+                                EaseImageUtils.usersNickName.put(username, temp.optString("Name"));
+                                EaseImageUtils.usersNickGender.put(username, temp.optString("Gender").trim());
+
+                                JSONObject icon = new JSONObject(temp.optString("Icon"));
+                                if (icon != null) {
+//                                    * Icon : {"Url":"http://xzxj.oss-cn-shanghai.aliyuncs.com/user/35b5090b-aaf4-4c6d-b46f-e42073e11f4ex128.jpg","FullUrl":"http://xzxj.oss-cn-shanghai.aliyuncs.com/user/35b5090b-aaf4-4c6d-b46f-e42073e11f4e.jpg","Id":"dc3df506-e657-4643-bdbc-71b09e7b1afe","IsIcon":true}
+                                    if (context != null && new WeakReference<Context>(context).get() != null) {
+                                        try {
+//                                        Glide.with(new WeakReference<Context>(context).get()).load(Uri.parse( icon.optString("FullUrl"))).into(imageView);
+                                            imageView.setImageURI(Uri.parse(icon.optString("FullUrl")));
+                                            GenericDraweeHierarchy hierarchy = imageView.getHierarchy();
+                                            if (EaseImageUtils.usersNickGender.get(username).equals("1")) {
+                                                hierarchy.setControllerOverlay(context.getResources().getDrawable(R.drawable.overlay_male));
+                                            } else {
+                                                hierarchy.setControllerOverlay(context.getResources().getDrawable(R.drawable.overlay_fmale));
+                                            }
+
+                                        } catch (Exception e) {
+                                            e.printStackTrace();
+                                        }
+                                    }
+                                    EaseImageUtils.usersPhotoUrl.put(username, icon.optString("FullUrl"));
+                                    return;
+                                }
+                            }
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
                 }
+
                 @Override
                 public void loadDataFailed(String response, int flag) {
                 }
-            }) .loadGetJsonRequestData( OkHttpUtils.GetUserInfoURL+"?userId=" + username ,0);
+            }).loadGetJsonRequestData(OkHttpUtils.GetUserInfoURL + "?userId=" + username, 0);
 
         }
+    }
 
+
+    /**
+     * set user's nickname
+     */
+    public static void setUserNick(String username, TextView textView) {
+        if (textView != null) {
+            EaseUser user = getUserInfo(username);
+            if (user != null && user.getNick() != null) {
+                textView.setText(user.getNick());
+            } else {
+                textView.setText(EaseImageUtils.usersNickName.get(username) != null ? EaseImageUtils.usersNickName.get(username) : username);
+            }
+        }
+    }
+
+    public static void setUserShowName(final Context context, final String username, final TextView textView) {
+
+        if (EaseImageUtils.usersNickName.get(username) != null) {
+            textView.setText(EaseImageUtils.usersNickName.get(username));
+        } else {
+            new LoadserverdataService(new loadServerDataListener() {
+                @Override
+                public void loadServerData(String response, int flag) {
+                    try {
+                        JSONObject temp = new JSONObject(response);
+                        if (temp != null) {
+                            EaseImageUtils.usersNickName.put(username, temp.optString("Name"));
+                            textView.setText(EaseImageUtils.usersNickName.get(username));
+                            JSONObject icon = new JSONObject(temp.optString("Icon"));
+                            if (icon != null) {
+                                EaseImageUtils.usersPhotoUrl.put(username, icon.optString("FullUrl"));
+                            }
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                @Override
+                public void loadDataFailed(String response, int flag) {
+                }
+            }).loadGetJsonRequestData(OkHttpUtils.GetUserInfoURL + "?userId=" + username, 0);
+
+        }
 
 
     }

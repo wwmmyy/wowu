@@ -10,7 +10,6 @@ import android.telephony.SmsManager;
 import android.view.View;
 import android.view.Window;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -40,24 +39,26 @@ public class ShareToContractBySmsActivity extends BaseLoadActivity {
 
         mSettings = getSharedPreferences(WowuApp.PREFERENCE_KEY, MODE_PRIVATE);
 
+//        android:hint="我在先知先觉，先知号：20516878。#快来和我一起加入先知先觉，发现更多附近新奇#http://weixin.imxianzhi.com/share?download=true"
 
         name=getIntent().getStringExtra("name");
         num=getIntent().getStringExtra("num");
 
         feed_back_send = (TextView) findViewById(R.id.tx_top_right);
-        feed_back_content = (EditText) findViewById(R.id.feed_back_edit);
+        feed_back_content = (EditText) findViewById(R.id.et_sendsms_edit);
         tv_name_num = (TextView) findViewById(R.id.tv_name_num);
         tv_name_num.setText(name+":"+num);
 
         feed_back_send.setOnClickListener(this);
-        feed_back_content.setOnClickListener(this);
+
+
+        feed_back_content.setText("我在先知先觉，先知号："+WowuApp.XianZhiNumber+"#快来和我一起加入先知先觉，发现更多附近新奇"+WowuApp.shareURL);
 
 //        feed_back_send.setText("发送");
         ((TextView) findViewById(R.id.top_title)).setText("短信发送");
 
 
-        ImageView return_back0_feedback = (ImageView) findViewById(R.id.return_back);
-        return_back0_feedback.setOnClickListener(this);
+         findViewById(R.id.return_back).setOnClickListener(this);
         findViewById(R.id.bt_share_sms_submit).setOnClickListener(this);
     }
 
@@ -82,14 +83,14 @@ public class ShareToContractBySmsActivity extends BaseLoadActivity {
         // TODO 自动生成的方法存根
         switch (v.getId()) {
             case R.id.tx_top_right:
-                sendsms(num,"快和我一起加入先知先觉，发现更多附近新奇"+"我在先知先觉，先知号："+WowuApp.XianZhiNumber+"\n"+WowuApp.shareURL);
+                sendsms(num,feed_back_content.getText().toString());
                 break;
             case R.id.return_back:
                 ShareToContractBySmsActivity.this.finish();
                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                 break;
             case R.id.bt_share_sms_submit:
-                sendsms(num,"快和我一起加入先知先觉，发现更多附近新奇"+"我在先知先觉，先知号："+WowuApp.XianZhiNumber+"\n"+WowuApp.shareURL);
+                sendsms(num,feed_back_content.getText().toString());
                 MyToast.show(mContext,"已发送~");
                 this.finish();
                 overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);

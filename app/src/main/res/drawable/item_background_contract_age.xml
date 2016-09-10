@@ -5,8 +5,8 @@
     android:orientation="horizontal" >
     <!--  <solid android:color="#EEEEEE" /> 这里是背景的颜色-->
    
-   <solid android:color="#579EFF" />
-   <!-- 这里是边框的颜色和宽度
+   <solid android:color="@color/limegreen" />
+   <!-- 这里是边框的颜色和宽度   #579EFF
     <stroke android:width="1dp" android:color="@color/colorPrimary" />
     -->
     <corners android:radius="8dp" />

@@ -24,8 +24,8 @@ public class RangeSeekBar extends View {
 	public static final int VERTICAL = 1;
 	
 	private static final int DEFAULT_THUMBS = 3;
-	private static final int DEFAULT_THUMB_WIDTH = 50;
-	private static final int DEFAULT_THUMB_HEIGHT = 50;
+	private static final int DEFAULT_THUMB_WIDTH = 40;
+	private static final int DEFAULT_THUMB_HEIGHT = 40;
 	private static final float DEFAULT_STEP = 0.5f;
 	
 	private RangeSeekBarListener listener;

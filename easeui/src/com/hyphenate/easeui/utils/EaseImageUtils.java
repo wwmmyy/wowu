@@ -24,7 +24,7 @@ public class EaseImageUtils extends com.hyphenate.util.ImageUtils{
 	public static HashMap<String , String> usersPhotoUrl=new HashMap();
 
 	public static HashMap<String , String> usersNickName=new HashMap();
-
+	public static HashMap<String , String> usersNickGender=new HashMap();
 	
 	public static String getImagePath(String remoteUrl)
 	{

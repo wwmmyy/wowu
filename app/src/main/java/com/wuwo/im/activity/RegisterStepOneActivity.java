@@ -44,6 +44,9 @@ public class RegisterStepOneActivity extends BaseLoadActivity  {
 //        register_phone_pwd = (EditText) findViewById(R.id.register_phone_pwd);
 //        register_phone_sms = (EditText) findViewById(R.id.register_phone_sms);
         et_register_phone_num = (EditText) findViewById(R.id.et_register_phone_num);
+        findViewById(R.id.iv_top_title).setVisibility(View.VISIBLE);
+        findViewById(R.id.top_title).setVisibility(View.GONE);
+
 
         findViewById(R.id.return_back).setOnClickListener(this);
         tv_register_one_sure= (TextView)findViewById(R.id.tv_register_one_sure);
@@ -150,15 +153,23 @@ public class RegisterStepOneActivity extends BaseLoadActivity  {
                 ValidateSms();
                 break;
             case R.id.user_register_tiaokuan:
-                temp2 = new Intent(this, RegisterPolicyActivity.class);
-                temp2.putExtra("polcytye",0);
+//                temp2 = new Intent(this, RegisterPolicyActivity.class);
+//                temp2.putExtra("polcytye",0);
+
+                temp2 = new Intent(this, WebviewDetailActivity.class);
+                temp2.putExtra("url",WowuApp.TiaoKuanURL);
+                temp2.putExtra("titlename","条款");
+
                 this.startActivity(temp2);
                 overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                 break;
 
             case R.id.user_register_police:
-                 temp2 = new Intent(this,RegisterPolicyActivity.class);
-                temp2.putExtra("polcytye",1);
+//                 temp2 = new Intent(this,RegisterPolicyActivity.class);
+//                temp2.putExtra("polcytye",1);
+                temp2 = new Intent(this, WebviewDetailActivity.class);
+                temp2.putExtra("url",WowuApp.YinSiZhengCeURL);
+                temp2.putExtra("titlename","隐私权政策");
                 this.startActivity(temp2);
                 overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                 break;

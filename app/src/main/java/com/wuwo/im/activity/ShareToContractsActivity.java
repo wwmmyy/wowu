@@ -185,6 +185,6 @@ public class ShareToContractsActivity extends BaseLoadActivity {
 
     @Override
     public void loadDataFailed(String response, int flag) {
-        MyToast.show(mContext, response);
+        MyToast.show(mContext, response+";");
     }
 }

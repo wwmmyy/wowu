@@ -29,10 +29,10 @@
 
     <TextView
         android:id="@+id/indicate_isUpdate"
-        android:layout_width="18dp"
-        android:layout_height="18dp"
-        android:layout_marginRight="2dip"
-        android:layout_marginTop="2dip"
+        android:layout_width="10dp"
+        android:layout_height="10dp"
+        android:layout_marginRight="8dip"
+        android:layout_marginTop="8dip"
         android:layout_toRightOf="@id/item_name"
         android:background="@drawable/dot_normal"
         android:gravity="center"
@@ -40,6 +40,10 @@
         android:textColor="@color/white"
         android:textSize="12sp"
         android:visibility="gone" />
-
+    <!--
+           android:layout_marginRight="2dip"
+         android:layout_marginTop="2dip"
+        android:layout_width="18dp"
+        android:layout_height="18dp"-->
 
 </RelativeLayout>

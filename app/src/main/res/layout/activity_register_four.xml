@@ -4,10 +4,25 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center_horizontal"
-    android:orientation="vertical"
-    android:background="@drawable/login_bg" >
+    android:orientation="vertical" >
+    <!--android:background="@drawable/login_bg"-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@color/lightgray"
+        android:paddingBottom="1dp">
+        <include layout="@layout/top_title_bar_main"  />
+    </LinearLayout>
 
-    <include layout="@layout/top_title_bar" />
+    <!--
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:orientation="horizontal">
+        <include layout="@layout/top_title_bar" />
+    </LinearLayout>-->
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -34,18 +49,18 @@
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="15dp"
                 dist:roundAsCircle="true"
-                dist:roundingBorderColor="@color/white"
+                dist:roundingBorderColor="@color/colorPrimary"
                 dist:roundingBorderWidth="1dp"
-                dist:placeholderImage="@drawable/ic_launcher"
+                dist:placeholderImage="@drawable/btn_photo2"
                 />
 
-        <!--</RelativeLayout>-->
+        <!--</RelativeLayout>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="设置头像"
             android:textSize="17sp"/>
-
+-->
         <android.support.design.widget.TextInputLayout
             android:layout_marginTop="25dp"
             android:layout_width="match_parent"
@@ -82,7 +97,9 @@
                 android:layout_height="match_parent"
                 android:layout_marginLeft="20dp"
                 android:text="男"  />
-            <RadioButton
+                <!--android:background="@drawable/bt_border_register_normal"-->
+
+                <RadioButton
                 android:id="@+id/user_register_rb_gender1"
                 android:layout_width="0dp"
                 android:layout_weight="1"
@@ -105,10 +122,8 @@
             android:layout_marginLeft="@dimen/activity_horizontal_margin"
             android:layout_marginRight="@dimen/activity_horizontal_margin"
             android:background="@drawable/bt_border_choose_login_selector"
-            android:text="完成"
-            android:textColor="@color/white"
-            android:textSize="18sp"
-            android:textStyle="bold" />
+            android:text="下一步"
+            android:textSize="18sp"  />
 
         <!--android:background="@drawable/bt_border"-->
 

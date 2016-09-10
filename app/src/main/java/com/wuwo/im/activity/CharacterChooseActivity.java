@@ -82,7 +82,7 @@ public class CharacterChooseActivity extends BaseLoadActivity {
             @Override
             public void convert(CommRecyclerViewHolder viewHolder, UserCharacter mainMessage) {
                 //对对应的View进行赋值
-                viewHolder.setText(R.id.tv_choose, mainMessage.getName());
+                viewHolder.setText(R.id.tv_choose, mainMessage.getName()+"\n"+mainMessage.getTitle());
 
 //                SimpleDraweeView portal_news_img = (SimpleDraweeView) viewHolder.getView(R.id.news_label_pic);
 //                portal_news_img.setImageURI(Uri.parse("http://www.gog.com.cn/pic/0/10/91/11/10911138_955870.jpg"));

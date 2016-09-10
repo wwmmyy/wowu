@@ -19,8 +19,9 @@ import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.TextView;
+import android.widget.ImageView;
 
+import com.facebook.drawee.generic.GenericDraweeHierarchy;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -429,19 +430,38 @@ public class Portal_ContactFragment extends BaseAppFragment implements View.OnCl
                 viewHolder.setText(R.id.contract_code, mainMessage.getDistance()+" | "+ mainMessage.getBefore());
                 viewHolder.setText(R.id.contact_userinfo, mainMessage.getDisposition());
 
-                TextView genderm= (TextView) viewHolder.getView(R.id.contact_gender_male);
-                TextView genderw= (TextView) viewHolder.getView(R.id.contact_gender_female);
-                if(mainMessage.getGender()==1){
-                    genderm.setVisibility(View.VISIBLE);
-                    genderw.setVisibility(View.GONE);
-                    genderm.setText(mainMessage.getAge()+"");
+                ImageView tv_isvip= (ImageView) viewHolder.getView(R.id.tv_isvip);
+                if(mainMessage.isIsVip()){
+                    tv_isvip.setVisibility(View.VISIBLE);
                 }else{
-                    genderm.setVisibility(View.GONE);
-                    genderw.setVisibility(View.VISIBLE);
-                    genderw.setText(mainMessage.getAge()+"");
+                    tv_isvip.setVisibility(View.GONE);
                 }
+
+                ImageView yewu_code_m= (ImageView) viewHolder.getView(R.id.yewu_code_m);
+                ImageView yewu_code_w= (ImageView) viewHolder.getView(R.id.yewu_code_w);
+
                 SimpleDraweeView portal_news_img = (SimpleDraweeView) viewHolder.getView(R.id.news_label_pic);
                 portal_news_img.setImageURI(Uri.parse(mainMessage.getPhotoUrl()));
+                GenericDraweeHierarchy hierarchy = portal_news_img.getHierarchy();
+
+                if(mainMessage.getGender()==1){
+//                    genderm.setVisibility(View.VISIBLE);
+//                    genderw.setVisibility(View.GONE);
+//                    genderm.setText(mainMessage.getAge()+"");
+                    yewu_code_m.setVisibility(View.VISIBLE);
+                    yewu_code_w.setVisibility(View.GONE);
+
+                    hierarchy.setControllerOverlay(getResources().getDrawable(R.drawable.overlay_male));
+
+                }else{
+//                    genderm.setVisibility(View.GONE);
+//                    genderw.setVisibility(View.VISIBLE);
+//                    genderw.setText(mainMessage.getAge()+"");
+                    yewu_code_m.setVisibility(View.GONE);
+                    yewu_code_w.setVisibility(View.VISIBLE);
+                    hierarchy.setControllerOverlay(getResources().getDrawable(R.drawable.overlay_fmale));
+                }
+
             }
 
             @Override

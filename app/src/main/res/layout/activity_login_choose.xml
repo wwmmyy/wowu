@@ -42,7 +42,7 @@
         android:layout_below="@+id/tv_welcome_choose"
         android:layout_centerHorizontal="true"
         android:textColor="?attr/appbg"
-        android:background="@drawable/bt_border_choose_register_selector"
+        android:background="@drawable/bt_border_choose_register_selector2"
         android:textSize="20sp"
         />
 
@@ -59,9 +59,11 @@
         android:layout_below="@+id/tv_welcome_register"
         android:layout_centerHorizontal="true"
         android:textColor="@color/white"
-        android:background="@drawable/bt_border_choose_login_selector"
+        android:background="@drawable/bt_border_choose_login_selector2"
         android:textSize="20sp"
         />
+
+    <!--bt_border_charactertest_selector-->
     <!--android:textColor="@drawable/bt_textcolor_register_selector"  android:textColor="?attr/appbg"-->
 
 </RelativeLayout>

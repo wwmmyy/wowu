@@ -6,14 +6,13 @@
     android:gravity="center_vertical"
     android:orientation="horizontal"
     android:paddingLeft="10dp"
-    android:paddingTop="5dp"
     android:paddingBottom="5dp"
     android:paddingRight="10dp">
 
     <com.facebook.drawee.view.SimpleDraweeView
         android:id="@+id/user_info_pic"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
         android:layout_centerVertical="true"
         android:layout_marginLeft="10dp"
         fresco:actualImageScaleType="focusCrop"
@@ -21,12 +20,12 @@
         fresco:placeholderImage="@drawable/icon"
         fresco:failureImageScaleType="centerInside"
         fresco:placeholderImageScaleType="fitCenter"
-        fresco:progressBarAutoRotateInterval="1000"
-        fresco:progressBarImage="@drawable/con_progress_bar"
-        fresco:progressBarImageScaleType="centerInside"
         fresco:retryImageScaleType="centerCrop"
-        fresco:roundedCornerRadius="5dp" />
+        fresco:roundedCornerRadius="12dp" />
     <!--fresco:placeholderImage="@drawable/icon"-->
+<!--    fresco:progressBarAutoRotateInterval="1000"
+    fresco:progressBarImage="@drawable/con_progress_bar"
+    fresco:progressBarImageScaleType="centerInside"-->
 
 </LinearLayout>
 

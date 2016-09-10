@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white">
+    android:background="@color/white"
+    android:orientation="vertical">
 
 
     <RelativeLayout
@@ -46,35 +47,45 @@
     </RelativeLayout>
 
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recycler_view"
+    <LinearLayout
+        android:id="@+id/ln_center"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="320dp"
         android:layout_below="@id/top_indicator_"
-        android:layout_marginTop="1dp"
-        android:layout_marginRight="-3dp" />
+        android:gravity="center"
+        android:background="@color/colorPrimary"
+        android:orientation="vertical">
 
-    <!--  android:paddingLeft="@dimen/activity_horizontal_margin"
-      android:paddingRight="@dimen/activity_horizontal_margin"-->
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"/>
+        <!--android:layout_marginTop="1dp"-->
+        <!--android:layout_marginRight="-3dp"-->
+        <!--  android:paddingLeft="@dimen/activity_horizontal_margin"
+          android:paddingRight="@dimen/activity_horizontal_margin"-->
 
+        <Button
+            android:id="@+id/choose_sure"
+            style="?android:textAppearanceButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="15dp"
+            android:background="@drawable/item_background_test_selector"
+            android:paddingLeft="28dp"
+            android:paddingRight="28dp"
+            android:text="确定"
+            android:textSize="20sp" />
+    </LinearLayout>
 
-    <Button
-        android:id="@+id/choose_sure"
-        style="?android:textAppearanceButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:background="@drawable/item_background_test_selector"
-        android:paddingLeft="28dp"
-        android:paddingRight="28dp"
-        android:text="确定"
-        android:textSize="20sp" />
 
     <View
         android:id="@+id/line_temp"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_below="@+id/choose_sure"
+        android:layout_below="@+id/ln_center"
         android:layout_marginLeft="@dimen/activity_horizontal_margin"
         android:layout_marginRight="@dimen/activity_horizontal_margin"
         android:layout_marginTop="30dp"
@@ -89,7 +100,9 @@
         android:layout_below="@+id/line_temp"
         android:layout_marginTop="20dp"
         android:gravity="center"
-        android:text="不確定性格的类型？那就来测试一下吧" />
+        android:text="不确定性格的类型？那就来测试一下吧"
+        android:textColor="@color/colorPrimary"
+        android:textSize="16sp" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -97,8 +110,8 @@
         android:layout_below="@+id/tv_shuoming"
         android:layout_marginLeft="@dimen/login_horizontal_margin"
         android:layout_marginRight="@dimen/login_horizontal_margin"
-        android:background="@drawable/item_background_test_selector"
         android:layout_marginTop="20dp"
+        android:background="@drawable/item_background_test_selector"
         android:orientation="horizontal">
 
         <LinearLayout
@@ -142,8 +155,8 @@
             android:layout_height="match_parent"
             android:layout_below="@+id/ly_temp1"
             android:layout_weight="1"
-            android:orientation="vertical"
             android:gravity="center"
+            android:orientation="vertical"
             android:padding="@dimen/text_margin_10dp"
             android:paddingLeft="@dimen/activity_horizontal_margin"
             android:paddingRight="@dimen/activity_horizontal_margin">
@@ -169,4 +182,4 @@
 
 
     </LinearLayout>
-</RelativeLayout>
+</LinearLayout>

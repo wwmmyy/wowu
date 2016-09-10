@@ -11,11 +11,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:background="@color/colorPrimary">
-        <include layout="@layout/top_title_bar"  />
+        android:background="@color/lightgray"
+        android:paddingBottom="1dp">
+        <include layout="@layout/top_title_bar_main"  />
     </LinearLayout>
 
     <!--
+      android:background="@color/colorPrimary">
+
     <android.support.v4.view.ViewPager
         android:id="@+id/view_pager"
         android:layout_width="fill_parent"
@@ -25,6 +28,7 @@
 
     <com.wuwo.im.view.NoScrollViewPager
         android:id="@+id/view_pager"
+        android:layout_marginTop="1dp"
         android:layout_width="fill_parent"
         android:layout_height="0dip"
         android:layout_weight="1.0" />

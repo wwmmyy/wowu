@@ -107,6 +107,7 @@ public class MainActivity extends BaseFragementActivity implements MyTabWidget.O
     private Bus mOttoBus;
     private ImageView return_back_igw;
     private TextView title_tv;
+    private ImageView iv_top_title;
     private PopupMenu popupMenu;
     //负责更换主题的
     private ImageView menu_theme;
@@ -119,6 +120,7 @@ public class MainActivity extends BaseFragementActivity implements MyTabWidget.O
 
 
     UpdateManager manager;
+
     /**
      * check if current user account was remove
      */
@@ -398,7 +400,7 @@ public class MainActivity extends BaseFragementActivity implements MyTabWidget.O
     public void updateUnreadLabel() {
         int count = getUnreadMsgCountTotal();
         if (count > 0) {
-            mTopIndicator.setIndicateDisplay(1, true, "" + count);
+            mTopIndicator.setIndicateDisplay(1, true, " ");// + count
         } else {
             mTopIndicator.setIndicateDisplay(1, false, "");
         }
@@ -412,7 +414,7 @@ public class MainActivity extends BaseFragementActivity implements MyTabWidget.O
             public void run() {
                 int count = getUnreadAddressCountTotal();
                 if (count > 0) {
-                    mTopIndicator.setIndicateDisplay(2, true, "" + count);
+                    mTopIndicator.setIndicateDisplay(2, true, " ");//+ count
                 } else {
                     mTopIndicator.setIndicateDisplay(2, false, "");
                 }
@@ -513,9 +515,9 @@ public class MainActivity extends BaseFragementActivity implements MyTabWidget.O
             try {
                 if (conflictBuilder == null)
                     conflictBuilder = new android.app.AlertDialog.Builder(MainActivity.this);
-                    conflictBuilder.setTitle(st);
-                    conflictBuilder.setMessage(R.string.connect_conflict);
-                    conflictBuilder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                conflictBuilder.setTitle(st);
+                conflictBuilder.setMessage(R.string.connect_conflict);
+                conflictBuilder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
 
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -889,11 +891,12 @@ public class MainActivity extends BaseFragementActivity implements MyTabWidget.O
 
 
     // 底部菜单的文字数组
-    private CharSequence[] mLabels = {"附近","消息", "先知", "联系人",  "我"};
+    private CharSequence[] mLabels = {"附近", "消息", "", "联系人", "我"};
 
     private void init() {
 
         return_back_igw = (ImageView) findViewById(R.id.return_back);
+        return_back_igw.setVisibility(View.GONE);
         mTopIndicator = (MyTabWidget) findViewById(R.id.top_indicator);
         mTopIndicator.setOnTabSelectedListener(this);
 
@@ -919,9 +922,11 @@ public class MainActivity extends BaseFragementActivity implements MyTabWidget.O
         findViewById(R.id.return_back).setVisibility(View.GONE);
         title_tv = (TextView) findViewById(R.id.top_title);
         title_tv.setText(mTopIndicator.getmLabels()[0]);
+        iv_top_title = (ImageView) findViewById(R.id.iv_top_title);
+        menu_theme = (ImageView) findViewById(R.id.menu_theme);
 //        title_bar = (RelativeLayout)findViewById(R.id.tx_top_right);
 //        title_bar.setVisibility(View.GONE);
-
+        menu_theme.setOnClickListener(this);
 
         this.fragmentManager = this.getSupportFragmentManager();
         MyPagerAdapter myPagerAdapter = new MyPagerAdapter();
@@ -934,19 +939,26 @@ public class MainActivity extends BaseFragementActivity implements MyTabWidget.O
                 // TODO 自动生成的方法存根
 //                滑动完成后底部的导航条也跟着跳转
                 mTopIndicator.setTabsDisplay(mContext, position > 4 ? 4 : position);
-//                title_tv.setText(mTopIndicator.getmLabels()[position]);
+
                 title_tv.setText(mLabels[position]);
 
-
                 if (position == 2) {
+                    iv_top_title.setVisibility(View.VISIBLE);
+                    title_tv.setVisibility(View.GONE);
+                 } else {
+                     title_tv.setVisibility(View.VISIBLE);
+                    iv_top_title.setVisibility(View.GONE);
+                }
+                if (position == 3) {
                     menu_theme.setVisibility(View.VISIBLE);
                 } else {
                     menu_theme.setVisibility(View.GONE);
                 }
 
 
+
 //        点击后关闭消息红点
-                mTopIndicator.setIndicateDisplay(position, false, "");
+                mTopIndicator.setIndicateDisplay(position, false, " ");
 
             }
 
@@ -976,8 +988,6 @@ public class MainActivity extends BaseFragementActivity implements MyTabWidget.O
 //    }
 //});
 
-        menu_theme = (ImageView) findViewById(R.id.menu_theme);
-
 
         initPopupData();
 //        title_tv.setOnClickListener(new View.OnClickListener() {
@@ -990,7 +1000,6 @@ public class MainActivity extends BaseFragementActivity implements MyTabWidget.O
 //        });
 
         popupMenu = new PopupMenu(MainActivity.this);
-        menu_theme.setOnClickListener(this);
 
 
 ////        底部导航条消息数量红点
@@ -1020,6 +1029,7 @@ public class MainActivity extends BaseFragementActivity implements MyTabWidget.O
         home.addCategory(Intent.CATEGORY_HOME);
         startActivity(home);
     }
+
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         switch (keyCode) {
@@ -1075,7 +1085,7 @@ public class MainActivity extends BaseFragementActivity implements MyTabWidget.O
     public void onTabSelected(int index) {
         // TODO 自动生成的方法存根
 //        点击导航条后，页面跳转
-        mViewPager.setCurrentItem(index,false);
+        mViewPager.setCurrentItem(index, false);
         return_back_igw.setVisibility(View.GONE);
 
     }

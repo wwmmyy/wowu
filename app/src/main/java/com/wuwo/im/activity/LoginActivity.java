@@ -45,13 +45,13 @@ public class LoginActivity extends BaseLoadActivity {
     private EditText wohu_password;
     private Button imap_login_userlogin;
     private CheckBox login_save_pwd;
-//    private CheckBox login_auto;
+    //    private CheckBox login_auto;
     private ProgressDialog mdialog;
     private SharedPreferences settings;
     private SharedPreferences.Editor editor;
     private UpdateManager manager;
 
-//    private LoadserverdataService loadDataService;
+    //    private LoadserverdataService loadDataService;
     private static final String TAG = "LoginActivity";
 
     @Override
@@ -83,6 +83,12 @@ public class LoginActivity extends BaseLoadActivity {
     @SuppressLint("NewApi")
     private void initView() {
         // TODO 自动生成的方法存根
+
+        findViewById(R.id.iv_top_title).setVisibility(View.VISIBLE);
+        findViewById(R.id.top_title).setVisibility(View.GONE);
+
+        findViewById(R.id.tv_forget_pwd).setOnClickListener(this);
+
         wohu_phoneNum = (AutoCompleteTextView) this.findViewById(R.id.imap_login_uername);
         wohu_password = (EditText) this.findViewById(R.id.imap_login_password);
         imap_login_userlogin = (Button) this.findViewById(R.id.imap_login_userlogin);
@@ -109,13 +115,13 @@ public class LoginActivity extends BaseLoadActivity {
         wohu_phoneNum.setText(m_username);
         if (login_save_pwd_check) {
             {
-                OkHttpUtils.token= settings.getString("token", "");
+                OkHttpUtils.token = settings.getString("token", "");
                 WowuApp.PhoneNumber = settings.getString("PhoneNumber", "");
                 WowuApp.Password = settings.getString("Password", "");
                 WowuApp.Name = settings.getString("Name", "");
 
-                if(!WowuApp.PhoneNumber.equals("") &&!WowuApp.Password.equals("") ){
-                        startLogin();
+                if (!WowuApp.PhoneNumber.equals("") && !WowuApp.Password.equals("")) {
+                    startLogin();
                 }
 
             }
@@ -128,7 +134,7 @@ public class LoginActivity extends BaseLoadActivity {
         // TODO 自动生成的方法存根
         switch (v.getId()) {
             case R.id.imap_login_userlogin:
-                WowuApp.PhoneNumber= wohu_phoneNum.getText().toString();
+                WowuApp.PhoneNumber = wohu_phoneNum.getText().toString();
                 WowuApp.Password = wohu_password.getText().toString();
                 startLogin();
                 break;
@@ -145,13 +151,21 @@ public class LoginActivity extends BaseLoadActivity {
 //            finish();
                 break;
             case R.id.return_back:
+                Intent intent4 = new Intent();
+                intent4.setClass(mContext, LoginChooseActivity.class);
+                startActivity(intent4);
                 finish();
+                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                break;
+            case R.id.tv_forget_pwd:
+                Intent intent = new Intent();
+                intent.setClass(mContext, UserForgetPasswordActivity.class);
+                startActivity(intent);
                 overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                 break;
             default:
                 break;
         }
-
     }
 
     /**
@@ -174,8 +188,8 @@ public class LoginActivity extends BaseLoadActivity {
             }
         } else {
             String CacheJsonString = DemoDBManager.getInstance().getCacheJson(UserDao.CACHE_MAIN_LOCAL);
-            Intent intent =null;
-            if (CacheJsonString!=null && CacheJsonString.length()>0){
+            Intent intent = null;
+            if (CacheJsonString != null && CacheJsonString.length() > 0) {
                 //说明之前有缓存
                 intent = new Intent(mContext, MainActivity.class);
                 startActivity(intent);
@@ -199,22 +213,22 @@ public class LoginActivity extends BaseLoadActivity {
                 try {
                     JSONObject json = new JSONObject(response);
                     OkHttpUtils.token = json.optString("token");
-                    WowuApp.UserId= json.optString("uid");
-                    WowuApp.iconPath= json.optString("icon");
-                    WowuApp.Name=json.optString("name");
+                    WowuApp.UserId = json.optString("uid");
+                    WowuApp.iconPath = json.optString("icon");
+                    WowuApp.Name = json.optString("name");
 
 //                    记录下登录者的信息
-                    editor.putString("UserId",WowuApp.UserId);
-                    editor.putString("token",OkHttpUtils.token);
-                    editor.putString("PhoneNumber",WowuApp.PhoneNumber);
-                    editor.putString("Password",WowuApp.Password);
-                    editor.putInt("Gender",WowuApp.Gender);
-                    editor.putString("Name",json.optString("name"));
-                    editor.putString("iconPath",json.optString("icon"));
-                    editor.putBoolean("login_save_pwd_check",true); //登录成功后下次点开后可自动登录
+                    editor.putString("UserId", WowuApp.UserId);
+                    editor.putString("token", OkHttpUtils.token);
+                    editor.putString("PhoneNumber", WowuApp.PhoneNumber);
+                    editor.putString("Password", WowuApp.Password);
+                    editor.putInt("Gender", WowuApp.Gender);
+                    editor.putString("Name", json.optString("name"));
+                    editor.putString("iconPath", json.optString("icon"));
+                    editor.putBoolean("login_save_pwd_check", true); //登录成功后下次点开后可自动登录
                     editor.commit();
 
-                    loginHuanXin(WowuApp.UserId,WowuApp.hx_pwd);
+                    loginHuanXin(WowuApp.UserId, WowuApp.hx_pwd);
 //                    loginHuanXin(WowuApp.PhoneNumber,WowuApp.hx_pwd);
 
 //                  跳转到主界面
@@ -224,17 +238,13 @@ public class LoginActivity extends BaseLoadActivity {
 //                finish();
 
                 } catch (JSONException e) {
-                    if(LoginActivity.this.pd !=null) LoginActivity.this.pd.dismiss();
+                    if (LoginActivity.this.pd != null) LoginActivity.this.pd.dismiss();
                     e.printStackTrace();
                 }
                 break;
         }
 
     }
-
-
-
-
 
 
     //      登陆环信
@@ -328,9 +338,9 @@ public class LoginActivity extends BaseLoadActivity {
     }
 
     @Override
-    public void loadDataFailed(String response,int flag) {
-        MyToast.show(mContext,response.toString());
-        if(pd !=null) pd.dismiss();
+    public void loadDataFailed(String response, int flag) {
+        MyToast.show(mContext, response.toString());
+        if (pd != null) pd.dismiss();
     }
 
 
@@ -345,7 +355,7 @@ public class LoginActivity extends BaseLoadActivity {
                /*     pd = UtilsTool.initProgressDialog(mContext, "正在登录...");
                     pd.show();*/
 
-                    pd   = new ProgressDialog(LoginActivity.this);
+                    pd = new ProgressDialog(LoginActivity.this);
                     pd.setCanceledOnTouchOutside(false);
                     pd.setOnCancelListener(new DialogInterface.OnCancelListener() {
                         @Override

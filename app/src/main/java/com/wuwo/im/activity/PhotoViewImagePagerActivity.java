@@ -6,8 +6,10 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
+import android.util.Log;
 import android.widget.TextView;
 
+import com.wuwo.im.util.Helper;
 import com.wuwo.im.view.PhotoViewHackyViewPager;
 import com.wuwo.im.fragement.PhotoViewImageDetailFragment;
 
@@ -30,6 +32,9 @@ public class PhotoViewImagePagerActivity extends FragmentActivity {
 	@Override 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		//      改变状态栏字体颜色
+		Helper.statusBarLightMode(PhotoViewImagePagerActivity.this);
+		Log.i("BaseActivity", "BaseActivity onCreate");
 		setContentView(R.layout.photoview_image_detail_pager);
 
 		pagerPosition = getIntent().getIntExtra(EXTRA_IMAGE_INDEX, 0);

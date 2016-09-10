@@ -7,11 +7,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Filter;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.TextView.BufferType;
 
+import com.facebook.drawee.view.SimpleDraweeView;
 import com.hyphenate.chat.EMChatRoom;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMConversation;
@@ -89,7 +89,7 @@ public class EaseConversationAdapater extends ArrayAdapter<EMConversation> {
             holder.unreadLabel = (TextView) convertView.findViewById(R.id.unread_msg_number);
             holder.message = (TextView) convertView.findViewById(R.id.message);
             holder.time = (TextView) convertView.findViewById(R.id.time);
-            holder.avatar = (ImageView) convertView.findViewById(R.id.avatar);
+            holder.avatar = (SimpleDraweeView) convertView.findViewById(R.id.avatar);
             holder.msgState = convertView.findViewById(R.id.msg_state);
             holder.list_itease_layout = (RelativeLayout) convertView.findViewById(R.id.list_itease_layout);
             holder.motioned = (TextView) convertView.findViewById(R.id.mentioned);
@@ -110,7 +110,7 @@ public class EaseConversationAdapater extends ArrayAdapter<EMConversation> {
                 holder.motioned.setVisibility(View.GONE);
             }
             // group message, show group avatar
-            holder.avatar.setImageResource(R.drawable.ease_group_icon);
+            holder.avatar.setImageResource(R.drawable.icon);//ease_group_icon
             EMGroup group = EMClient.getInstance().groupManager().getGroup(username);
 //            holder.name.setText(group != null ? group.getGroupName() : username);
 //            holder.name.setText(group != null ? group.getGroupName() : ( EaseImageUtils.usersNickName.get(username)!=null ?  EaseImageUtils.usersNickName.get(username):username));
@@ -121,7 +121,7 @@ public class EaseConversationAdapater extends ArrayAdapter<EMConversation> {
                     EaseUserUtils.setUserShowName(getContext(), username, holder.name);
                 }
         } else if(conversation.getType() == EMConversationType.ChatRoom){
-            holder.avatar.setImageResource(R.drawable.ease_group_icon);
+            holder.avatar.setImageResource(R.drawable.icon );//ease_group_icon
             EMChatRoom room = EMClient.getInstance().chatroomManager().getChatRoom(username);
 //            holder.name.setText(room != null && !TextUtils.isEmpty(room.getName()) ? room.getName() : ( EaseImageUtils.usersNickName.get(username)!=null ?  EaseImageUtils.usersNickName.get(username):username));
                 if(room != null){
@@ -322,7 +322,7 @@ public class EaseConversationAdapater extends ArrayAdapter<EMConversation> {
         /** time of last message */
         TextView time;
         /** avatar */
-        ImageView avatar;
+        SimpleDraweeView avatar;
         /** status of last message */
         View msgState;
         /** layout */

@@ -41,6 +41,8 @@ public class RegisterStepTwoActivity extends BaseLoadActivity {
     }
 
     private void initView() {
+        findViewById(R.id.iv_top_title).setVisibility(View.VISIBLE);
+        findViewById(R.id.top_title).setVisibility(View.GONE);
 
         et_register_two_yanzhengma = (EditText) findViewById(R.id.et_register_two_yanzhengma);
         tv_registersteptwo_phone_num = (TextView) findViewById(R.id.tv_registersteptwo_phone_num);
@@ -132,12 +134,16 @@ public class RegisterStepTwoActivity extends BaseLoadActivity {
 
         switch (v.getId()) {
             case R.id.return_back:
+            case R.id.tv_registersteptwo_change_phone_num:
                 this.finish();
                 overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                 break;
             case R.id.tv_register_two_sure:
                 ValidateSms();
                 break;
+
+
+
         }
     }
 

@@ -7,12 +7,30 @@
     android:background="#f2f0eb"
     >
 
-    <com.hyphenate.easeui.widget.EaseTitleBar
-        android:id="@+id/title_bar"
+
+
+<!--    <LinearLayout
+        android:id="@+id/ln_title_bar"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        hyphenate:titleBarBackground="#00B167"
-        hyphenate:titleBarLeftImage="@drawable/ease_mm_title_back" />
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@color/gray_pressed"
+        android:paddingBottom="1dp">-->
+        <!--lightgray-->
+        <com.hyphenate.easeui.widget.EaseTitleBar
+            android:id="@+id/title_bar"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            hyphenate:titleBarBackground="@android:color/white"
+            hyphenate:titleBarLeftImage="@drawable/return_back"
+            />
+<!--    </LinearLayout>-->
+
+
+<!--
+        hyphenate:titleBarBackground="@color/btn_white_normal"
+ hyphenate:titleBarBackground="#00B167"
+    hyphenate:titleBarLeftImage="@drawable/ease_mm_title_back"-->
 
     <RelativeLayout
         android:layout_width="match_parent"

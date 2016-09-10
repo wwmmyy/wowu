@@ -3,11 +3,26 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="center_horizontal"
-    android:background="@drawable/login_bg"
+
     android:gravity="center_horizontal"
     android:orientation="vertical" >
+    <!--android:background="@drawable/login_bg"-->
+<!--    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:orientation="horizontal">
+        <include layout="@layout/top_title_bar" />
+    </LinearLayout>-->
 
-    <include layout="@layout/top_title_bar" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@color/lightgray"
+        android:paddingBottom="1dp">
+        <include layout="@layout/top_title_bar_main"  />
+    </LinearLayout>
 
 
     <TextView
@@ -16,7 +31,6 @@
         android:layout_marginLeft="@dimen/text_margin_10dp"
         android:layout_marginTop="20dp"
         android:text="请输入验证码"
-        android:textColor="@android:color/white"
         android:textSize="23sp" />
 
 
@@ -38,7 +52,6 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:text="短信已发送至："
-            android:textColor="@android:color/white"
             android:textSize="14sp" />
 
         <TextView
@@ -47,14 +60,12 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:text="15823361027"
-            android:textColor="@color/white"
             android:textSize="14sp" />
         <TextView
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:textColor="@android:color/white"
             android:textSize="14sp" />
 
         <TextView
@@ -63,9 +74,9 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:text="更改手机号"
+            android:textColor="@color/colorPrimary"
             android:layout_marginRight="50dp"
             android:textStyle="bold"
-             android:textColor="@color/white"
             android:textSize="14sp" />
     </LinearLayout>
 
@@ -100,7 +111,6 @@
         android:paddingRight="60dp"
         android:paddingTop="10dp"
         android:text="继续"
-        android:textColor="@color/white"
         android:textSize="22sp" />
 
 

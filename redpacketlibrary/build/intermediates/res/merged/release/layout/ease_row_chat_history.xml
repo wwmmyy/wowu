@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:fresco="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="70dp"
      android:id="@+id/list_itease_layout"
@@ -12,14 +13,30 @@
         android:layout_height="match_parent"
         android:layout_alignParentLeft="true" >
 
-      <ImageView
+<!--      <ImageView
             android:id="@+id/avatar"
             android:layout_width="45dp"
             android:layout_height="45dp"
             android:layout_centerVertical="true"
             android:layout_marginLeft="10dp"
             android:scaleType="fitXY"
-            android:src="@drawable/ease_default_avatar" />
+            android:src="@drawable/ease_default_avatar" />-->
+
+
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:id="@+id/avatar"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginLeft="10dp"
+            android:layout_centerInParent="true"
+            android:layout_gravity="center"
+            fresco:placeholderImage="@drawable/icon"
+            fresco:progressBarAutoRotateInterval="2000"
+            fresco:progressBarImage="@drawable/con_progress_bar"
+            fresco:progressBarImageScaleType="centerInside"
+            fresco:roundedCornerRadius="15dp" />
+
+
 
         <TextView
             android:id="@+id/unread_msg_number"

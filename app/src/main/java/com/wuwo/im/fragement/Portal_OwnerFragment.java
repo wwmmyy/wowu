@@ -24,11 +24,14 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.hyphenate.EMCallBack;
 import com.hyphenate.chatuidemo.DemoHelper;
+import com.wuwo.im.activity.MyCharacterResultActivity;
 import com.wuwo.im.activity.OwnerInfoEditActivity;
 import com.wuwo.im.activity.UserBindPhoneActivity;
 import com.wuwo.im.activity.UserModifyPasswdActivity;
 import com.wuwo.im.activity.UserPayActivity;
+import com.wuwo.im.activity.UserPaySuccessActivity;
 import com.wuwo.im.activity.UserSetWarnActivity;
+import com.wuwo.im.bean.Characters;
 import com.wuwo.im.bean.UserInfoDetail;
 import com.wuwo.im.config.ExitApp;
 import com.wuwo.im.config.WowuApp;
@@ -57,7 +60,7 @@ public class Portal_OwnerFragment extends BaseAppFragment implements View.OnClic
     SharedPreferences mSettings;
     SharedPreferences.Editor editor;
     LoadserverdataService loadDataService;
-    TextView tv_user_id, tv_usertype;
+    TextView tv_user_id, tv_usertype, tv_my_character;
 
     @Override
     public void onAttach(Activity activity) {
@@ -84,7 +87,6 @@ public class Portal_OwnerFragment extends BaseAppFragment implements View.OnClic
 
     private void initViews(View view) {
 
-
         RelativeLayout user_info_detail = (RelativeLayout) view.findViewById(R.id.user_info_detail);
         TextView user_info_edit = (TextView) view.findViewById(R.id.user_info_edit);
 //        user_setting_ipinfo = (TextView) view.findViewById(R.id.user_setting_ipinfo);
@@ -108,18 +110,22 @@ public class Portal_OwnerFragment extends BaseAppFragment implements View.OnClic
         view.findViewById(R.id.message_warn).setOnClickListener(this);
         view.findViewById(R.id.bind_phone).setOnClickListener(this);
         view.findViewById(R.id.bind_pay).setOnClickListener(this);
-
+        view.findViewById(R.id.rt_my_character).setOnClickListener(this);
 
         tv_user_id = (TextView) view.findViewById(R.id.tv_user_id);
         tv_usertype = (TextView) view.findViewById(R.id.tv_usertype);
+        tv_my_character = (TextView) view.findViewById(R.id.tv_my_character);
         loadData();
     }
 
 
     private final int LOADDATA = 11;
+    public static final int LOAD_RECOMMEND_DATA = 1;
 
     private void loadData() {
         loadDataService.loadGetJsonRequestData(OkHttpUtils.GetUserInfoURL + "?userId=" + WowuApp.UserId, LOADDATA);
+
+        loadDataService.loadGetJsonRequestData(WowuApp.GetDispositionInfoURL, LOAD_RECOMMEND_DATA);
     }
 
     @Override
@@ -204,7 +210,7 @@ public class Portal_OwnerFragment extends BaseAppFragment implements View.OnClic
 
                 break;
             case R.id.user_info_edit:
-//            case R.id.user_info_detail:
+            case R.id.user_info_detail:
 
                 intent2.setClass(mContext, OwnerInfoEditActivity.class);
 //                intent2.putExtra("UserDetail", mUserDetail);
@@ -219,6 +225,12 @@ public class Portal_OwnerFragment extends BaseAppFragment implements View.OnClic
 //                Intent intent2 = new Intent();
             //                UserSettingActivity.this.startActivity(intent2);
 //                break;
+
+            case R.id.rt_my_character:
+                Intent temp1Intent = new Intent(mContext, MyCharacterResultActivity.class);
+                startActivity(temp1Intent);
+                mContext.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                break;
             case R.id.update_pwd:
                 intent2.setClass(mContext, UserModifyPasswdActivity.class);
                 mContext.startActivity(intent2);
@@ -236,8 +248,12 @@ public class Portal_OwnerFragment extends BaseAppFragment implements View.OnClic
                 break;
 
             case R.id.bind_pay:
-                intent2.setClass(mContext, UserPayActivity.class);
-//                mContext.startActivity(intent2);
+
+                if(mUserDetail!=null && mUserDetail.isIsVip()){
+                    intent2.setClass(mContext, UserPaySuccessActivity.class);
+                }else{
+                    intent2.setClass(mContext, UserPayActivity.class);
+                }
                 mContext.startActivityForResult(intent2, WowuApp.ALIPAY);
                 getActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                 break;
@@ -308,10 +324,11 @@ public class Portal_OwnerFragment extends BaseAppFragment implements View.OnClic
     UserInfoDetail mUserDetail = new UserInfoDetail();
     mHandlerWeak mtotalHandler;
     public static final int DOWNLOADED_LocalUser = 0;
-
+    public static final int DOWNLOADED_Contact = 1;
+    public Characters mCharacter=null;
 
     @Override
-    public void loadServerData(String response, int flag) {
+    public void loadServerData(final String response, int flag) {
         switch (flag) {
             case R.id.clear_cache_quit:
                 SharedPreferences.Editor editor = mSettings.edit();
@@ -343,6 +360,39 @@ public class Portal_OwnerFragment extends BaseAppFragment implements View.OnClic
                     e.printStackTrace();
                 }
                 break;
+            case LOAD_RECOMMEND_DATA:
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+
+
+//                        {"PhotoUrl":"http://xzxj.oss-cn-shanghai.aliyuncs.com/celebrity/6cbeca3a-989f-4756-8b46-bc781a1d123a.jpg",
+//                                "Celebrity":"莎士比亚","CelebrityDescription":"英国文学史上最杰出的戏剧家","Name":"INFP","Title":"化解者",
+//                                "Score":{"UserId":"637e5acb638f46f5873ec86f0b4b49ce",
+//                                "E":0,"I":0,"S":0,"N":0,"T":0,"F":0,"J":0,"P":0,"PropensityScore":0.0,
+//                                "EI_PropensityScore":0.0,"SN_PropensityScore":0.0,"TF_PropensityScore":0.0,
+//                                "JP_PropensityScore":0.0,"PropensityDescription":"轻微","Id":"16967133-1356-4dfb-8ad4-abecdf755ca6"}}
+
+//                        Gson gson = new GsonBuilder().create();
+//                        java.lang.reflect.Type type = new com.google.gson.reflect.TypeToken<List<ContactFriend>>() {
+//                        }.getType();
+//                事实上这里要将好友区分出来，分为待添加和带邀请两类，分别放在两个数组中，然后刷新列表  xx
+//                        mTianJia_Contacts = gson.fromJson(response, type);
+
+                        Gson gson = new GsonBuilder().create();
+                        java.lang.reflect.Type type = new com.google.gson.reflect.TypeToken<Characters>() {
+                        }.getType();
+                        mCharacter = gson.fromJson(response, type);
+
+
+                        Message msg = new Message();
+                        msg.what = DOWNLOADED_Contact;
+                        msg.obj=response;
+                        mtotalHandler.sendMessage(msg);
+                    }
+                }).start();
+                break;
+
         }
     }
 
@@ -389,8 +439,13 @@ public class Portal_OwnerFragment extends BaseAppFragment implements View.OnClic
 //                    }
 
                     WowuApp.XianZhiNumber = act.mUserDetail.getUserNumber();
-                    act.tv_user_id.setText( WowuApp.XianZhiNumber);
-                    act.tv_usertype.setText(act.mUserDetail.isIsVip() == true ? "会员用户" : "普通用户");
+                    act.tv_user_id.setText("先知号 | " + WowuApp.XianZhiNumber);
+                    act.tv_usertype.setText(act.mUserDetail.isIsVip() == true ? "已开通" : "普通用户");
+
+                    break;
+
+                case DOWNLOADED_Contact:
+                    act.tv_my_character.setText(act.mCharacter.getName()+act.mCharacter.getTitle());
 
                     break;
             }
@@ -419,7 +474,7 @@ public class Portal_OwnerFragment extends BaseAppFragment implements View.OnClic
             Intent startMain = new Intent(Intent.ACTION_MAIN);
             startMain.addCategory(Intent.CATEGORY_HOME);
             startMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-             startActivity(startMain);
+            startActivity(startMain);
             ExitApp.getInstance().exit();
             System.exit(0);
         }

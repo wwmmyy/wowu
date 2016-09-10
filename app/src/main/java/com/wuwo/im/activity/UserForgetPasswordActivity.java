@@ -1,6 +1,7 @@
 package com.wuwo.im.activity;
 
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -18,8 +19,8 @@ public class UserForgetPasswordActivity extends BaseLoadActivity {
     int currentStep = 1;
     LinearLayout ll_getpwd_step1, ll_getpwd_step2, ll_getpwd_step3, ll_getpwd_step4;
     EditText et_my_number_step1, et_validate_code_step2, et_new_pwd_step3, et_new_pwd2_step3;
-    TextView tv_getpwd_phonenum_step2, top_title;
-
+    TextView tv_getpwd_phonenum_step2, top_title,tv_reget_validate_code;
+    private TimeCount timeCount;
     String[] tiles = {"找回密码（1/3）", "找回密码（2/3）", "找回密码（3/3）", "找回密码"};
 
 
@@ -43,6 +44,7 @@ public class UserForgetPasswordActivity extends BaseLoadActivity {
         et_validate_code_step2 = (EditText) findViewById(R.id.et_validate_code_step2);
         et_new_pwd_step3 = (EditText) findViewById(R.id.et_new_pwd_step3);
         et_new_pwd2_step3 = (EditText) findViewById(R.id.et_new_pwd2_step3);
+        tv_reget_validate_code = (TextView) findViewById(R.id.tv_reget_validate_code);
 
         findViewById(R.id.return_back).setOnClickListener(this);
         findViewById(R.id.tv_getpwd_step1).setOnClickListener(this);
@@ -53,11 +55,27 @@ public class UserForgetPasswordActivity extends BaseLoadActivity {
 
 
         top_title = (TextView) findViewById(R.id.top_title);
-        top_title.setText("密码修改");
-
+        top_title.setText(tiles[0]);
     }
 
+    private void initData() {
+        timeCount = new TimeCount(60000, 1000);
+    }
+    class TimeCount extends CountDownTimer {
+        public TimeCount(long millisInFuture, long countDownInterval) {
+            super(millisInFuture, countDownInterval);
+        }
 
+        public void onFinish() {
+            tv_reget_validate_code.setText("获取验证码");
+            tv_reget_validate_code.setClickable(true);
+        }
+
+        public void onTick(long millisUntilFinished) {
+            tv_reget_validate_code.setClickable(false);
+            tv_reget_validate_code.setText("重新获取(" + millisUntilFinished / 1000+")");
+        }
+    }
     public void setStep(int step) {
         switch (step) {
             case 1:
@@ -69,6 +87,11 @@ public class UserForgetPasswordActivity extends BaseLoadActivity {
                 currentStep = 1;
                 break;
             case 2:
+                initData();
+                if (tv_reget_validate_code.isClickable()) {
+                    // TODO run your logic that you want to do
+                    timeCount.start();
+                }
                 ll_getpwd_step1.setVisibility(View.GONE);
                 ll_getpwd_step4.setVisibility(View.GONE);
                 ll_getpwd_step2.setVisibility(View.VISIBLE);
@@ -114,6 +137,10 @@ public class UserForgetPasswordActivity extends BaseLoadActivity {
                 setNewPwd();
                 break;
             case R.id.tv_reget_validate_code://重新获取验证码
+//                if (tv_reget_validate_code.isClickable()) {
+//                    // TODO run your logic that you want to do
+//                    timeCount.start();
+//                }
                 getValidateCode();
                 break;
             case R.id.tv_set_pwd_finish:
@@ -199,7 +226,12 @@ public class UserForgetPasswordActivity extends BaseLoadActivity {
 
     @Override
     public void loadDataFailed(String response, int flag) {
-        MyToast.show(mContext, "返回值失败" + response.toString());
+
+
+
+        MyToast.show(mContext,  response.toString()+";");
+
+
         Log.i("返回值失败", response.toString());
     }
 

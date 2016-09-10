@@ -1,61 +1,87 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="50dp" >
+    android:background="@color/white"
+    android:layout_height="50dp">
 
     <!--android:background="@drawable/bg_top_title"-->
+
+
+    <RelativeLayout
+        android:id="@+id/return_back"
+        android:layout_width="50dip"
+        android:layout_height="match_parent"
+        android:background="@drawable/ease_common_tab_bg"
+        android:clickable="true" >
+
         <ImageView
-            android:id="@+id/return_back"
-            android:layout_width="100dp"
-            android:layout_height="50dp"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="-32dp"
-            android:clickable="true"
-            android:src="@drawable/back_a"
-            android:padding="8dp"
-            android:gravity="center_vertical"  />
-
-        <TextView
-            android:id="@+id/top_title"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:clickable="true"
-            android:gravity="center_horizontal"
-            android:text="先"
-            android:textColor="#ffffff"
-            android:textSize="21sp" />
-
-        <TextView
-            android:id="@+id/tx_top_right"
-            android:textColor="#ffffff"
-            android:layout_width="wrap_content"
-            android:layout_height="30dp"
-            android:layout_alignParentRight="true"
+            android:layout_height="42dp"
             android:layout_centerVertical="true"
-            android:layout_marginRight="8dp"
             android:gravity="center_vertical"
-            android:textSize="14sp" />
+            android:padding="12dp"
+            android:layout_centerInParent="true"
+            android:scaleType="centerInside"
+            android:src="@drawable/returnx" />
+    </RelativeLayout>
+
+
+
+
+
+    <!--android:src="@drawable/back_a"-->
+
+    <TextView
+        android:id="@+id/top_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:clickable="true"
+        android:gravity="center_horizontal"
+        android:text="先"
+        android:textColor="@color/black"
+        android:textSize="18sp" />
+    <!--android:textColor="#ffffff"-->
 
     <ImageView
+        android:id="@+id/iv_top_title"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:layout_centerInParent="true"
+        android:src="@drawable/icon"
+        android:visibility="gone"
+        android:gravity="center_horizontal"  />
+
+    <TextView
+        android:id="@+id/tx_top_right"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="8dp"
+        android:gravity="center_vertical"
+        android:textColor="@color/black"
+        android:textSize="14sp" />
+
+<!--    <ImageView
         android:id="@+id/menu_theme"
         android:layout_width="70dp"
         android:layout_height="match_parent"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:layout_marginRight="-8dp"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp"
         android:gravity="center"
-        android:visibility="gone"
-        android:src="@drawable/adduser" />
+        android:paddingBottom="10dp"
+        android:paddingTop="10dp"
+        android:src="@drawable/adduser"
+        android:visibility="gone" />-->
 
-    <RelativeLayout
+<!--    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentBottom="true"
-        android:layout_toLeftOf="@+id/top_title"
-        android:layout_toStartOf="@+id/top_title"
+        android:layout_marginEnd="63dp"
         android:layout_marginRight="63dp"
-        android:layout_marginEnd="63dp"></RelativeLayout>
+        android:layout_toLeftOf="@+id/top_title"
+        android:layout_toStartOf="@+id/top_title"></RelativeLayout>-->
 </RelativeLayout>

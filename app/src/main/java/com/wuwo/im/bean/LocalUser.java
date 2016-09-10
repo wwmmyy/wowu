@@ -1,10 +1,10 @@
 package com.wuwo.im.bean;
 
 import java.io.Serializable;
-import java.util.ArrayList;
+import java.util.List;
 
 /**
-*desc {"Data":[{"UserId":"437ca552-ca12-4542-98e0-b2011399b849","Name":"ran","Disposition":"ESTP创业者","Description":null,"Age":0,"Gender":1,"Distance":"7074.1km","Before":"19小时","PhotoUrl":"http://xzxj.oss-cn-shanghai.aliyuncs.com/user/cd5b98f6-439b-4e8c-be3f-a9cd437a34be.jpg","EasemobId":"296fb1da-338d-11e6-8c1d-87ddb1f2ae6f"},{"UserId":"a3a58155-34e2-4c6c-8201-135b830411dd","Name":"today","Disposition":"ISFP创作者","Description":null,"Age":0,"Gender":0,"Distance":"7074.1km","Before":"10分钟","PhotoUrl":"http://xzxj.oss-cn-shanghai.aliyuncs.com/user/66e1b7e7-ea6c-4635-86ce-d62c43162431.jpg","EasemobId":"d9a27a4a-32cc-11e6-88d3-0bca4779fbf6"}],"Total":4,"PageCount":1}
+*desc {"Data":[{"UserId":"932183f73fa34220bc7f6f5a89f342c9","Name":"ranran","Disposition":"ISFP艺术家","Description":"这个人很懒，什么都没写。","Age":0,"Gender":1,"Distance":"9.1km","Before":"1小时","PhotoUrl":"http://xzxj.oss-cn-shanghai.aliyuncs.com/user/0d650dd4-859b-48ec-b587-e7250b02a4a5x480.jpg","EasemobId":"b148d99a-36b9-11e6-af54-c76407f6c700","IsVip":true}],"Total":4,"PageCount":1}
 *@author 王明远
 *@日期： 2016/6/18 12:13
 *@版权:Copyright    All rights reserved.
@@ -14,7 +14,7 @@ public class LocalUser {
 
 
     /**
-     * Data : [{"UserId":"437ca552-ca12-4542-98e0-b2011399b849","Name":"ran","Disposition":"ESTP创业者","Description":null,"Age":0,"Gender":1,"Distance":"7074.1km","Before":"19小时","PhotoUrl":"http://xzxj.oss-cn-shanghai.aliyuncs.com/user/cd5b98f6-439b-4e8c-be3f-a9cd437a34be.jpg","EasemobId":"296fb1da-338d-11e6-8c1d-87ddb1f2ae6f"},{"UserId":"a3a58155-34e2-4c6c-8201-135b830411dd","Name":"today","Disposition":"ISFP创作者","Description":null,"Age":0,"Gender":0,"Distance":"7074.1km","Before":"10分钟","PhotoUrl":"http://xzxj.oss-cn-shanghai.aliyuncs.com/user/66e1b7e7-ea6c-4635-86ce-d62c43162431.jpg","EasemobId":"d9a27a4a-32cc-11e6-88d3-0bca4779fbf6"}]
+     * Data : [{"UserId":"932183f73fa34220bc7f6f5a89f342c9","Name":"ranran","Disposition":"ISFP艺术家","Description":"这个人很懒，什么都没写。","Age":0,"Gender":1,"Distance":"9.1km","Before":"1小时","PhotoUrl":"http://xzxj.oss-cn-shanghai.aliyuncs.com/user/0d650dd4-859b-48ec-b587-e7250b02a4a5x480.jpg","EasemobId":"b148d99a-36b9-11e6-af54-c76407f6c700","IsVip":true}]
      * Total : 4
      * PageCount : 1
      */
@@ -22,19 +22,20 @@ public class LocalUser {
     private int Total;
     private int PageCount;
     /**
-     * UserId : 437ca552-ca12-4542-98e0-b2011399b849
-     * Name : ran
-     * Disposition : ESTP创业者
-     * Description : null
+     * UserId : 932183f73fa34220bc7f6f5a89f342c9
+     * Name : ranran
+     * Disposition : ISFP艺术家
+     * Description : 这个人很懒，什么都没写。
      * Age : 0
      * Gender : 1
-     * Distance : 7074.1km
-     * Before : 19小时
-     * PhotoUrl : http://xzxj.oss-cn-shanghai.aliyuncs.com/user/cd5b98f6-439b-4e8c-be3f-a9cd437a34be.jpg
-     * EasemobId : 296fb1da-338d-11e6-8c1d-87ddb1f2ae6f
+     * Distance : 9.1km
+     * Before : 1小时
+     * PhotoUrl : http://xzxj.oss-cn-shanghai.aliyuncs.com/user/0d650dd4-859b-48ec-b587-e7250b02a4a5x480.jpg
+     * EasemobId : b148d99a-36b9-11e6-af54-c76407f6c700
+     * IsVip : true
      */
 
-    private ArrayList<DataBean> Data;
+    private List<DataBean> Data;
 
     public int getTotal() {
         return Total;
@@ -50,16 +51,17 @@ public class LocalUser {
 
     public void setPageCount(int PageCount) {
         this.PageCount = PageCount;
-    } 
-    public ArrayList<DataBean> getData() {
+    }
+
+    public List<DataBean> getData() {
         return Data;
     }
 
-    public void setData(ArrayList<DataBean> Data) {
+    public void setData(List<DataBean> Data) {
         this.Data = Data;
     }
 
-    public   class DataBean  implements Serializable {
+    public static class DataBean implements Serializable {
         private String UserId;
         private String Name;
         private String Disposition;
@@ -70,19 +72,7 @@ public class LocalUser {
         private String Before;
         private String PhotoUrl;
         private String EasemobId;
-        private static final long serialVersionUID = 9060527069391618394L;
-        public DataBean(String userId, String name, String disposition, String description, int age, int gender, String distance, String before, String photoUrl, String easemobId) {
-            UserId = userId;
-            Name = name;
-            Disposition = disposition;
-            Description = description;
-            Age = age;
-            Gender = gender;
-            Distance = distance;
-            Before = before;
-            PhotoUrl = photoUrl;
-            EasemobId = easemobId;
-        }
+        private boolean IsVip;
 
         public String getUserId() {
             return UserId;
@@ -162,6 +152,14 @@ public class LocalUser {
 
         public void setEasemobId(String EasemobId) {
             this.EasemobId = EasemobId;
+        }
+
+        public boolean isIsVip() {
+            return IsVip;
+        }
+
+        public void setIsVip(boolean IsVip) {
+            this.IsVip = IsVip;
         }
     }
 }

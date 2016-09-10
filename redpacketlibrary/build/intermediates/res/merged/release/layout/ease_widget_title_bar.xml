@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:fresco="http://schemas.android.com/apk/res-auto"
     android:id="@+id/root"
     android:layout_width="match_parent"
     android:layout_height="@dimen/height_top_bar"
@@ -26,9 +27,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:textColor="#ffffff"
+        android:textColor="@android:color/black"
         android:textSize="20sp" />
-
+    <!--android:textColor="#ffffff"-->
     <RelativeLayout
         android:id="@+id/right_layout"
         android:layout_width="50dp"
@@ -41,7 +42,22 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
+            android:visibility="gone"
             android:scaleType="centerInside" />
+
+
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:id="@+id/right_image_user"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_centerInParent="true"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:layout_gravity="center"
+            fresco:placeholderImage="@drawable/icon"
+            fresco:roundAsCircle="true"  />
+
+
     </RelativeLayout>
 
 </RelativeLayout><!-- From: file:/D:/Program%20Files%20(x86)/android/AndroidStudioWorkPlace/WuWo/easeui/res/layout/ease_widget_title_bar.xml --><!-- From: file:/D:/Program%20Files%20(x86)/android/AndroidStudioWorkPlace/WuWo/redpacketlibrary/build/intermediates/exploded-aar/WuWo/easeui/unspecified/res/layout/ease_widget_title_bar.xml -->

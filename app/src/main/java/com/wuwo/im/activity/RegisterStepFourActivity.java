@@ -12,6 +12,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -77,6 +78,11 @@ public class RegisterStepFourActivity extends BaseLoadActivity {
 //        findViewById(R.id.set_user_pic).setOnClickListener(this);
         user_register_nicheng = (EditText) findViewById(R.id.user_register_nicheng);
         user_register_rg_gender = (RadioGroup) findViewById(R.id.user_register_rg_gender);
+
+        findViewById(R.id.iv_top_title).setVisibility(View.VISIBLE);
+        findViewById(R.id.top_title).setVisibility(View.GONE);
+
+
 
 //        uri = Uri.parse(WowuApp.userImagePath + mSettings.getString("userid", "") + ".jpg");
         usersetting_userpic = (SimpleDraweeView) findViewById(R.id.usersetting_userpic);
@@ -213,13 +219,23 @@ public class RegisterStepFourActivity extends BaseLoadActivity {
 //                intent.setAction(Intent.ACTION_GET_CONTENT);
 //                startActivityForResult(intent, PHOTO_SELECT);
 
+//                Intent intent = new Intent(Intent.ACTION_PICK,android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+//                intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,"image/*");
+//                intent.addCategory(Intent.CATEGORY_OPENABLE);
+
 
                 Intent intentFromGallery = new Intent();
-                intentFromGallery.setType("image/*"); // 设置文件类型
-                intentFromGallery
-                        .setAction(Intent.ACTION_GET_CONTENT);
-                startActivityForResult(intentFromGallery,
-                        IMAGE_REQUEST_CODE);
+                if (Build.VERSION.SDK_INT < 19) {
+                    intentFromGallery = new Intent(Intent.ACTION_GET_CONTENT);
+                    intentFromGallery.setType("image/*");
+                } else {
+                    intentFromGallery = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                }
+
+//                Intent intentFromGallery = new Intent();
+//                intentFromGallery.setType("image/*"); // 设置文件类型
+//                intentFromGallery.setAction(Intent.ACTION_GET_CONTENT);
+                startActivityForResult(intentFromGallery, IMAGE_REQUEST_CODE);
 
                 dialog.dismiss();
             }
@@ -526,7 +542,7 @@ public class RegisterStepFourActivity extends BaseLoadActivity {
 //                    Drawable drawable = new BitmapDrawable(UtilsTool.loadCompressedBitmap(picPath, 80, 80));
 //                    usersetting_userpic.setImageDrawable(drawable);
                    if(pg!=null) pg.dismiss();
-                    MyToast.show(getApplicationContext(), "修改成功", Toast.LENGTH_LONG);
+//                    MyToast.show(getApplicationContext(), "修改成功", Toast.LENGTH_LONG);
 
                     Intent temp = new Intent(mContext, CharacterChooseActivity.class);
                     startActivity(temp);

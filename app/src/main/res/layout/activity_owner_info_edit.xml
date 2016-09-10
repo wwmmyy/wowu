@@ -1,58 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:fresco="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
-
-
-    <RelativeLayout
-        android:layout_width="fill_parent"
-        android:layout_height="50dp"
-        android:background="?attr/appbg">
-
-
-        <ImageView
-            android:id="@+id/return_back"
-            android:layout_width="100dp"
-            android:layout_height="50dp"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="-32dp"
-            android:clickable="true"
-            android:gravity="center_vertical"
-            android:padding="8dp"
-            android:src="@drawable/back_a" />
-
-
-        <TextView
-            android:id="@+id/title_tv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:gravity="center_horizontal"
-            android:text="编辑资料"
-            android:textColor="#ffffff"
-            android:textSize="20sp" />
-
-
-        <TextView
-            android:id="@+id/tx_top_right"
-            android:textColor="#ffffff"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:paddingLeft="12dp"
-            android:paddingRight="12dp"
-            android:paddingTop="6dp"
-            android:paddingBottom="6dp"
-            android:layout_marginRight="10dp"
-            android:text="确定"
-            android:background="@drawable/bt_border_charactertest_selector"
-            android:gravity="center_vertical"
-            android:textSize="16sp" />
-
-    </RelativeLayout>
 
 
     <android.support.design.widget.CoordinatorLayout
@@ -69,14 +20,151 @@
             android:layout_height="wrap_content"
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
             <!-- 滑动收缩的 view 给他指定一个 layout_scrollFlags 的属性 -->
+            <!-- 滑动收缩的 view 给他指定一个 layout_scrollFlags 的属性 -->
+            <android.support.design.widget.CollapsingToolbarLayout
+                android:id="@+id/collapsingToolbar"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:fitsSystemWindows="true"
+                fresco:expandedTitleGravity="center"
+                fresco:collapsedTitleTextAppearance="@style/GreyText"
+                fresco:collapsedTitleGravity="center"
+                fresco:expandedTitleTextAppearance="@style/TransparentText"
+                fresco:contentScrim="@color/white"
+                fresco:layout_scrollFlags="scroll|exitUntilCollapsed">
+                <!--fresco:title="个人资料"-->
 
-
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/pullLoadMoreRecyclerView"
-                    app:layout_scrollFlags="scroll|enterAlways"
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="100dp"
-                    android:background="?attr/appbg" />
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:background="@color/white"
+                    android:orientation="vertical"
+                    android:paddingBottom="3dp"
+                    fresco:layout_scrollFlags="scroll|enterAlways">
+            <RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white">
+                <!--android:background="?attr/appbg"-->
+
+                <ImageView
+                    android:id="@+id/return_back"
+                    android:layout_width="100dp"
+                    android:layout_height="42dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="-32dp"
+                    android:clickable="true"
+                    android:gravity="center_vertical"
+                    android:padding="8dp"
+                    android:visibility="gone"
+                    android:src="@drawable/returnx" />
+
+
+                <!--        <TextView
+                            android:id="@+id/title_tv"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:gravity="center_horizontal"
+                            android:text="编辑资料"
+                            android:textColor="#ffffff"
+                            android:textSize="20sp" />-->
+                <com.facebook.drawee.view.SimpleDraweeView
+                    android:id="@+id/user_pic"
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_centerInParent="true"
+                    android:layout_marginTop="-5dp"
+                    android:layout_gravity="center"
+                    android:gravity="center_horizontal"
+                    fresco:placeholderImage="@drawable/icon"
+                    fresco:roundTopLeft="false"
+                    fresco:roundTopRight="false"
+                    fresco:roundBottomLeft="true"
+                    fresco:roundBottomRight="true"
+                    fresco:roundedCornerRadius="8dp" />
+<!--                fresco:progressBarAutoRotateInterval="2000"
+                fresco:progressBarImage="@drawable/con_progress_bar"
+                fresco:progressBarImageScaleType="centerInside"-->
+
+  <!--              <TextView
+                    android:id="@+id/tx_top_right"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:paddingLeft="12dp"
+                    android:paddingRight="8dp"
+                    android:paddingTop="6dp"
+                    android:paddingBottom="6dp"
+                    android:layout_marginRight="10dp"
+                    android:text="保存"
+                    android:textColor="@color/darkgray"
+                    android:gravity="center_vertical"
+                    android:textSize="18sp" />-->
+
+                <!--        android:background="@drawable/bt_border_charactertest_selector"
+                        android:textColor="#ffffff"-->
+
+            </RelativeLayout>
+
+            <android.support.v7.widget.RecyclerView
+                    android:id="@+id/pullLoadMoreRecyclerView"
+                    fresco:layout_scrollFlags="scroll|enterAlways"
+                    android:layout_width="match_parent"
+                    android:layout_height="90dp"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
+                    android:background="@color/white" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="点击可设置头像、添加图片,共8张。"
+                        android:layout_marginLeft="16dp"
+                        android:textSize="12sp"
+                        android:layout_marginBottom="10dp"
+                        android:textColor="@color/gray"/>
+                </LinearLayout>
+
+
+                <android.support.v7.widget.Toolbar
+                    android:id="@+id/toolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    fresco:layout_collapseMode="pin"
+                    fresco:navigationIcon="@drawable/return2"
+                    android:navigationIcon="@drawable/return_back"
+                    fresco:popupTheme="@style/AppTheme.PopupOverlay">
+                    <!--添加Toolbar的子控件-->
+                    <Button
+                        android:id="@+id/tx_top_right"
+                        android:layout_width="75dp"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="right"
+                        android:text=" 保存 "
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:textColor="#000000"
+                        android:textSize="16sp" />
+                    <!--android:background="@color/green"-->
+
+                    <!--               <TextView
+                                       android:id="@+id/tv_title"
+                                       android:layout_width="wrap_content"
+                                       android:layout_height="match_parent"
+                                       android:layout_gravity="center"
+                                       android:textSize="18sp"
+                                       android:visibility="invisible"
+                                       android:text="个人资ll"/>-->
+
+                </android.support.v7.widget.Toolbar>
+
+
+            </android.support.design.widget.CollapsingToolbarLayout>
+            <!--android:background="?attr/appbg"-->
         </android.support.design.widget.AppBarLayout>
 
         <!-- 下面的 list 指定 behavior   提供滑动的 view 支持 ListView、GridView、RecyclerView -->
@@ -84,20 +172,20 @@
             android:id="@+id/rlist_view_content"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+            fresco:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 
 <!--
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+            fresco:layout_behavior="@string/appbar_scrolling_view_behavior">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
-                app:layout_behavior="@string/appbar_scrolling_view_behavior"
+                fresco:layout_behavior="@string/appbar_scrolling_view_behavior"
                 android:orientation="vertical">
 
                 <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"

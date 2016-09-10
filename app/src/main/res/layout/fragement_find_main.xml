@@ -42,6 +42,21 @@
             android:layout_toRightOf="@+id/user_login_pic"
             android:paddingLeft="10dp"
             android:text="我的性格" />
+
+
+
+        <TextView
+            android:id="@+id/tv_my_character"
+            style="@style/setting_text_style"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="15dip"
+            android:drawableRight="@drawable/morex"
+            android:drawablePadding="11dp"
+            android:textSize="14sp"
+            android:textColor="@android:color/darker_gray" />
     </RelativeLayout>
 
 
@@ -83,18 +98,7 @@
             android:paddingLeft="10dp"
             android:text="F码分享" />
 
-        <!--            <TextView
-                        android:id="@+id/user_setting_ipinfo"
-                        style="@style/find_share_text_style"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true"
-                        android:layout_marginRight="15dip"
-                        android:drawablePadding="5dp"
-                        android:drawableRight="@drawable/morex"
-                        android:text="爸爸 "
-                        android:textColor="@android:color/darker_gray" />-->
+        <TextView style="@style/setting_text_style_arrow" />
     </RelativeLayout>
 
   <!--  <RelativeLayout
@@ -166,6 +170,7 @@
             android:layout_toRightOf="@+id/find_share_f_ic2"
             android:paddingLeft="10dp"
             android:text="邀请好友" />
+        <TextView style="@style/setting_text_style_arrow" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -200,6 +205,7 @@
             android:layout_toRightOf="@+id/find_share_f_ic3"
             android:paddingLeft="10dp"
             android:text="分享我的性格到朋友圈" />
+        <TextView style="@style/setting_text_style_arrow" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -234,6 +240,7 @@
             android:layout_toRightOf="@+id/find_share_f_ic4"
             android:paddingLeft="10dp"
             android:text="版本预告" />
+        <TextView style="@style/setting_text_style_arrow" />
     </RelativeLayout>
 
 
@@ -269,6 +276,7 @@
             android:layout_toRightOf="@+id/find_share_f_ic5"
             android:paddingLeft="10dp"
             android:text="意见反馈" />
+        <TextView style="@style/setting_text_style_arrow" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -276,6 +284,7 @@
         android:layout_width="fill_parent"
         android:layout_height="60dp"
         android:layout_marginTop="-3dp"
+        android:visibility="gone"
         android:background="@drawable/item_background_find_selector">
 
         <com.facebook.drawee.view.SimpleDraweeView
@@ -303,5 +312,6 @@
             android:layout_toRightOf="@+id/find_share_f_ic6"
             android:paddingLeft="10dp"
             android:text="关于我们" />
+        <TextView style="@style/setting_text_style_arrow" />
     </RelativeLayout>
 </LinearLayout>

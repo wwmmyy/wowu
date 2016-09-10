@@ -22,7 +22,6 @@
             android:paddingLeft="15dp"
             android:layout_alignParentRight="true"
             android:src="@drawable/close"/>
-
     </RelativeLayout>
 
     <LinearLayout
@@ -59,10 +58,8 @@
                 android:text="21"
                 android:drawableRight="@drawable/male"
                 android:drawablePadding="5dp"
-                android:textColor="#ffff0000"
+                android:textColor="@android:color/white"
                 android:textSize="14sp" />
-
-
 
             <TextView
                 android:id="@+id/tvage_gender1_female"
@@ -76,7 +73,7 @@
                 android:text="21"
                 android:drawableRight="@drawable/male"
                 android:drawablePadding="5dp"
-                android:textColor="#ffff0000"
+                android:textColor="@android:color/white"
                 android:visibility="gone"
                 android:textSize="14sp" />
 
@@ -107,10 +104,8 @@
             android:text="21"
             android:drawableRight="@drawable/male"
             android:drawablePadding="5dp"
-            android:textColor="#ffff0000"
+            android:textColor="@android:color/white"
             android:textSize="14sp" />
-
-
 
             <TextView
                 android:id="@+id/tvage_gender2_female"
@@ -125,10 +120,8 @@
                 android:visibility="gone"
                 android:drawableRight="@drawable/male"
                 android:drawablePadding="5dp"
-                android:textColor="#ffff0000"
+                android:textColor="@android:color/white"
                 android:textSize="14sp" />
-
-
         </LinearLayout>
     </LinearLayout>
 
@@ -229,15 +222,15 @@
             android:id="@+id/tv_sanguan_result"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingBottom="15dp"
-            android:paddingTop="10dp"
+            android:paddingBottom="8dp"
+            android:paddingTop="6dp"
             android:textColor="#00B167"
             android:text="完美三观互补"
             android:textSize="21sp" />
 
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="105dp"
+            android:layout_height="122dp"
             android:orientation="vertical"
             android:paddingBottom="10dp"
             android:padding="8dp">

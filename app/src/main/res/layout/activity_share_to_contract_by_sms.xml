@@ -8,7 +8,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorPrimary"
+        android:background="@color/white"
         android:orientation="horizontal">
 
         <include layout="@layout/top_title_bar" />
@@ -24,14 +24,13 @@
         android:text="用户名及号码" />
 
     <EditText
-        android:id="@+id/feed_back_edit"
+        android:id="@+id/et_sendsms_edit"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="5dip"
         android:layout_marginTop="-1dp"
         android:background="@drawable/edit_bg_all"
         android:gravity="top"
-        android:hint="分享分享分享分享分享分享分享"
         android:minLines="6"
         android:textSize="15sp" />
 

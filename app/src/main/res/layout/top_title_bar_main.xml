@@ -1,64 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="50dp"
-    android:background="?attr/appbg">
-        <ImageView
-            android:id="@+id/return_back"
-            android:layout_width="100dp"
-            android:layout_height="50dp"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="-32dp"
-            android:clickable="true"
-            android:src="@drawable/back_a"
-            android:padding="8dp"
-            android:gravity="center_vertical"  />
+    android:background="@color/white"
+    android:layout_height="45dp" >
 
-        <TextView
-            android:id="@+id/top_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:clickable="true"
-            android:gravity="center_horizontal"
-            android:text="先"
-            android:textColor="#ffffff"
-            android:textSize="21sp" />
+    <!--android:background="@drawable/bg_top_title"-->
+    <ImageView
+        android:id="@+id/return_back"
+        android:layout_width="100dp"
+        android:layout_height="42dp"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="-32dp"
+        android:clickable="true"
+        android:src="@drawable/returnx"
+        android:padding="12dp"
+        android:gravity="center_vertical"  />
+    <!--android:src="@drawable/back_a"-->
 
-        <TextView
-            android:id="@+id/tx_top_right"
-            android:textColor="#ffffff"
-            android:layout_width="wrap_content"
-            android:layout_height="30dp"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="8dp"
-            android:gravity="center_vertical"
-            android:textSize="14sp" />
+    <TextView
+        android:id="@+id/top_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:clickable="true"
+        android:gravity="center_horizontal"
+        android:text="先"
+        android:textColor="@android:color/black"
+        android:textSize="19sp" />
+
+    <ImageView
+        android:id="@+id/iv_top_title"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:layout_centerInParent="true"
+        android:src="@drawable/icon"
+        android:visibility="gone"
+        android:gravity="center_horizontal"  />
 
     <ImageView
         android:id="@+id/menu_theme"
         android:layout_width="70dp"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:layout_marginRight="-8dp"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp"
+        android:paddingTop="12dp"
+        android:paddingBottom="12dp"
         android:gravity="center"
         android:visibility="gone"
-        android:src="@drawable/adduser"
-        android:textColor="@color/white"
-        android:textSize="20sp"  />
+        android:src="@drawable/btn_add_friends" />
 
-    <!--android:src="@drawable/more"-->
-
-    <RelativeLayout
+<!--    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentBottom="true"
         android:layout_toLeftOf="@+id/top_title"
         android:layout_toStartOf="@+id/top_title"
         android:layout_marginRight="63dp"
-        android:layout_marginEnd="63dp"></RelativeLayout>
+        android:layout_marginEnd="63dp"></RelativeLayout>-->
+
+
+
 </RelativeLayout>

@@ -40,6 +40,13 @@ public class CommRecyclerViewHolder extends RecyclerView.ViewHolder {
         return itemType;
     }
 
+    public void setItemType(int mItemType) {
+          itemType=mItemType;
+    }
+
+
+
+
     public void setPosition(int position) {
         this.position = position;
     }

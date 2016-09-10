@@ -107,13 +107,12 @@ public class WowuApp extends Application {
 //加入环信
 
 
-
         //假如空指针的话application保存的东西就会清空重新加载
         settings = this.getSharedPreferences(WowuApp.PREFERENCE_KEY, MODE_PRIVATE);
-        UserId=settings.getString("UserId", "") ;
-        OkHttpUtils.token=settings.getString("token", "") ;
-        iconPath=settings.getString("iconPath", "") ;
-        Gender=settings.getInt("Gender", 0) ;
+        UserId = settings.getString("UserId", "");
+        OkHttpUtils.token = settings.getString("token", "");
+        iconPath = settings.getString("iconPath", "");
+        Gender = settings.getInt("Gender", 0);
 
 
         int pid = android.os.Process.myPid();
@@ -181,9 +180,9 @@ public class WowuApp extends Application {
     }
 
 
-//微信支付
+    //微信支付
     public static final String WeChat_APP_ID = "wxc1cc2ed7c5a30810";
-//QQ分享
+    //QQ分享
     public static final String QQ_APP_ID = "1105597236";
     public static final String QQ_APP_KEY = "FWJiDEZW9DUJm3lL";
     public static final String shareURL = "http://weixin.imxianzhi.com/share?download=true";
@@ -195,8 +194,6 @@ public class WowuApp extends Application {
     public static int Gender = 0;
     public static String Name = "";
     public static String iconPath = "";//用户头像路径
-
-
 
 
     //  记录位置坐标
@@ -212,7 +209,7 @@ public class WowuApp extends Application {
 
     public static final String ALL_CachePathDirTemp = "/mnt/sdcard/Downloads/";//下载文件的暂存路径
 
-//    /storage/emulated/0/Pictures/锁屏壁纸/I01020052.jpg
+    //    /storage/emulated/0/Pictures/锁屏壁纸/I01020052.jpg
     public static final String tempPicPath = "/Downloads/";//下载文件的暂存路径  /mnt/sdcard/Downloads/
 
 
@@ -303,7 +300,7 @@ public class WowuApp extends Application {
     //    POST  根据一组用户ID获取用户的头像
     public static String UserPhotoURL = OkHttpUtils.serverAbsolutePath + "Chat/UserPhoto";
 
-//    POST Logger/Write            写日志
+    //    POST Logger/Write            写日志
     public static String LoggerWriteURL = OkHttpUtils.serverAbsolutePath + "Logger/Write";
 
 
@@ -318,17 +315,17 @@ public class WowuApp extends Application {
     public static String RemoveFriendURL = OkHttpUtils.serverAbsolutePath + "Friend/RemoveFriend";//?friendId={friendId}
 
 
-//    POST Friend/SyncContacts  同步通讯录好友
+    //    POST Friend/SyncContacts  同步通讯录好友
     public static String FriendSyncContactsURL = OkHttpUtils.serverAbsolutePath + "Friend/SyncContacts";//?friendId={friendI
 
-//    GET Friend/ContactsRecommend  获取通讯录推荐
+    //    GET Friend/ContactsRecommend  获取通讯录推荐
     public static String FriendContactsRecommendURL = OkHttpUtils.serverAbsolutePath + "Friend/ContactsRecommend";//?friendId={friendI
 
-//    GET System/VersionInfo           版本信息
+    //    GET System/VersionInfo           版本信息
     public static String SystemVersionInfoURL = OkHttpUtils.serverAbsolutePath + "System/VersionInfo";
 
-   //  GET   推荐好友
-   public static String  ChatRecommendFriendURL = OkHttpUtils.serverAbsolutePath + "Chat/RecommendFriend";
+    //  GET   推荐好友
+    public static String ChatRecommendFriendURL = OkHttpUtils.serverAbsolutePath + "Chat/RecommendFriend";
 
 
     //######## Pay##########################################
@@ -340,9 +337,9 @@ public class WowuApp extends Application {
     public static String PayNotifyURL = OkHttpUtils.serverAbsolutePath + "api/Pay/PayNotify";//?orderNumber={orderNumber}&payOk={payOk}
 
 
-//   购买VIP   POST { "VipType": 1,"PaymentMethod": "sample string 2"} PaymentMethod 支付方式,微信：wechat，支付宝：alipay
+    //   购买VIP   POST { "VipType": 1,"PaymentMethod": "sample string 2"} PaymentMethod 支付方式,微信：wechat，支付宝：alipay
 //    return {"OrderId":"","OrderNumber":"","Total":0,"PrepayId":"","Wechat":{"AppId":"","PartnerId":"","PrepayId":"","PackageValue":"","NonceStr":"","TimeStamp":"1461397867","Sign":""}}
-public static String OrderBuyURL = OkHttpUtils.serverAbsolutePath + "Order/Buy";
+    public static String OrderBuyURL = OkHttpUtils.serverAbsolutePath + "Order/Buy";
 
 //    public static String token = "";
 
@@ -350,6 +347,20 @@ public static String OrderBuyURL = OkHttpUtils.serverAbsolutePath + "Order/Buy";
 ////        环信IM appkey
 //    public static String ClientId="YXA6HWVlsDtsEeae3XlMmSCTxA";
 //    public static String ClientSecret="YXA6URQvvr4B_mKfhXOnn3RsUdY62zU";
+
+
+
+
+/*    先知先觉APP在“注册”、“会员”、“发现”中一些共性的功能，我已经做成网页，只需要通过webview显示就可以，其中“发现”页的“版本预览”是通过后台控制的，具体地址如下：
+    条款：http://api.imxianzhi.com/provisions.html
+    隐私权政策:http://api.imxianzhi.com/privacy.html
+    先知先觉会员协议:http://api.imxianzhi.com/vipprotocol.html
+    版本预览：http://api.imxianzhi.com/Version/Preview/*/
+
+public static String TiaoKuanURL =  "http://api.imxianzhi.com/provisions.html";
+    public static String YinSiZhengCeURL =  "http://api.imxianzhi.com/privacy.html";
+    public static String XieYiURL =  "http://api.imxianzhi.com/vipprotocol.html";
+    public static String YuLanURL =  "http://api.imxianzhi.com/Version/Preview/";
 
 
     // 创建服务用于捕获崩溃异常
@@ -396,8 +407,8 @@ public static String OrderBuyURL = OkHttpUtils.serverAbsolutePath + "Order/Buy";
             Log.i("获取到的定位信息为：：：", location.getLatitude() + "：：：" + location.getLongitude());
 ////                    UtilsTool.saveErrorFile(sb.toString(), "获取到的坐标为11.txt");
 
-            SharedPreferences.Editor   editor = settings.edit();
-            editor.putString("latitude",location.getLatitude() + "");
+            SharedPreferences.Editor editor = settings.edit();
+            editor.putString("latitude", location.getLatitude() + "");
             editor.putString("longitude", location.getLongitude() + "");
             editor.commit();
 
@@ -417,6 +428,7 @@ public static String OrderBuyURL = OkHttpUtils.serverAbsolutePath + "Order/Buy";
     boolean uploadLocation = false;
 
     public static final int ALIPAY = 10;
+
     /**
      * @Description: 将终端的位置坐标上传到服务器
      */
@@ -449,12 +461,11 @@ public static String OrderBuyURL = OkHttpUtils.serverAbsolutePath + "Order/Buy";
 
         Log.i("发送坐标位置给服务器0www：：：", OkHttpUtils.token + ":::::::" + getSharedPreferences(WowuApp.PREFERENCE_KEY, MODE_PRIVATE).getString("token", ""));
         if (!uploadLocation) {
-            if(uploadLocation2Server(mlatitude, mlongitude))
-            {
-                uploadLocation=true;
+            if (uploadLocation2Server(mlatitude, mlongitude)) {
+                uploadLocation = true;
             }
         } else {
-            LatLng start = new LatLng(Float.parseFloat(settings.getString("latitude", "")), Float.parseFloat(settings.getString("longitude", "") ));
+            LatLng start = new LatLng(Float.parseFloat(settings.getString("latitude", "")), Float.parseFloat(settings.getString("longitude", "")));
             LatLng end = new LatLng(mlatitude, mlongitude);
             if (getDistance(start, end) > _minInteval) {
 //                uploadLoaction(mlatitude, mlongitude);
@@ -465,12 +476,12 @@ public static String OrderBuyURL = OkHttpUtils.serverAbsolutePath + "Order/Buy";
     }
 
     private boolean uploadLocation2Server(double mlatitude, double mlongitude) {
-        if (! getSharedPreferences(WowuApp.PREFERENCE_KEY, MODE_PRIVATE).getString("token", "").equals("")) {
+        if (!getSharedPreferences(WowuApp.PREFERENCE_KEY, MODE_PRIVATE).getString("token", "").equals("")) {
             try {
                 JSONObject json = new JSONObject();
-                json.put("lon" , mlongitude + "");
+                json.put("lon", mlongitude + "");
                 json.put("lat", mlatitude + "");
-                new LoadserverdataService(null).loadPostJsonRequestData(WowuApp.JSON, WowuApp.SubmitLocationURL+"?lon="+mlongitude+"&lat="+mlatitude, json.toString(), 0);
+                new LoadserverdataService(null).loadPostJsonRequestData(WowuApp.JSON, WowuApp.SubmitLocationURL + "?lon=" + mlongitude + "&lat=" + mlatitude, json.toString(), 0);
                 Log.i("发送坐标位置给服务器：：1：", mlongitude + ":::::::" + mlatitude);
 //                uploadLocation=true;
                 return true;

@@ -1,6 +1,5 @@
 package com.wuwo.im.activity;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.content.res.AssetManager;
 import android.os.Bundle;
@@ -31,7 +30,7 @@ import im.wuwo.com.wuwo.R;
 *@日期： 2016/8/27 12:25
 */
 
-public class OwnerInfoUpdateChooseActivity  extends Activity  implements View.OnClickListener, OnWheelChangedListener
+public class OwnerInfoUpdateChooseActivity  extends BaseActivity  implements View.OnClickListener, OnWheelChangedListener
 {
     /**
      * 所有省

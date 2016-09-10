@@ -7,8 +7,8 @@
     
        <!--<item android:drawable="@drawable/btn_gongwen_highlight" android:state_checked="true"/>-->
     <!--<item android:drawable="@drawable/btn_gongwen_normal" android:state_checked="false"/>-->
-    <item android:drawable="@drawable/chat_st" android:state_checked="true"/>
-    <item android:drawable="@drawable/chat_nor" android:state_checked="false"/>
+    <item android:drawable="@drawable/message_st" android:state_checked="true"/>
+    <item android:drawable="@drawable/message_nor" android:state_checked="false"/>
 
 
 </selector>

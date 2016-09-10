@@ -10,11 +10,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:background="@color/colorPrimary">
+        android:background="@color/white">
         <include layout="@layout/top_title_bar"  />
     </LinearLayout>
 
-
+    <!--android:background="@color/colorPrimary"-->
 <!--    <com.wuwo.im.view.SearchView
         android:id="@+id/search_view"
         android:layout_width="match_parent"
@@ -29,6 +29,7 @@
         android:background="@color/white"
         android:orientation="horizontal"
         android:paddingBottom="8dp"
+        android:gravity="center_vertical"
         android:paddingTop="8dp">
 
         <LinearLayout
@@ -56,11 +57,12 @@
                     fresco:failureImageScaleType="centerInside"
                     fresco:placeholderImage="@drawable/contact"
                     fresco:placeholderImageScaleType="fitCenter"
-                    fresco:progressBarAutoRotateInterval="1000"
-                    fresco:progressBarImage="@drawable/con_progress_bar"
-                    fresco:progressBarImageScaleType="centerInside"
                     fresco:retryImageScaleType="centerCrop"
                     fresco:roundedCornerRadius="5dp" />
+
+<!--                fresco:progressBarAutoRotateInterval="1000"
+                fresco:progressBarImage="@drawable/con_progress_bar"
+                fresco:progressBarImageScaleType="centerInside"-->
 
                 <TextView
                     android:layout_width="match_parent"
@@ -68,9 +70,14 @@
                     android:gravity="center"
                     android:paddingBottom="5dp"
                     android:paddingTop="5dp"
-                    android:text="添加通讯录好友"
+                    android:text="通讯录好友"
                     android:textSize="12sp" />
             </LinearLayout>
+
+            <View
+                android:layout_width="0.5dp"
+                android:layout_height="60dp"
+                android:background="@color/gray_pressed"/>
 
             <LinearLayout
                 android:id="@+id/tv_weixin_add"
@@ -90,22 +97,24 @@
                     fresco:failureImageScaleType="centerInside"
                     fresco:placeholderImage="@drawable/wechatpay"
                     fresco:placeholderImageScaleType="fitCenter"
-                    fresco:progressBarAutoRotateInterval="2000"
-                    fresco:progressBarImage="@drawable/con_progress_bar"
-                    fresco:progressBarImageScaleType="centerInside"
                     fresco:retryImageScaleType="centerCrop"
                     fresco:roundedCornerRadius="5dp" />
-
+<!--                fresco:progressBarAutoRotateInterval="2000"
+                fresco:progressBarImage="@drawable/con_progress_bar"
+                fresco:progressBarImageScaleType="centerInside"-->
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:gravity="center"
                     android:paddingBottom="5dp"
                     android:paddingTop="5dp"
-                    android:text="添加微信好友"
+                    android:text="微信好友"
                     android:textSize="12sp" />
             </LinearLayout>
-
+            <View
+                android:layout_width="0.5dp"
+                android:layout_height="60dp"
+                android:background="@color/gray_pressed"/>
             <LinearLayout
                 android:id="@+id/tv_qq_add"
                 android:layout_width="0dp"
@@ -125,11 +134,12 @@
                     fresco:failureImageScaleType="centerInside"
                     fresco:placeholderImage="@drawable/qq"
                     fresco:placeholderImageScaleType="fitCenter"
-                    fresco:progressBarAutoRotateInterval="1000"
-                    fresco:progressBarImage="@drawable/con_progress_bar"
-                    fresco:progressBarImageScaleType="centerInside"
                     fresco:retryImageScaleType="centerCrop"
                     fresco:roundedCornerRadius="5dp" />
+
+<!--                fresco:progressBarAutoRotateInterval="1000"
+                fresco:progressBarImage="@drawable/con_progress_bar"
+                fresco:progressBarImageScaleType="centerInside"-->
 
                 <TextView
                     android:layout_width="match_parent"
@@ -137,7 +147,7 @@
                     android:gravity="center"
                     android:paddingBottom="5dp"
                     android:paddingTop="5dp"
-                    android:text="添加QQ好友"
+                    android:text="QQ好友"
                     android:textSize="12sp" />
             </LinearLayout>
         </LinearLayout>

@@ -7,8 +7,8 @@
         <item name="colorPrimary">@color/colorPrimaryDark</item>-->
 
 
-        <item name="colorPrimaryDark">#1FBBA6</item>
-        <item name="colorPrimary">#1FBBA6</item>
+        <item name="colorPrimaryDark">@color/white</item>
+        <item name="colorPrimary">#26BCB5</item>
 
 
         <!-- 窗口的背景颜色
@@ -18,10 +18,36 @@
         <item name="background">@color/colorPrimary</item>
         <item name="windowNoTitle">true</item>
         <item name="windowActionBar">false</item>
-        <item name="colorAccent">@color/colorAccent</item>，
+        <item name="colorAccent">#26BCB5</item>
         <item name="android:windowBackground">@android:color/white</item>
         <item name="android:windowIsTranslucent">true</item>
         <item name="appbg">@color/colorPrimary</item>
+
+<!--       <item name="colorAccent">@color/colorAccent</item>
+  &lt;!&ndash;直接生效，状态栏文字颜色变成黑色，非沉浸式&ndash;&gt;
+        <item name="android:windowLightStatusBar">true</item>-->
+    </style>
+    <style name="horizontal_slide2" parent="AppTheme">
+        <item name="android:windowAnimationStyle">@style/AnimFade2</item>
+    </style>
+    <style name="AnimFade2" parent="@android:style/Animation.Activity">
+        <item name="android:activityOpenEnterAnimation">@anim/slide_in_from_right</item>
+        <item name="android:activityOpenExitAnimation">@anim/slide_out_to_left</item>
+        <item name="android:activityCloseExitAnimation">@anim/slide_out_to_right</item>
+        <item name="android:activityCloseEnterAnimation">@anim/slide_in_from_left</item>
+    </style>
+
+
+
+    <style name="MyFullscreenStyle" parent="AppTheme">
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="windowActionBar">false</item>
+    </style>
+
+
+    <style name="MyStatusbarStyle" parent="AppTheme">
+        <item name="colorPrimaryDark">@color/colorPrimary</item>
     </style>
 
     <style name="AppTheme.NoActionBar">
@@ -30,6 +56,7 @@
     </style>
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
 
     <!--
         <style name="transparentFrameWindowStyle" parent="android:style/Theme.Dialog">
@@ -52,6 +79,14 @@
         <item name="android:background">#ffffff</item>
     </style>
 
+
+    <style name="setting_text_style_title">
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">54dp</item>
+        <!--<item name="android:layout_marginTop">1dip</item>-->
+        <item name="android:background">@drawable/card_light</item>
+    </style>
+
     <style name="setting_text_style">
         <item name="android:textSize">16.0sp</item>
         <item name="android:textColor">@color/black</item>
@@ -61,16 +96,32 @@
     </style>
 
 
+    <style name="setting_text_style_arrow">
+        <item name="android:textSize">14.0sp</item>
+        <item name="android:textColor">@android:color/darker_gray</item>
+        <item name="android:paddingLeft">20dip</item>
+        <item name="android:paddingTop">12dip</item>
+        <item name="android:paddingBottom">12dip</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_alignParentRight">true</item>
+        <item name="android:layout_centerVertical">true</item>
+        <item name="android:layout_marginRight">10dip</item>
+        <item name="android:drawablePadding">10dp</item>
+        <item name="android:drawableRight">@drawable/morex</item>
+    </style>
+
+
     <style name="user_info_detail_text_style">
-        <item name="android:textSize">16.0sp</item>
-        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:textSize">14.0sp</item>
+        <!--<item name="android:textColor">@color/colorPrimary</item>-->
         <item name="android:paddingLeft">20dip</item>
         <item name="android:paddingTop">12dip</item>
         <item name="android:paddingBottom">12dip</item>
         <item name="android:layout_centerVertical">true</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_marginRight">8dp</item>
+        <item name="android:layout_marginRight">12dp</item>
         <item name="android:layout_marginLeft">6dp</item>
         <item name="android:gravity">center_vertical|right</item>
         <item name="android:drawablePadding">5dp</item>
@@ -79,7 +130,7 @@
 
 
     <style name="owner_info_detail_text_style">
-        <item name="android:textSize">16.0sp</item>
+        <item name="android:textSize">15.0sp</item>
         <item name="android:textColor">@color/colorPrimary</item>
         <item name="android:paddingLeft">20dip</item>
         <item name="android:paddingTop">12dip</item>
@@ -89,10 +140,10 @@
         <item name="android:layout_width">0dip</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_weight">1</item>
-        <item name="android:layout_marginRight">8dp</item>
+        <item name="android:layout_marginRight">12dp</item>
         <item name="android:layout_marginLeft">6dp</item>
         <item name="android:gravity">center_vertical|right</item>
-        <item name="android:drawablePadding">5dp</item>
+        <item name="android:drawablePadding">8dp</item>
         <!-- <item name="android:background">@drawable/item_background_selector_nocorn</item>-->
     </style>
 
@@ -127,5 +178,14 @@
         <item name="android:minHeight">35dip</item>
         <item name="android:maxHeight">35dip</item>
     </style>
+
+    <style name="TransparentText">
+        <item name="android:textColor">#00000000</item>
+    </style>
+    <style name="GreyText">
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+
 
 </resources>

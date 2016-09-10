@@ -35,6 +35,9 @@ public class RegisterStepThreeActivity extends BaseLoadActivity  {
     }
 
     private void initView() {
+        findViewById(R.id.iv_top_title).setVisibility(View.VISIBLE);
+        findViewById(R.id.top_title).setVisibility(View.GONE);
+
         et_register_password = (EditText) findViewById(R.id.et_register_password);
         findViewById(R.id.return_back).setOnClickListener(this);
 

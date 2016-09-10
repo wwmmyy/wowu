@@ -6,8 +6,8 @@ import android.net.Uri;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.TextView;
 
+import com.facebook.drawee.generic.GenericDraweeHierarchy;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -23,6 +23,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import im.wuwo.com.wuwo.R;
 
@@ -37,7 +38,7 @@ import im.wuwo.com.wuwo.R;
 @SuppressLint("ValidFragment")
 public class Portal_LocalFragment extends BasePortal_TabFragment {
 
-    private ArrayList<LocalUser.DataBean> local_userlist = new ArrayList<LocalUser.DataBean>(); //记录所有的最新消息
+    private List<LocalUser.DataBean> local_userlist = new ArrayList<LocalUser.DataBean>(); //记录所有的最新消息
     @Override
     public void setLoadInfo(final String totalresult) throws JSONException {
 
@@ -76,7 +77,7 @@ public class Portal_LocalFragment extends BasePortal_TabFragment {
 //        ArrayList<DataBean> temp = (ArrayList<DataBean>) local_userlist.clone();
 //        return temp;
 
-        return local_userlist;
+        return (ArrayList<?>) local_userlist;
     }
 
     @Override
@@ -87,35 +88,50 @@ public class Portal_LocalFragment extends BasePortal_TabFragment {
                 //对对应的View进行赋值
                 viewHolder.setText(R.id.title, mainMessage.getName());
                 viewHolder.setText(R.id.project_code, mainMessage.getDistance()+" | "+ mainMessage.getBefore());
-                viewHolder.setText(R.id.yewu_type, mainMessage.getDisposition());
+                viewHolder.setText(R.id.yewu_type,mainMessage.getAge()+" | "+ mainMessage.getDisposition());
                 viewHolder.setText(R.id.tv_descri, mainMessage.getDescription());
 
-                TextView genderm= (TextView) viewHolder.getView(R.id.tvage_gender_male);
-                TextView genderw= (TextView) viewHolder.getView(R.id.tvage_gender_female);
+//                TextView genderm= (TextView) viewHolder.getView(R.id.tvage_gender_male);
+//                TextView genderw= (TextView) viewHolder.getView(R.id.tvage_gender_female);
                 ImageView yewu_code_m= (ImageView) viewHolder.getView(R.id.yewu_code_m);
                 ImageView yewu_code_w= (ImageView) viewHolder.getView(R.id.yewu_code_w);
 
+                ImageView tv_isvip= (ImageView) viewHolder.getView(R.id.tv_isvip);
+                if(mainMessage.isIsVip()){
+                    tv_isvip.setVisibility(View.VISIBLE);
+                }else{
+                    tv_isvip.setVisibility(View.GONE);
+                }
+
+
+                SimpleDraweeView portal_news_img = (SimpleDraweeView) viewHolder.getView(R.id.news_label_pic);
+                portal_news_img.setImageURI(Uri.parse(mainMessage.getPhotoUrl()));
+                GenericDraweeHierarchy hierarchy = portal_news_img.getHierarchy();
+
+
 
                 if(mainMessage.getGender()==1){
-                    genderm.setVisibility(View.VISIBLE);
-                    genderw.setVisibility(View.GONE);
-                    genderm.setText(mainMessage.getAge()+"");
+//                    genderm.setVisibility(View.VISIBLE);
+//                    genderw.setVisibility(View.GONE);
+//                    genderm.setText(mainMessage.getAge()+"");
                     yewu_code_m.setVisibility(View.VISIBLE);
                     yewu_code_w.setVisibility(View.GONE);
 
+                    hierarchy.setControllerOverlay(getResources().getDrawable(R.drawable.overlay_male));
+
                 }else{
-                    genderm.setVisibility(View.GONE);
-                    genderw.setVisibility(View.VISIBLE);
-                    genderw.setText(mainMessage.getAge()+"");
+//                    genderm.setVisibility(View.GONE);
+//                    genderw.setVisibility(View.VISIBLE);
+//                    genderw.setText(mainMessage.getAge()+"");
                     yewu_code_m.setVisibility(View.GONE);
                     yewu_code_w.setVisibility(View.VISIBLE);
+                    hierarchy.setControllerOverlay(getResources().getDrawable(R.drawable.overlay_fmale));
                 }
 
 
 
 
-                SimpleDraweeView portal_news_img = (SimpleDraweeView) viewHolder.getView(R.id.news_label_pic);
-                portal_news_img.setImageURI(Uri.parse(mainMessage.getPhotoUrl()));
+
             }
 
             @Override

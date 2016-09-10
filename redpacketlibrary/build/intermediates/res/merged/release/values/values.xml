@@ -61,7 +61,7 @@
     <color name="btn_gray_pressed_status">#b5b5b6</color>
     <color name="btn_green_noraml">#68C270</color>
     <color name="btn_green_pressed">#6FCD78</color>
-    <color name="btn_login_normal">#1FBBA6</color>
+    <color name="btn_login_normal">#26BCB5</color>
     <color name="btn_login_pressed">#46678d</color>
     <color name="btn_logout_normal">#d33f3f</color>
     <color name="btn_logout_pressed">#DA5A4D</color>
@@ -86,7 +86,7 @@
     <color name="common_bottom_bar_normal_bg">#2d2f31</color>
     <color name="common_bottom_bar_selected_bg">#161718</color>
     <color name="common_botton_bar_blue">#2ea7e0</color>
-    <color name="common_top_bar_blue">#1FBBA6</color>
+    <color name="common_top_bar_blue">#26BCB5</color>
     <!-- From: file:/D:/Program%20Files%20(x86)/android/AndroidStudioWorkPlace/WuWo/redpacketlibrary/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.1/res/values/values.xml -->
     <eat-comment/>
     <color name="dim_foreground_disabled_material_dark">#80bebebe</color>
@@ -127,6 +127,7 @@
     <color name="holo_green_light">#ff99cc00</color>
     <color name="holo_orange_light">#ffffbb33</color>
     <color name="holo_red_light">#ffff4444</color>
+    <color name="lightgray">#d3d3d3</color>
     <color name="list_itease_primary_color">#000</color>
     <color name="list_itease_secondary_color">#888888</color>
     <!-- From: file:/D:/Program%20Files%20(x86)/android/AndroidStudioWorkPlace/WuWo/redpacketlibrary/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.1/res/values/values.xml -->
@@ -184,7 +185,7 @@
     <color name="text_yellow">#FEE94E</color>
     <!-- From: file:/D:/Program%20Files%20(x86)/android/AndroidStudioWorkPlace/WuWo/redpacketlibrary/build/intermediates/exploded-aar/WuWo/easeui/unspecified/res/values/values.xml -->
     <eat-comment/>
-    <color name="top_bar_normal_bg">#1FBBA6</color>
+    <color name="top_bar_normal_bg">#26BCB5</color>
     <color name="voip_interface_text_color">#bababa</color>
     <declare-styleable name="ActionBar"><attr name="navigationMode"><enum name="normal" value="0"/><enum name="listMode" value="1"/><enum name="tabMode" value="2"/></attr><attr name="displayOptions"><flag name="none" value="0"/><flag name="useLogo" value="0x1"/><flag name="showHome" value="0x2"/><flag name="homeAsUp" value="0x4"/><flag name="showTitle" value="0x8"/><flag name="showCustom" value="0x10"/><flag name="disableHome" value="0x20"/></attr><attr name="title"/><attr format="string" name="subtitle"/><attr format="reference" name="titleTextStyle"/><attr format="reference" name="subtitleTextStyle"/><attr format="reference" name="icon"/><attr format="reference" name="logo"/><attr format="reference" name="divider"/><attr format="reference" name="background"/><attr format="reference|color" name="backgroundStacked"/><attr format="reference|color" name="backgroundSplit"/><attr format="reference" name="customNavigationLayout"/><attr name="height"/><attr format="reference" name="homeLayout"/><attr format="reference" name="progressBarStyle"/><attr format="reference" name="indeterminateProgressStyle"/><attr format="dimension" name="progressBarPadding"/><attr name="homeAsUpIndicator"/><attr format="dimension" name="itemPadding"/><attr format="boolean" name="hideOnContentScroll"/><attr format="dimension" name="contentInsetStart"/><attr format="dimension" name="contentInsetEnd"/><attr format="dimension" name="contentInsetLeft"/><attr format="dimension" name="contentInsetRight"/><attr format="dimension" name="elevation"/><attr format="reference" name="popupTheme"/></declare-styleable>
     <declare-styleable name="ActionBarLayout"><attr name="android:layout_gravity"/></declare-styleable>
