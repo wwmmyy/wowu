@@ -35,8 +35,7 @@ public class OkHttpUtils
 {
 
     public static String token = "";//用户保存登录成功后的token
-    public static String serverAbsolutePath = "http://api.imxianzhi.com/";//http://139.196.85.20/     http://api.imxianzhi.com/   http://139.196.110.136:7777/
-    //        GET Chat/GetUserInfo?userId={userId} &lon={lon}&lat={lat}获取目标用户的信息
+    public static String serverAbsolutePath = "hhhheee"
     public static String GetUserInfoURL = OkHttpUtils.serverAbsolutePath + "Chat/GetUserInfo" ;
 
     //用于发送token过期的广播标记
