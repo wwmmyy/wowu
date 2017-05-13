@@ -10,7 +10,7 @@ import java.util.Map;
 *desc GetBuilder
 *@author 王明远
 *@日期： 2016/1/14 16:41
-*@版权:Copyright 上海数慧系统有限公司  All rights reserved.
+*@版权:Copyright    All rights reserved.
 */
 
 public class GetBuilder extends OkHttpRequestBuilder

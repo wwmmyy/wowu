@@ -1,7 +1,5 @@
 package com.zhy.http.okhttp.service;
 
-import android.util.Log;
-
 import com.squareup.okhttp.MediaType;
 import com.squareup.okhttp.Request;
 import com.zhy.http.okhttp.OkHttpUtils;
@@ -69,18 +67,22 @@ public class LoadserverdataService {
                             public void onError(Request request, Exception e) {
                                 e.printStackTrace();
                                 if (mLoadListener != null) {
-                                    try {
-                                        JSONObject responseJson = new JSONObject(e.getMessage());
-                                        if (responseJson != null) {
-                                            mLoadListener.loadDataFailed(responseJson.optString("Message"), flag);  //因为返回值的格式统一：{"Message":"验证码错误"}，所以可以将错误信息直接统一解析出来
-                                        } else {
-                                            mLoadListener.loadDataFailed("返回值异常", flag);  //{"Message":"验证码错误"}
+                                    if (e.getMessage() != null && e.getMessage().equals("401")) {//说明是授权错误，token过期问题
+//                                    tryReLogin();
+                                        mLoadListener.loadDataFailed("401", flag);
+                                    } else {
+                                        try {
+                                            JSONObject responseJson = new JSONObject(e.getMessage());
+                                            if (responseJson != null) {
+                                                mLoadListener.loadDataFailed(responseJson.optString("Message"), flag);  //因为返回值的格式统一：{"Message":"验证码错误"}，所以可以将错误信息直接统一解析出来
+                                            } else {
+                                                mLoadListener.loadDataFailed("返回值异常", flag);  //{"Message":"验证码错误"}
+                                            }
+                                        } catch (Exception e2) {
+//                                        e2.printStackTrace();
+                                            mLoadListener.loadDataFailed(e.getMessage(), flag);  //{"Message":"验证码错误"}
                                         }
-                                    } catch (Exception e2) {
-                                        e2.printStackTrace();
-                                        mLoadListener.loadDataFailed(e.getMessage(), flag);  //{"Message":"验证码错误"}
                                     }
-
                                 }
                             }
 
@@ -105,7 +107,7 @@ public class LoadserverdataService {
 //                判断是否已经有token了，有的话在请求头加上
                 if (OkHttpUtils.token != null && !OkHttpUtils.token.equals("")) {
                     psb.addHeader("Authorization", "Bearer " + OkHttpUtils.token);
-                    Log.i("添加头文件WowuApp.token：：：", OkHttpUtils.token);
+                    //Log.i("添加头文件WowuApp.token：：：", OkHttpUtils.token);
                 }
 
                 psb.addHeader("content-type", "application/json")
@@ -115,24 +117,30 @@ public class LoadserverdataService {
                             @Override
                             public void onError(Request request, Exception e) {
                                 e.printStackTrace();
-                                Log.i("失败返回值为0", request.toString() + "xxxx");
+//                                Log.i("失败返回值为0", request.toString() + "xxxx");
 //                                mLoadListener.loadDataFailed(request.toString(), flag);
-                                try {
-                                    JSONObject responseJson = new JSONObject(e.getMessage());
-                                    if (responseJson != null) {
-                                        mLoadListener.loadDataFailed(responseJson.optString("Message"), flag);  //因为返回值的格式统一：{"Message":"验证码错误"}，所以可以将错误信息直接统一解析出来
-                                    } else {
-                                        mLoadListener.loadDataFailed("返回值异常", flag);  //{"Message":"验证码错误"}
+
+                                if (e.getMessage() != null && e.getMessage().equals("401")) {//说明是授权错误，token过期问题
+//                                    tryReLogin();
+                                    mLoadListener.loadDataFailed("401", flag);
+                                } else {
+                                    try {
+                                        JSONObject responseJson = new JSONObject(e.getMessage());
+                                        if (responseJson != null) {
+                                            mLoadListener.loadDataFailed(responseJson.optString("Message"), flag);  //因为返回值的格式统一：{"Message":"验证码错误"}，所以可以将错误信息直接统一解析出来
+                                        } else {
+                                            mLoadListener.loadDataFailed("返回值异常", flag);  //{"Message":"验证码错误"}
+                                        }
+                                    } catch (Exception e2) {
+                                        e2.printStackTrace();
+                                        mLoadListener.loadDataFailed(e.getMessage(), flag);  //{"Message":"验证码错误"}
                                     }
-                                } catch (Exception e2) {
-                                    e2.printStackTrace();
-                                    mLoadListener.loadDataFailed(e.getMessage(), flag);  //{"Message":"验证码错误"}
                                 }
                             }
 
                             @Override
                             public void onResponse(String response) {
-                                Log.i("成功返回值为", response + "xxxx");
+//                                 Log.i("成功返回值为", response + "xxxx");
                                 mLoadListener.loadServerData(response.toString(), flag);
                             }
                         });
@@ -140,5 +148,17 @@ public class LoadserverdataService {
         }).start();
     }
 
+    /**
+     * 如果是过期问题需要尝试重新在后台登录获取token
+     * <p/>
+     * 发送一个广播 广播重新登录的
+     * <p/>
+     * 由于没有传过来context没法发送广播
+     */
+    private void tryReLogin() {
+//        Intent intent = new Intent(OkHttpUtils.TOKEN_OUTDATE);
+//        intent.putExtra("token_out_date",  "");
+//        sendBroadcast(intent);
+    }
 
 }

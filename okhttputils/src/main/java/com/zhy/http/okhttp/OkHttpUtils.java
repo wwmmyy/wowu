@@ -2,6 +2,7 @@ package com.zhy.http.okhttp;
 
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
@@ -27,7 +28,7 @@ import javax.net.ssl.SSLSession;
 *desc OkHttpUtils
 *@author 王明远
 *@日期： 2016/1/14 16:13
-*@版权:Copyright 上海数慧系统有限公司  All rights reserved.
+*@版权:Copyright    All rights reserved.
 */
 
 public class OkHttpUtils
@@ -35,10 +36,11 @@ public class OkHttpUtils
 
     public static String token = "";//用户保存登录成功后的token
     public static String serverAbsolutePath = "http://api.imxianzhi.com/";//http://139.196.85.20/     http://api.imxianzhi.com/   http://139.196.110.136:7777/
-    //        GET Chat/GetUserInfo?userId={userId} 获取目标用户的信息
+    //        GET Chat/GetUserInfo?userId={userId} &lon={lon}&lat={lat}获取目标用户的信息
     public static String GetUserInfoURL = OkHttpUtils.serverAbsolutePath + "Chat/GetUserInfo" ;
 
-
+    //用于发送token过期的广播标记
+    public static String TOKEN_OUTDATE = "TOKEN_OUTDATE";
 
     public static final long DEFAULT_MILLISECONDS = 10000;
     private static OkHttpUtils mInstance;
@@ -136,9 +138,13 @@ public class OkHttpUtils
                 {
                     try
                     {
-//                        Log.e("服务器请求返回异常",response.toString()+"::::::::::::"+response.message()+":::"+response.body().string());
+                        Log.e("服务器请求返回异常状态码：",response.code()+":"+response.toString()+"::::::::::::"+response.message());
+                        if(response.code()==401){
+                            sendFailResultCallback(requestCall.getRequest(), new RuntimeException("401"), finalCallback);
+                        }else{
+                            sendFailResultCallback(requestCall.getRequest(), new RuntimeException(response.body().string()), finalCallback);
+                        }
 
-                        sendFailResultCallback(requestCall.getRequest(), new RuntimeException(response.body().string()), finalCallback);
 //                        Log.e("服务器请求返回异常",response.body().string());
                     } catch (IOException e)
                     {
