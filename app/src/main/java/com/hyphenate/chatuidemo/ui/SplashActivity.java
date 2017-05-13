@@ -10,8 +10,10 @@ import com.easemob.redpacketsdk.RPCallback;
 import com.easemob.redpacketsdk.RedPacket;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chatuidemo.DemoHelper;
+import com.wuwo.im.activity.LoginActivity;
+import com.wuwo.im.activity.MainActivity;
 
-import im.wuwo.com.wuwo.R;
+import im.imxianzhi.com.imxianzhi.R;
 
 /**
  * 开屏页

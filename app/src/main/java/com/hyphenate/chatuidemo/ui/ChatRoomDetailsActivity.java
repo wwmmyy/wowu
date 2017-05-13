@@ -46,7 +46,7 @@ import com.hyphenate.util.NetUtils;
 
 import java.util.List;
 
-import im.wuwo.com.wuwo.R;
+import im.imxianzhi.com.imxianzhi.R;
 
 public class ChatRoomDetailsActivity extends BaseActivity implements OnClickListener {
 	private static final String TAG = "ChatRoomDetailsActivity";

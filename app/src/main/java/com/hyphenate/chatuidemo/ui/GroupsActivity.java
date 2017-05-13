@@ -37,7 +37,7 @@ import com.hyphenate.exceptions.HyphenateException;
 
 import java.util.List;
 
-import im.wuwo.com.wuwo.R;
+import im.imxianzhi.com.imxianzhi.R;
 
 public class GroupsActivity extends BaseActivity {
 	public static final String TAG = "GroupsActivity";

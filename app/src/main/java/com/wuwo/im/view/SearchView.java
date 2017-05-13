@@ -12,7 +12,7 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 
-import im.wuwo.com.wuwo.R;
+import im.imxianzhi.com.imxianzhi.R;
 
 
 public class SearchView extends RelativeLayout {

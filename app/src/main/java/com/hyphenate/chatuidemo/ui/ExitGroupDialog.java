@@ -19,7 +19,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import im.wuwo.com.wuwo.R;
+import im.imxianzhi.com.imxianzhi.R;
 
 public class ExitGroupDialog extends BaseActivity{
     private TextView text;

@@ -5,7 +5,9 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
-import im.wuwo.com.wuwo.R;
+import com.net.grandcentrix.tray.AppPreferences;
+
+import im.imxianzhi.com.imxianzhi.R;
 
 public class UserPaySuccessActivity extends BaseLoadActivity {
 
@@ -13,6 +15,14 @@ public class UserPaySuccessActivity extends BaseLoadActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_pay_success);
+       int vipType = getIntent().getIntExtra("vipType", 1);
+
+
+        AppPreferences appPreferences = new AppPreferences(mContext.getApplicationContext());
+        appPreferences.put("IsVip",true);
+        appPreferences.put("vipType",vipType);
+        appPreferences.put("IsVip_state_changed",true);//增加这一个是为了，在vip状态变动后，附近的人页面获得状态刷新页面
+//        appPreferences.put("IsVip",false);
 
         initView();
 
@@ -21,10 +31,8 @@ public class UserPaySuccessActivity extends BaseLoadActivity {
     private void initView() {
         findViewById(R.id.return_back).setOnClickListener(this);
         findViewById(R.id.tv_set_pwd_finish).setOnClickListener(this);
-
         TextView top_title = (TextView) findViewById(R.id.top_title);
         top_title.setText("会员");
-
     }
 
 

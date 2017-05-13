@@ -56,7 +56,19 @@ public class UserDao {
 	//	登录者资料
 	public static final int CACHE_MAIN_OWNERINFO = 105;
 
-	
+
+	//	matchme资料
+	public static final int CACHE_MAIN_MATCHME = 106;
+
+	//	登录者资料
+	public static final int CACHE_MAIN_VISITEDME = 107;
+
+
+	//	保存Token用的
+	public static final int CACHE_MAIN_TOKEN = 108;
+
+
+
 	public UserDao(Context context) {
 	}
 

@@ -100,7 +100,7 @@
 ////                判断是否已经有token了，有的话在请求头加上
 //                if (OkHttpUtils.token != null && !OkHttpUtils.token.equals("")) {
 //                    psb.addHeader("Authorization", "Bearer " + OkHttpUtils.token);
-//                    Log.i("添加头文件WowuApp.token：：：", OkHttpUtils.token);
+//                    LogUtils.i("添加头文件WowuApp.token：：：", OkHttpUtils.token);
 //                }
 //
 //                psb.addHeader("content-type", "application/json")
@@ -110,7 +110,7 @@
 //                            @Override
 //                            public void onError(Request request, Exception e) {
 //                                e.printStackTrace();
-//                                Log.i("失败返回值为0", request.toString() + "xxxx");
+//                                LogUtils.i("失败返回值为0", request.toString() + "xxxx");
 ////                                mLoadListener.loadDataFailed(request.toString(), flag);
 //                                try {
 //                                    JSONObject responseJson = new JSONObject(e.getMessage());
@@ -127,7 +127,7 @@
 //
 //                            @Override
 //                            public void onResponse(String response) {
-//                                Log.i("成功返回值为", response + "xxxx");
+//                                LogUtils.i("成功返回值为", response + "xxxx");
 //                                mLoadListener.loadServerData(response.toString(), flag);
 //                            }
 //                        });

@@ -9,8 +9,8 @@
 
     <android.support.design.widget.CoordinatorLayout
         android:id="@+id/main_content"
-        android:layout_width="match_parent" 
-        android:layout_height="match_parent" >
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
         <!--    android:layout_below="@id/rt_top_intro"
           下面使用 appbar_scrolling_view_behavior 这个 Behavior，
           要收缩的 view 必须要放到 AppBarLayout 这个 design 库的 layout 中
@@ -26,204 +26,220 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:fitsSystemWindows="true"
-                fresco:expandedTitleGravity="center"
-                fresco:collapsedTitleTextAppearance="@style/GreyText"
                 fresco:collapsedTitleGravity="center"
-                fresco:expandedTitleTextAppearance="@style/TransparentText"
+                fresco:collapsedTitleTextAppearance="@style/GreyText"
                 fresco:contentScrim="@color/white"
+                fresco:expandedTitleGravity="center"
+                fresco:expandedTitleTextAppearance="@style/TransparentText"
                 fresco:layout_scrollFlags="scroll|exitUntilCollapsed">
                 <!--fresco:title="个人资料"-->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:background="@color/white"
-                android:orientation="vertical"
-                android:paddingBottom="3dp"
-                fresco:layout_scrollFlags="scroll|enterAlways">
-                <!--android:background="?attr/appbg"-->
 
-                <RelativeLayout
-                    android:id="@+id/rt_top"
-                    android:layout_width="fill_parent"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@color/white">
+                    android:layout_gravity="center_horizontal"
+                    android:background="@color/white"
+                    android:orientation="vertical"
+                    android:paddingBottom="3dp"
+                    fresco:layout_scrollFlags="scroll|enterAlways">
                     <!--android:background="?attr/appbg"-->
-                    <ImageView
-                        android:id="@+id/return_back"
-                        android:layout_width="100dp"
-                        android:layout_height="42dp"
-                        android:layout_centerVertical="true"
-                        android:layout_marginLeft="-32dp"
-                        android:clickable="true"
-                        android:gravity="center_vertical"
-                        android:padding="8dp"
-                        android:visibility="gone"
-                        android:src="@drawable/returnx" />
-                    <!--android:src="@drawable/back_a"-->
 
-                    <!-- <TextView
-                         android:id="@+id/title_tv"
-                         android:layout_width="wrap_content"
-                         android:layout_height="wrap_content"
-                         android:layout_centerInParent="true"
-                         android:gravity="center_horizontal"
-                         android:text="个人资料"
-                         android:textColor="#ffffff"
-                         android:textSize="20sp" />-->
-
-
-                    <com.facebook.drawee.view.SimpleDraweeView
-                        android:id="@+id/user_pic"
-                        android:layout_width="120dp"
-                        android:layout_height="120dp"
-                        android:layout_centerInParent="true"
-                        android:layout_gravity="center"
-                        android:gravity="center_horizontal"
-                        fresco:placeholderImage="@drawable/icon"
-                        fresco:roundedCornerRadius="5dp"
-                        fresco:roundTopLeft="false"
-                        fresco:roundTopRight="false"
-                        fresco:roundBottomLeft="true"
-                        fresco:roundBottomRight="true"/>
-<!--                    fresco:progressBarAutoRotateInterval="2000"
-                    fresco:progressBarImage="@drawable/con_progress_bar"
-                    fresco:progressBarImageScaleType="centerInside"-->
-                </RelativeLayout>
-                <RelativeLayout
-                    android:id="@+id/rt_top_intro"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/rt_top"
-                    android:background="@color/white">
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
+                    <RelativeLayout
+                        android:id="@+id/rt_top"
+                        android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:gravity="center"
-                        android:layout_centerInParent="true">
-                        <TextView
-                            android:id="@+id/tv_name"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:paddingLeft="10dp"
-                            android:paddingRight="10dp"
-                            android:singleLine="true"
-                            android:textColor="@color/darkgray"
-                            android:textSize="18sp"
-                            />
-
-                        <!--            android:text="21"
-                                    android:textColor="@color/red"
-                                    android:textSize="12sp"
-                                    android:background="@drawable/item_background_user_age"
-                                    android:gravity="center|left"-->
-                        <TextView
-                            android:id="@+id/tv_user_character"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="5dp"
-                            android:text="NHJD XX者"
-                            android:textColor="@color/darkgray"
-                            android:textSize="15sp" />
-
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:gravity="center_vertical|right"
-                        android:layout_marginRight="5dp"
-                        android:layout_alignParentRight="true">
-
+                        android:background="@color/white">
+                        <!--android:background="?attr/appbg"-->
                         <ImageView
-                            android:id="@+id/iv_sanguan_pick"
-                            android:layout_marginTop="5dp"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:src="@drawable/mate_blue"/>
+                            android:id="@+id/return_back"
+                            android:layout_width="100dp"
+                            android:layout_height="42dp"
+                            android:layout_centerVertical="true"
+                            android:layout_marginLeft="-32dp"
+                            android:clickable="true"
+                            android:gravity="center_vertical"
+                            android:padding="8dp"
+                            android:src="@drawable/returnx"
+                            android:visibility="gone" />
+                        <!--android:src="@drawable/back_a"-->
 
-                        <TextView
-                            android:id="@+id/tv_dis_time"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="center"
-                            android:padding="4dp"
-                            android:text="0.1KM | 10分钟"
-                            android:textColor="@color/darkgray"
-                            android:textSize="13sp" />
-
-                    </LinearLayout>
-
-                </RelativeLayout>
-
-
-
-
+                        <!-- <TextView
+                             android:id="@+id/title_tv"
+                             android:layout_width="wrap_content"
+                             android:layout_height="wrap_content"
+                             android:layout_centerInParent="true"
+                             android:gravity="center_horizontal"
+                             android:text="个人资料"
+                             android:textColor="#ffffff"
+                             android:textSize="20sp" />-->
 
 
-                <!--        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_horizontal"
+                        <com.facebook.drawee.view.SimpleDraweeView
+                            android:id="@+id/user_pic"
+                            android:layout_width="120dp"
+                            android:layout_height="120dp"
+                            android:layout_centerInParent="true"
+                            android:layout_gravity="center"
                             android:gravity="center_horizontal"
-                            android:orientation="horizontal"
-                            android:paddingBottom="3dp">
+                            fresco:placeholderImage="@drawable/placeholder"
+                            fresco:roundBottomLeft="true"
+                            fresco:roundBottomRight="true"
+                            fresco:roundTopLeft="false"
+                            fresco:roundTopRight="false"
+                            fresco:roundedCornerRadius="5dp" />
+                        <!--                    fresco:progressBarAutoRotateInterval="2000"
+                                            fresco:progressBarImage="@drawable/con_progress_bar"
+                                            fresco:progressBarImageScaleType="centerInside"-->
+
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/rt_top_intro"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/rt_top"
+                        android:background="@color/white">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:gravity="center"
+                            android:orientation="vertical">
 
                             <TextView
-                                android:id="@+id/contact_gender"
+                                android:id="@+id/tv_name"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:background="@drawable/item_background_user_age"
-                                android:gravity="center|left"
+                                android:layout_marginBottom="6dp"
+                                android:layout_marginTop="6dp"
                                 android:paddingLeft="10dp"
                                 android:paddingRight="10dp"
                                 android:singleLine="true"
+                                android:text="...."
+                                android:textColor="@color/black1"
+                                android:textSize="18sp" />
+
+                            <!--
+
                                 android:text="21"
-                                android:textColor="@color/red"
-                                android:textSize="12sp" />
+                                        android:textColor="@color/red"
+                                        android:textSize="12sp"
+                                        android:background="@drawable/item_background_user_age"
+                                        android:gravity="center|left"-->
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="5dp"
+                                android:layout_marginTop="5dp"
+                                android:gravity="center"
+                                android:orientation="horizontal">
+
+                                <LinearLayout
+                                    android:id="@+id/tv_user_character_lin"
+                                    android:layout_width="120dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginRight="10dp"
+                                    android:background="@drawable/item_background_test_normal2"
+                                    android:gravity="center"
+                                    android:orientation="horizontal">
+
+                                    <TextView
+                                        android:id="@+id/tv_user_character"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:drawableLeft="@drawable/mark"
+                                        android:drawablePadding="5dp"
+                                        android:gravity="center"
+                                        android:paddingBottom="5dp"
+                                        android:paddingTop="5dp"
+                                        android:text=".... ..者"
+                                        android:textColor="@color/black"
+                                        android:textSize="14sp" />
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:id="@+id/iv_sanguan_pick_lin"
+                                    android:layout_width="120dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="10dp"
+                                    android:background="@drawable/item_background_test_normal2"
+                                    android:gravity="center"
+                                    android:orientation="horizontal">
+
+                                    <TextView
+                                        android:id="@+id/iv_sanguan_pick"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:drawableLeft="@drawable/mark"
+                                        android:drawablePadding="5dp"
+                                        android:gravity="center"
+                                        android:paddingBottom="5dp"
+                                        android:paddingTop="5dp"
+                                        android:text="三观配"
+                                        android:textColor="@color/black"
+                                        android:textSize="14sp" />
+                                    <!--@drawable/item_background_test_normal  bg_user_info_text-->
+                                </LinearLayout>
+                            </LinearLayout>
 
                             <TextView
-                                android:id="@+id/tv_username"
-                                android:layout_width="wrap_content"
+                                android:id="@+id/tv_dis_time"
+                                android:layout_width="200dp"
                                 android:layout_height="wrap_content"
-                                android:layout_marginLeft="5dp"
-                                android:text="NHJD XX者"
-                                android:textColor="@color/white"
+                                android:gravity="center"
+                                android:padding="4dp"
+                                android:paddingTop="10dp"
+                                android:text="0.1KM | 10分钟"
+                                android:textColor="@color/darkgray"
                                 android:textSize="13sp" />
 
-                        </LinearLayout>-->
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:layout_marginRight="5dp"
+                            android:gravity="center_vertical|right"
+                            android:orientation="vertical"
+                            android:visibility="gone">
+
+                            <ImageView
+                                android:id="@+id/iv_sanguan_pick_bak"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="5dp"
+                                android:src="@drawable/mate_blue" />
 
 
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/pullLoadMoreRecyclerView"
-                    android:layout_width="match_parent"
-                    android:layout_height="80dp" />
+                        </LinearLayout>
 
-<!--                <TextView
-                    android:id="@+id/tv_dis_time"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:padding="4dp"
-                    android:text="0.1KM | 10分钟"
-                    android:textColor="@color/white"
-                    android:textSize="13sp" />-->
+                    </RelativeLayout>
 
-            </LinearLayout>
+                    <TextView
+                        android:id="@+id/rt_tixing"
+                        android:layout_width="match_parent"
+                        android:layout_height="25dp"
+                        android:background="#d0F7BB4B"
+                        android:gravity="center"
+                        android:text="完善资料让朋友更了解你"
+                        android:textColor="@color/black"
+                        android:textSize="13sp"
+                        android:visibility="gone" />
+
+
+                </LinearLayout>
 
                 <android.support.v7.widget.Toolbar
                     android:id="@+id/toolbar"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
+                    android:navigationIcon="@drawable/return_back"
                     fresco:layout_collapseMode="pin"
                     fresco:navigationIcon="@drawable/return2"
-                    android:navigationIcon="@drawable/return_back"
                     fresco:popupTheme="@style/AppTheme.PopupOverlay">
-
 
 
                     <TextView
@@ -231,9 +247,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_gravity="center"
+                        android:text="个人资料"
                         android:textSize="18sp"
-                        android:visibility="invisible"
-                        android:text="个人资料"/>
+                        android:visibility="invisible" />
 
                 </android.support.v7.widget.Toolbar>
 
@@ -241,57 +257,96 @@
             </android.support.design.widget.CollapsingToolbarLayout>
         </android.support.design.widget.AppBarLayout>
 
-        <!-- 下面的 list 指定 behavior   提供滑动的 view 支持 ListView、GridView、RecyclerView -->
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/rlist_view_content"
+        <!--        <android.support.v7.widget.RecyclerView
+                    android:id="@+id/pullLoadMoreRecyclerView"
+                    android:layout_width="match_parent"
+                    android:scrollbars="horizontal"
+                    android:layout_height="80dp" />-->
+        <android.support.v4.widget.NestedScrollView
+            android:id="@+id/nsv"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            fresco:layout_behavior="@string/appbar_scrolling_view_behavior" />
+            android:fillViewport="true"
+            android:scrollbars="none"
+            fresco:layout_behavior="@string/appbar_scrolling_view_behavior">
 
+            <!-- 下面的 list 指定 behavior   提供滑动的 view 支持 ListView、GridView、RecyclerView -->
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rlist_view_content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                fresco:layout_behavior="@string/appbar_scrolling_view_behavior" />
+        </android.support.v4.widget.NestedScrollView>
     </android.support.design.widget.CoordinatorLayout>
 
 
-        <RadioGroup
-            android:id="@+id/rg"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:background="@color/semi_transparent"
-            android:layout_gravity="center"
-            android:orientation="horizontal"
-            android:layout_alignParentBottom="true"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp">
+    <LinearLayout
+        android:id="@+id/rg"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:layout_gravity="center"
+        android:background="@color/semi_transparent"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp">
 
-            <RadioButton
-                android:id="@+id/rb_chat"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:background="#00000000"
-                android:button="@null"
-                android:drawableLeft="@drawable/chat2"
-                android:gravity="center"
-                android:paddingLeft="30dp"
-                android:paddingRight="30dp"
-                android:text="对话"
-                android:textColor="@color/white"
-                android:textSize="16sp" />
+        <LinearLayout
+            android:id="@+id/ln_guanzhu"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="horizontal">
 
-            <RadioButton
+            <TextView
                 android:id="@+id/rb_guanzhu"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
                 android:background="#00000000"
                 android:button="@null"
-                android:drawableLeft="@drawable/follow"
-                android:drawablePadding="5dp"
+                android:drawableLeft="@drawable/btn_follow"
+                android:drawablePadding="12dp"
                 android:gravity="center"
                 android:paddingLeft="30dp"
                 android:paddingRight="30dp"
                 android:text="关注"
-                android:textColor="@color/white"
+                android:textColor="@color/colorPrimary"
                 android:textSize="16sp" />
+        </LinearLayout>
 
-        </RadioGroup>
+
+        <View
+            android:id="@+id/v_line"
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp"
+            android:background="#6f26BCB5" />
+
+        <LinearLayout
+            android:id="@+id/ln_chat"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/rb_chat"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:background="#00000000"
+                android:button="@null"
+                android:drawableLeft="@drawable/btn_chat"
+                android:drawablePadding="12dp"
+                android:gravity="center"
+                android:paddingLeft="30dp"
+                android:paddingRight="30dp"
+                android:text="对话"
+                android:textColor="@color/colorPrimary"
+                android:textSize="16sp" />
+        </LinearLayout>
+    </LinearLayout>
 </RelativeLayout>

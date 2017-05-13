@@ -12,7 +12,8 @@ import android.util.Log;
 
 import java.io.FileDescriptor;
 
-import im.wuwo.com.wuwo.BuildConfig;
+import im.imxianzhi.com.imxianzhi.BuildConfig;
+
 
 public class ImageResizer extends ImageWorker {
 	private static final String TAG = "ImageResizer";

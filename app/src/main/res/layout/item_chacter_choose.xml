@@ -6,13 +6,16 @@
     <TextView
         android:id="@+id/tv_choose"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/item_background_selector_grid_nocorn"
+        android:layout_height="match_parent"
         android:gravity="center"
         android:textColor="@color/white"
         android:padding="10dp"
         android:textSize="15sp" />
 <!--    android:layout_marginRight="1dp"
     android:layout_marginBottom="1dp"-->
-    <!--  android:background="@drawable/bt_border_register_normal" @drawable/bg_bordergray-->
+
+    <!--
+        android:background="@color/colorPrimary2"
+     android:background="@drawable/iv_blcakuser_img"
+    android:background="@drawable/bt_border_register_normal" @drawable/bg_bordergray-->
 </RelativeLayout>

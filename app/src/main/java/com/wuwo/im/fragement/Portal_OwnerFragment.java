@@ -15,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,13 +25,17 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.hyphenate.EMCallBack;
 import com.hyphenate.chatuidemo.DemoHelper;
-import com.wuwo.im.activity.MyCharacterResultActivity;
+import com.hyphenate.chatuidemo.db.DemoDBManager;
+import com.net.grandcentrix.tray.AppPreferences;
+import com.wuwo.im.activity.BlackUserActivity;
+import com.wuwo.im.activity.CharacterDetailActivity;
 import com.wuwo.im.activity.OwnerInfoEditActivity;
 import com.wuwo.im.activity.UserBindPhoneActivity;
 import com.wuwo.im.activity.UserModifyPasswdActivity;
 import com.wuwo.im.activity.UserPayActivity;
 import com.wuwo.im.activity.UserPaySuccessActivity;
 import com.wuwo.im.activity.UserSetWarnActivity;
+import com.wuwo.im.activity.VisitedMeUsersActivity;
 import com.wuwo.im.bean.Characters;
 import com.wuwo.im.bean.UserInfoDetail;
 import com.wuwo.im.config.ExitApp;
@@ -44,10 +49,11 @@ import org.json.JSONObject;
 
 import java.lang.ref.WeakReference;
 
-import im.wuwo.com.wuwo.R;
+import im.imxianzhi.com.imxianzhi.R;
 
 /**
  * 首页 设置 fragment
+ * AppPreferences appPreferences = new AppPreferences(mContext.getApplicationContext());
  *
  * @author dewyze
  */
@@ -61,6 +67,8 @@ public class Portal_OwnerFragment extends BaseAppFragment implements View.OnClic
     SharedPreferences.Editor editor;
     LoadserverdataService loadDataService;
     TextView tv_user_id, tv_usertype, tv_my_character;
+    TextView user_login_name;
+    ImageView iv_isvip;
 
     @Override
     public void onAttach(Activity activity) {
@@ -102,18 +110,25 @@ public class Portal_OwnerFragment extends BaseAppFragment implements View.OnClic
 
         SimpleDraweeView draweeView = (SimpleDraweeView) view.findViewById(R.id.user_login_pic);
 //        draweeView.setImageURI(Uri.parse(DistApp.userImagePath + mSettings.getString("userid", "") + ".jpg"));
-        draweeView.setImageURI(Uri.parse(WowuApp.iconPath));//"http://www.gog.com.cn/pic/0/10/91/11/10911138_955870.jpg"
+        if (WowuApp.iconPath != null && !WowuApp.iconPath.equals("")) {
+            draweeView.setImageURI(Uri.parse(WowuApp.iconPath));//"http://www.gog.com.cn/pic/0/10/91/11/10911138_955870.jpg"
+        }
 
-        ((TextView) view.findViewById(R.id.user_login_name)).setText(WowuApp.Name);
+
+        user_login_name = ((TextView) view.findViewById(R.id.user_login_name));
+        user_login_name.setText(WowuApp.Name);
 
         view.findViewById(R.id.update_pwd).setOnClickListener(this);
         view.findViewById(R.id.message_warn).setOnClickListener(this);
         view.findViewById(R.id.bind_phone).setOnClickListener(this);
         view.findViewById(R.id.bind_pay).setOnClickListener(this);
         view.findViewById(R.id.rt_my_character).setOnClickListener(this);
+        view.findViewById(R.id.rt_chakanfangke).setOnClickListener(this);
+        view.findViewById(R.id.rt_heimingdan).setOnClickListener(this);
 
         tv_user_id = (TextView) view.findViewById(R.id.tv_user_id);
         tv_usertype = (TextView) view.findViewById(R.id.tv_usertype);
+        iv_isvip = (ImageView) view.findViewById(R.id.iv_isvip);
         tv_my_character = (TextView) view.findViewById(R.id.tv_my_character);
         loadData();
     }
@@ -131,12 +146,16 @@ public class Portal_OwnerFragment extends BaseAppFragment implements View.OnClic
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        switch (resultCode) {
+        switch (requestCode) {
             case 0:
                 Boolean soguduIsOpen = mSettings.getBoolean("gestureIsOpen", false);
                 break;
             case WowuApp.ALIPAY:
                 loadData();
+                break;
+            case USER_INFO_EDIT:
+                loadData();
+//                MyToast.show(mContext,"xiangyingle "+ data.getExtras(). getBoolean("changed"));
                 break;
         }
 
@@ -144,6 +163,8 @@ public class Portal_OwnerFragment extends BaseAppFragment implements View.OnClic
 
     Intent intent2 = new Intent();
     AlertDialog dialog;
+
+    private final int USER_INFO_EDIT = 100;
 
     public void onClick(View v) {
         // TODO 自动生成的方法存根
@@ -167,18 +188,24 @@ public class Portal_OwnerFragment extends BaseAppFragment implements View.OnClic
                                             e.printStackTrace();
                                         }
 
-/*                                        DemoHelper.getInstance().logout(false, new EMCallBack(){
-                                            @Override
-                                            public void onSuccess() {
-                                            }
-                                            @Override
-                                            public void onError(int i, String s) {
-                                            }
-                                            @Override
-                                            public void onProgress(int i, String s) {
-                                            }
-                                        });*/
+                                        try {
+                                            DemoHelper.getInstance().logout(false, new EMCallBack() {
+                                                @Override
+                                                public void onSuccess() {
+                                                }
 
+                                                @Override
+                                                public void onError(int i, String s) {
+                                                }
+
+                                                @Override
+                                                public void onProgress(int i, String s) {
+                                                }
+                                            });
+                                        } catch (Exception e) {
+                                            e.printStackTrace();
+                                        }
+                                        DemoDBManager.getInstance().deleteTable();
                                     }
                                 })
                         .setNegativeButton("取消",
@@ -214,7 +241,8 @@ public class Portal_OwnerFragment extends BaseAppFragment implements View.OnClic
 
                 intent2.setClass(mContext, OwnerInfoEditActivity.class);
 //                intent2.putExtra("UserDetail", mUserDetail);
-                mContext.startActivity(intent2);
+//                mContext.startActivity(intent2);
+                mContext.startActivityForResult(intent2, USER_INFO_EDIT);
                 getActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
 
                 break;
@@ -227,7 +255,7 @@ public class Portal_OwnerFragment extends BaseAppFragment implements View.OnClic
 //                break;
 
             case R.id.rt_my_character:
-                Intent temp1Intent = new Intent(mContext, MyCharacterResultActivity.class);
+                Intent temp1Intent = new Intent(mContext, CharacterDetailActivity.class);//MyCharacterResultActivity
                 startActivity(temp1Intent);
                 mContext.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                 break;
@@ -249,14 +277,31 @@ public class Portal_OwnerFragment extends BaseAppFragment implements View.OnClic
 
             case R.id.bind_pay:
 
-                if(mUserDetail!=null && mUserDetail.isIsVip()){
+                if (mUserDetail != null && mUserDetail.isIsVip()) {
                     intent2.setClass(mContext, UserPaySuccessActivity.class);
-                }else{
+//                    AppPreferences appPreferences = new AppPreferences(mContext.getApplicationContext());
+//                    appPreferences.put("IsVip",mUserDetail.isIsVip());
+                } else {
                     intent2.setClass(mContext, UserPayActivity.class);
+                    if (mUserDetail != null) intent2.putExtra("isVip", mUserDetail.isIsVip());
                 }
                 mContext.startActivityForResult(intent2, WowuApp.ALIPAY);
                 getActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                 break;
+
+
+            case R.id.rt_chakanfangke:
+                intent2.setClass(mContext, VisitedMeUsersActivity.class);
+                mContext.startActivity(intent2);
+                getActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                break;
+            case R.id.rt_heimingdan:
+                intent2.setClass(mContext, BlackUserActivity.class);
+                mContext.startActivity(intent2);
+                getActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                break;
+
+
             default:
                 break;
         }
@@ -277,10 +322,10 @@ public class Portal_OwnerFragment extends BaseAppFragment implements View.OnClic
                         pd.dismiss();
 
                         SharedPreferences.Editor editor = mSettings.edit();
-                        editor.putString("username", "");
-                        editor.putString("password", "");
-//                                        editor.putBoolean("login_auto_check", false);
-                        editor.putBoolean("login_save_pwd_check", false);
+//                        editor.putString("username", "");
+//                        editor.putString("password", "");
+//                        editor.putBoolean("login_save_pwd_check", false);
+                        editor.clear();
                         editor.commit();
 
                         //            彻底退出应用程序，经测试，效果很好
@@ -325,26 +370,39 @@ public class Portal_OwnerFragment extends BaseAppFragment implements View.OnClic
     mHandlerWeak mtotalHandler;
     public static final int DOWNLOADED_LocalUser = 0;
     public static final int DOWNLOADED_Contact = 1;
-    public Characters mCharacter=null;
+    public Characters mCharacter = null;
 
     @Override
     public void loadServerData(final String response, int flag) {
         switch (flag) {
             case R.id.clear_cache_quit:
-                SharedPreferences.Editor editor = mSettings.edit();
-                editor.putString("username", "");
-                editor.putString("password", "");
-//                                        editor.putBoolean("login_auto_check", false);
-                editor.putBoolean("login_save_pwd_check", false);
-                editor.commit();
 
                 //            彻底退出应用程序，经测试，效果很好
                 Intent startMain = new Intent(Intent.ACTION_MAIN);
                 startMain.addCategory(Intent.CATEGORY_HOME);
                 startMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(startMain);
-                ExitApp.getInstance().exit();
-                System.exit(0);
+
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+
+                        DemoDBManager.getInstance().deleteTable();
+
+
+                        SharedPreferences.Editor editor = mSettings.edit();
+/*                editor.putString("username", "");
+                editor.putString("password", "");
+//                                        editor.putBoolean("login_auto_check", false);
+                editor.putBoolean("login_save_pwd_check", false);*/
+                        editor.clear();
+                        editor.commit();
+                        ExitApp.getInstance().exit();
+                        System.exit(0);
+                    }
+                }).start();
+
+
                 dialog.dismiss();
                 break;
 
@@ -387,7 +445,7 @@ public class Portal_OwnerFragment extends BaseAppFragment implements View.OnClic
 
                         Message msg = new Message();
                         msg.what = DOWNLOADED_Contact;
-                        msg.obj=response;
+                        msg.obj = response;
                         mtotalHandler.sendMessage(msg);
                     }
                 }).start();
@@ -403,10 +461,12 @@ public class Portal_OwnerFragment extends BaseAppFragment implements View.OnClic
             java.lang.reflect.Type type = new com.google.gson.reflect.TypeToken<UserInfoDetail>() {
             }.getType();
             mUserDetail = gson.fromJson(totalresult, type);
+            WowuApp.Name = mUserDetail.getName();
 // 保存用户信息到sp
             SharedPreferences.Editor editor = mSettings.edit();
             editor.putString("userNumber", mUserDetail.getUserNumber());
             editor.putBoolean("isVip", mUserDetail.isIsVip());
+            editor.putInt("VipType", mUserDetail.getVipLevel());
             editor.commit();
         }
     }
@@ -439,19 +499,62 @@ public class Portal_OwnerFragment extends BaseAppFragment implements View.OnClic
 //                    }
 
                     WowuApp.XianZhiNumber = act.mUserDetail.getUserNumber();
-                    act.tv_user_id.setText("先知号 | " + WowuApp.XianZhiNumber);
-                    act.tv_usertype.setText(act.mUserDetail.isIsVip() == true ? "已开通" : "普通用户");
+                    act.tv_user_id.setText("先知号: " + WowuApp.XianZhiNumber);
+//                    act.tv_usertype.setText(act.mUserDetail.isIsVip() == true ? "已开通" : "普通用户");
+                    if (act.mUserDetail.isIsVip()) {
+                        if (act.mUserDetail.getVipLevel() == 5) {
+                            act.iv_isvip.setImageResource(R.drawable.svip);
+                        } else {
+                            act.iv_isvip.setImageResource(R.drawable.vip);
+                        }
+                    } else {
+                        act.iv_isvip.setImageResource(R.drawable.no_vip);
+                    }
 
+                    act.user_login_name.setText(WowuApp.Name);
+                    AppPreferences appPreferences = new AppPreferences(act.mContext.getApplicationContext());
+                    appPreferences.put("IsVip", act.mUserDetail.isIsVip());
+                    appPreferences.put("VipType", act.mUserDetail.getVipLevel());
                     break;
-
                 case DOWNLOADED_Contact:
-                    act.tv_my_character.setText(act.mCharacter.getName()+act.mCharacter.getTitle());
+                    act.tv_my_character.setText(act.mCharacter.getName() + act.mCharacter.getTitle());
 
+                    AppPreferences appPreferences2 = new AppPreferences(act.mContext.getApplicationContext());
+                    appPreferences2.put("characterType", act.mCharacter.getName() + act.mCharacter.getTitle());
+//                    appPreferences2.put("characterChanged",true);
                     break;
             }
         }
     }
 
+    private boolean refreshState = false;
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (refreshState) {
+            AppPreferences appPreferences = new AppPreferences(mContext.getApplicationContext());
+//            tv_usertype.setText(appPreferences.getBoolean("IsVip", false) == true ? "已开通" : "普通用户");
+            if (appPreferences.getBoolean("IsVip", false)) {
+                if (appPreferences.getInt("VipType", 0) == 5) {
+                    iv_isvip.setImageResource(R.drawable.svip);
+                } else {
+                    iv_isvip.setImageResource(R.drawable.vip);
+                }
+            } else {
+                iv_isvip.setImageResource(R.drawable.no_vip);
+            }
+            user_login_name.setText(WowuApp.Name);
+            tv_my_character.setText(appPreferences.getString("characterType", tv_my_character.getText().toString()));
+            refreshState = false;
+        }
+    }
+
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        refreshState = true;
+    }
 
     @Override
     public void loadDataFailed(String response, int flag) {

@@ -19,7 +19,7 @@ import com.wuwo.im.util.UtilsTool;
 
 import java.util.ArrayList;
 
-import im.wuwo.com.wuwo.R;
+import im.imxianzhi.com.imxianzhi.R;
 
 /**
  * @author yangyu

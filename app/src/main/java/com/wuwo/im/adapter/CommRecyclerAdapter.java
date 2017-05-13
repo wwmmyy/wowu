@@ -12,7 +12,7 @@ import java.util.List;
 *desc
 *@author 王明远
 *@日期： 2016/2/3 17:08
-*@版权:Copyright 上海数慧系统有限公司  All rights reserved.
+*@版权:Copyright    All rights reserved.
 */
 public abstract class CommRecyclerAdapter<T> extends RecyclerView.Adapter<CommRecyclerViewHolder> {
     protected Context mContext;
@@ -31,7 +31,9 @@ public abstract class CommRecyclerAdapter<T> extends RecyclerView.Adapter<CommRe
     }
 
     public void setData(List<T> list) {
-        this.mdate.addAll(list);
+        if(list!=null){
+            this.mdate.addAll(list);
+        }
         notifyDataSetChanged();
     }
 

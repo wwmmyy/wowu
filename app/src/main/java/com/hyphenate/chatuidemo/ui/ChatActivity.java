@@ -6,10 +6,10 @@ import android.support.annotation.NonNull;
 
 import com.hyphenate.chatuidemo.runtimepermissions.PermissionsManager;
 import com.hyphenate.easeui.EaseConstant;
-import com.hyphenate.easeui.ui.EaseChatFragment;
 import com.hyphenate.util.EasyUtils;
+import com.wuwo.im.activity.MainActivity;
 
-import im.wuwo.com.wuwo.R;
+import im.imxianzhi.com.imxianzhi.R;
 
 /**
  * chat activity，EaseChatFragment was used {@link   }
@@ -59,11 +59,15 @@ public class ChatActivity extends BaseActivity{
     @Override
     public void onBackPressed() {
         chatFragment.onBackPressed();
-        if (EasyUtils.isSingleActivity(this)) {
-            Intent intent = new Intent(this, MainActivity.class);
-            startActivity(intent);
-        }
+        try {
+            if (EasyUtils.isSingleActivity(this)) {
+                Intent intent = new Intent(this, MainActivity.class);
+                startActivity(intent);
+            }
             overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
     
     public String getToChatUsername(){

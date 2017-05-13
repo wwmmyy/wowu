@@ -10,13 +10,14 @@ import android.content.pm.PackageManager;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
-import android.util.Log;
+
+import com.wuwo.im.util.LogUtils;
 
 public class GCMPushBroadCast extends BroadcastReceiver {
 
 	@Override
 	public void onReceive(Context context, Intent intent) {
-		Log.i("info", "gcmpush onreceive");
+		LogUtils.i("info", "gcmpush onreceive");
 		String alert = intent.getStringExtra("alert");
 		sendNotification(context, alert, true);
 	}

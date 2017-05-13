@@ -30,7 +30,7 @@ import com.hyphenate.chat.EMGroup;
 
 import java.util.List;
 
-import im.wuwo.com.wuwo.R;
+import im.imxianzhi.com.imxianzhi.R;
 
 public class GroupAdapter extends ArrayAdapter<EMGroup> {
 

@@ -40,7 +40,7 @@ import com.hyphenate.util.NetUtils;
 import java.util.Hashtable;
 import java.util.Map;
 
-import im.wuwo.com.wuwo.R;
+import im.imxianzhi.com.imxianzhi.R;
 
 /**
  * contact list

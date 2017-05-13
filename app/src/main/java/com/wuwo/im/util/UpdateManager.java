@@ -12,7 +12,6 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AlertDialog;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ProgressBar;
@@ -30,7 +29,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Properties;
 
-import im.wuwo.com.wuwo.R;
+import im.imxianzhi.com.imxianzhi.R;
 
 /**
  * 检查更新
@@ -184,7 +183,7 @@ public class UpdateManager implements loadServerDataListener {
 
             url = serverProtocol + "://" + serverHost + ":" + serverPort + serverContext + serverProvider + type;
 
-            Log.i("拼接成的ip地址为：：", url);
+            LogUtils.i("拼接成的ip地址为：：", url);
 
         } catch (Exception e1) {
             // TODO Auto-generated catch block
@@ -330,7 +329,7 @@ public class UpdateManager implements loadServerDataListener {
                 "AndroidDownloadUrl":"http://www.imxianzhi.com/先知先觉.apk",
                 "AndroidRequrie":false,"IosVersionName":"内测版","IosVersionCode":"1.0",
                 "IosDescription":"","IosUpdateTime":"2016-08-25","IosRequrie":false,"VersionPreview":"<p>这个版本好啊。</p>\n"}*/
-        Log.d("UpdateManager获取的当前版本：", "app版本：" + response);
+//        Log.d("UpdateManager获取的当前版本：", "app版本：" + response);
         // TODO 自动生成的方法存根
         new Thread(new Runnable() {
             @Override
@@ -341,6 +340,8 @@ public class UpdateManager implements loadServerDataListener {
                     new_version_url = obj.optString("AndroidDownloadUrl");
                     info = obj.optString("AndroidDescription");
                     versionCode = getVersionCode(mContext)+"";;
+
+                    LogUtils.i("update",currentversion.trim()+"::::::"+versionCode+";");
 //                              // 版本判断
                     if (!currentversion.trim().equals(versionCode.trim())) {
                         handler.sendEmptyMessage(0);

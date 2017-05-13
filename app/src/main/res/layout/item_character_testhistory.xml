@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/item_background_selector_light"
+    android:gravity="center_vertical"
+    android:minHeight="80dp"
+    android:orientation="horizontal"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp">
+    <!--android:background="?selectableItemBackground"-->
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="2dp"
+            android:paddingRight="10dp"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_label_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="08/196" />
+            <TextView
+                android:id="@+id/tv_label_time0"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textSize="13sp"
+                android:text="2016" />
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/character_type"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/normal" />
+
+
+        <!--        <com.facebook.drawee.view.SimpleDraweeView
+                    android:id="@+id/character_type"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_gravity="center"
+                    fresco:placeholderImage="@drawable/choose_2"
+                    fresco:retryImageScaleType="focusCrop"
+                    fresco:actualImageScaleType="focusCrop"
+                    fresco:placeholderImageScaleType="centerInside"
+                    fresco:roundedCornerRadius="12dp" />-->
+        <!--fresco:roundAsCircle="true"
+            fresco:progressBarAutoRotateInterval="2000"
+            fresco:progressBarImage="@drawable/con_progress_bar"-->
+    </LinearLayout>
+    <!-- android:gravity="center_vertical" -->
+
+
+    <TextView
+        android:id="@+id/contract_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_weight="1.0"
+        android:gravity="center|left"
+        android:singleLine="true"
+        android:text="xxxxxxxxxxxxxx "
+        android:textColor="#000000"
+        android:textSize="16sp" />
+    <TextView
+        android:id="@+id/tv_test_history"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:drawablePadding="5dp"
+        android:padding="10dp"
+        android:textColor="@color/googleplus" />
+
+
+
+
+    <ImageView
+        android:layout_marginRight="10dp"
+        android:id="@+id/iv_character_set"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:src="@drawable/normal"  />
+
+
+
+    <!--
+      android:drawableRight="@drawable/morex"
+
+    <FrameLayout
+            android:id="@+id/fl_contact_add"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/contact_add"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="@drawable/login_textboard"
+                android:gravity="center"
+                android:paddingBottom="7dp"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:paddingTop="7dp"
+                android:text="添加"
+                android:textColor="@color/colorPrimary"
+                android:textSize="16sp" />
+        </FrameLayout>-->
+</LinearLayout>
+
+
+

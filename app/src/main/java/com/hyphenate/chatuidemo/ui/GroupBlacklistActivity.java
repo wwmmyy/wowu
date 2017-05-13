@@ -20,7 +20,7 @@ import com.hyphenate.exceptions.HyphenateException;
 import java.util.Collections;
 import java.util.List;
 
-import im.wuwo.com.wuwo.R;
+import im.imxianzhi.com.imxianzhi.R;
 
 public class GroupBlacklistActivity extends BaseActivity {
 	private ListView listView;

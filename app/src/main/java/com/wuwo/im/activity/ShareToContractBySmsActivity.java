@@ -19,7 +19,13 @@ import com.wuwo.im.util.UtilsTool;
 
 import java.util.ArrayList;
 
-import im.wuwo.com.wuwo.R;
+import im.imxianzhi.com.imxianzhi.R;
+/** 
+*desc  发短信分享给好友
+*@author 王明远
+*@日期： 2016/9/20 23:07
+*@版权:Copyright
+*/
 
 public class ShareToContractBySmsActivity extends BaseLoadActivity {
     Context mContext = ShareToContractBySmsActivity.this;

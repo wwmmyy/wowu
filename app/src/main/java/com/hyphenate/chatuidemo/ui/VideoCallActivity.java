@@ -47,7 +47,7 @@ import com.hyphenate.util.PathUtil;
 
 import java.util.UUID;
 
-import im.wuwo.com.wuwo.R;
+import im.imxianzhi.com.imxianzhi.R;
 
 public class VideoCallActivity extends CallActivity implements OnClickListener {
 

@@ -64,7 +64,7 @@
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="1dp"
-                    android:background="@drawable/icon"
+                    android:background="@drawable/placeholder"
                     android:gravity="center_vertical" />
             </FrameLayout>
             <!-- android:gravity="center_vertical" -->
@@ -204,7 +204,7 @@
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="1dp"
-                    android:background="@drawable/icon"
+                    android:background="@drawable/placeholder"
                     android:gravity="center_vertical" />
             </FrameLayout>
             <!-- android:gravity="center_vertical" -->
@@ -342,7 +342,7 @@
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="1dp"
-                    android:background="@drawable/icon"
+                    android:background="@drawable/placeholder"
                     android:gravity="center_vertical" />
             </FrameLayout>
             <!-- android:gravity="center_vertical" -->

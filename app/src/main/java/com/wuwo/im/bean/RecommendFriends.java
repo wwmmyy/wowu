@@ -8,8 +8,7 @@ package com.wuwo.im.bean;
 
 public class RecommendFriends {
 
-
-    /**
+     /**
      * UserId : cb510cdf98ca4b9f9082051bf7190ff4
      * PhotoUrl : http://xzxj.oss-cn-shanghai.aliyuncs.com/user/c7f13738-1768-406d-a914-53278f2a0835x480.jpg
      * Gender : 0
@@ -21,9 +20,18 @@ public class RecommendFriends {
     private String PhotoUrl;
     private int Gender;
     private String Name;
+    private String RemarkName;
     private Object Description;
 
     private  boolean addState;
+
+    public String getRemarkName() {
+        return RemarkName;
+    }
+
+    public void setRemarkName(String remarkName) {
+        RemarkName = remarkName;
+    }
 
     public boolean isAddState() {
         return addState;

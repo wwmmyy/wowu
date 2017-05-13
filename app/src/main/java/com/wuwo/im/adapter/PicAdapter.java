@@ -9,12 +9,13 @@ import android.view.ViewGroup;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.wuwo.im.bean.UserInfoDetail;
+import com.wuwo.im.util.UtilsTool;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import im.wuwo.com.wuwo.R;
+import im.imxianzhi.com.imxianzhi.R;
 
 /**
  * desc
@@ -28,6 +29,12 @@ public class PicAdapter extends RecyclerView.Adapter<PicAdapter.ViewHolder> {
 
     private Context mContext;
     private List<UserInfoDetail.PhotosBean> dataList;
+
+    private int  layoutResource= R.layout.item_userpic_recycler;
+    /**
+     * 设置图片显示的品质，下载图片不受影响
+     */
+    int width = 70, height = 70;
 
     public List<UserInfoDetail.PhotosBean> getDataList() {
         return dataList;
@@ -49,7 +56,15 @@ public class PicAdapter extends RecyclerView.Adapter<PicAdapter.ViewHolder> {
         this.dataList.addAll(list);
         notifyDataSetChanged();
     }
-
+    public PicAdapter(Context context, List<UserInfoDetail.PhotosBean> dataList,int LayoutResource) {
+        if(dataList==null){
+            this.dataList=new ArrayList<UserInfoDetail.PhotosBean>();
+        }else{
+            this.dataList = dataList;
+        }
+        this.layoutResource = LayoutResource;
+        mContext = context;
+    }
 
     public PicAdapter(Context context, List<UserInfoDetail.PhotosBean> dataList) {
         if(dataList==null){
@@ -101,7 +116,7 @@ public class PicAdapter extends RecyclerView.Adapter<PicAdapter.ViewHolder> {
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_userpic_recycler, parent, false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(layoutResource, parent, false);
         return new ViewHolder(v);
     }
 
@@ -115,7 +130,8 @@ public class PicAdapter extends RecyclerView.Adapter<PicAdapter.ViewHolder> {
             }else{
                 File photo = new File(dataList.get(position).getLocalPath());
                 Uri  imageUri = Uri.fromFile(photo);
-                holder.portal_news_img.setImageURI(imageUri);
+//                holder.portal_news_img.setImageURI(imageUri);
+                UtilsTool.comPressPic(holder.portal_news_img, imageUri,width, height);
             }
         }
 
@@ -143,6 +159,8 @@ public class PicAdapter extends RecyclerView.Adapter<PicAdapter.ViewHolder> {
 
 
     }
+
+
 
     @Override
     public int getItemCount() {

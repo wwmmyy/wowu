@@ -4,25 +4,46 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/app_bg"
-    android:orientation="vertical"
-    android:gravity="center_horizontal" >
+    android:gravity="center_horizontal"
+    android:orientation="vertical">
 
 
     <RelativeLayout
         android:layout_width="fill_parent"
-        android:layout_height="50dp"
-        android:background="?attr/appbg">
+        android:background="@color/white"
+        android:layout_height="50dp">
+        <!--android:background="?attr/appbg"-->
 
-        <ImageView
+
+        <RelativeLayout
             android:id="@+id/return_back0"
-            android:layout_width="100dp"
-            android:layout_height="50dp"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="-32dp"
-            android:clickable="true"
-            android:src="@drawable/back_a"
-            android:padding="8dp"
-            android:gravity="center_vertical"  />
+            android:layout_width="50dip"
+            android:layout_height="match_parent"
+            android:background="@drawable/ease_common_tab_bg"
+            android:clickable="true">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="42dp"
+                android:layout_centerInParent="true"
+                android:layout_centerVertical="true"
+                android:gravity="center_vertical"
+                android:padding="12dp"
+                android:scaleType="centerInside"
+                android:src="@drawable/return2" />
+        </RelativeLayout>
+
+        <!--
+            <ImageView
+                android:id="@+id/return_back0"
+                android:layout_width="100dp"
+                android:layout_height="50dp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="-32dp"
+                android:clickable="true"
+                android:src="@drawable/back_a"
+                android:padding="8dp"
+                android:gravity="center_vertical"  />-->
 
 
         <TextView
@@ -35,9 +56,9 @@
             android:gravity="center_vertical"
             android:padding="5dp"
             android:text="上一题"
-            android:visibility="gone"
-            android:textColor="@color/white"
-            android:textSize="18sp" />
+            android:textColor="@color/colorPrimary"
+            android:textSize="18sp"
+            android:visibility="gone" />
 
         <TextView
             android:id="@+id/top_title"
@@ -47,21 +68,19 @@
             android:clickable="true"
             android:gravity="center_horizontal"
             android:text="性格测试"
-            android:textColor="#ffffff"
+            android:textColor="@color/colorPrimary"
             android:textSize="20sp" />
 
         <TextView
             android:id="@+id/tx_top_right"
             android:layout_width="wrap_content"
-            android:layout_height="30dp"
+            android:layout_height="35dp"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="8dp"
             android:gravity="center_vertical"
-            android:text="完成"
-            android:textColor="#ffffff"
-            android:textSize="16sp"
-            android:visibility="gone" />
+            android:text="退出测试"
+            android:textSize="16sp"  />
     </RelativeLayout>
 
 
@@ -73,9 +92,9 @@
         android:layout_marginTop="20dp"
         android:max="100"
         android:progress="50"
-        android:visibility="gone"
         android:progressDrawable="@drawable/bg_bar"
-        android:thumb="@android:color/holo_green_light" />'
+        android:thumb="@android:color/holo_green_light"
+        android:visibility="gone" />'
 
     <TextView
         android:id="@+id/tv_num"
@@ -83,22 +102,21 @@
         android:layout_height="40dp"
         android:gravity="center"
         android:text="0/0"
-        android:textSize="18sp"/>
+        android:textSize="18sp" />
 
 
-
-        <TextView
-            android:id="@+id/tv_question"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/activity_horizontal_margin"
-            android:layout_margin="@dimen/text_margin_10dp"
-            android:background="@drawable/setting_bg"
-            android:text=".........."
-            android:minHeight="100dp"
-            android:paddingLeft="@dimen/text_margin_10dp"
-            android:paddingBottom="@dimen/text_margin_10dp"
-            android:textSize="18sp" />
+    <TextView
+        android:id="@+id/tv_question"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/text_margin_10dp"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:background="@drawable/setting_bg"
+        android:minHeight="100dp"
+        android:paddingBottom="@dimen/text_margin_10dp"
+        android:paddingLeft="@dimen/text_margin_10dp"
+        android:text=".........."
+        android:textSize="18sp" />
 
 
     <!--    <View
@@ -129,9 +147,9 @@
         android:paddingRight="60dp"
         android:paddingTop="10dp"
         android:text="完成"
-        android:visibility="gone"
-         android:textColor="@color/colorPrimary"
-        android:textSize="22sp" />
+        android:textColor="@color/colorPrimary"
+        android:textSize="22sp"
+        android:visibility="gone" />
 
 
 </LinearLayout>

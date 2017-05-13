@@ -39,7 +39,8 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
-import im.wuwo.com.wuwo.BuildConfig;
+import im.imxianzhi.com.imxianzhi.BuildConfig;
+
 
 /**
  * This class memory caching of bitmaps in conjunction with the

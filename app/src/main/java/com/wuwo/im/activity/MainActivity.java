@@ -28,10 +28,8 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -46,6 +44,7 @@ import com.hyphenate.chat.EMConversation;
 import com.hyphenate.chat.EMMessage;
 import com.hyphenate.chatuidemo.Constant;
 import com.hyphenate.chatuidemo.DemoHelper;
+import com.hyphenate.chatuidemo.db.DemoDBManager;
 import com.hyphenate.chatuidemo.db.InviteMessgeDao;
 import com.hyphenate.chatuidemo.db.UserDao;
 import com.hyphenate.chatuidemo.runtimepermissions.PermissionsManager;
@@ -54,29 +53,31 @@ import com.hyphenate.chatuidemo.ui.ChatActivity;
 import com.hyphenate.chatuidemo.ui.ConversationListFragment;
 import com.hyphenate.chatuidemo.ui.GroupsActivity;
 import com.hyphenate.easeui.utils.EaseCommonUtils;
+import com.hyphenate.util.DeviceUuidFactory;
 import com.hyphenate.util.EMLog;
-import com.squareup.otto.Bus;
 import com.umeng.analytics.MobclickAgent;
-import com.umeng.update.UmengUpdateAgent;
 import com.wuwo.im.config.ExitApp;
-import com.wuwo.im.config.OneMapOttoBus;
 import com.wuwo.im.config.WowuApp;
 import com.wuwo.im.fragement.Portal_ContactFragment;
 import com.wuwo.im.fragement.Portal_FindFragment;
 import com.wuwo.im.fragement.Portal_LocalFragment;
 import com.wuwo.im.fragement.Portal_OwnerFragment;
+import com.wuwo.im.util.LogUtils;
 import com.wuwo.im.util.UpdateManager;
 import com.wuwo.im.util.UtilsTool;
-import com.wuwo.im.view.ActionItem;
 import com.wuwo.im.view.MyTabWidget;
 import com.wuwo.im.view.NoScrollViewPager;
-import com.wuwo.im.view.PopupMenu;
-import com.wuwo.im.view.TitlePopup;
+import com.zhy.http.okhttp.OkHttpUtils;
+import com.zhy.http.okhttp.service.LoadserverdataService;
+import com.zhy.http.okhttp.service.loadServerDataListener;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import im.wuwo.com.wuwo.R;
+import im.imxianzhi.com.imxianzhi.R;
 
 /**
  * @类名:
@@ -89,37 +90,35 @@ import im.wuwo.com.wuwo.R;
  * @版本: V1.0
  * @版权:Copyright ©  All rights reserved.
  */
-public class MainActivity extends BaseFragementActivity implements MyTabWidget.OnTabSelectedListener, OnClickListener {
+public class MainActivity extends BaseFragementActivity implements MyTabWidget.OnTabSelectedListener, OnClickListener, loadServerDataListener {
 
-    Context mContext = MainActivity.this;
+    private Context mContext = MainActivity.this;
     public static final String TAG = "MainActivity";
     private MyTabWidget mTopIndicator;
     //    private TextView fagui;
     private String username_fromserver;
-    ImageView function_add;
+    private ImageView function_add;
     //
-
-    SharedPreferences mSettings;
+    LoadserverdataService loadDataService;
+    private SharedPreferences mSettings;
     private NoScrollViewPager mViewPager;
     public List<Fragment> fragments = new ArrayList<Fragment>();
     private FragmentManager fragmentManager;
 
-    private Bus mOttoBus;
+    //    private Bus mOttoBus;
     private ImageView return_back_igw;
     private TextView title_tv;
     private ImageView iv_top_title;
-    private PopupMenu popupMenu;
-    //负责更换主题的
+    //    private PopupMenu popupMenu;
+//    //负责更换主题的
     private ImageView menu_theme;
     //    private RelativeLayout title_bar;
-    private TitlePopup titlePopup;
+//    private TitlePopup titlePopup;
     private int currentTabIndex;
     private boolean isCurrentAccountRemoved = false;
     // user logged into another device
     public boolean isConflict = false;
-
-
-    UpdateManager manager;
+    private UpdateManager manager;
 
     /**
      * check if current user account was remove
@@ -144,7 +143,6 @@ public class MainActivity extends BaseFragementActivity implements MyTabWidget.O
         }*/
 
 
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);//强制为竖屏
         setContentView(R.layout.activity_main);
 
@@ -187,34 +185,66 @@ public class MainActivity extends BaseFragementActivity implements MyTabWidget.O
 //            }
 //        }).start();
 
-        // 注册Otto监听器
-        mOttoBus = OneMapOttoBus.getInstance();
-        mOttoBus.register(this);
+//        // 注册Otto监听器
+//        mOttoBus = OneMapOttoBus.getInstance();
+//        mOttoBus.register(this);
 
         init();
 
-        // 检查文件更新
+
+
+//      放在子线程中，暂时影响未知，如果异常需要重新拿出来
+        //为了针对过期重新登录的问题
+        loadDataService = new LoadserverdataService(this);
         manager = new UpdateManager(mContext);
         manager.checkUpdateMe();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                // 检查文件更新
+                registerLocationBoradcastReceiver();
+                //为了针对过期重新登录的问题
+                registerTokenOutOfDateReceiver();
+            }
+        }).start();
+
+
     }
 
     //    private ContactListFragment contactListFragment;
     private void initIM() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            String packageName = getPackageName();
-            PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
-            if (!pm.isIgnoringBatteryOptimizations(packageName)) {
-                Intent intent = new Intent();
-                intent.setAction(android.provider.Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS);
-                intent.setData(Uri.parse("package:" + packageName));
-                startActivity(intent);
+            try {
+                String packageName = "im.imxianzhi.com.imxianzhi";// getPackageName();
+                PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
+                if (!pm.isIgnoringBatteryOptimizations(packageName)) {
+                    Intent intent = new Intent();
+                    intent.setAction(android.provider.Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS);
+                    intent.setData(Uri.parse("package:" + packageName));
+                    startActivity(intent);
+                }
+            } catch (Exception e) {
+//                e.printStackTrace();
+                //为了解决华为手机崩溃做的测试
+/*                try {
+                    String packageName=  "com.Android.settings";
+                    String className= "com.android.com.settings.Settings@HighPowerApplicationsActivity";
+                    Intent intent = new Intent(Intent.ACTION_MAIN);
+                    intent.addCategory(Intent.CATEGORY_LAUNCHER);
+                    // 设置ComponentName参数1:packagename参数2:Activity路径
+                    ComponentName cn = new ComponentName(packageName, className);
+                    intent.setComponent(cn);
+                    startActivity(intent);
+                } catch (Exception e1) {
+                    e1.printStackTrace();
+                }*/
             }
         }
 
         //umeng api
         MobclickAgent.updateOnlineConfig(this);
-        UmengUpdateAgent.setUpdateOnlyWifi(false);
-        UmengUpdateAgent.update(this);
+//        UmengUpdateAgent.setUpdateOnlyWifi(false);
+//        UmengUpdateAgent.update(this);
 
         if (getIntent().getBooleanExtra(Constant.ACCOUNT_CONFLICT, false) && !isConflictDialogShow) {
             showConflictDialog();
@@ -263,6 +293,7 @@ public class MainActivity extends BaseFragementActivity implements MyTabWidget.O
 
         @Override
         public void onCmdMessageReceived(List<EMMessage> messages) {
+            LogUtils.i("MainActivity:", "收到透传消息");
             for (EMMessage message : messages) {
                 EMCmdMessageBody cmdMsgBody = (EMCmdMessageBody) message.getBody();
                 final String action = cmdMsgBody.action();//get the action user defined in command message
@@ -291,11 +322,11 @@ public class MainActivity extends BaseFragementActivity implements MyTabWidget.O
             public void run() {
                 // refresh unread count
                 updateUnreadLabel();
-                if (currentTabIndex == 0) {
-                    // refresh conversation list
-                    if (conversationListFragment != null) {
-                        conversationListFragment.refresh();
-                    }
+//                if (currentTabIndex == 1) {
+                // refresh conversation list
+                if (conversationListFragment != null) {
+                    conversationListFragment.refresh();
+//                    }
                 }
             }
         });
@@ -313,12 +344,20 @@ public class MainActivity extends BaseFragementActivity implements MyTabWidget.O
             public void onReceive(Context context, Intent intent) {
                 updateUnreadLabel();
                 updateUnreadAddressLable();
-                if (currentTabIndex == 0) {
-                    // refresh conversation list
-                    if (conversationListFragment != null) {
-                        conversationListFragment.refresh();
-                    }
+//                if (currentTabIndex == 1) {
+                // refresh conversation list
+                if (conversationListFragment != null) {
+                    conversationListFragment.refresh();
                 }
+//                }
+/*                if (currentTabIndex == 0) {
+                    // refresh conversation list
+                    if (portalLocalFragment != null) {
+                        portalLocalFragment.refresh();
+                    }
+                }*/
+
+
 //                else if (currentTabIndex == 1) {
 //                    if(contactListFragment != null) {
 //                        contactListFragment.refresh();
@@ -338,6 +377,54 @@ public class MainActivity extends BaseFragementActivity implements MyTabWidget.O
             }
         };
         broadcastManager.registerReceiver(broadcastReceiver, intentFilter);
+    }
+
+    /**
+     * 主要是用于当token过期时重新登录
+     * @param response
+     * @param flag
+     */
+    @Override
+    public void loadServerData(String response, int flag) {
+
+        switch (flag) {
+            case 61218:
+                try {
+                    JSONObject json = new JSONObject(response);
+                    OkHttpUtils.token = json.optString("token");
+                    WowuApp.UserId = json.optString("uid");
+                    WowuApp.iconPath = json.optString("icon");
+                    WowuApp.Name = json.optString("name");
+                    DemoDBManager.getInstance().saveCacheJson(UserDao.CACHE_MAIN_TOKEN, OkHttpUtils.token);
+//                    记录下登录者的信息
+                    if (mSettings != null) {
+                        SharedPreferences.Editor editor = mSettings.edit();
+                        editor.putString("UserId", WowuApp.UserId);
+                        editor.putString("token", OkHttpUtils.token);
+                        editor.putString("PhoneNumber", WowuApp.PhoneNumber);
+                        editor.putString("Password", WowuApp.Password);
+                        editor.putInt("Gender", WowuApp.Gender);
+                        editor.putString("Name", json.optString("name"));
+                        editor.putString("iconPath", json.optString("icon"));
+                        editor.putBoolean("login_save_pwd_check", true); //登录成功后下次点开后可自动登录
+                        editor.commit();
+
+//                    loginHuanXin(WowuApp.UserId, WowuApp.hx_pwd);
+
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                break;
+        }
+
+
+    }
+
+    @Override
+    public void loadDataFailed(String response, int flag) {
+
     }
 
     public class MyContactListener implements EMContactListener {
@@ -375,6 +462,8 @@ public class MainActivity extends BaseFragementActivity implements MyTabWidget.O
 
     private void unregisterBroadcastReceiver() {
         broadcastManager.unregisterReceiver(broadcastReceiver);
+
+        unregisterReceiver(mLocationBroadcastReceiver);
     }
 
     @Override
@@ -446,6 +535,9 @@ public class MainActivity extends BaseFragementActivity implements MyTabWidget.O
             if (conversation.getType() == EMConversation.EMConversationType.ChatRoom)
                 chatroomUnreadMsgCount = chatroomUnreadMsgCount + conversation.getUnreadMsgCount();
         }
+        LogUtils.i("通知", "获取的未读消息数目为：" + (unreadMsgCountTotal - chatroomUnreadMsgCount));
+
+
         return unreadMsgCountTotal - chatroomUnreadMsgCount;
     }
 
@@ -465,8 +557,8 @@ public class MainActivity extends BaseFragementActivity implements MyTabWidget.O
         // background
         DemoHelper sdkHelper = DemoHelper.getInstance();
         sdkHelper.pushActivity(this);
-
         EMClient.getInstance().chatManager().addMessageListener(messageListener);
+        LogUtils.i("MainActivity:", "onResume()");
     }
 
     @Override
@@ -474,7 +566,6 @@ public class MainActivity extends BaseFragementActivity implements MyTabWidget.O
         EMClient.getInstance().chatManager().removeMessageListener(messageListener);
         DemoHelper sdkHelper = DemoHelper.getInstance();
         sdkHelper.popActivity(this);
-
         super.onStop();
     }
 
@@ -500,6 +591,10 @@ public class MainActivity extends BaseFragementActivity implements MyTabWidget.O
     private boolean isAccountRemovedDialogShow;
     private BroadcastReceiver internalDebugReceiver;
     private ConversationListFragment conversationListFragment;
+    private Portal_FindFragment portalFindFragment;
+    private Portal_LocalFragment portalLocalFragment;
+    private Portal_ContactFragment portalContactFragment;
+
     private BroadcastReceiver broadcastReceiver;
     private LocalBroadcastManager broadcastManager;
 
@@ -522,9 +617,16 @@ public class MainActivity extends BaseFragementActivity implements MyTabWidget.O
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
+                        SharedPreferences.Editor editor = mSettings.edit();
+                        editor.putString("username", "");
+                        editor.putString("password", "");
+//                                        editor.putBoolean("login_auto_check", false);
+                        editor.putBoolean("login_save_pwd_check", false);
+                        editor.commit();
+
                         conflictBuilder = null;
                         finish();
-                        Intent intent = new Intent(MainActivity.this, com.hyphenate.chatuidemo.ui.LoginActivity.class);
+                        Intent intent = new Intent(MainActivity.this, LoginActivity.class);
                         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                         startActivity(intent);
                     }
@@ -561,7 +663,7 @@ public class MainActivity extends BaseFragementActivity implements MyTabWidget.O
                         dialog.dismiss();
                         accountRemovedBuilder = null;
                         finish();
-                        startActivity(new Intent(MainActivity.this, com.hyphenate.chatuidemo.ui.LoginActivity.class));
+                        startActivity(new Intent(MainActivity.this, LoginActivity.class));
                     }
                 });
                 accountRemovedBuilder.setCancelable(false);
@@ -582,6 +684,8 @@ public class MainActivity extends BaseFragementActivity implements MyTabWidget.O
             showConflictDialog();
         } else if (intent.getBooleanExtra(Constant.ACCOUNT_REMOVED, false) && !isAccountRemovedDialogShow) {
             showAccountRemovedDialog();
+        } else if (intent.getBooleanExtra(Constant.RETEST_CHARACTER, false)) {//重新测试性格后完成返回，刷新性格
+//            if(portalFindFragment!=null){ portalFindFragment. refresh();}
         }
     }
 
@@ -608,7 +712,7 @@ public class MainActivity extends BaseFragementActivity implements MyTabWidget.O
                         runOnUiThread(new Runnable() {
                             public void run() {
                                 finish();
-                                startActivity(new Intent(MainActivity.this, com.hyphenate.chatuidemo.ui.LoginActivity.class));
+                                startActivity(new Intent(MainActivity.this, LoginActivity.class));
                             }
                         });
                     }
@@ -627,11 +731,31 @@ public class MainActivity extends BaseFragementActivity implements MyTabWidget.O
         registerReceiver(internalDebugReceiver, filter);
     }
 
+    private BroadcastReceiver mLocationBroadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+            if (action.equals(WowuApp.ACTION_NAME)) {
+                String latitude = intent.getStringExtra("latitude");
+                String longitude = intent.getStringExtra("longitude");
 
+                if (portalLocalFragment != null) {
+                    portalLocalFragment.setLocation(latitude, longitude);
+                }
+                if (portalContactFragment != null) {
+                    portalContactFragment.setLocation(latitude, longitude);
+                }
+
+//                MyToast.show(mContext,latitude+";");
+
+            }
+
+        }
+    };
 //    /**
 //     * 用来监听设备的状态
 //     */
-//    private BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
+//    private BroadcastReceiver mLocationBroadcastReceiver = new BroadcastReceiver() {
 //        @Override
 //        public void onReceive(Context context, Intent intent) {
 //            String action = intent.getAction();
@@ -678,13 +802,47 @@ public class MainActivity extends BaseFragementActivity implements MyTabWidget.O
 //    };
 
 
-//    public void registerBoradcastReceiver() {
-//        IntentFilter myIntentFilter = new IntentFilter();
-//        myIntentFilter.addAction(DistApp.ACTION_NAME);
-//        //注册广播
-//        registerReceiver(mBroadcastReceiver, myIntentFilter);
-//    }
+    public void registerLocationBoradcastReceiver() {
+        IntentFilter myIntentFilter = new IntentFilter();
+        myIntentFilter.addAction(WowuApp.ACTION_NAME);
+        //注册广播
+        registerReceiver(mLocationBroadcastReceiver, myIntentFilter);
+    }
 
+    /**
+     * 用于监听token过期的广播
+     */
+    public void registerTokenOutOfDateReceiver() {
+        IntentFilter myIntentFilter = new IntentFilter();
+        myIntentFilter.addAction(OkHttpUtils.TOKEN_OUTDATE);
+        //注册广播
+        registerReceiver(mTokenOutOfDateReceiver, myIntentFilter);
+    }
+
+     private BroadcastReceiver mTokenOutOfDateReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+            if (action.equals(OkHttpUtils.TOKEN_OUTDATE)) {
+                 try {
+                     OkHttpUtils.token="";
+                    JSONObject json = new JSONObject();
+                    json.put("PhoneNumber", mSettings.getString("PhoneNumber", ""));
+                    json.put("Password", mSettings.getString("Password", ""));
+                    json.put("PhoneModel", "Android");//手机型号，如Android
+                    json.put("PhoneVersion", android.os.Build.VERSION.RELEASE);//手机操作系统版本
+                    json.put("DeviceVersion", android.os.Build.MODEL);//设备版本
+                    DeviceUuidFactory tempdevice = new DeviceUuidFactory(mContext);
+                    json.put("DeviceUUID", tempdevice.getDeviceUuid());//设备唯一标识
+                    UtilsTool temp = new UtilsTool();
+                    json.put("Version", temp.getVersionCode(mContext));//APP版本号
+                    loadDataService.loadPostJsonRequestData(WowuApp.JSON, WowuApp.LoginURL, json.toString(), 61218);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    };
 
 //    private void InitLocation(){
 //            LocationClientOption option = new LocationClientOption();
@@ -872,7 +1030,7 @@ public class MainActivity extends BaseFragementActivity implements MyTabWidget.O
 //                            //连接
 ////                            XmppTool.getConnection().login(USERID, PWD);
 //                            XmppTool.getConnection().login("aa", "aa");
-////                          Log.i("XMPPClient", "Logged in as " + XmppTool.getConnection().getUser());
+////                          LogUtils.i("XMPPClient", "Logged in as " + XmppTool.getConnection().getUser());
 //                            //状态
 //                            Presence presence = new Presence(Presence.Type.available);
 //                            XmppTool.getConnection().sendPacket(presence);
@@ -891,7 +1049,7 @@ public class MainActivity extends BaseFragementActivity implements MyTabWidget.O
 
 
     // 底部菜单的文字数组
-    private CharSequence[] mLabels = {"附近", "消息", "", "联系人", "我"};
+    private CharSequence[] mLabels = {"附近", "消息", "先知", "联系人", "我"};
 
     private void init() {
 
@@ -899,34 +1057,33 @@ public class MainActivity extends BaseFragementActivity implements MyTabWidget.O
         return_back_igw.setVisibility(View.GONE);
         mTopIndicator = (MyTabWidget) findViewById(R.id.top_indicator);
         mTopIndicator.setOnTabSelectedListener(this);
-
-        conversationListFragment = new ConversationListFragment();
-//        fragments.add(new Portal_NewsFragment());
-        fragments.add(new Portal_LocalFragment());
-        fragments.add(conversationListFragment);
-        fragments.add(new Portal_FindFragment());
-        fragments.add(new Portal_ContactFragment());
-//        fragments.add(contactListFragment);
-
-//        fragments.add(new Portal_XiaoXiFragment());
-
-
-        fragments.add(new Portal_OwnerFragment());
-
-
-        mViewPager = (NoScrollViewPager) findViewById(R.id.view_pager);
-//        mViewPager.setNoScroll(true);//表示不能滑动了
-        mViewPager.setCurrentItem(2);
-
-
         findViewById(R.id.return_back).setVisibility(View.GONE);
         title_tv = (TextView) findViewById(R.id.top_title);
         title_tv.setText(mTopIndicator.getmLabels()[0]);
         iv_top_title = (ImageView) findViewById(R.id.iv_top_title);
+        mViewPager = (NoScrollViewPager) findViewById(R.id.view_pager);
+//        mViewPager.setNoScroll(true);//表示不能滑动了
+//        mViewPager.setCurrentItem(2);
         menu_theme = (ImageView) findViewById(R.id.menu_theme);
-//        title_bar = (RelativeLayout)findViewById(R.id.tx_top_right);
-//        title_bar.setVisibility(View.GONE);
+////        title_bar = (RelativeLayout)findViewById(R.id.tx_top_right);
+////        title_bar.setVisibility(View.GONE);
         menu_theme.setOnClickListener(this);
+
+
+        conversationListFragment = new ConversationListFragment();
+        portalFindFragment = new Portal_FindFragment();
+//        fragments.add(new Portal_NewsFragment());
+        portalContactFragment = new Portal_ContactFragment();
+        portalLocalFragment = new Portal_LocalFragment();
+
+        fragments.add(portalLocalFragment);
+        fragments.add(conversationListFragment);
+        fragments.add(portalFindFragment);
+        fragments.add(portalContactFragment);
+//        fragments.add(contactListFragment);
+//        fragments.add(new Portal_XiaoXiFragment());
+        fragments.add(new Portal_OwnerFragment());
+
 
         this.fragmentManager = this.getSupportFragmentManager();
         MyPagerAdapter myPagerAdapter = new MyPagerAdapter();
@@ -942,20 +1099,18 @@ public class MainActivity extends BaseFragementActivity implements MyTabWidget.O
 
                 title_tv.setText(mLabels[position]);
 
-                if (position == 2) {
+/*                if (position == 2) {
                     iv_top_title.setVisibility(View.VISIBLE);
                     title_tv.setVisibility(View.GONE);
                  } else {
                      title_tv.setVisibility(View.VISIBLE);
                     iv_top_title.setVisibility(View.GONE);
-                }
+                }*/
                 if (position == 3) {
                     menu_theme.setVisibility(View.VISIBLE);
                 } else {
                     menu_theme.setVisibility(View.GONE);
                 }
-
-
 
 //        点击后关闭消息红点
                 mTopIndicator.setIndicateDisplay(position, false, " ");
@@ -989,7 +1144,8 @@ public class MainActivity extends BaseFragementActivity implements MyTabWidget.O
 //});
 
 
-        initPopupData();
+//        initPopupData();
+
 //        title_tv.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View v) {
@@ -999,7 +1155,7 @@ public class MainActivity extends BaseFragementActivity implements MyTabWidget.O
 //            }
 //        });
 
-        popupMenu = new PopupMenu(MainActivity.this);
+//        popupMenu = new PopupMenu(MainActivity.this);
 
 
 ////        底部导航条消息数量红点
@@ -1010,7 +1166,7 @@ public class MainActivity extends BaseFragementActivity implements MyTabWidget.O
     }
 
 
-//    @Override
+    //    @Override
 //    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 //        // TODO Auto-generated method stub
 //        super.onActivityResult(requestCode, resultCode, data);
@@ -1020,8 +1176,6 @@ public class MainActivity extends BaseFragementActivity implements MyTabWidget.O
 //                return;
 //        }
 //    }
-
-
     @Override
     public void onBackPressed() {
         Intent home = new Intent(Intent.ACTION_MAIN);
@@ -1104,17 +1258,10 @@ public class MainActivity extends BaseFragementActivity implements MyTabWidget.O
 //                    }
 //                });
 
-
                 Intent temp = new Intent(mContext, AddFriendActivity.class);
                 startActivity(temp);
-
-
+                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                 break;
-//            case R.id.menu_theme:
-//
-//                break;
-
-
         }
     }
 
@@ -1346,7 +1493,7 @@ public class MainActivity extends BaseFragementActivity implements MyTabWidget.O
 //        }
 //    }
 
-    private void initPopupData() {
+/*    private void initPopupData() {
         //实例化标题栏弹窗
         titlePopup = new TitlePopup(this, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         //给标题栏弹窗添加子类
@@ -1372,7 +1519,7 @@ public class MainActivity extends BaseFragementActivity implements MyTabWidget.O
                 putData(position);
             }
         });
-    }
+    }*/
 
 
     /**
@@ -1404,6 +1551,7 @@ public class MainActivity extends BaseFragementActivity implements MyTabWidget.O
         if (data != null && data.getExtras() != null && resultCode == RESULT_OK) {
             Bundle result = data.getExtras(); //data为B中回传的Intent
             switch (requestCode) {
+                case 100:
                 case WowuApp.ALIPAY:
               /*在这里，我们通过碎片管理器中的Tag，就是每个碎片的名称，来获取对应的fragment*/
                     Fragment f = fragmentManager.findFragmentByTag(fragments.get(4).getClass().getSimpleName());

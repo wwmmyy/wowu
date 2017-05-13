@@ -13,7 +13,7 @@ import com.hyphenate.EMCallBack;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.util.EMLog;
 
-import im.wuwo.com.wuwo.R;
+import im.imxianzhi.com.imxianzhi.R;
 
 /**
  * Copyright (C) 2016 Hyphenate Inc. All rights reserved.

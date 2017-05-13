@@ -19,7 +19,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-import im.wuwo.com.wuwo.R;
+import im.imxianzhi.com.imxianzhi.R;
 
 /** 
 *desc 最新消息记录，此部分后面会用环信的代替
@@ -51,7 +51,7 @@ public class Portal_NewsFragment extends BasePortal_TabFragment {
 
     @Override
     public CommRecyclerAdapter initAdapter() {
-        messageRAdapter = new CommRecyclerAdapter<newsMessage>(getActivity(), R.layout.recycler_cardview_item) {
+        messageRAdapter = new CommRecyclerAdapter<newsMessage>(getActivity(), R.layout.item_recycler_cardview) {
             @Override
             public void convert(CommRecyclerViewHolder viewHolder, newsMessage mainMessage) {
                 //对对应的View进行赋值

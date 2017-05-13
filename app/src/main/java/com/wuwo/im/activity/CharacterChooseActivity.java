@@ -9,17 +9,18 @@ import android.os.Message;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.hyphenate.chatuidemo.Constant;
 import com.wuwo.im.adapter.CommRecyclerAdapter;
 import com.wuwo.im.adapter.CommRecyclerViewHolder;
 import com.wuwo.im.bean.UserCharacter;
 import com.wuwo.im.config.ExitApp;
 import com.wuwo.im.config.WowuApp;
+import com.wuwo.im.util.LogUtils;
 import com.wuwo.im.util.MyToast;
 import com.wuwo.im.util.UtilsTool;
 
@@ -28,7 +29,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-import im.wuwo.com.wuwo.R;
+import im.imxianzhi.com.imxianzhi.R;
 
 /**
  * @author 王明远
@@ -36,10 +37,10 @@ import im.wuwo.com.wuwo.R;
  * @版权:Copyright All rights reserved.
  */
 public class CharacterChooseActivity extends BaseLoadActivity {
-    Context mContext = this;
-    RecyclerView mRecyclerView;
-    CommRecyclerAdapter messageRAdapter;
-
+    private Context mContext = this;
+    private RecyclerView mRecyclerView;
+    private CommRecyclerAdapter messageRAdapter;
+    private boolean  registerMode=false;
     private ArrayList<UserCharacter> CharacterList = new ArrayList<UserCharacter>(); //记录所有的最新消息
 
 
@@ -49,6 +50,11 @@ public class CharacterChooseActivity extends BaseLoadActivity {
         setContentView(R.layout.activity_character_choose);
         ExitApp.getInstance().addOpenedActivity(this);
         initTop();
+
+        if(getIntent()!=null){
+            registerMode =  getIntent().getBooleanExtra("registerMode",false);
+        }
+
 
         initAdapter();
         messageRAdapter.setData(CharacterList);
@@ -104,7 +110,9 @@ public class CharacterChooseActivity extends BaseLoadActivity {
                     ((TextView)lastView).setTextColor(mContext.getResources().getColor(R.color.white));
                 }
                 lastView= holder.getView(R.id.tv_choose);
-                lastView.setBackgroundColor(mContext.getResources().getColor(R.color.white));
+//                lastView.setBackgroundColor(mContext.getResources().getColor(R.color.white));
+                lastView.setBackgroundResource(R.drawable.bt_border_character_test_normal);
+//
                 ((TextView)lastView).setTextColor(mContext.getResources().getColor(R.color.colorPrimary));
 
                 slelectedCharacter=CharacterList.get(position);
@@ -127,12 +135,14 @@ public class CharacterChooseActivity extends BaseLoadActivity {
             case R.id.bt_jingque:
                 intent2 = new Intent(mContext, CharacterTestActivity.class);
                 intent2.putExtra("tetsType", JINGQUE);
+                intent2.putExtra("registerMode",registerMode);
                 startActivity(intent2);
                 overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                 break;
             case R.id.bt_kuaisu:
                 intent2 = new Intent(mContext, CharacterTestActivity.class);
                 intent2.putExtra("tetsType", JINGJIAN);
+                intent2.putExtra("registerMode",registerMode);
                 startActivity(intent2);
                 overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                 break;
@@ -178,13 +188,18 @@ public class CharacterChooseActivity extends BaseLoadActivity {
                 break;
             case R.id.choose_sure:
                 if (pg != null) pg.dismiss();
+                if(registerMode) {  //说明是注册引导过来的
+                    intent2 = new Intent(mContext, LoginActivity.class);
+                }else{
                     intent2 = new Intent(mContext, MainActivity.class);
+                    intent2.putExtra(Constant.RETEST_CHARACTER,true);
+                }
                     startActivity(intent2);
                     overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                     finish();
                 break;
         }
-        Log.d("返回的结果为：：：：", response);
+        LogUtils.i("返回的结果为：：：：", response);
     }
 
     @Override

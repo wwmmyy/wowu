@@ -8,13 +8,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
+import com.wuwo.im.util.MyToast;
 
-import im.wuwo.com.wuwo.R;
+import im.imxianzhi.com.imxianzhi.R;
 import uk.co.senab.photoview.PhotoViewAttacher;
 import uk.co.senab.photoview.PhotoViewAttacher.OnPhotoTapListener;
 
@@ -78,7 +78,7 @@ public class PhotoViewImageDetailFragment extends Fragment {
 
 			@Override
 			public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
-				String message = null;
+				String message = "未知的错误";
 				switch (failReason.getType()) {
 				case IO_ERROR:
 					message = "下载错误";
@@ -96,7 +96,8 @@ public class PhotoViewImageDetailFragment extends Fragment {
 					message = "未知的错误";
 					break;
 				}
-				Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
+				if(getActivity()!=null)MyToast.show(getActivity(),message);
+//				Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
 				progressBar.setVisibility(View.GONE);
 			}
 

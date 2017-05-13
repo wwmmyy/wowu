@@ -30,7 +30,7 @@ import com.hyphenate.chat.EMClient;
 import com.hyphenate.chatuidemo.DemoHelper;
 import com.hyphenate.easeui.widget.EaseAlertDialog;
 
-import im.wuwo.com.wuwo.R;
+import im.imxianzhi.com.imxianzhi.R;
 
 public class AddContactActivity extends BaseActivity{
 	private EditText editText;

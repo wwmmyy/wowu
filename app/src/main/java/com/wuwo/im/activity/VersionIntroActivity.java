@@ -14,7 +14,7 @@ import android.widget.Toast;
 import com.wuwo.im.util.MyToast;
 import com.wuwo.im.util.UtilsTool;
 
-import im.wuwo.com.wuwo.R;
+import im.imxianzhi.com.imxianzhi.R;
 /** 
 *desc VersionIntroActivity
 *@author 王明远

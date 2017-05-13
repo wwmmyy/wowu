@@ -16,7 +16,7 @@ import android.widget.TextView;
 
 import com.wuwo.im.util.UtilsTool;
 
-import im.wuwo.com.wuwo.R;
+import im.imxianzhi.com.imxianzhi.R;
 
 public class WebviewDetailActivity extends BaseActivity {
  

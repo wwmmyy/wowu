@@ -1,330 +1,402 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:fresco="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/app_bg"
     android:orientation="vertical">
-
-    <RelativeLayout
-        android:id="@+id/user_info_detail"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:background="@drawable/item_background_find_selector"
-        android:gravity="center_vertical"
+        android:layout_height="match_parent"
         android:orientation="vertical">
-        <!--android:background="?attr/appbg"-->
-        <!--           <FrameLayout
-                      android:layout_width="wrap_content"
-                      android:layout_height="fill_parent"
-                       android:layout_centerHorizontal="true" >
-                   </FrameLayout>-->
-        <com.facebook.drawee.view.SimpleDraweeView
-            android:id="@+id/user_login_pic"
-            android:layout_width="70dp"
-            android:layout_height="70dp"
-            android:layout_centerVertical="true"
-            android:layout_marginBottom="6dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="6dp"
-            fresco:placeholderImage="@drawable/icon"
-            fresco:roundedCornerRadius="15dp" />
-<!--        fresco:progressBarAutoRotateInterval="2000"
-        fresco:progressBarImage="@drawable/con_progress_bar"
-        fresco:progressBarImageScaleType="centerInside-->"
 
-        <LinearLayout
-            android:id="@+id/ln_user_info"
+        <RelativeLayout
+            android:id="@+id/user_info_detail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/text_margin_10dp"
-            android:layout_toRightOf="@+id/user_login_pic"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/item_background_find_selector"
+            android:gravity="center_vertical"
             android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/user_login_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:singleLine="true"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textSize="20sp" />
-
-            <TextView
-                android:id="@+id/tv_user_id"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="8dp"
-                android:text="先知号：xxxx"
-                android:textColor="@android:color/darker_gray"
-                android:textSize="13sp" />
-        </LinearLayout>
-
-
-        <TextView
-            style="@style/setting_text_style"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="15dip"
-            android:drawablePadding="8dp"
-            android:drawableRight="@drawable/morex"
-            android:textColor="@android:color/darker_gray" />
-
-
-        <TextView
-            android:id="@+id/user_info_edit"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_gravity="left"
-            android:layout_marginRight="25dp"
-            android:background="@drawable/bt_border_choose_login_selector"
-            android:gravity="left"
-            android:padding="@dimen/text_margin_10dp"
-            android:text="编辑资料"
-            android:textColor="@color/white"
-            android:textSize="15sp"
-            android:visibility="gone" />
-
-
-    </RelativeLayout>
-
-    <!--
-        <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/card_view"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginTop="20dp"
-            card_view:cardBackgroundColor="@android:color/white"
-            card_view:cardCornerRadius="10dp"
-            card_view:cardElevation="0dp">
+            <!--android:background="?attr/appbg"-->
+            <!--           <FrameLayout
+                          android:layout_width="wrap_content"
+                          android:layout_height="fill_parent"
+                           android:layout_centerHorizontal="true" >
+                       </FrameLayout>-->
+            <com.facebook.drawee.view.SimpleDraweeView
+                android:id="@+id/user_login_pic"
+                android:layout_width="65dp"
+                android:layout_height="65dp"
+                android:layout_centerVertical="true"
+                android:layout_marginBottom="6dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="6dp"
+                fresco:placeholderImage="@drawable/spacer"
+                fresco:roundedCornerRadius="15dp" />
+            <!--        fresco:progressBarAutoRotateInterval="2000"
+                    fresco:progressBarImage="@drawable/con_progress_bar"
+                    fresco:progressBarImageScaleType="centerInside-->"
 
             <LinearLayout
-                android:layout_width="fill_parent"
+                android:id="@+id/ln_user_info"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/text_margin_10dp"
+                android:layout_toRightOf="@+id/user_login_pic"
                 android:orientation="vertical">
 
-                <RelativeLayout
-                    android:layout_width="fill_parent"
-                    android:layout_height="35dp">
+                <TextView
+                    android:id="@+id/user_login_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:singleLine="true"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textSize="20sp" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:layout_marginLeft="10dp"
-                        android:text="通用"
-                        android:textColor="@color/black"
-                        android:textSize="14dp" />
-
-                </RelativeLayout>
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="0.1dp"
-                    android:background="@color/black" />-->
-
-
-    <RelativeLayout
-        android:id="@+id/rt_my_character"
-        android:layout_width="fill_parent"
-        android:layout_height="55dp"
-        android:layout_marginTop="10dp"
-        android:background="@color/white">
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="10dp"
-            android:src="@drawable/chara" />
-
-        <TextView
-            style="@style/setting_text_style"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="20dp"
-            android:text="我的性格"
-            android:textColor="@color/black1" />
-
-        <TextView
-            android:id="@+id/tv_my_character"
-            style="@style/setting_text_style_arrow" />
-
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:id="@+id/bind_pay"
-        android:layout_width="fill_parent"
-        android:layout_height="55dp"
-        android:layout_marginTop="1dp"
-        android:background="@color/white">
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="10dp"
-            android:src="@drawable/icon_vipme" />
-
-        <TextView
-            style="@style/setting_text_style"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="20dp"
-            android:text="会员中心"
-            android:textColor="@color/black1" />
-
-        <TextView
-            android:id="@+id/tv_usertype"
-            style="@style/setting_text_style_arrow"
-            android:text="已开通" />
-    </RelativeLayout>
-
-
-    <RelativeLayout
-        android:id="@+id/update_pwd"
-        android:layout_width="fill_parent"
-        android:layout_height="55dp"
-        android:layout_marginTop="10dp"
-        android:background="@color/white">
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="10dp"
-            android:src="@drawable/icon_passwoed" />
-        <!--android:src="@drawable/ic_mima"-->
-        <TextView
-            style="@style/setting_text_style"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="20dp"
-            android:text="密码修改"
-            android:textColor="@color/black1" />
-
-        <TextView style="@style/setting_text_style_arrow" />
-    </RelativeLayout>
-
-    <!-- <View
-        android:layout_width="fill_parent"
-        android:layout_height="0.1dp"
-        android:layout_marginLeft="40dp"
-        android:background="@color/gray" /> -->
-
-    <RelativeLayout
-        android:id="@+id/bind_phone"
-        android:layout_width="fill_parent"
-        android:layout_height="55dp"
-        android:background="@color/white"
-        android:visibility="gone">
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="10dp"
-            android:src="@drawable/lockphone" />
-        <!--android:src="@drawable/ic_dingyue"-->
-        <TextView
-            style="@style/setting_text_style"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="20dp"
-            android:text="手机绑定"
-            android:textColor="@color/black1" />
-
-        <TextView
-            style="@style/setting_text_style"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="15dip"
-            android:drawablePadding="5dp"
-            android:drawableRight="@drawable/morex"
-            android:text="已绑定"
-            android:textColor="@android:color/darker_gray" />
-
-    </RelativeLayout>
-
-
-    <RelativeLayout
-        android:id="@+id/message_warn"
-        android:layout_width="fill_parent"
-        android:layout_height="55dp"
-        android:layout_marginTop="1dp"
-        android:background="@color/white">
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="10dp"
-            android:src="@drawable/icon_notification_bell" />
-        <!--android:src="@drawable/ic_fankui"-->
-        <TextView
-            style="@style/setting_text_style"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="20dp"
-            android:text="消息提醒"
-            android:textColor="@color/black1" />
-
-        <TextView style="@style/setting_text_style_arrow" />
-    </RelativeLayout>
-
-
-    <!--
+                <TextView
+                    android:id="@+id/tv_user_id"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="8dp"
+                    android:text="先知号：xxxx"
+                    android:textColor="@android:color/darker_gray"
+                    android:textSize="13sp" />
             </LinearLayout>
-        </android.support.v7.widget.CardView>-->
 
 
-    <!--    <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginTop="40dp"
-            android:background="@null"
-            card_view:cardCornerRadius="10dp"
-            card_view:cardElevation="0dp">
-            &lt;!&ndash;card_view:cardBackgroundColor="@android:color/white"&ndash;&gt;-->
-    <RelativeLayout
-        android:id="@+id/clear_cache_quit"
-        android:layout_width="fill_parent"
-        android:layout_height="55dp"
-        android:layout_marginTop="40dp"
-        android:background="@drawable/item_background_selector_light">
+            <TextView
+                style="@style/setting_text_style"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="15dip"
+                android:drawablePadding="8dp"
+                android:drawableRight="@drawable/morex"
+                android:textColor="@android:color/darker_gray" />
 
-        <TextView
-            android:id="@+id/tx_finish_quit"
+
+            <TextView
+                android:id="@+id/user_info_edit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_gravity="left"
+                android:layout_marginRight="25dp"
+                android:background="@drawable/bt_border_choose_login_selector"
+                android:gravity="left"
+                android:padding="@dimen/text_margin_10dp"
+                android:text="编辑资料"
+                android:textColor="@color/white"
+                android:textSize="15sp"
+                android:visibility="gone" />
+
+
+        </RelativeLayout>
+
+        <!--
+            <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/card_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="20dp"
+                card_view:cardBackgroundColor="@android:color/white"
+                card_view:cardCornerRadius="10dp"
+                card_view:cardElevation="0dp">
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <RelativeLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="35dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_marginLeft="10dp"
+                            android:text="通用"
+                            android:textColor="@color/black"
+                            android:textSize="14dp" />
+
+                    </RelativeLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="0.1dp"
+                        android:background="@color/black" />-->
+
+
+        <RelativeLayout
+            android:id="@+id/rt_my_character"
             android:layout_width="fill_parent"
-            android:layout_height="match_parent"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="10dp"
-            android:drawableLeft="@drawable/icon_loginout"
-            android:drawablePadding="10dp"
-            android:gravity="center_vertical"
-            android:text="退出登录"
-            android:textSize="18sp" />
-        <!--android:textColor="@color/red"-->
-        <TextView style="@style/setting_text_style_arrow" />
-    </RelativeLayout>
+            android:layout_height="50dp"
+            android:layout_marginTop="10dp"
+            android:background="@color/white">
 
-    <!--</android.support.v7.widget.CardView>-->
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dp"
+                android:src="@drawable/chara" />
 
-</LinearLayout>
+            <TextView
+                style="@style/setting_text_style"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="20dp"
+                android:text="我的性格"
+                android:textColor="@color/black1" />
+
+            <TextView
+                android:id="@+id/tv_my_character"
+                style="@style/setting_text_style_arrow" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/bind_pay"
+            android:layout_width="fill_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="1dp"
+            android:background="@color/white">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dp"
+                android:src="@drawable/icon_vipme" />
+
+            <TextView
+                style="@style/setting_text_style"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="20dp"
+                android:text="会员中心"
+                android:textColor="@color/black1" />
+            <!--<item name="android:layout_alignParentRight">true</item>-->
+            <!--<item name="android:layout_centerVertical">true</item>-->
+
+            <TextView
+                android:id="@+id/tv_usertype"
+                style="@style/setting_text_style_arrow" />
+
+
+            <ImageView
+                android:id="@+id/iv_isvip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="6dp"
+                android:layout_marginRight="-6dp"
+                android:layout_toLeftOf="@+id/tv_usertype"
+                android:src="@drawable/no_vip" />
+
+        </RelativeLayout>
+
+
+        <RelativeLayout
+            android:id="@+id/rt_chakanfangke"
+            android:layout_width="fill_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="10dp"
+            android:background="@color/white">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dp"
+                android:src="@drawable/icon_guest" />
+            <!--android:src="@drawable/ic_mima"-->
+            <TextView
+                style="@style/setting_text_style"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="20dp"
+                android:text="查看访客"
+                android:textColor="@color/black1" />
+
+            <TextView style="@style/setting_text_style_arrow" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rt_heimingdan"
+            android:layout_width="fill_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="1dp"
+            android:background="@color/white">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dp"
+                android:src="@drawable/blacklist" />
+            <!--android:src="@drawable/ic_fankui"-->
+            <TextView
+                style="@style/setting_text_style"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="20dp"
+                android:text="黑名单"
+                android:textColor="@color/black1" />
+
+            <TextView style="@style/setting_text_style_arrow" />
+        </RelativeLayout>
+
+
+        <RelativeLayout
+            android:id="@+id/update_pwd"
+            android:layout_width="fill_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="10dp"
+            android:background="@color/white">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dp"
+                android:src="@drawable/icon_passwoed" />
+            <!--android:src="@drawable/ic_mima"-->
+            <TextView
+                style="@style/setting_text_style"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="20dp"
+                android:text="密码修改"
+                android:textColor="@color/black1" />
+
+            <TextView style="@style/setting_text_style_arrow" />
+        </RelativeLayout>
+
+        <!-- <View
+            android:layout_width="fill_parent"
+            android:layout_height="0.1dp"
+            android:layout_marginLeft="40dp"
+            android:background="@color/gray" /> -->
+
+        <RelativeLayout
+            android:id="@+id/bind_phone"
+            android:layout_width="fill_parent"
+            android:layout_height="50dp"
+            android:background="@color/white"
+            android:visibility="gone">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dp"
+                android:src="@drawable/lockphone" />
+            <!--android:src="@drawable/ic_dingyue"-->
+            <TextView
+                style="@style/setting_text_style"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="20dp"
+                android:text="手机绑定"
+                android:textColor="@color/black1" />
+
+            <TextView
+                style="@style/setting_text_style"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="15dip"
+                android:drawablePadding="5dp"
+                android:drawableRight="@drawable/morex"
+                android:text="已绑定"
+                android:textColor="@android:color/darker_gray" />
+
+        </RelativeLayout>
+
+
+        <RelativeLayout
+            android:id="@+id/message_warn"
+            android:layout_width="fill_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="1dp"
+            android:background="@color/white">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dp"
+                android:src="@drawable/icon_notification_bell" />
+            <!--android:src="@drawable/ic_fankui"-->
+            <TextView
+                style="@style/setting_text_style"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="20dp"
+                android:text="消息提醒"
+                android:textColor="@color/black1" />
+
+            <TextView style="@style/setting_text_style_arrow" />
+        </RelativeLayout>
+
+
+        <!--
+                </LinearLayout>
+            </android.support.v7.widget.CardView>-->
+
+
+        <!--    <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="40dp"
+                android:background="@null"
+                card_view:cardCornerRadius="10dp"
+                card_view:cardElevation="0dp">
+                &lt;!&ndash;card_view:cardBackgroundColor="@android:color/white"&ndash;&gt;-->
+        <RelativeLayout
+            android:id="@+id/clear_cache_quit"
+            android:layout_width="fill_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="22dp"
+            android:background="@drawable/item_background_selector_light">
+
+            <TextView
+                android:id="@+id/tx_finish_quit"
+                android:layout_width="fill_parent"
+                android:layout_height="match_parent"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dp"
+                android:drawableLeft="@drawable/icon_loginout"
+                android:drawablePadding="10dp"
+                android:gravity="center_vertical"
+                android:text="退出登录"
+                android:textColor="@color/black1"
+                android:textSize="17sp" />
+            <!--android:textColor="@color/red"-->
+            <TextView style="@style/setting_text_style_arrow" />
+        </RelativeLayout>
+
+        <!--</android.support.v7.widget.CardView>-->
+
+    </LinearLayout>
+</ScrollView>

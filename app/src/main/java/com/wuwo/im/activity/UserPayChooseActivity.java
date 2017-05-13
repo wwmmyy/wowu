@@ -33,14 +33,14 @@ import org.json.JSONObject;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
-import im.wuwo.com.wuwo.R;
+import im.imxianzhi.com.imxianzhi.R;
 
 public class UserPayChooseActivity extends BaseLoadActivity implements IWXAPIEventHandler {
 
     public static final String TAG = "UserPayChooseActivity";
     ImageView iv_wehcatpay, iv_alipay, viptype;
     boolean DEFAULT_PAY_WECHAT = true;
-    TextView tv_vip_intro, tv_vip_money;
+    TextView tv_vip_intro, tv_vip_money,btn_confirm;
     // IWXAPI 是第三方app和微信通信的openapi接口
     private IWXAPI wxApi;
     private int vipType;
@@ -57,7 +57,8 @@ public class UserPayChooseActivity extends BaseLoadActivity implements IWXAPIEve
     private void initView() {
         findViewById(R.id.return_back).setOnClickListener(this);
         ((TextView) findViewById(R.id.top_title)).setText("支付");
-        findViewById(R.id.btn_confirm).setOnClickListener(this);
+        btn_confirm=(TextView)findViewById(R.id.btn_confirm);
+        btn_confirm.setOnClickListener(this);
         findViewById(R.id.ln_wechatpay).setOnClickListener(this);
         findViewById(R.id.ln_alipay).setOnClickListener(this);
 
@@ -72,11 +73,16 @@ public class UserPayChooseActivity extends BaseLoadActivity implements IWXAPIEve
         payAcount= getIntent().getStringExtra("money");
         tv_vip_intro.setText(getIntent().getStringExtra("intro"));
         tv_vip_money.setText(payAcount);
+        btn_confirm.setText("确认支付¥"+payAcount);
+
 
         vipType = getIntent().getIntExtra("vipType", 1);
         switch (vipType) {
+            case 5:
+                viptype.setImageResource(R.drawable.svip_b);
+                break;
             case 4:
-                viptype.setImageResource(R.drawable.month12);
+                viptype.setImageResource(R.drawable.vip_b);
                 break;
             case 3:
                 viptype.setImageResource(R.drawable.month6);
@@ -163,6 +169,7 @@ public class UserPayChooseActivity extends BaseLoadActivity implements IWXAPIEve
                                 Toast.LENGTH_SHORT).show();
 
                         Intent intent2 = new Intent(mContext, UserPaySuccessActivity.class);
+                        intent2.putExtra("vipType", vipType);
 //                        startActivity(intent2);
                         startActivityForResult(intent2, WowuApp.ALIPAY);
                         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
@@ -397,6 +404,7 @@ public class UserPayChooseActivity extends BaseLoadActivity implements IWXAPIEve
             if (resp.errCode == 0) {
                 msg = "支付成功";
                 Intent intent2 = new Intent(mContext, UserPaySuccessActivity.class);
+                intent2.putExtra("vipType", vipType);
 //                        startActivity(intent2);
                 startActivityForResult(intent2, WowuApp.ALIPAY);
                 overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);

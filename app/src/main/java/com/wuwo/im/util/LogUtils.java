@@ -9,7 +9,7 @@ import android.util.Log;
 public class LogUtils {
 	
 	private static final String TAG = "LogUtils";
-	
+	//在这里决定是否开启log日志
 	private static final boolean LOGGER = true;
 
 	public static void v(String tag, String msg) {

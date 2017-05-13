@@ -1,6 +1,8 @@
 package com.wuwo.im.activity;
 
+import android.app.Activity;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -13,10 +15,13 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Base64;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -27,6 +32,7 @@ import com.google.gson.GsonBuilder;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMMessage;
 import com.hyphenate.easeui.widget.EaseAlertDialog;
+import com.squareup.okhttp.Request;
 import com.tencent.connect.share.QQShare;
 import com.tencent.connect.share.QzoneShare;
 import com.tencent.mm.sdk.modelmsg.SendMessageToWX;
@@ -38,11 +44,16 @@ import com.tencent.tauth.Tencent;
 import com.tencent.tauth.UiError;
 import com.wuwo.im.adapter.CommRecyclerAdapter;
 import com.wuwo.im.adapter.CommRecyclerViewHolder;
+import com.wuwo.im.bean.Characters;
+import com.wuwo.im.bean.LocalUser;
 import com.wuwo.im.bean.RecommendFriends;
 import com.wuwo.im.config.WowuApp;
+import com.wuwo.im.util.LogUtils;
 import com.wuwo.im.util.MyToast;
 import com.wuwo.im.util.UtilsTool;
 import com.wuwo.im.view.PullLoadMoreRecyclerView;
+import com.zhy.http.okhttp.OkHttpUtils;
+import com.zhy.http.okhttp.callback.BitmapCallback;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -51,7 +62,7 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
-import im.wuwo.com.wuwo.R;
+import im.imxianzhi.com.imxianzhi.R;
 
 /**
  * 添加密码
@@ -66,28 +77,31 @@ public class AddFriendActivity extends BaseLoadActivity {
 
     private final String TAG = "AddFriendActivity";
     private PullLoadMoreRecyclerView mPullLoadMoreRecyclerView;
-    private int mCount = 1;
+    private int mCount = 0;
     private ArrayList<RecommendFriends> RecommendFriends_List = new ArrayList<RecommendFriends>(); //记录所有的最新消息
     //    private XinWen_RecyclerViewAdapter mXinWen_RecyclerViewAdapter;
 //    private SearchView search_view;
     private String searchinfo;
-    private  CommRecyclerAdapter messageRAdapter;
+    private CommRecyclerAdapter messageRAdapter;
 
     private mHandlerWeak mtotalHandler;
     protected EditText query;
     protected ImageButton clearSearch;
 
     private IWXAPI wxApi;
-    private  int scenePengYouQuan = SendMessageToWX.Req.WXSceneTimeline;
+    private int scenePengYouQuan = SendMessageToWX.Req.WXSceneTimeline;
     private int sceneHaoYou = SendMessageToWX.Req.WXSceneSession;
     private Tencent mTencent;
     private SharedPreferences mSettings;
-
+    private Characters mCharacter=new Characters();
+    public static final int LOAD_RECOMMEND_DATA = 111;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_addfriend_pullloadmore_recyclerview);
 //        UtilsTool.hideSoftKeyboard(AddFriendActivity.this);
+        mSettings = mContext.getSharedPreferences(WowuApp.PREFERENCE_KEY,
+                android.content.Context.MODE_PRIVATE);
 
 
         initViews();
@@ -96,8 +110,9 @@ public class AddFriendActivity extends BaseLoadActivity {
         wxApi.registerApp(WowuApp.WeChat_APP_ID);
         // 其中APP_ID是分配给第三方应用的appid，类型为String。
         mTencent = Tencent.createInstance(WowuApp.QQ_APP_ID, mContext.getApplicationContext());
-        mSettings = mContext.getSharedPreferences(WowuApp.PREFERENCE_KEY,
-                android.content.Context.MODE_PRIVATE);
+
+
+        loadDataService.loadGetJsonRequestData(WowuApp.GetDispositionInfoURL, LOAD_RECOMMEND_DATA);
     }
 
 
@@ -125,6 +140,19 @@ public class AddFriendActivity extends BaseLoadActivity {
         initQuery();
 
         loadData();
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Gson gson = new GsonBuilder().create();
+                java.lang.reflect.Type type = new com.google.gson.reflect.TypeToken<Characters>() {
+                }.getType();
+                if(mSettings.getString("characterInfo",null) !=null){
+                    mCharacter = gson.fromJson(mSettings.getString("characterInfo",""), type);
+                }
+            }
+        }).start();
+
     }
 
     List<RecommendFriends> searchList = new ArrayList<RecommendFriends>();
@@ -163,10 +191,37 @@ public class AddFriendActivity extends BaseLoadActivity {
                 UtilsTool.hideSoftKeyboard(AddFriendActivity.this);
             }
         });
+
+
+
+        query.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if(actionId == EditorInfo.IME_ACTION_SEARCH){
+// 先隐藏键盘
+                    ((InputMethodManager) query.getContext().getSystemService(Context.INPUT_METHOD_SERVICE))
+                            .hideSoftInputFromWindow(
+                                    AddFriendActivity.this
+                                            .getCurrentFocus()
+                                            .getWindowToken(),
+                                    InputMethodManager.HIDE_NOT_ALWAYS);
+
+//实现自己的搜索逻辑
+                    return true;
+                }
+                return false;
+            }
+        });
+
+
+
     }
 
     private void SearchFilter(final CharSequence s) {
-        new Thread(new Runnable() {
+
+
+/*        new Thread(new Runnable() {
             @Override
             public void run() {
                 if (RecommendFriends_List != null) {
@@ -184,7 +239,11 @@ public class AddFriendActivity extends BaseLoadActivity {
                     }
                 }
             }
-        }).start();
+        }).start();*/
+
+//        GET Chat/Search?key={key}&pageIndex={pageIndex}	    根据昵称或者先知号搜索
+        mCount = 0;
+        loadDataService.loadGetJsonRequestData(WowuApp.ChatSearchURL + "?key=" + s + "&pageIndex=0", SEARCH_DATA);//+mCount
     }
 
 
@@ -205,6 +264,7 @@ public class AddFriendActivity extends BaseLoadActivity {
                 break;
             case R.id.tv_qq_add:
                 showQQShareDialog();
+//                onClickQQShare();
                 break;
 
         }
@@ -308,7 +368,7 @@ public class AddFriendActivity extends BaseLoadActivity {
     private void setRefresh() {
 //        mXinWen_RecyclerViewAdapter.getDataList().clear();
         if (messageRAdapter != null) messageRAdapter.clearDate();
-        mCount = 1;
+        mCount = 0;
     }
 
 
@@ -334,13 +394,18 @@ public class AddFriendActivity extends BaseLoadActivity {
         messageRAdapter = new CommRecyclerAdapter<RecommendFriends>(mContext, R.layout.item_contact_addfriend) {
             @Override
             public void convert(CommRecyclerViewHolder viewHolder, RecommendFriends mainMessage) {
+
+
+
 //                {"UserId":"cb510cdf98ca4b9f9082051bf7190ff4",
 //                        "PhotoUrl":"http://xzxj.oss-cn-shanghai.aliyuncs.com/user/c7f13738-1768-406d-a914-53278f2a0835x480.jpg","Gender":0,"Name":"噜噜","Description":null},
 
                 //对对应的View进行赋值
-                viewHolder.setText(R.id.contract_title, mainMessage.getName());
+                viewHolder.setText(R.id.contract_title, mainMessage.getRemarkName()!=null ?mainMessage.getRemarkName(): mainMessage.getName());
                 SimpleDraweeView portal_news_img = (SimpleDraweeView) viewHolder.getView(R.id.news_label_pic);
-                portal_news_img.setImageURI(Uri.parse(mainMessage.getPhotoUrl()));
+               if(mainMessage.getPhotoUrl() !=null ){
+                   portal_news_img.setImageURI(Uri.parse(mainMessage.getPhotoUrl()));
+               }
 //                if(!(mainMessage.getDescription() + "").equals("null")) {
                 viewHolder.setText(R.id.contact_userinfo, (mainMessage.getDescription() + "").equals("null") ? "这人很懒，什么都没写" : mainMessage.getDescription() + "");
 //                }
@@ -389,28 +454,26 @@ public class AddFriendActivity extends BaseLoadActivity {
             }
         };
         //设置item点击事件
-//        messageRAdapter.setOnItemClick(new CommRecyclerAdapter.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(View view, int position) {
-//
-//
-////                Intent intent2 = new Intent(mContext, NewsOneDetailActivity.class);
-////                //        intent2.putExtra("content", newsMessagelist.get(tempPosition-1).getContent());
-////                intent2.putExtra("url", DistApp.serverAbsolutePath + "/snews!mobileNewsdetail.action?news.id=4028816f4d4be502014d4c0e22dc003d");
-////                intent2.putExtra("name", "消息通知");
-////                startActivity(intent2);
-////                mContext.overridePendingTransition(0, 0);
-//            }
-//        });
+        messageRAdapter.setOnItemClick(new CommRecyclerAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+
+                Intent intent2 = new Intent(mContext, UserInfoEditActivity.class);
+                intent2.putExtra("chatUserId", ((RecommendFriends)messageRAdapter.getData().get(position)).getUserId());
+                intent2.putExtra("PhotoUrl", ((RecommendFriends)messageRAdapter.getData().get(position)).getPhotoUrl());
+                startActivity(intent2);
+                AddFriendActivity.this.overridePendingTransition(0, 0);
+            }
+        });
         return null;
     }
 
 
     @Override
-    public void loadServerData(String response, int flag) {
+    public void loadServerData(final String response, int flag) {
         switch (flag) {
             case LOAD_DATA:
-//                Log.i("获取好友推荐列表", "：：" + response);
+//                LogUtils.i("获取好友推荐列表", "：：" + response);
 
 //                UtilsTool.saveStringToSD(json.toString());
                 try {
@@ -451,35 +514,93 @@ public class AddFriendActivity extends BaseLoadActivity {
                     }
                 }).start();
                 break;
-              case 200:
+            case 200:
 //                MyToast.show(mContext,"进入了分享");
-                com.tencent.mm.sdk.modelmsg. WXWebpageObject webpage = new com.tencent.mm.sdk.modelmsg.WXWebpageObject();
+                com.tencent.mm.sdk.modelmsg.WXWebpageObject webpage = new com.tencent.mm.sdk.modelmsg.WXWebpageObject();
                 webpage.webpageUrl = WowuApp.shareURL;
                 WXMediaMessage msg = new WXMediaMessage(webpage);
-                msg.title ="快和我一起加入先知先觉，发现更多附近新奇";
-                msg.description = "我在先知先觉，先知号："+WowuApp.XianZhiNumber;
+                msg.title =(mCharacter!=null?"我的性格类型是"+mCharacter.getName()+mCharacter.getTitle()+","+mCharacter.getCelebrity()+"是我的性格同类": "一起三观配，让我发现你的美，你人美心更美。#先知有三观配，我在先知先觉等你#");
+                msg.description = "我在先知先觉，先知号：" + WowuApp.XianZhiNumber;
 //            Bitmap thumb = BitmapFactory.decodeResource(getResources(), R.drawable.icon);
 
 
                 byte[] bitmapArray;
-                bitmapArray = Base64.decode( response, Base64.DEFAULT);
-                Bitmap thumb =   BitmapFactory.decodeByteArray(bitmapArray, 0,
+                bitmapArray = Base64.decode(response, Base64.DEFAULT);
+                Bitmap thumb = BitmapFactory.decodeByteArray(bitmapArray, 0,
                         bitmapArray.length);
 
-                msg.thumbData =  UtilsTool.bmpToByteArray(thumb, true);
+                msg.thumbData = UtilsTool.bmpToByteArray(thumb, true);
                 SendMessageToWX.Req req = new SendMessageToWX.Req();
-                req.transaction =  "transaction"+System.currentTimeMillis(); // transaction字段用于唯一标识一个请求
+                req.transaction = "transaction" + System.currentTimeMillis(); // transaction字段用于唯一标识一个请求
                 req.message = msg;
-                req.scene =flag;
+                req.scene = flag;
                 wxApi.sendReq(req);
                 break;
+            case SEARCH_DATA:
+                Log.i(TAG, response + ":::");
+
+                Gson gson = new GsonBuilder().create();
+                if (response != null) {
+                    try {
+                        JSONObject tempjson = new JSONObject(response);
+
+                        if (tempjson != null) {
+                            java.lang.reflect.Type type = new com.google.gson.reflect.TypeToken<List<RecommendFriends>>() {
+                            }.getType();
+                            searchList = gson.fromJson(tempjson.optString("Data"), type);
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+//                if (s.toString().equals(currentSearchInfo)) {
+                Message msg3 = new Message();
+                msg3.what = SEARCH_DATA;
+                mtotalHandler.sendMessage(msg3);
+//                }
+                break;
+
+
+            case  LOAD_RECOMMEND_DATA:
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Gson gson = new GsonBuilder().create();
+                        java.lang.reflect.Type type = new com.google.gson.reflect.TypeToken<Characters>() {
+                        }.getType();
+                        if(response !=null){
+                            mCharacter = gson.fromJson(response, type);
+                            SharedPreferences.Editor editor = mSettings.edit();
+                            editor.putString("characterInfo", response);
+                            if(mCharacter.getPhotoUrl() !=null){
+                                editor.putString("characterUrl", mCharacter.getPhotoUrl());
+                            }
+                            editor.commit();
+                        }
+                    }
+                }).start();
+            break;
 
         }
     }
 
     @Override
     public void loadDataFailed(String response, int flag) {
-        MyToast.show(mContext, response);
+//        MyToast.show(mContext, response);
+//        if(LOAD_RECOMMEND_DATA ==flag){
+//            new Thread(new Runnable() {
+//                @Override
+//                public void run() {
+//                    Gson gson = new GsonBuilder().create();
+//                    java.lang.reflect.Type type = new com.google.gson.reflect.TypeToken<Characters>() {
+//                    }.getType();
+//                    if(mSettings.getString("characterInfo",null) !=null){
+//                        mCharacter = gson.fromJson(mSettings.getString("characterInfo",""), type);
+//                    }
+//                }
+//            }).start();
+//        }
     }
 
 
@@ -553,7 +674,7 @@ public class AddFriendActivity extends BaseLoadActivity {
             @Override
             public void onClick(View arg0) {
                 // TODO 自动生成的方法存根
-                shareToQzone ();
+                shareToQzone();
                 dialog.dismiss();
             }
         });
@@ -578,19 +699,33 @@ public class AddFriendActivity extends BaseLoadActivity {
         dialog.onWindowAttributesChanged(wl);
         // 设置点击外围解散
         dialog.setCanceledOnTouchOutside(true);
-        dialog.show();
+        if(!((Activity) mContext).isFinishing()) {
+            dialog.show();
+        }
     }
 
-
-
+    private final int LoadingError = 1;
+    private Handler mHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case LoadingError:
+                    MyToast.show(mContext, "当前版本不支持分享功能");
+                    break;
+            }
+            super.handleMessage(msg);
+        }
+    };
     /**
      * 微信分享 （这里仅提供一个分享网页的示例，其它请参看官网示例代码）
      *
-     * @param  (:分享到微信好友，1：分享到微信朋友圈)
+     * @param (:分享到微信好友，1：分享到微信朋友圈)
      */
-    private void wechatShare(int flag ) {
+    private void wechatShare(final int flag) {
         if (!wxApi.isWXAppSupportAPI()) {
-            MyToast.show(mContext, "当前版本不支持分享功能");
+            Message msg = new Message();
+            msg.what = LoadingError;
+            mHandler.sendMessage(msg);
             return;
         }
 
@@ -616,14 +751,41 @@ public class AddFriendActivity extends BaseLoadActivity {
                 08-08 23:26:15.962 615-615/im.wuwo.com.wuwo W/System.err: </Error>
         */
 
-//       由于上面的接口无法用，暂时用这个代替
+
+        if(mSettings.getString("characterUrl",null) !=null){
+            OkHttpUtils
+                    .get()//
+                    .url(mSettings.getString("characterUrl",null) )//
+                    .build()//
+                    .execute(new BitmapCallback()
+                    {
+                        @Override
+                        public void onError(Request request, Exception e)
+                        {
+                            startShareToWX(flag,BitmapFactory.decodeResource(getResources(), R.drawable.icon));
+                        }
+
+                        @Override
+                        public void onResponse(Bitmap bitmap)
+                        {
+                            startShareToWX(flag,bitmap);
+                        }
+                    });
+        }else{
+            refresh();
+        }
+    }
+    private void startShareToWX(int flag ,Bitmap thumb) {
+        //       由于上面的接口无法用，暂时用这个代替
         com.tencent.mm.sdk.modelmsg. WXWebpageObject webpage = new com.tencent.mm.sdk.modelmsg.WXWebpageObject();
         webpage.webpageUrl = WowuApp.shareURL;
         WXMediaMessage msg = new WXMediaMessage(webpage);
-        msg.title ="快和我一起加入先知先觉，发现更多附近新奇";
-        msg.description = "我在先知先觉，先知号："+WowuApp.XianZhiNumber;
-        Bitmap thumb = BitmapFactory.decodeResource(getResources(), R.drawable.icon);
-        msg.thumbData =  UtilsTool.bmpToByteArray(thumb, true);
+        msg.title ="一起三观配，让我发现你的美，你人美心更美。#先知有三观配，我在先知先觉等你#";//"我的性格类型是"+mCharacter.getName()+mCharacter.getTitle()+","+mCharacter.getCelebrity()+"是我的性格同类";
+        msg.description = "一起三观配，让我发现你的美，你人美心更美。#先知有三观配，我在先知先觉，先知号："+WowuApp.XianZhiNumber;
+//          thumb = BitmapFactory.decodeResource(getResources(), R.drawable.icon);
+//        Bitmap thumb =find_share_f_ic7.getDrawingCache();
+
+        msg.thumbData =   UtilsTool.bmpToByteArray(thumb, true);
         SendMessageToWX.Req req = new SendMessageToWX.Req();
         req.transaction =  "transaction"+System.currentTimeMillis(); // transaction字段用于唯一标识一个请求
         req.message = msg;
@@ -631,21 +793,32 @@ public class AddFriendActivity extends BaseLoadActivity {
         wxApi.sendReq(req);
     }
 
+    public void refresh() {
+        if(loadDataService!=null){
+            loadDataService.loadGetJsonRequestData(WowuApp.GetDispositionInfoURL, LOAD_RECOMMEND_DATA);
+        }
+    }
 
+    private void shareToQzone() {
+//        　　//分享类型
+//        　　params.putString(QzoneShare.SHARE_TO_QQ_KEY_TYPE,SHARE_TO_QZONE_TYPE_IMAGE_TEXT );
+//        params.putString(QzoneShare.SHARE_TO_QQ_TITLE, "标题");//必填
+//        params.putString(QzoneShare.SHARE_TO_QQ_SUMMARY, "摘要");//选填
+//        params.putString(QzoneShare.SHARE_TO_QQ_TARGET_URL, "跳转URL");//必填
+//        params.putStringArrayList(QzoneShare.SHARE_TO_QQ_IMAGE_URL, "图片链接ArrayList");
+//        mTencent.shareToQzone(activity, params, new BaseUiListener());
 
-
-    private void shareToQzone () {
         //分享类型
         final Bundle params = new Bundle();
-        params.putString(QzoneShare.SHARE_TO_QZONE_KEY_TYPE,QzoneShare.SHARE_TO_QZONE_TYPE_IMAGE_TEXT+"" );
-        params.putString(QzoneShare.SHARE_TO_QQ_TITLE, "快和我一起加入先知先觉，发现更多附近新奇");//必填
-        params.putString(QzoneShare.SHARE_TO_QQ_SUMMARY,"我在先知先觉，先知号："+WowuApp.XianZhiNumber );//选填
+        params.putString(QzoneShare.SHARE_TO_QZONE_KEY_TYPE, QzoneShare.SHARE_TO_QZONE_TYPE_IMAGE_TEXT + "");
+        params.putString(QzoneShare.SHARE_TO_QQ_TITLE, "一起三观配，让我发现你的美，你人美心更美。#先知有三观配，我在先知先觉等你#");//必填  mCharacter!=null?"我的性格类型是"+mCharacter.getName()+mCharacter.getTitle()+","+mCharacter.getCelebrity()+"是我的性格同类":
+        params.putString(QzoneShare.SHARE_TO_QQ_SUMMARY, "一起三观配，让我发现你的美，你人美心更美。#先知有三观配，我在先知先觉，先知号：" + WowuApp.XianZhiNumber);//选填
         params.putString(QzoneShare.SHARE_TO_QQ_TARGET_URL, WowuApp.shareURL);//必填
 
-        ArrayList<String> strList=new ArrayList<String>();
-        strList.add( mSettings.getString("iconPath","http//#"));
-        params.putStringArrayList(QzoneShare.SHARE_TO_QQ_IMAGE_URL,strList);
-        params.putString(QzoneShare.SHARE_TO_QQ_IMAGE_URL, mSettings.getString("iconPath","http//#"));
+        ArrayList<String> strList = new ArrayList<String>();
+        strList.add(WowuApp.iconPath.equals("")==true?mSettings.getString("iconPath", "http//#"):WowuApp.iconPath);
+        params.putStringArrayList(QzoneShare.SHARE_TO_QQ_IMAGE_URL, strList);
+//        params.putString(QzoneShare.SHARE_TO_QQ_IMAGE_URL,WowuApp.iconPath.equals("")==true?mSettings.getString("iconPath", "http//#"):WowuApp.iconPath);
 
         mTencent.shareToQzone(AddFriendActivity.this, params, new BaseUiListener());
     }
@@ -654,28 +827,27 @@ public class AddFriendActivity extends BaseLoadActivity {
     private void onClickQQShare() {
         final Bundle params = new Bundle();
         params.putInt(QQShare.SHARE_TO_QQ_KEY_TYPE, QQShare.SHARE_TO_QQ_TYPE_DEFAULT);
-        params.putString(QQShare.SHARE_TO_QQ_TITLE, "快和我一起加入先知先觉，发现更多附近新奇");
-        params.putString(QQShare.SHARE_TO_QQ_SUMMARY,  "我在先知先觉，先知号："+WowuApp.XianZhiNumber);
-        params.putString(QQShare.SHARE_TO_QQ_TARGET_URL,  WowuApp.shareURL);
-        params.putString(QQShare.SHARE_TO_QQ_IMAGE_URL, mSettings.getString("iconPath","http//#"));//WowuApp.iconPath
+        params.putString(QQShare.SHARE_TO_QQ_TITLE,"一起三观配，让我发现你的美，你人美心更美。#先知有三观配，我在先知先觉等你#");//mCharacter!=null?"我的性格类型是"+mCharacter.getName()+mCharacter.getTitle()+","+mCharacter.getCelebrity()+"是我的性格同类": "一起三观配，让我发现你的美，你人美心更美。#先知有三观配，我在先知先觉等你#");
+        params.putString(QQShare.SHARE_TO_QQ_SUMMARY, "一起三观配，让我发现你的美，你人美心更美。#先知有三观配，我在先知先觉，先知号：" + WowuApp.XianZhiNumber);
+        params.putString(QQShare.SHARE_TO_QQ_TARGET_URL, WowuApp.shareURL);
+        params.putString(QQShare.SHARE_TO_QQ_IMAGE_URL, mSettings.getString("iconPath", "http//#"));//WowuApp.iconPath
 //        params.putString(QQShare.SHARE_TO_QQ_IMAGE_LOCAL_URL, mSettings.getString("iconPath","http//#"));//WowuApp.iconPath
 //
 //        "http://imgcache.qq.com/music/photo/mid_album_300/V/E/000J1pJ50cDCVE.jpg"  http://xzxj.oss-cn-shanghai.aliyuncs.com/user/35b5090b-aaf4-4c6d-b46f-e42073e11f4ex128.jpg
 //        params.putString(QQShare.SHARE_TO_QQ_IMAGE_URL,"http://img3.douban.com/lpic/s3635685.jpg" );
 
 
-        params.putString(QQShare.SHARE_TO_QQ_APP_NAME,  "先知先觉");
+        params.putString(QQShare.SHARE_TO_QQ_APP_NAME, "先知先觉");
 //        params.putInt(QQShare.SHARE_TO_QQ_EXT_INT,  "其他附加功能");
-        if(mTencent!=null){
+        if (mTencent != null) {
 //            mTencent.shareToQQ(mContext, params, new BaseUiListener());
             mTencent.shareToQQ(AddFriendActivity.this, params, new BaseUiListener());
 
-        }else{
-            MyToast.show(mContext,"初始化失败！！！");
+        } else {
+            MyToast.show(mContext, "初始化失败！！！");
         }
 
     }
-
 
 
     @Override
@@ -684,49 +856,34 @@ public class AddFriendActivity extends BaseLoadActivity {
     }
 
 
-
-
-
-
     private class BaseUiListener implements IUiListener {
         @Override
         public void onComplete(Object response) {
             //V2.0版本，参数类型由JSONObject 改成了Object,具体类型参考api文档
 //            mBaseMessageText.setText("onComplete:");
 //            doComplete(response);
-            MyToast.show(mContext,response.toString());
+//            MyToast.show(mContext, response.toString());
+            LogUtils.i("AddFirends QQZone:","："+response);
         }
+
         protected void doComplete(JSONObject values) {
         }
+
         @Override
         public void onError(UiError e) {
-            MyToast.show(mContext, "code:" + e.errorCode + ", msg:"
-                    + e.errorMessage + ", detail:" + e.errorDetail);
-//            showResult("onError:", "code:" + e.errorCode + ", msg:"
+//            MyToast.show(mContext, "code:" + e.errorCode + ", msg:"
 //                    + e.errorMessage + ", detail:" + e.errorDetail);
+//            showResult("onError:", "code:" + e.errorCode + ", msg:"+ e.errorMessage + ", detail:" + e.errorDetail);
+            LogUtils.i("AddFirends QQZone:", "code:" + e.errorCode + ", msg:"+ e.errorMessage + ", detail:" + e.errorDetail);
         }
+
         @Override
         public void onCancel() {
 //            showResult("onCancel", "");
-            MyToast.show(mContext,"onCancel");
+            LogUtils.i("AddFirends QQZone:","onCancel()");
+//            MyToast.show(mContext, "onCancel");
         }
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 }

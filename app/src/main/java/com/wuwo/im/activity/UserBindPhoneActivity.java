@@ -2,18 +2,18 @@ package com.wuwo.im.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.wuwo.im.config.WowuApp;
+import com.wuwo.im.util.LogUtils;
 import com.wuwo.im.util.MyToast;
 
 import org.json.JSONObject;
 
-import im.wuwo.com.wuwo.R;
+import im.imxianzhi.com.imxianzhi.R;
 
 public class UserBindPhoneActivity extends BaseLoadActivity {
     int currentStep = 1;
@@ -220,7 +220,7 @@ public class UserBindPhoneActivity extends BaseLoadActivity {
     @Override
     public void loadDataFailed(String response, int flag) {
         MyToast.show(mContext, "返回值失败" + response.toString());
-        Log.i("返回值失败", response.toString());
+        LogUtils.i("返回值失败", response.toString());
     }
 
 }

@@ -1,13 +1,13 @@
 package com.wuwo.im.activity;
 
 import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
@@ -24,7 +24,9 @@ import com.wuwo.im.bean.Contact;
 import com.wuwo.im.bean.ContactFriend;
 import com.wuwo.im.config.WowuApp;
 import com.wuwo.im.util.ContactsTool;
+import com.wuwo.im.util.LogUtils;
 import com.wuwo.im.util.MyToast;
+import com.wuwo.im.util.UtilsTool;
 
 import org.json.JSONObject;
 
@@ -32,7 +34,7 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
-import im.wuwo.com.wuwo.R;
+import im.imxianzhi.com.imxianzhi.R;
 
 /**
  * desc
@@ -121,21 +123,30 @@ public class FromContractsActivity extends BaseLoadActivity {
         new Thread(new Runnable() {
             @Override
             public void run() {
+                Message msg = new Message();
+                msg.what = LoadingInfo;
+                mtotalHandler.sendMessage(msg);
                 try {
                     ContactsTool ct = new ContactsTool();
                     mContacts = ct.getPhoneContacts(mContext);
 
                     String CacheJsonString = DemoDBManager.getInstance().getCacheJson(UserDao.CONTRACTS_FRIENDS);
                     //说明之前已经保存同步通讯录，且没有变更
-////                    Log.i("FromContractsActivity表a", "：" + CacheJsonString.trim().length() + ":" + gson.toJson(mContacts).length());
+////                    LogUtils.i("FromContractsActivity表a", "：" + CacheJsonString.trim().length() + ":" + gson.toJson(mContacts).length());
 //                    if (CacheJsonString != null && CacheJsonString.trim().length() == gson.toJson(mContacts).length()) {
-//                        Log.i("FromContractsActivity列表", "：：" + "说明之前已经保存同步通讯录，且没有变更");
+//                        LogUtils.i("FromContractsActivity列表", "：：" + "说明之前已经保存同步通讯录，且没有变更");
 ////                        直接获取当前待添加信息
 //                        loadRecommendFriends();
 //                    } else {
 //                        //[{"Name":"*0*","PhoneNumber":"*0*"},{"Name":"+8613875073163","PhoneNumber":"+488613875073163"}]
-                        Log.i("FromContractsActivity列表", "：" + gson.toJson(mContacts.subList(2, 6)));
-                        loadDataService.loadPostJsonRequestData(WowuApp.JSON, WowuApp.FriendSyncContactsURL, gson.toJson(mContacts.subList(0, 30)), SYNC_CONTACTS_DATA);// gson.toJson(mContacts.subList(0, 30))
+                        LogUtils.i("FromContractsActivity列表", "：" + gson.toJson(mContacts.subList(2, 6)));
+
+                    if(mContacts.size()>20){
+                        loadDataService.loadPostJsonRequestData(WowuApp.JSON, WowuApp.FriendSyncContactsURL, gson.toJson(mContacts.subList(0, mContacts.size()-2)), SYNC_CONTACTS_DATA);// gson.toJson(mContacts.subList(0, 30))
+
+                    }else{
+                        loadDataService.loadPostJsonRequestData(WowuApp.JSON, WowuApp.FriendSyncContactsURL, gson.toJson(mContacts.subList(0, mContacts.size()-1)), SYNC_CONTACTS_DATA);// gson.toJson(mContacts.subList(0, 30))
+                    }
 //                      //将新的通讯录保存到缓存数据库
                         DemoDBManager.getInstance().saveCacheJson(UserDao.CONTRACTS_FRIENDS, gson.toJson(mContacts));
 //                    }
@@ -157,6 +168,10 @@ public class FromContractsActivity extends BaseLoadActivity {
 
     public static final int DOWNLOADED_Contact = 1;
     public static final int REFRESH_DATA = 2;
+    private static final int LoadingInfo = 3;
+    private static final int LoadingError = 4;
+    private ProgressDialog pg;
+
     //创建一个handler，内部完成处理消息方法
 
     private static class mHandlerWeak extends Handler {
@@ -175,6 +190,7 @@ public class FromContractsActivity extends BaseLoadActivity {
             }
             switch (msg.what) {
                 case DOWNLOADED_Contact:
+                    if (act.pg != null && act.pg.isShowing()) act.pg.dismiss();
                     if (act != null) {
                         act.mContactFriendGroupadapter.notifyDataSetChanged();
 
@@ -187,6 +203,14 @@ public class FromContractsActivity extends BaseLoadActivity {
                     break;
                 case REFRESH_DATA:
 //                    act.mRecyclerView_Yaoqing.setVisibility(View.GONE);
+                    break;
+                case LoadingInfo:
+                    act.pg = UtilsTool.initProgressDialog(act.mContext, "正在加载...");
+                    act.pg.show();  // if (act.pg != null && act.pg.isShowing()) act.pg.dismiss();
+                    break;
+                case LoadingError:
+                    MyToast.show(act.mContext, "加载失败");
+                    if (act.pg != null && act.pg.isShowing()) act.pg.dismiss();
                     break;
                 default:
                     break;
@@ -232,7 +256,7 @@ public class FromContractsActivity extends BaseLoadActivity {
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        Log.i("获取带邀请好友列表", "：：" + response);
+                        LogUtils.i("获取带邀请好友列表", "：：" + response);
                         Gson gson = new GsonBuilder().create();
                         java.lang.reflect.Type type = new com.google.gson.reflect.TypeToken<List<ContactFriend>>() {
                         }.getType();
@@ -275,7 +299,7 @@ public class FromContractsActivity extends BaseLoadActivity {
 
                 break;
             case SYNC_CONTACTS_DATA://同步通讯录后的返回值
-                Log.i("获取同步好友列表结果", "：：" + response);
+                LogUtils.i("获取同步好友列表结果", "：：" + response);
                 //说明成功同步，开始加载待添加和待邀请好友
                 new Thread(new Runnable() {
                     @Override
@@ -292,7 +316,10 @@ public class FromContractsActivity extends BaseLoadActivity {
 
     @Override
     public void loadDataFailed(String response, int flag) {
-        MyToast.show(mContext, response);
+        Message msg = new Message();
+        msg.what = LoadingError;
+        mtotalHandler.sendMessage(msg);
+
     }
 
 

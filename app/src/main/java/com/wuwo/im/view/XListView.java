@@ -33,7 +33,7 @@ import android.widget.TextView;
 
 import java.util.Date;
 
-import im.wuwo.com.wuwo.R;
+import im.imxianzhi.com.imxianzhi.R;
 
 public class XListView extends ListView implements OnScrollListener {
 

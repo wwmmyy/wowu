@@ -2,7 +2,10 @@ package com.wuwo.im.config;
 
 import android.app.ActivityManager;
 import android.app.Application;
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Environment;
@@ -11,27 +14,33 @@ import android.util.Log;
 
 import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
-import com.baidu.location.LocationClient;
+import com.baidu.location.LocationClientOption;
+import com.baidu.mapapi.SDKInitializer;
 import com.baidu.mapapi.model.LatLng;
 import com.easemob.redpacketsdk.RedPacket;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMOptions;
 import com.hyphenate.chatuidemo.DemoHelper;
+import com.net.grandcentrix.tray.AppPreferences;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.squareup.okhttp.MediaType;
+import com.wuwo.im.service.LocationService;
+import com.wuwo.im.util.LocalImageHelper;
+import com.wuwo.im.util.LogUtils;
 import com.wuwo.im.util.UtilsTool;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.service.LoadserverdataService;
 
 import org.json.JSONObject;
 
+import java.io.File;
 import java.util.Iterator;
 import java.util.List;
 
-import im.wuwo.com.wuwo.R;
+import im.imxianzhi.com.imxianzhi.R;
 
 /**
  * @类名:
@@ -46,9 +55,11 @@ import im.wuwo.com.wuwo.R;
  */
 public class WowuApp extends Application {
     static Context sContext;
-    public static String ACTION_NAME = "deviceLocked";
+//    坐标变化时及时发出广播，更新相应列表
+    public static String ACTION_NAME = "LocationChanged";
     SharedPreferences settings;
-    public LocationClient mLocationClient;
+    //    public LocationClient mLocationClient;
+    public LocationService locationService;
     public MyLocationListener mMyLocationListener;
     public static final String LOG_DIR = Environment.getExternalStorageDirectory().getAbsolutePath() + "/errorLog";
     //    public static String OkHttpUtils.serverAbsolutePath = "http://58.246.138.178:8040/gzServices/ServiceProvider.ashx"; // dist
@@ -75,7 +86,12 @@ public class WowuApp extends Application {
         applicationContext = this;
         instance = this;
 
+
+//        // 用来监控卡顿的
+//        BlockCanary.install(this, new AppBlockCanaryContext()).start();
+
         Fresco.initialize(getApplicationContext());
+
 
         DisplayImageOptions defaultOptions = new DisplayImageOptions.Builder() //
                 .showImageForEmptyUri(R.drawable.ic_launcher) //
@@ -86,11 +102,14 @@ public class WowuApp extends Application {
         ImageLoaderConfiguration config = new ImageLoaderConfiguration//
                 .Builder(getApplicationContext())//
                 .defaultDisplayImageOptions(defaultOptions)//
-                .discCacheSize(50 * 1024 * 1024)//
-                .discCacheFileCount(100)// 缓存一百张图片
+                .discCacheSize(60 * 1024 * 1024)//
+                .discCacheFileCount(60)// 缓存一百张图片
                 .writeDebugLogs()//
                 .build();//
         ImageLoader.getInstance().init(config);
+
+        //本地图片辅助类初始化
+        LocalImageHelper.init(this);
 
 //假如空指针的话application保存的东西就会清空重新加载
         settings = this.getSharedPreferences(PREFERENCE_KEY, MODE_PRIVATE);
@@ -101,9 +120,26 @@ public class WowuApp extends Application {
 
 
 //        添加地图定位功能
-        mLocationClient = new LocationClient(this.getApplicationContext());
+/*        mLocationClient = new LocationClient(this.getApplicationContext());
         mMyLocationListener = new MyLocationListener();
-        mLocationClient.registerLocationListener(mMyLocationListener);
+        mLocationClient.registerLocationListener(mMyLocationListener);*/
+
+        /***
+         * 初始化定位sdk，建议在Application中创建
+         */
+        try {
+            mMyLocationListener = new MyLocationListener();
+            locationService = new LocationService(getApplicationContext());
+//        mVibrator =(Vibrator)getApplicationContext().getSystemService(Service.VIBRATOR_SERVICE);
+//        WriteLog.getInstance().init(); // 初始化日志
+            locationService.setLocationOption(locationService.getDefaultLocationClientOption());
+            SDKInitializer.initialize(getApplicationContext());
+            locationService.registerListener(mMyLocationListener);
+            locationService.start();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
 //加入环信
 
 
@@ -136,10 +172,13 @@ public class WowuApp extends Application {
         EMOptions options = new EMOptions();
 //  默认添加好友时，是不需要验证的，改成需要验证
         options.setAcceptInvitationAlways(false);
+//        options.setShowNotificationInBackgroud(true);
+
 //  初始化
         EMClient.getInstance().init(applicationContext, options);
 //  在做打包混淆时，关闭debug模式，避免消耗不必要的资源
         EMClient.getInstance().setDebugMode(true);
+        registerLocationBoradcastReceiver();
 
     }
 
@@ -179,7 +218,6 @@ public class WowuApp extends Application {
         MultiDex.install(this);
     }
 
-
     //微信支付
     public static final String WeChat_APP_ID = "wxc1cc2ed7c5a30810";
     //QQ分享
@@ -191,41 +229,22 @@ public class WowuApp extends Application {
     public static String XianZhiNumber = "";
     public static String Password = "";
     public static String SmsValidateCode = "";
-    public static int Gender = 0;
+    public static int Gender = 1;
     public static String Name = "";
     public static String iconPath = "";//用户头像路径
 
-
-    //  记录位置坐标
-/*    public static String latitude = "0.1";
-    public static String longitude = "0.1";*/
-    public static String Radius = "";
-    public static float LocationSpeed = 5;
-    public static int LocationTime = 60 * 1000;//表示定位时间间隔60 * 1000
-
     public static final String PREFERENCE_KEY = "com.wowu.im";
-//    public static String userId = "";
-//    public static String userName = "";
-
-    public static final String ALL_CachePathDirTemp = "/mnt/sdcard/Downloads/";//下载文件的暂存路径
-
+    public static final String ALL_CachePathDirTemp = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Downloads/";//下载文件的暂存路径 /mnt/sdcard
     //    /storage/emulated/0/Pictures/锁屏壁纸/I01020052.jpg
-    public static final String tempPicPath = "/Downloads/";//下载文件的暂存路径  /mnt/sdcard/Downloads/
-
-
-    public static String userImagePath = OkHttpUtils.serverAbsolutePath + "/Downloads/userIcon/";  //头像缩略图
-
-
+    public static final String tempPicPath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Downloads/";//下载文件的暂存路径  /mnt/sdcard/Downloads/
+    public static String userImagePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Downloads/userIcon/";  //头像缩略图  OkHttpUtils.serverAbsolutePath
     //表示请求服务器类型
     public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
-
-
     //########Media   媒体相关##########################################
 //    POST Media/PreUploadImage 预上传图片 {  "Content": "sample string 1",  "FromIOS": true }
 //    Content	 Base64编码的图像  string    Required
 //    FromIOS	 是否来自IOS的Base64  boolean   None.
     public static String PreUploadImageURL = OkHttpUtils.serverAbsolutePath + "Media/PreUploadImage";
-
     //########User   账户相关##########################################fv
 //     登录 {   "PhoneNumber": "sample string 1", "Password": "sample string 2" }
     public static String LoginURL = OkHttpUtils.serverAbsolutePath + "Account/Login";
@@ -241,14 +260,10 @@ public class WowuApp extends Application {
     public static String GetDispositionInfoURL = OkHttpUtils.serverAbsolutePath + "Account/GetDispositionInfo";
     //    POST Account/SubmitLocation?lon={lon}&lat={lat} 提交位置
     public static String SubmitLocationURL = OkHttpUtils.serverAbsolutePath + "Account/SubmitLocation";
-
-
     //    POST Account/VipInfo
     public static String VipInfoURL = OkHttpUtils.serverAbsolutePath + "Account/VipInfo";
-
     //    POST Account/SubmitSuggestion   提交意见
     public static String SubmitSuggestionURL = OkHttpUtils.serverAbsolutePath + "Account/SubmitSuggestion";
-
     //    GET 获取用户的照片
     public static String GetPhotosURL = OkHttpUtils.serverAbsolutePath + "Account/GetPhotos";
     //    POST  退出登录
@@ -257,6 +272,8 @@ public class WowuApp extends Application {
     public static String ChangePasswordURL = OkHttpUtils.serverAbsolutePath + "Account/ChangePassword";
     //    POST找回密码{ "NewPassword": "sample string 1", "SmsValidateCode": "sample string 2","PhoneNumber":"sample string 3"}
     public static String FindPasswordURL = OkHttpUtils.serverAbsolutePath + "Account/FindPassword";
+
+
     /*    //    POST 更新用户资料
         {        "Name": "sample string 1",
                 "Birthday": "2016-07-08T13:59:47.103956+08:00",
@@ -277,8 +294,6 @@ public class WowuApp extends Application {
                     "Base64Image": "sample string 2"
             }        ]    }*/
     public static String UpdateUserInfoURL = OkHttpUtils.serverAbsolutePath + "Account/UpdateUserInfo";
-
-
     //########Disposition   性格相关##########################################
 //    GET Disposition/DispositionList  性格列表
     public static String DispositionListURL = OkHttpUtils.serverAbsolutePath + "Disposition/DispositionList";
@@ -288,8 +303,6 @@ public class WowuApp extends Application {
     //    POST Disposition/SubmitAnswer   提交答案   [  {  "QuestionId": "sample string 1",   "Answer": "sample string 2"  },
 // {  "QuestionId": "sample string 1", "Answer": "sample string 2"  } ]
     public static String SubmitAnswerURL = OkHttpUtils.serverAbsolutePath + "Disposition/SubmitAnswer";
-
-
     //########Chat   聊天室##########################################
 //GET Chat/GetNearbyUser?lon={lon}&lat={lat}&pageIndex={pageIndex} 获取附近的用户
     public static String GetNearbyUserURL = OkHttpUtils.serverAbsolutePath + "Chat/GetNearbyUser";
@@ -299,11 +312,8 @@ public class WowuApp extends Application {
     public static String MatchURL = OkHttpUtils.serverAbsolutePath + "Chat/Match";//?userId={userId}
     //    POST  根据一组用户ID获取用户的头像
     public static String UserPhotoURL = OkHttpUtils.serverAbsolutePath + "Chat/UserPhoto";
-
     //    POST Logger/Write            写日志
     public static String LoggerWriteURL = OkHttpUtils.serverAbsolutePath + "Logger/Write";
-
-
     //########Friend  好友相关##########################################
 //     获取好友列表
     public static String GetFriendsURL = OkHttpUtils.serverAbsolutePath + "Friend/GetFriends";//?lon={lon}&lat={lat}
@@ -313,21 +323,14 @@ public class WowuApp extends Application {
     public static String RemoveFocusURL = OkHttpUtils.serverAbsolutePath + "Friend/RemoveFocus";//?userId={userId}
     //    POST  删除好友
     public static String RemoveFriendURL = OkHttpUtils.serverAbsolutePath + "Friend/RemoveFriend";//?friendId={friendId}
-
-
     //    POST Friend/SyncContacts  同步通讯录好友
     public static String FriendSyncContactsURL = OkHttpUtils.serverAbsolutePath + "Friend/SyncContacts";//?friendId={friendI
-
     //    GET Friend/ContactsRecommend  获取通讯录推荐
     public static String FriendContactsRecommendURL = OkHttpUtils.serverAbsolutePath + "Friend/ContactsRecommend";//?friendId={friendI
-
     //    GET System/VersionInfo           版本信息
     public static String SystemVersionInfoURL = OkHttpUtils.serverAbsolutePath + "System/VersionInfo";
-
     //  GET   推荐好友
     public static String ChatRecommendFriendURL = OkHttpUtils.serverAbsolutePath + "Chat/RecommendFriend";
-
-
     //######## Pay##########################################
 //    POST
     public static String WechatNotifyURL = OkHttpUtils.serverAbsolutePath + "api/Pay/WechatNotify";
@@ -335,13 +338,52 @@ public class WowuApp extends Application {
     public static String AliypayNotifyURL = OkHttpUtils.serverAbsolutePath + "api/Pay/AliypayNotify";
     //    GET
     public static String PayNotifyURL = OkHttpUtils.serverAbsolutePath + "api/Pay/PayNotify";//?orderNumber={orderNumber}&payOk={payOk}
-
-
     //   购买VIP   POST { "VipType": 1,"PaymentMethod": "sample string 2"} PaymentMethod 支付方式,微信：wechat，支付宝：alipay
 //    return {"OrderId":"","OrderNumber":"","Total":0,"PrepayId":"","Wechat":{"AppId":"","PartnerId":"","PrepayId":"","PackageValue":"","NonceStr":"","TimeStamp":"1461397867","Sign":""}}
     public static String OrderBuyURL = OkHttpUtils.serverAbsolutePath + "Order/Buy";
+    //    GET Chat/Search?key={key}&pageIndex={pageIndex}	    根据昵称或者先知号搜索
+    public static String ChatSearchURL = OkHttpUtils.serverAbsolutePath + "Chat/Search";
+    //    GET Disposition/GetManualDialog?id={id} 根据性格谱获取性格弹框
+    public static String GetManualDialogURL = OkHttpUtils.serverAbsolutePath + "Disposition/GetManualDialog";
+    //    GET Disposition/GetDispositionNicknames?id={id} 获取性格昵称
+    public static String GetDispositionNicknamesURL = OkHttpUtils.serverAbsolutePath + "Disposition/GetDispositionNicknames";
+    //    GET Account/GetMatchMeUsers?pageIndex={pageIndex}&pageSize={pageSize}    谁配过我
+    public static String GetMatchMeUsersURL = OkHttpUtils.serverAbsolutePath + "Account/GetMatchMeUsers";
+    //    GET Account/GetWatchMeUsers?pageIndex={pageIndex}&pageSize={pageSize}    谁看过我
+    public static String GetWatchMeUsersURL = OkHttpUtils.serverAbsolutePath + "Account/GetWatchMeUsers";
+    //    POST Account/UpdateGender?gender={gender}    修改性别
+    public static String UpdateGenderURL = OkHttpUtils.serverAbsolutePath + "Account/UpdateGender";
+    //    POST Friend/SetRemarkName            设置备注名称
+    public static String SetRemarkNameURL = OkHttpUtils.serverAbsolutePath + "Friend/SetRemarkName";
+    //    GET Friend/Blacklist?pageIndex={pageIndex}    黑名单
+    public static String BlacklistURL = OkHttpUtils.serverAbsolutePath + "Friend/Blacklist";
+    //    POST Friend/RemoveBlacklist?id={id}    删除黑名单
+    public static String RemoveBlacklistURL = OkHttpUtils.serverAbsolutePath + "Friend/RemoveBlacklist";
+    //    POST Friend/MoveToBlacklist?userId={userId}    添加黑名单
+    public static String MoveToBlacklistURL = OkHttpUtils.serverAbsolutePath + "Friend/MoveToBlacklist";
+    //    GET Disposition/GetTestHistory?pageIndex={pageIndex}    获取测试列表
+    public static String GetTestHistoryURL = OkHttpUtils.serverAbsolutePath + "Disposition/GetTestHistory";
+    //    POST Disposition/SetDispositionFromHistory?historyId={historyId}    把测评历史设为当前性格
+    public static String SetDispositionFromHistoryURL = OkHttpUtils.serverAbsolutePath + "Disposition/SetDispositionFromHistory";
+//    POST api/Chat?userId={userId}&catalog={catalog}&subCatalog={subCatalog}    举报
+    public static String apiChatURL = OkHttpUtils.serverAbsolutePath + "api/Chat";
+//    GET Disposition/GetTendencyDialog            获取倾向度弹框
+    public static String GetTendencyDialogURL = OkHttpUtils.serverAbsolutePath + "Disposition/GetTendencyDialog";
+//    GET Disposition/GetDimensionsDialog?dimession={dimession}    获取性格纬度弹框
+    public static String GetDimensionsDialogURL = OkHttpUtils.serverAbsolutePath + "Disposition/GetDimensionsDialog";
+//    GET Disposition/GetMbtiInfo            获取MBTI弹框信息
+    public static String GetMbtiInfoURL = OkHttpUtils.serverAbsolutePath + "Disposition/GetMbtiInfo";
+//    GET Disposition/GetRgInfo            获取荣格弹框信息
+    public static String GetRgInfoURL = OkHttpUtils.serverAbsolutePath + "Disposition/GetRgInfo";
+    //    GET Disposition/GetDispositionInfoFromHistory?historyId={historyId}    根据测评历史获得历史测评信息
+    public static String GetDispositionInfoFromHistoryURL = OkHttpUtils.serverAbsolutePath + "Disposition/GetDispositionInfoFromHistory";
+    //    GET Disposition/GetManualInfo?historyId={historyId}    根据历史测评获取性格谱信息
+    public static String GetManualInfoURL = OkHttpUtils.serverAbsolutePath + "Disposition/GetManualInfo";
+    public static String popShareURL =  "http://weixin.imxianzhi.com/Share/Dialog";//OkHttpUtils.serverAbsolutePath +
 
-//    public static String token = "";
+//    http://weixin.imxianzhi.com/Share/Dialog?type=2&id=f9800e94-b2b9-434a-b603-b86adb39ea8b
+//GET Disposition/GetManualDescDialog             获取性格谱介绍弹框
+    public static String GetManualDescDialog = OkHttpUtils.serverAbsolutePath + "Disposition/GetManualDescDialog";
 
 
 ////        环信IM appkey
@@ -357,10 +399,10 @@ public class WowuApp extends Application {
     先知先觉会员协议:http://api.imxianzhi.com/vipprotocol.html
     版本预览：http://api.imxianzhi.com/Version/Preview/*/
 
-public static String TiaoKuanURL =  "http://api.imxianzhi.com/provisions.html";
-    public static String YinSiZhengCeURL =  "http://api.imxianzhi.com/privacy.html";
-    public static String XieYiURL =  "http://api.imxianzhi.com/vipprotocol.html";
-    public static String YuLanURL =  "http://api.imxianzhi.com/Version/Preview/";
+    public static String TiaoKuanURL = "http://api.imxianzhi.com/provisions.html";
+    public static String YinSiZhengCeURL = "http://api.imxianzhi.com/privacy.html";
+    public static String XieYiURL = "http://api.imxianzhi.com/vipprotocol.html";
+    public static String YuLanURL = "http://api.imxianzhi.com/Version/Preview/";
 
 
     // 创建服务用于捕获崩溃异常
@@ -370,12 +412,25 @@ public static String TiaoKuanURL =  "http://api.imxianzhi.com/provisions.html";
         }
     };
 
-    /**
+
+    //  记录位置坐标  31.196542,121.716733
+    private String latitude = "31.196542";
+    private String longitude = "121.716733";
+    public static String Radius = "";
+    public static float LocationSpeed = 5;
+    public static int LocationTime = 3 * 1000;//表示定位时间间隔60 * 1000
+
+    int locationTimes = 0;//如果连续8次定位数据不变，则将定位的时间间隔变为20分钟一次
+    int locationNoChangLength = 10 * 60 * 1000; // 长时间坐标不变后定位的时间间隔
+    public static String RESET_LOCATION_TIME = "RESET_LOCATION_TIME";
+
+
+    /***
      * 实现实位回调监听
      */
     public class MyLocationListener implements BDLocationListener {
         @Override
-        public void onReceiveLocation(BDLocation location) {
+        public void onReceiveLocation(final BDLocation location) {
 //                    //Receive Location
 //                    StringBuffer sb = new StringBuffer(256);
 //                    sb.append("time : ");
@@ -404,28 +459,80 @@ public static String TiaoKuanURL =  "http://api.imxianzhi.com/provisions.html";
 //                            sb.append("\noperationers : ");
 //                            sb.append(location.getOperators());
 //                    }
-            Log.i("获取到的定位信息为：：：", location.getLatitude() + "：：：" + location.getLongitude());
+            LogUtils.i("获取到的定位信息为：：：", location.getLatitude() + "：：：" + location.getLongitude() + "：：：" + location.getRadius());
 ////                    UtilsTool.saveErrorFile(sb.toString(), "获取到的坐标为11.txt");
-
-            SharedPreferences.Editor editor = settings.edit();
-            editor.putString("latitude", location.getLatitude() + "");
-            editor.putString("longitude", location.getLongitude() + "");
-            editor.commit();
-
 //将用户位置返回个服务器
-            mobileLocationLog(location.getLatitude(), location.getLongitude(), location.getSpeed());
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    mobileLocationLog(location.getLatitude(), location.getLongitude(), location.getSpeed());
 
+
+                    Intent intent = new Intent(WowuApp.ACTION_NAME);
+                    intent.putExtra("latitude", location.getLatitude() + "");
+                    intent.putExtra("longitude", location.getLongitude() + "");
+                    sendBroadcast(intent);
+
+                    //长时间定位坐标不变则将坐标拉长
+                    if (latitude.equals(location.getLatitude() + "")) {
+                        locationTimes++;
+                    } else {
+                        locationTimes = 0;
+/*                        Intent intentLocation = new Intent(WowuApp.RESET_LOCATION_TIME);
+                        intentLocation.putExtra("locationNoChangLength",LocationTime+"");
+                        sendBroadcast(intentLocation);*/
+
+       /*                 LocationClientOption option= mLocationClient.getLocOption();
+                        option.setScanSpan(LocationTime);
+                        mLocationClient.setLocOption(option);*/
+
+//                        LocationClientOption tempSet = locationService.getDefaultLocationClientOption();
+//                        tempSet.setScanSpan(LocationTime);
+//                        locationService.setLocationOption(tempSet);
+//                        locationService.start();
+
+                        resetLocationOption(LocationTime);
+                    }
+
+                    if (locationTimes > 6) {
+                        locationTimes = 0;
+/*                        Intent intentLocation = new Intent(WowuApp.RESET_LOCATION_TIME);
+                        intentLocation.putExtra("locationNoChangLength",locationNoChangLength+"");
+                        sendBroadcast(intentLocation);*/
+                        LogUtils.i("获取到的定位信息为：：：", "：：：进入了时间间隔变大阶段");
+
+//                        LocationClientOption tempSet = locationService.getDefaultLocationClientOption();
+//                        tempSet.setScanSpan(locationNoChangLength);
+//                        locationService.setLocationOption(tempSet);
+//                        locationService.start();
+
+                        resetLocationOption(locationNoChangLength);
+
+                    }
+
+
+                    latitude = location.getLatitude() + "";
+                    longitude = location.getLongitude() + "";
+
+                    AppPreferences appPreferences = new AppPreferences(getApplicationContext()); // this Preference comes for free from the library
+// save a key value pair
+                    appPreferences.put("latitude", location.getLatitude() + "");
+                    appPreferences.put("longitude", location.getLongitude() + "");
+
+                }
+            }).start();
         }
     }
 
 
     int _minSpeed = 3;
     int _minFilter = 5;
-    int _minInteval = 10;
-
+    int _minInteval = 3;
+    int _minInteval_Default = 2000000;
+    int locationCount = 3;
 
     //  登录以后即使不懂，也要同步一次位置到服务器
-    boolean uploadLocation = false;
+//    boolean uploadLocation = false;
 
     public static final int ALIPAY = 10;
 
@@ -459,37 +566,60 @@ public static String TiaoKuanURL =  "http://api.imxianzhi.com/provisions.html";
 //            }
 //        }
 
-        Log.i("发送坐标位置给服务器0www：：：", OkHttpUtils.token + ":::::::" + getSharedPreferences(WowuApp.PREFERENCE_KEY, MODE_PRIVATE).getString("token", ""));
-        if (!uploadLocation) {
-            if (uploadLocation2Server(mlatitude, mlongitude)) {
-                uploadLocation = true;
-            }
-        } else {
-            LatLng start = new LatLng(Float.parseFloat(settings.getString("latitude", "")), Float.parseFloat(settings.getString("longitude", "")));
-            LatLng end = new LatLng(mlatitude, mlongitude);
-            if (getDistance(start, end) > _minInteval) {
+        LogUtils.i("发送坐标位置给服务器0www：：：", OkHttpUtils.token + ":::::::" + getSharedPreferences(WowuApp.PREFERENCE_KEY, MODE_PRIVATE).getString("token", ""));
+//        LatLng end_default = new LatLng( 31.196542,121.716733);
+        AppPreferences appPreferences = new AppPreferences(getApplicationContext()); // this Preference comes for free from the library
+
+        LatLng start = new LatLng(Float.parseFloat(appPreferences.getString("latitude", "0")), Float.parseFloat(appPreferences.getString("longitude", "0")));
+        LatLng end = new LatLng(mlatitude, mlongitude);
+
+        locationCount++;
+        if (appPreferences.getString("latitude", "0").equals("0") || getDistance(start, end) > _minInteval_Default) {  //防止初始化时定位不准，偏移过大
+//            uploadLocation2Server(31.196542,121.716733);
+            uploadLocation2Server(mlatitude, mlongitude);
+            locationCount = 0;
+        } else if (getDistance(start, end) > _minInteval || locationCount > 3) {
 //                uploadLoaction(mlatitude, mlongitude);
-                uploadLocation2Server(mlatitude, mlongitude);
-            }
+            uploadLocation2Server(mlatitude, mlongitude);
+            locationCount = 0;
         }
+    }
+
+    private void updateLocation(double mlatitude, double mlongitude, LatLng start, LatLng end, LatLng end_default) {
 
     }
 
     private boolean uploadLocation2Server(double mlatitude, double mlongitude) {
-        if (!getSharedPreferences(WowuApp.PREFERENCE_KEY, MODE_PRIVATE).getString("token", "").equals("")) {
-            try {
-                JSONObject json = new JSONObject();
-                json.put("lon", mlongitude + "");
-                json.put("lat", mlatitude + "");
-                new LoadserverdataService(null).loadPostJsonRequestData(WowuApp.JSON, WowuApp.SubmitLocationURL + "?lon=" + mlongitude + "&lat=" + mlatitude, json.toString(), 0);
-                Log.i("发送坐标位置给服务器：：1：", mlongitude + ":::::::" + mlatitude);
+//        if (!getSharedPreferences(WowuApp.PREFERENCE_KEY, MODE_PRIVATE).getString("token", "").equals("")) {
+        latitude = mlatitude + "";
+        longitude = mlongitude + "";
+        try {
+            JSONObject json = new JSONObject();
+            json.put("lon", mlongitude + "");
+            json.put("lat", mlatitude + "");
+            new LoadserverdataService(null).loadPostJsonRequestData(WowuApp.JSON, WowuApp.SubmitLocationURL + "?lon=" + mlongitude + "&lat=" + mlatitude, json.toString(), 0);
+            LogUtils.i("wowuapp 发送坐标位置给服务器：：1：", mlongitude + ":::::::" + mlatitude);
 //                uploadLocation=true;
-                return true;
-            } catch (Exception e) {
-                e.printStackTrace();
-                Log.i("发送坐标位置给服务器 异常：：：", mlongitude + ":::::::" + mlatitude);
-            }
+
+/*                SharedPreferences.Editor editor = settings.edit();
+                editor.putString("latitude", mlatitude+"");
+                editor.putString("longitude", mlongitude+"");
+                editor.commit();*/
+
+
+//             坐标变化时及时发出广播，更新相应列表
+            Intent intent = new Intent(WowuApp.ACTION_NAME);
+            intent.putExtra("latitude", mlatitude + "");
+            intent.putExtra("longitude", mlongitude + "");
+            sendBroadcast(intent);
+
+
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            LogUtils.i("发送坐标位置给服务器 异常：：：", mlongitude + ":::::::" + mlatitude);
         }
+//        }
         return false;
     }
 
@@ -506,25 +636,25 @@ public static String TiaoKuanURL =  "http://api.imxianzhi.com/provisions.html";
 //                json.put("lat", mlatitude + "");
 //                new LoadserverdataService(null).loadPostJsonRequestData(WowuApp.JSON, WowuApp.SubmitLocationURL, json.toString(), 0);
 //                uploadLocation = true;
-//                Log.i("发送坐标位置给服务器：：：", mlongitude + ":::::::" + mlatitude);
+//                LogUtils.i("发送坐标位置给服务器：：：", mlongitude + ":::::::" + mlatitude);
 //
 //            } catch (Exception e) {
 //                e.printStackTrace();
-//                Log.i("发送坐标位置给服务器 异常：：：", mlongitude + ":::::::" + mlatitude);
+//                LogUtils.i("发送坐标位置给服务器 异常：：：", mlongitude + ":::::::" + mlatitude);
 //            }
 //        }
 
-        Log.i("发送坐标位置给服务器：：3：", mlongitude + ":::::::" + mlatitude);
+        LogUtils.i("发送坐标位置给服务器：：3：", mlongitude + ":::::::" + mlatitude);
         new Thread(new Runnable() {
             @Override
             public void run() {
                 PostStringBuilder psb = OkHttpUtils.postString();
 //                判断是否已经有token了，有的话在请求头加上
-                Log.i("发送坐标位置给服务器00：：：",  getSharedPreferences(WowuApp.PREFERENCE_KEY, MODE_PRIVATE).getString("token", "")+ ":::::::" + mlatitude);
+                LogUtils.i("发送坐标位置给服务器00：：：",  getSharedPreferences(WowuApp.PREFERENCE_KEY, MODE_PRIVATE).getString("token", "")+ ":::::::" + mlatitude);
                 if (  ! getSharedPreferences(WowuApp.PREFERENCE_KEY, MODE_PRIVATE).getString("token", "").equals("")) {
                     psb.addHeader("Authorization", "Bearer " +  getSharedPreferences(WowuApp.PREFERENCE_KEY, MODE_PRIVATE).getString("token", ""));
                     try {
-                        Log.i("发送坐标位置给服务器001：：：",  getSharedPreferences(WowuApp.PREFERENCE_KEY, MODE_PRIVATE).getString("token", "") + ":::::::" + mlatitude);
+                        LogUtils.i("发送坐标位置给服务器001：：：",  getSharedPreferences(WowuApp.PREFERENCE_KEY, MODE_PRIVATE).getString("token", "") + ":::::::" + mlatitude);
                         JSONObject json = new JSONObject();
                         json.put("lon", mlongitude + "");
                         json.put("lat", mlatitude + "");
@@ -538,12 +668,12 @@ public static String TiaoKuanURL =  "http://api.imxianzhi.com/provisions.html";
                                     public void onError(Request request, Exception e) {
                                         e.printStackTrace();
                                         if (e.getMessage() != null) {
-                                            Log.i("发送坐标位置给服务器返回值：：：", e.getMessage() + ":::::::");
+                                            LogUtils.i("发送坐标位置给服务器返回值：：：", e.getMessage() + ":::::::");
                                         }
                                     }
                                     @Override
                                     public void onResponse(String response) {
-                                        Log.i("发送坐标位置给服务器返回值2：：：", response + ":::::::");
+                                        LogUtils.i("发送坐标位置给服务器返回值2：：：", response + ":::::::");
                                     }
                                 });
                     } catch (Exception e) {
@@ -580,9 +710,66 @@ public static String TiaoKuanURL =  "http://api.imxianzhi.com/provisions.html";
 
         //两点间距离 km，如果想要米的话，结果*1000就可以了
         double d = Math.acos(Math.sin(lat1) * Math.sin(lat2) + Math.cos(lat1) * Math.cos(lat2) * Math.cos(lon2 - lon1)) * R;
-        Log.i("发送坐标位置给服务器两者距离：：：", d + ":::::::");
+        LogUtils.i("发送坐标位置给服务器两者距离：：：", d + ":::::::");
         return d * 1000;
     }
 
+    public String getLongitude() {
+        return longitude;
+    }
 
+    public String getLatitude() {
+        return latitude;
+    }
+
+
+    public void registerLocationBoradcastReceiver() {
+        IntentFilter myIntentFilter = new IntentFilter();
+        myIntentFilter.addAction(WowuApp.RESET_LOCATION_TIME);
+        //注册广播
+        registerReceiver(mLocationBroadcastReceiver, myIntentFilter);
+    }
+
+    private BroadcastReceiver mLocationBroadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+            if (action.equals(WowuApp.RESET_LOCATION_TIME)) {
+                final int timeLength = Integer.parseInt(intent.getStringExtra("locationNoChangLength"));
+//                MyToast.show(context,timeLength+";xx");
+                if (timeLength != 0) {
+                    resetLocationOption(timeLength);
+                }
+            }
+
+        }
+    };
+
+    private void resetLocationOption(final int timeLength) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    LocationClientOption tempSet = locationService.getDefaultLocationClientOption();
+                    tempSet.setScanSpan(timeLength);
+                    locationService.setLocationOption(tempSet);
+                    locationService.start();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }).start();
+    }
+
+    public String getCachePath() {
+        File cacheDir;
+        if (android.os.Environment.getExternalStorageState().equals(android.os.Environment.MEDIA_MOUNTED))
+            cacheDir = getExternalCacheDir();
+        else
+            cacheDir = getCacheDir();
+        if (!cacheDir.exists())
+            cacheDir.mkdirs();
+        return cacheDir.getAbsolutePath();
+    }
 }

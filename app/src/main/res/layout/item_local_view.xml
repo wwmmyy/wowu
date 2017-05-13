@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:fresco="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:background="@drawable/item_background_selector_light"
     android:minHeight="80dp"
     android:paddingLeft="10dp"
@@ -10,21 +10,22 @@
     android:orientation="horizontal">
         <FrameLayout
             android:layout_width="wrap_content"
-            android:layout_height="fill_parent"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:gravity="center">
             <com.facebook.drawee.view.SimpleDraweeView
                 android:id="@+id/news_label_pic"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
                 android:layout_centerInParent="true"
                 android:layout_gravity="center"
-                fresco:placeholderImage="@drawable/icon"
-                fresco:progressBarAutoRotateInterval="2000"
-                fresco:progressBarImage="@drawable/con_progress_bar"
-                fresco:progressBarImageScaleType="centerInside" 
-                fresco:roundedCornerRadius="15dp" />
+                fresco:placeholderImage="@drawable/placeholder"
+                fresco:placeholderImageScaleType="center"
+                fresco:progressBarImageScaleType="centerInside"
+                fresco:roundedCornerRadius="11dp" />
             <!--
+             fresco:progressBarAutoRotateInterval="2000"
+            fresco:progressBarImage="@drawable/con_progress_bar"
             fresco:overlayImage="@drawable/overlay_fmale"
             fresco:roundAsCircle="true"-->
 
@@ -34,7 +35,9 @@
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
             android:layout_weight="1.0"
             android:orientation="vertical"
             android:paddingLeft="5dp"
@@ -61,6 +64,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="center|right"
                     android:text="distance|time"
+                    android:layout_marginRight="6dp"
                     android:textColor="@color/black"
                     android:textSize="13sp" />
             </LinearLayout>
@@ -118,14 +122,17 @@
                     android:layout_marginLeft="3dp"
                     android:singleLine="true"
                     android:text="... "
-                    android:textColor="#000000"
-                    android:textSize="14sp" />
+                    android:textColor="@color/black"
+                    android:textSize="13sp" />
 
                 <ImageView
                     android:id="@+id/yewu_code_m"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
+                    android:paddingTop="5dp"
+                    android:paddingLeft="10dp"
+                    android:paddingBottom="5dp"
+                    android:paddingRight="6dp"
                     android:src="@drawable/btn_sanguanpei_man"
                     android:gravity="center|right" />
 
@@ -133,7 +140,10 @@
                     android:id="@+id/yewu_code_w"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
+                    android:paddingTop="5dp"
+                    android:paddingLeft="10dp"
+                    android:paddingBottom="5dp"
+                    android:paddingRight="6dp"
                     android:src="@drawable/btn_sanguanpei_woman"
                     android:visibility="gone"
                     android:gravity="center|right" />
@@ -143,7 +153,6 @@
                 android:id="@+id/tv_functions_right"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
                 android:orientation="horizontal">
 
                 <TextView

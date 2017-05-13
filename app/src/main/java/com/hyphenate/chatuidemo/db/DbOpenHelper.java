@@ -77,8 +77,8 @@ public class DbOpenHelper extends SQLiteOpenHelper{
 		}
 		return instance;
 	}
-	
-	private static String getUserDatabaseName() {
+
+	public static String getUserDatabaseName() {
         return  DemoHelper.getInstance().getCurrentUsernName() + "_demo.db";
     }
 	
@@ -89,7 +89,6 @@ public class DbOpenHelper extends SQLiteOpenHelper{
 		db.execSQL(CREATE_PREF_TABLE);
 		db.execSQL(ROBOT_TABLE_CREATE);
 		db.execSQL(CREATE_CACHE_TABLE);
-		
 	}
 
 	@Override

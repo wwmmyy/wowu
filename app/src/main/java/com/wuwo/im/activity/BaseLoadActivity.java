@@ -2,11 +2,11 @@ package com.wuwo.im.activity;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.Window;
 
 import com.wuwo.im.config.ExitApp;
+import com.wuwo.im.util.LogUtils;
 import com.zhy.http.okhttp.service.LoadserverdataService;
 import com.zhy.http.okhttp.service.loadServerDataListener;
 
@@ -45,7 +45,7 @@ public abstract class BaseLoadActivity extends BaseActivity implements View.OnCl
         mContext = this;
         loadDataService = new LoadserverdataService(this);
         ExitApp.getInstance().addOpenedActivity(this);
-        Log.i("BaseActivity", "BaseActivity onCreate");
+        LogUtils.i("BaseActivity", "BaseActivity onCreate");
     }
 
 

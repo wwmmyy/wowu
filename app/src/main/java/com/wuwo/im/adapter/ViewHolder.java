@@ -18,16 +18,16 @@ public class ViewHolder
 	private int mPosition;
 	private View mConvertView;
 
-//	ViewHolder(Context context, ViewGroup parent, int layoutId,
-//			int position)
-//	{
-//		this.mPosition = position;
-//		this.mViews = new SparseArray<View>(); 
-//		mConvertView = LayoutInflater.from(context).inflate(layoutId, parent,
-//				false);
-//		// setTag
-//		mConvertView.setTag(this);
-//	}
+	ViewHolder(Context context, ViewGroup parent, int layoutId,
+			int position)
+	{
+		this.mPosition = position;
+		this.mViews = new SparseArray<View>();
+		mConvertView = LayoutInflater.from(context).inflate(layoutId, parent,
+				false);
+		// setTag
+		mConvertView.setTag(this);
+	}
 
 	public ViewHolder(Context mContext, ViewGroup parent, int mItemLayoutId, int position,
             View convertView) {

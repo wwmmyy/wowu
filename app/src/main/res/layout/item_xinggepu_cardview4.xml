@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_horizontal"
+    android:orientation="vertical">
+
+
+    <RelativeLayout
+        android:id="@+id/rt_part1"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:layout_columnWeight="1"
+        android:layout_gravity="fill_horizontal"
+        android:layout_marginLeft="6dp"
+        android:layout_marginTop="6dp"
+        android:background="@drawable/xgpbg">
+
+        <RelativeLayout
+            android:id="@+id/rt_part1_1"
+            android:layout_width="95dp"
+            android:layout_height="95dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:background="@drawable/xgp4">
+
+            <TextView
+                android:id="@+id/rt_part1_1_0"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"
+                android:gravity="center"
+                android:padding="8dp"
+                android:text="3" />
+
+
+            <TextView
+                android:id="@+id/rt_part1_1_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:gravity="center"
+                android:text="Fi\n激活点"
+                android:drawableBottom="@drawable/mark"
+                android:textSize="15sp" />
+
+        </RelativeLayout>
+
+
+        <TextView
+            android:id="@+id/rt_part1_0_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/rt_part1_1"
+            android:layout_toRightOf="@id/rt_part1_1"
+            android:text="7" />
+
+        <TextView
+            android:id="@+id/rt_part1_0_0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:padding="3dp"
+            android:drawableLeft="@drawable/mark"
+            android:drawablePadding="5dp"
+            android:text="痛点" />
+
+
+        <RelativeLayout
+            android:id="@+id/rt_part1_0"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_below="@id/rt_part1_1"
+            android:layout_toRightOf="@id/rt_part1_1">
+
+            <TextView
+                android:id="@+id/rt_part1_0_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="Fe" />
+        </RelativeLayout>
+
+
+    </RelativeLayout>
+
+</LinearLayout>

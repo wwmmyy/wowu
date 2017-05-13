@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import com.wuwo.im.config.WowuApp;
 
-import im.wuwo.com.wuwo.R;
+import im.imxianzhi.com.imxianzhi.R;
 /**
  * 添加密码
 *desc RegisterStepThreeActivity

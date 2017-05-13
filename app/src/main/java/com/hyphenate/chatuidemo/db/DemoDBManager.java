@@ -1,7 +1,9 @@
 package com.hyphenate.chatuidemo.db;
 
 import android.content.ContentValues;
+import android.content.Context;
 import android.database.Cursor;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.text.TextUtils;
 
@@ -71,9 +73,17 @@ public class DemoDBManager {
      */
     synchronized public void saveCacheJson(int type , String json) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
-        if (db.isOpen()) {
-            db.execSQL("replace into "+UserDao.CACHE_TABLE_NAME+"("+UserDao.CACHE_COLUMN_NAME_TYPE+","+UserDao.CACHE_COLUMN_NAME_JSON+") values(" + type + ",' " + json + "')");
-            db.close();
+        try {
+            if (db.isOpen()) {
+                db.execSQL("replace into "+UserDao.CACHE_TABLE_NAME+"("+UserDao.CACHE_COLUMN_NAME_TYPE+","+UserDao.CACHE_COLUMN_NAME_JSON+") values(" + type + ",' " + json + "')");
+                db.close();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (db!=null && db.isOpen()) {
+                db.close();
+            }
         }
     }
 
@@ -86,18 +96,71 @@ public class DemoDBManager {
     synchronized public String getCacheJson(int type) {
         String json=null;
         SQLiteDatabase db = dbHelper.getWritableDatabase();
+        Cursor cursor =null;
+
+        try {
 //        if (db.isOpen()) {
 //            //		没有找到该表，插入进去
 //            db.execSQL(DbOpenHelper.DROP_CACHE_TABLE);
 //            db.execSQL(DbOpenHelper.CREATE_CACHE_TABLE);
-             Cursor cursor = db.rawQuery("select * from "+UserDao.CACHE_TABLE_NAME+" where "+UserDao.CACHE_COLUMN_NAME_TYPE+" = " + type, null);
+              cursor = db.rawQuery("select * from "+UserDao.CACHE_TABLE_NAME+" where "+UserDao.CACHE_COLUMN_NAME_TYPE+" = " + type, null);
             if (cursor.moveToFirst()) {
                   json = cursor.getString(cursor.getColumnIndex(UserDao.CACHE_COLUMN_NAME_JSON));
             }
+//            cursor.close();
+//            db.close();
+//        }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        } finally {
             cursor.close();
             db.close();
-//        }
+        }
         return json;
+    }
+
+    /**
+     * 删除数据库
+     *
+     * @param context
+     * @return
+     */
+    public boolean deleteDatabase(Context context) {
+        try {
+            return context.deleteDatabase(dbHelper.getUserDatabaseName());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+
+    public void deleteTable() {
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        try {
+            if (db.isOpen()) {
+                db.delete(DbOpenHelper.CREATE_CACHE_TABLE, null, null);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (db!=null && db.isOpen()) {
+                db.close();
+            }
+        }
+//        try {
+//            if (db.isOpen()) {
+//                db.execSQL(DbOpenHelper.DROP_CACHE_TABLE);
+//                db.close();
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        } finally {
+//            if (db!=null && db.isOpen()) {
+//                db.close();
+//            }
+//        }
     }
 
 

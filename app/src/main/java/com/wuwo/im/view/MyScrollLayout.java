@@ -9,6 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Scroller;
 
+import com.wuwo.im.util.LogUtils;
+
 public class MyScrollLayout  extends ViewGroup{
 	
     private static final String TAG = "ScrollLayout";   
@@ -155,7 +157,7 @@ public class MyScrollLayout  extends ViewGroup{
 	        switch (action) {    
 	        case MotionEvent.ACTION_DOWN: 
 	        	
-	        	  Log.i("", "onTouchEvent  ACTION_DOWN");
+	        	  LogUtils.i(TAG, "onTouchEvent  ACTION_DOWN");
 	        	  
 	        	if (mVelocityTracker == null) {    
 			            mVelocityTracker = VelocityTracker.obtain();    
@@ -204,10 +206,18 @@ public class MyScrollLayout  extends ViewGroup{
 	            } else if (velocityX < -SNAP_VELOCITY       
 	                    && mCurScreen < getChildCount() - 1) {       
 	                // Fling enough to move right       
-	                Log.e(TAG, "snap right");    
-	                snapToScreen(mCurScreen + 1);       
-	            } else {       
-	                snapToDestination();       
+	                Log.e(TAG, "snap right");
+					if(popSize!=0 && popSize<=mCurScreen + 1){
+
+					}else{
+					 snapToScreen(mCurScreen + 1);
+					}
+	            } else {
+					if(popSize!=0 && popSize<=mCurScreen + 1){
+
+					}else{
+						snapToDestination();
+					}
 	            }      
 	            
 	           
@@ -229,7 +239,7 @@ public class MyScrollLayout  extends ViewGroup{
 //          final int action = ev.getAction();
 //          if ((action == MotionEvent.ACTION_MOVE)
 //                          && (mTouchState != TOUCH_STATE_REST)) {
-//        	  Log.i("", "onInterceptTouchEvent  return true");
+//        	  LogUtils.i("", "onInterceptTouchEvent  return true");
 //                  return true;
 //          }
 //          final float x = ev.getX();
@@ -257,7 +267,7 @@ public class MyScrollLayout  extends ViewGroup{
 //          
 //          if (mTouchState != TOUCH_STATE_REST)
 //          {
-//        	  Log.i("", "mTouchState != TOUCH_STATE_REST  return true");
+//        	  LogUtils.i("", "mTouchState != TOUCH_STATE_REST  return true");
 //          }
 //
 //    
@@ -276,15 +286,30 @@ public class MyScrollLayout  extends ViewGroup{
 		{
 			return false;
 		}
-			
-		
+
+		if  (popSize>0 && getScrollX() >=  (popSize - 1) * getWidth() && deltaX > 0)
+		{
+			return false;
+		}
+
+
+
 		return true;
 	}
-	
+	//表示最多显示的面板个数
+	int popSize=0;
 	public void SetOnViewChangeListener(OnViewChangeListener listener)
 	{
 		mOnViewChangeListener = listener;
-	}   
+	}
+
+	public void setScreenSize(int popSize) {
+		this.popSize=popSize;
+	}
+
+
+
+
 	public interface OnViewChangeListener {
 	        public void OnViewChange(int view);
 	}

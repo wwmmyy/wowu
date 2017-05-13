@@ -6,43 +6,35 @@ package com.wuwo.im.bean;
 *@版权: 人物性格
 */
 
-public class Characters {
+public class Characters  {
 
-
+//    "DispositionId":"3c78a948-10ff-4012-a01f-46a539b9695f","Name":"ENFP","Title":"奋斗者",
     /**
-     * PhotoUrl : http://xzxj.oss-cn-shanghai.aliyuncs.com/celebrity/d421f060-f928-4568-b7ac-81869d6c51f1.png
-     * Celebrity : 撒切尔
-     * CelebrityDescription : 第49任英国首相
-     * Name : ESTJ
-     * Title : 监督者
-     * Score : {"UserId":"637e5acb638f46f5873ec86f0b4b49ce","E":3,"I":2,"S":5,"N":0,"T":4,"F":1,"J":4,"P":1,"PropensityScore":12,"EI_PropensityScore":-5,"SN_PropensityScore":-19,"TF_PropensityScore":-12,"JP_PropensityScore":-14,"PropensityDescription":"轻微","Id":"2944184d-d6b3-4710-b424-b319150bfbff"}
+     * PhotoUrl : http://xzxj.oss-cn-shanghai.aliyuncs.com/celebrity/fd3d8302-ba1c-4798-bdf8-d9c29e7c519b.jpg
+     * IconUrl : http://xzxj.oss-cn-shanghai.aliyuncs.com/celebrity/0224bdd1-b880-4691-ab5f-568321e5dd14.jpg
+     * Celebrity : 杩堝厠灏斺�㈡澃鍏嬮��
+     * CelebrityDescription : 缇庡浗娴佽闊充箰涔嬬帇
+     * Name : ISFP
+     * Title : 鑹烘湳瀹�
+     * Score : {"UserId":"637e5acb638f46f5873ec86f0b4b49ce","E":10,"I":11,"S":15,"N":11,"T":10,"F":14,"J":10,"P":12,"CreateOn":"2016-11-12T22:42:51.393","IsCurrent":true,"DispositionId":"d9d1a6a2-0b7e-4063-814e-26beb081a078","QuestionType":2,"PropensityScore":12,"EI_PropensityScore":5,"SN_PropensityScore":-15,"TF_PropensityScore":17,"JP_PropensityScore":9,"PropensityDescription":"杞诲井","CreateOnString":"2016/11/12","Id":"c002ffd2-228d-496d-bd4a-df8b2ff83db2"}
      */
 
-    private String PhotoUrl;
+    private String DispositionId;
+    private String IconUrl;
     private String Celebrity;
     private String CelebrityDescription;
     private String Name;
     private String Title;
-    /**
-     * UserId : 637e5acb638f46f5873ec86f0b4b49ce
-     * E : 3
-     * I : 2
-     * S : 5
-     * N : 0
-     * T : 4
-     * F : 1
-     * J : 4
-     * P : 1
-     * PropensityScore : 12.0
-     * EI_PropensityScore : -5.0
-     * SN_PropensityScore : -19.0
-     * TF_PropensityScore : -12.0
-     * JP_PropensityScore : -14.0
-     * PropensityDescription : 轻微
-     * Id : 2944184d-d6b3-4710-b424-b319150bfbff
-     */
-
     private ScoreBean Score;
+    private String PhotoUrl;
+
+    public String getDispositionId() {
+        return DispositionId;
+    }
+
+    public void setDispositionId(String dispositionId) {
+        DispositionId = dispositionId;
+    }
 
     public String getPhotoUrl() {
         return PhotoUrl;
@@ -50,6 +42,14 @@ public class Characters {
 
     public void setPhotoUrl(String PhotoUrl) {
         this.PhotoUrl = PhotoUrl;
+    }
+
+    public String getIconUrl() {
+        return IconUrl;
+    }
+
+    public void setIconUrl(String IconUrl) {
+        this.IconUrl = IconUrl;
     }
 
     public String getCelebrity() {
@@ -93,6 +93,30 @@ public class Characters {
     }
 
     public static class ScoreBean {
+        /**
+         * UserId : 637e5acb638f46f5873ec86f0b4b49ce
+         * E : 10
+         * I : 11
+         * S : 15
+         * N : 11
+         * T : 10
+         * F : 14
+         * J : 10
+         * P : 12
+         * CreateOn : 2016-11-12T22:42:51.393
+         * IsCurrent : true
+         * DispositionId : d9d1a6a2-0b7e-4063-814e-26beb081a078
+         * QuestionType : 2
+         * PropensityScore : 12.0
+         * EI_PropensityScore : 5.0
+         * SN_PropensityScore : -15.0
+         * TF_PropensityScore : 17.0
+         * JP_PropensityScore : 9.0
+         * PropensityDescription : 杞诲井
+         * CreateOnString : 2016/11/12
+         * Id : c002ffd2-228d-496d-bd4a-df8b2ff83db2
+         */
+
         private String UserId;
         private int E;
         private int I;
@@ -102,12 +126,17 @@ public class Characters {
         private int F;
         private int J;
         private int P;
+        private String CreateOn;
+        private boolean IsCurrent;
+        private String DispositionId;
+        private int QuestionType;
         private double PropensityScore;
         private double EI_PropensityScore;
         private double SN_PropensityScore;
         private double TF_PropensityScore;
         private double JP_PropensityScore;
         private String PropensityDescription;
+        private String CreateOnString;
         private String Id;
 
         public String getUserId() {
@@ -182,6 +211,38 @@ public class Characters {
             this.P = P;
         }
 
+        public String getCreateOn() {
+            return CreateOn;
+        }
+
+        public void setCreateOn(String CreateOn) {
+            this.CreateOn = CreateOn;
+        }
+
+        public boolean isIsCurrent() {
+            return IsCurrent;
+        }
+
+        public void setIsCurrent(boolean IsCurrent) {
+            this.IsCurrent = IsCurrent;
+        }
+
+        public String getDispositionId() {
+            return DispositionId;
+        }
+
+        public void setDispositionId(String DispositionId) {
+            this.DispositionId = DispositionId;
+        }
+
+        public int getQuestionType() {
+            return QuestionType;
+        }
+
+        public void setQuestionType(int QuestionType) {
+            this.QuestionType = QuestionType;
+        }
+
         public double getPropensityScore() {
             return PropensityScore;
         }
@@ -228,6 +289,14 @@ public class Characters {
 
         public void setPropensityDescription(String PropensityDescription) {
             this.PropensityDescription = PropensityDescription;
+        }
+
+        public String getCreateOnString() {
+            return CreateOnString;
+        }
+
+        public void setCreateOnString(String CreateOnString) {
+            this.CreateOnString = CreateOnString;
         }
 
         public String getId() {

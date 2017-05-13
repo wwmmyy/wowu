@@ -81,7 +81,7 @@
     </LinearLayout>
 
 
-    <android.support.design.widget.TextInputLayout
+<!--    <android.support.design.widget.TextInputLayout
         android:layout_marginTop="20dp"
         android:layout_width="match_parent"
         android:layout_marginLeft="@dimen/activity_horizontal_margin"
@@ -96,7 +96,47 @@
             android:hint="验证码"
             android:inputType="textPhonetic"
             android:padding="4dp" />
-    </android.support.design.widget.TextInputLayout>
+    </android.support.design.widget.TextInputLayout>-->
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:layout_gravity="center_vertical"
+        android:layout_marginTop="25dp"
+        android:background="@drawable/card_light"
+        android:orientation="horizontal"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp">
+
+
+        <EditText
+            android:id="@+id/et_register_two_yanzhengma"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@color/transparent"
+            android:hint="请输入短信验证码"
+            android:paddingLeft="6dp"
+            android:textColorHint="@color/btn_gray_pressed_status"
+            android:textSize="15sp" />
+
+
+        <TextView
+            android:id="@+id/tv_reget_validate_code"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:background="@drawable/item_background_contract_age"
+            android:gravity="center"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:text="重新获取"
+            android:textColor="@color/white"
+            android:textSize="14sp" />
+    </LinearLayout>
+
+
+
 
 
     <TextView

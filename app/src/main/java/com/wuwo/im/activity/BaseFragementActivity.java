@@ -2,10 +2,11 @@ package com.wuwo.im.activity;
 
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
-import android.util.Log;
+import android.view.View;
+import android.view.Window;
 
 import com.wuwo.im.config.ExitApp;
-import com.wuwo.im.util.Helper;
+import com.wuwo.im.util.LogUtils;
 
 /** 
 *desc
@@ -24,9 +25,9 @@ public class BaseFragementActivity extends FragmentActivity {
 //        }else {
 //            setTheme(R.style.AppBaseTheme);
 //        }
-
-//      改变状态栏字体颜色
-        Helper.statusBarLightMode(BaseFragementActivity.this);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+//      改变状态栏字体颜色 此功能不成熟，暂时屏蔽
+//        Helper.statusBarLightMode(BaseFragementActivity.this);
 
 //        int currentTheme = getSharedPreferences("theme", Context.MODE_PRIVATE).getInt("currentTheme", 0);
 //        switch (currentTheme) {
@@ -55,7 +56,7 @@ public class BaseFragementActivity extends FragmentActivity {
 
         super.onCreate(savedInstanceState);
         ExitApp.getInstance().addOpenedActivity(this);
-        Log.i("BaseActivity", "BaseActivity onCreate");
+        LogUtils.i("BaseActivity", "BaseActivity onCreate");
     }
 
 //    @Override

@@ -9,7 +9,7 @@
     <android.support.design.widget.CoordinatorLayout
         android:id="@+id/main_content"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" >
+        android:layout_height="match_parent">
         <!--
           下面使用 appbar_scrolling_view_behavior 这个 Behavior，
           要收缩的 view 必须要放到 AppBarLayout 这个 design 库的 layout 中
@@ -26,11 +26,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:fitsSystemWindows="true"
-                fresco:expandedTitleGravity="center"
-                fresco:collapsedTitleTextAppearance="@style/GreyText"
                 fresco:collapsedTitleGravity="center"
-                fresco:expandedTitleTextAppearance="@style/TransparentText"
+                fresco:collapsedTitleTextAppearance="@style/GreyText"
                 fresco:contentScrim="@color/white"
+                fresco:expandedTitleGravity="center"
+                fresco:expandedTitleTextAppearance="@style/TransparentText"
                 fresco:layout_scrollFlags="scroll|exitUntilCollapsed">
                 <!--fresco:title="个人资料"-->
 
@@ -42,91 +42,103 @@
                     android:orientation="vertical"
                     android:paddingBottom="3dp"
                     fresco:layout_scrollFlags="scroll|enterAlways">
-            <RelativeLayout
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/white">
-                <!--android:background="?attr/appbg"-->
 
-                <ImageView
-                    android:id="@+id/return_back"
-                    android:layout_width="100dp"
-                    android:layout_height="42dp"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="-32dp"
-                    android:clickable="true"
-                    android:gravity="center_vertical"
-                    android:padding="8dp"
-                    android:visibility="gone"
-                    android:src="@drawable/returnx" />
+                    <RelativeLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/white">
+                        <!--android:background="?attr/appbg"-->
+
+                        <ImageView
+                            android:id="@+id/return_back"
+                            android:layout_width="100dp"
+                            android:layout_height="42dp"
+                            android:layout_centerVertical="true"
+                            android:layout_marginLeft="-32dp"
+                            android:clickable="true"
+                            android:gravity="center_vertical"
+                            android:padding="8dp"
+                            android:src="@drawable/returnx"
+                            android:visibility="gone" />
 
 
-                <!--        <TextView
-                            android:id="@+id/title_tv"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                        <!--        <TextView
+                                    android:id="@+id/title_tv"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_centerInParent="true"
+                                    android:gravity="center_horizontal"
+                                    android:text="编辑资料"
+                                    android:textColor="#ffffff"
+                                    android:textSize="20sp" />-->
+                        <com.facebook.drawee.view.SimpleDraweeView
+                            android:id="@+id/user_pic"
+                            android:layout_width="120dp"
+                            android:layout_height="120dp"
                             android:layout_centerInParent="true"
+                            android:layout_gravity="center"
+                            android:layout_marginBottom="5dp"
+                            android:layout_marginTop="-5dp"
                             android:gravity="center_horizontal"
-                            android:text="编辑资料"
-                            android:textColor="#ffffff"
-                            android:textSize="20sp" />-->
-                <com.facebook.drawee.view.SimpleDraweeView
-                    android:id="@+id/user_pic"
-                    android:layout_width="120dp"
-                    android:layout_height="120dp"
-                    android:layout_marginBottom="5dp"
-                    android:layout_centerInParent="true"
-                    android:layout_marginTop="-5dp"
-                    android:layout_gravity="center"
-                    android:gravity="center_horizontal"
-                    fresco:placeholderImage="@drawable/icon"
-                    fresco:roundTopLeft="false"
-                    fresco:roundTopRight="false"
-                    fresco:roundBottomLeft="true"
-                    fresco:roundBottomRight="true"
-                    fresco:roundedCornerRadius="8dp" />
-<!--                fresco:progressBarAutoRotateInterval="2000"
-                fresco:progressBarImage="@drawable/con_progress_bar"
-                fresco:progressBarImageScaleType="centerInside"-->
+                            fresco:placeholderImage="@drawable/placeholder"
+                            fresco:placeholderImageScaleType="center"
+                            fresco:roundBottomLeft="true"
+                            fresco:roundBottomRight="true"
+                            fresco:roundTopLeft="false"
+                            fresco:roundTopRight="false"
+                            fresco:roundedCornerRadius="8dp" />
+                        <!--                fresco:progressBarAutoRotateInterval="2000"
+                                        fresco:progressBarImage="@drawable/con_progress_bar"
+                                        fresco:progressBarImageScaleType="centerInside"-->
 
-  <!--              <TextView
-                    android:id="@+id/tx_top_right"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:paddingLeft="12dp"
-                    android:paddingRight="8dp"
-                    android:paddingTop="6dp"
-                    android:paddingBottom="6dp"
-                    android:layout_marginRight="10dp"
-                    android:text="保存"
-                    android:textColor="@color/darkgray"
-                    android:gravity="center_vertical"
-                    android:textSize="18sp" />-->
+                        <!--              <TextView
+                                          android:id="@+id/tx_top_right"
+                                          android:layout_width="wrap_content"
+                                          android:layout_height="wrap_content"
+                                          android:layout_alignParentRight="true"
+                                          android:layout_centerVertical="true"
+                                          android:paddingLeft="12dp"
+                                          android:paddingRight="8dp"
+                                          android:paddingTop="6dp"
+                                          android:paddingBottom="6dp"
+                                          android:layout_marginRight="10dp"
+                                          android:text="保存"
+                                          android:textColor="@color/darkgray"
+                                          android:gravity="center_vertical"
+                                          android:textSize="18sp" />-->
 
-                <!--        android:background="@drawable/bt_border_charactertest_selector"
-                        android:textColor="#ffffff"-->
+                        <!--        android:background="@drawable/bt_border_charactertest_selector"
+                                android:textColor="#ffffff"-->
 
-            </RelativeLayout>
+                    </RelativeLayout>
 
-            <android.support.v7.widget.RecyclerView
-                    android:id="@+id/pullLoadMoreRecyclerView"
-                    fresco:layout_scrollFlags="scroll|enterAlways"
-                    android:layout_width="match_parent"
-                    android:layout_height="90dp"
-                    android:paddingTop="10dp"
-                    android:paddingBottom="10dp"
-                    android:background="@color/white" />
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/pullLoadMoreRecyclerView"
+                        android:layout_width="match_parent"
+                        android:layout_height="90dp"
+                        android:background="@color/white"
+                        android:paddingBottom="10dp"
+                        android:paddingTop="10dp"
+                        fresco:layout_scrollFlags="scroll|enterAlways" />
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="点击可设置头像、添加图片,共8张。"
-                        android:layout_marginLeft="16dp"
-                        android:textSize="12sp"
                         android:layout_marginBottom="10dp"
-                        android:textColor="@color/gray"/>
+                        android:layout_marginLeft="16dp"
+                        android:text="点击可设置头像、添加图片,共8张。"
+                        android:textColor="@color/gray"
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:id="@+id/rt_tixing"
+                        android:layout_width="match_parent"
+                        android:layout_height="24dp"
+                        android:text="完善资料让朋友更了解你"
+                        android:gravity="center"
+                        android:textSize="12sp"
+                        android:textColor="@color/black"
+                        android:background="#d0F7BB4B"/>
                 </LinearLayout>
 
 
@@ -134,9 +146,9 @@
                     android:id="@+id/toolbar"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
+                    android:navigationIcon="@drawable/return_back"
                     fresco:layout_collapseMode="pin"
                     fresco:navigationIcon="@drawable/return2"
-                    android:navigationIcon="@drawable/return_back"
                     fresco:popupTheme="@style/AppTheme.PopupOverlay">
                     <!--添加Toolbar的子控件-->
                     <Button
@@ -144,9 +156,9 @@
                         android:layout_width="75dp"
                         android:layout_height="match_parent"
                         android:layout_gravity="right"
-                        android:text=" 保存 "
                         android:background="@color/white"
                         android:gravity="center"
+                        android:text=" 保存 "
                         android:textColor="#000000"
                         android:textSize="16sp" />
                     <!--android:background="@color/green"-->
@@ -168,809 +180,19 @@
         </android.support.design.widget.AppBarLayout>
 
         <!-- 下面的 list 指定 behavior   提供滑动的 view 支持 ListView、GridView、RecyclerView -->
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/rlist_view_content"
+        <android.support.v4.widget.NestedScrollView
+            android:id="@+id/nsv"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            fresco:layout_behavior="@string/appbar_scrolling_view_behavior"/>
-
-<!--
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
+            android:fillViewport="true"
+            android:scrollbars="none"
             fresco:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-            <LinearLayout
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rlist_view_content"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                fresco:layout_behavior="@string/appbar_scrolling_view_behavior"
-                android:orientation="vertical">
-
-                <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
-                    android:id="@+id/card_view"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginTop="15dp"
-                    card_view:cardBackgroundColor="@android:color/white"
-                    card_view:cardCornerRadius="10dp"
-                    card_view:cardElevation="0dp">
-
-                    <LinearLayout
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical">
-
-                        <RelativeLayout
-                            android:layout_width="fill_parent"
-                            android:layout_height="45dp">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_centerVertical="true"
-                                android:layout_marginLeft="20dp"
-                                android:text="个人资料"
-                                android:textColor="@color/black"
-                                android:textSize="16dp" />
-                        </RelativeLayout>
-
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="0.1dp"
-                            android:background="@color/black" />
-
-                        <RelativeLayout
-                            android:id="@+id/clear_cache_layout"
-                            android:layout_width="fill_parent"
-                            android:layout_height="55dp"
-                            android:background="@drawable/item_background_selector_nocorn">
-
-
-                            <TextView
-                                android:id="@+id/tv_zhongwen_nicheng"
-                                style="@style/setting_text_style"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_centerVertical="true"
-                                android:layout_marginLeft="3dp"
-                                android:text="中文昵称:"
-                                android:textColor="@android:color/darker_gray" />
-
-
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_centerVertical="true"
-                                android:layout_toRightOf="@id/tv_zhongwen_nicheng"
-                                android:orientation="horizontal">
-
-                                <TextView
-                                    style="@style/setting_text_style"
-                                    android:layout_width="0dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_weight="1"
-                                    android:text="用户的昵称"
-                                    android:textColor="@color/black1" />
-
-                                <TextView
-                                    style="@style/setting_text_style"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_alignParentRight="true"
-                                    android:layout_centerVertical="true"
-                                    android:layout_marginRight="15dip"
-                                    android:drawablePadding="5dp"
-                                    android:drawableRight="@drawable/morex"
-                                    android:textColor="@android:color/darker_gray" />
-                            </LinearLayout>
-
-                        </RelativeLayout>
-
-                                     <View
-                                       android:layout_width="fill_parent"
-                                       android:layout_height="0.1dp"
-                                       android:background="@color/gray" />
-
-                        <RelativeLayout
-                            android:layout_width="fill_parent"
-                            android:layout_height="55dp"
-                            android:background="@drawable/item_background_selector_nocorn">
-
-                                            <ImageView
-                                                android:layout_width="wrap_content"
-                                                android:layout_height="wrap_content"
-                                                android:layout_centerVertical="true"
-                                                android:layout_marginLeft="3dp"
-                                                android:src="@drawable/ic_mima" />
-
-                            <TextView
-                                android:id="@+id/tv_yingwen_nicheng"
-                                style="@style/setting_text_style"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_centerVertical="true"
-                                android:layout_marginLeft="3dp"
-                                android:text="英文昵称:"
-                                android:textColor="@android:color/darker_gray" />
-
-
-                            <LinearLayout
-                                android:id="@+id/ln_yingwen_nicheng"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_centerVertical="true"
-                                android:layout_toRightOf="@id/tv_yingwen_nicheng"
-                                android:orientation="horizontal">
-
-                                <TextView
-                                    style="@style/setting_text_style"
-                                    android:layout_width="0dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_weight="1"
-                                    android:text="English Name"
-                                    android:textColor="@color/black1" />
-
-                                <TextView
-                                    style="@style/setting_text_style"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_alignParentRight="true"
-                                    android:layout_centerVertical="true"
-                                    android:layout_marginRight="15dip"
-                                    android:drawablePadding="5dp"
-                                    android:drawableRight="@drawable/morex"
-                                    android:textColor="@android:color/darker_gray" />
-                            </LinearLayout>
-                        </RelativeLayout>
-
-
-                        <RelativeLayout
-                            android:layout_width="fill_parent"
-                            android:layout_height="55dp"
-                            android:background="@drawable/item_background_selector_nocorn">
-
-                                            <ImageView
-                                                android:layout_width="wrap_content"
-                                                android:layout_height="wrap_content"
-                                                android:layout_centerVertical="true"
-                                                android:layout_marginLeft="3dp"
-                                                android:src="@drawable/ic_mima" />
-
-                            <TextView
-                                android:id="@+id/tv_birthday"
-                                style="@style/setting_text_style"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_centerVertical="true"
-                                android:layout_marginLeft="3dp"
-                                android:text="生 日:    "
-                                android:textColor="@android:color/darker_gray" />
-
-
-                            <LinearLayout
-                                android:id="@+id/ln_birthday"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_centerVertical="true"
-                                android:layout_toRightOf="@id/tv_birthday"
-                                android:orientation="horizontal">
-
-                                <TextView
-                                    style="@style/setting_text_style"
-                                    android:layout_width="0dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_weight="1"
-                                    android:text="1898-07-23   26岁  射手座"
-                                    android:textColor="@color/black1" />
-
-                                <TextView
-                                    style="@style/setting_text_style"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_alignParentRight="true"
-                                    android:layout_centerVertical="true"
-                                    android:layout_marginRight="15dip"
-                                    android:drawablePadding="5dp"
-                                    android:drawableRight="@drawable/morex"
-                                    android:textColor="@android:color/darker_gray" />
-                            </LinearLayout>
-                        </RelativeLayout>
-
-
-                        <RelativeLayout
-                            android:layout_width="fill_parent"
-                            android:layout_height="55dp"
-                            android:background="@drawable/item_background_selector_nocorn">
-
-                                            <ImageView
-                                                android:layout_width="wrap_content"
-                                                android:layout_height="wrap_content"
-                                                android:layout_centerVertical="true"
-                                                android:layout_marginLeft="3dp"
-                                                android:src="@drawable/ic_mima" />
-
-                            <TextView
-                                android:id="@+id/tv_feeling"
-                                style="@style/setting_text_style"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_centerVertical="true"
-                                android:text="情感状态:   "
-                                android:textColor="@android:color/darker_gray" />
-
-
-                            <LinearLayout
-                                android:id="@+id/ln_feeling"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_centerVertical="true"
-                                android:layout_toRightOf="@id/tv_feeling"
-                                android:orientation="horizontal">
-
-                                <TextView
-                                    style="@style/setting_text_style"
-                                    android:layout_width="0dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_weight="1"
-                                    android:text="未婚"
-                                    android:textColor="@color/black1" />
-
-                                <TextView
-                                    style="@style/setting_text_style"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_alignParentRight="true"
-                                    android:layout_centerVertical="true"
-                                    android:layout_marginRight="15dip"
-                                    android:drawablePadding="5dp"
-                                    android:drawableRight="@drawable/morex"
-                                    android:textColor="@android:color/darker_gray" />
-                            </LinearLayout>
-                        </RelativeLayout>
-
-
-                        <RelativeLayout
-                            android:layout_width="fill_parent"
-                            android:layout_height="55dp"
-                            android:background="@drawable/item_background_selector_nocorn">
-
-                                            <ImageView
-                                                android:layout_width="wrap_content"
-                                                android:layout_height="wrap_content"
-                                                android:layout_centerVertical="true"
-                                                android:layout_marginLeft="3dp"
-                                                android:src="@drawable/ic_mima" />
-
-                            <TextView
-                                android:id="@+id/tv_jiaxiang"
-                                style="@style/setting_text_style"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_centerVertical="true"
-                                android:layout_marginLeft="3dp"
-                                android:text="家 乡:     "
-                                android:textColor="@android:color/darker_gray" />
-
-
-                            <LinearLayout
-                                android:id="@+id/ln_jiaxiang"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_centerVertical="true"
-                                android:layout_toRightOf="@id/tv_jiaxiang"
-                                android:orientation="horizontal">
-
-                                <TextView
-                                    style="@style/setting_text_style"
-                                    android:layout_width="0dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_weight="1"
-                                    android:text="福建/莆田"
-                                    android:textColor="@color/black1" />
-
-                                <TextView
-                                    style="@style/setting_text_style"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_alignParentRight="true"
-                                    android:layout_centerVertical="true"
-                                    android:layout_marginRight="15dip"
-                                    android:drawablePadding="5dp"
-                                    android:drawableRight="@drawable/morex"
-                                    android:textColor="@android:color/darker_gray" />
-                            </LinearLayout>
-
-                        </RelativeLayout>
-
-
-                        <RelativeLayout
-                            android:layout_width="fill_parent"
-                            android:layout_height="55dp"
-                            android:background="@drawable/item_background_selector_nocorn">
-
-                                            <ImageView
-                                                android:layout_width="wrap_content"
-                                                android:layout_height="wrap_content"
-                                                android:layout_centerVertical="true"
-                                                android:layout_marginLeft="3dp"
-                                                android:src="@drawable/ic_mima" />
-
-                            <TextView
-                                android:id="@+id/tv_geren_jieshao"
-                                style="@style/setting_text_style"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_centerVertical="true"
-                                android:layout_marginLeft="3dp"
-                                android:text="个人介绍:"
-                                android:textColor="@android:color/darker_gray" />
-
-
-                            <LinearLayout
-                                android:id="@+id/ln_geren_jieshao"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_centerVertical="true"
-                                android:layout_toRightOf="@id/tv_geren_jieshao"
-                                android:orientation="horizontal">
-
-                                <TextView
-                                    style="@style/setting_text_style"
-                                    android:layout_width="0dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_weight="1"
-                                    android:text="性格社交创始人"
-                                    android:textColor="@color/black1" />
-
-                                <TextView
-                                    style="@style/setting_text_style"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_alignParentRight="true"
-                                    android:layout_centerVertical="true"
-                                    android:layout_marginRight="15dip"
-                                    android:drawablePadding="5dp"
-                                    android:drawableRight="@drawable/morex"
-                                    android:textColor="@android:color/darker_gray" />
-                            </LinearLayout>
-
-                        </RelativeLayout>
-
-                                     <View
-                                       android:layout_width="fill_parent"
-                                       android:layout_height="0.1dp"
-                                       android:background="@color/gray" />
-
-                        <RelativeLayout
-                            android:layout_width="fill_parent"
-                            android:layout_height="55dp"
-                            android:background="@drawable/item_background_selector_nocorn">
-
-                                            <ImageView
-                                                android:layout_width="wrap_content"
-                                                android:layout_height="wrap_content"
-                                                android:layout_centerVertical="true"
-                                                android:layout_marginLeft="3dp"
-                                                android:src="@drawable/ic_mima" />
-
-                            <TextView
-                                android:id="@+id/tv_shenfenbiaoqian"
-                                style="@style/setting_text_style"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_centerVertical="true"
-                                android:layout_marginLeft="3dp"
-                                android:text="身份标签:"
-                                android:textColor="@android:color/darker_gray" />
-
-
-                            <LinearLayout
-                                android:id="@+id/ln_shenfenbiaoqian"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_centerVertical="true"
-                                android:layout_toRightOf="@id/tv_shenfenbiaoqian"
-                                android:orientation="horizontal">
-
-                                <TextView
-                                    style="@style/setting_text_style"
-                                    android:layout_width="0dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_weight="1"
-                                    android:text="白领/创业者/创始人"
-                                    android:textColor="@color/black1" />
-
-                                <TextView
-                                    style="@style/setting_text_style"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_alignParentRight="true"
-                                    android:layout_centerVertical="true"
-                                    android:layout_marginRight="15dip"
-                                    android:drawablePadding="5dp"
-                                    android:drawableRight="@drawable/morex"
-                                    android:textColor="@android:color/darker_gray" />
-                            </LinearLayout>
-                        </RelativeLayout>
-
-
-                        <RelativeLayout
-                            android:layout_width="fill_parent"
-                            android:layout_height="wrap_content"
-                            android:background="@drawable/item_background_selector_nocorn"
-                            android:paddingBottom="5dp"
-                            android:paddingTop="5dp">
-
-                                            <ImageView
-                                                android:layout_width="wrap_content"
-                                                android:layout_height="wrap_content"
-                                                android:layout_centerVertical="true"
-                                                android:layout_marginLeft="3dp"
-                                                android:src="@drawable/ic_mima" />
-
-                            <TextView
-                                android:id="@+id/tv_zhiye"
-                                style="@style/setting_text_style"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_centerVertical="true"
-                                android:layout_marginLeft="3dp"
-                                android:text="职 业:    "
-                                android:textColor="@android:color/darker_gray" />
-
-
-                            <LinearLayout
-                                android:id="@+id/ln_zhiye"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_centerVertical="true"
-                                android:layout_toRightOf="@id/tv_zhiye"
-                                android:orientation="horizontal">
-
-                                <TextView
-                                    style="@style/setting_text_style"
-                                    android:layout_width="0dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_weight="1"
-                                    android:text="白领/创业者/创始人\n 白领/创业者/创始人"
-                                    android:textColor="@color/black1" />
-
-                                <TextView
-                                    style="@style/setting_text_style"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_alignParentRight="true"
-                                    android:layout_centerVertical="true"
-                                    android:layout_marginRight="15dip"
-                                    android:drawablePadding="5dp"
-                                    android:drawableRight="@drawable/morex"
-                                    android:textColor="@android:color/darker_gray" />
-                            </LinearLayout>
-                        </RelativeLayout>
-
-
-                        <RelativeLayout
-                            android:layout_width="fill_parent"
-                            android:layout_height="wrap_content"
-                            android:background="@drawable/item_background_selector_nocorn"
-                            android:paddingBottom="5dp"
-                            android:paddingTop="5dp">
-
-                                            <ImageView
-                                                android:layout_width="wrap_content"
-                                                android:layout_height="wrap_content"
-                                                android:layout_centerVertical="true"
-                                                android:layout_marginLeft="3dp"
-                                                android:src="@drawable/ic_mima" />
-
-                            <TextView
-                                android:id="@+id/tv_school"
-                                style="@style/setting_text_style"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_centerVertical="true"
-                                android:text="学 校    :   "
-                                android:textColor="@android:color/darker_gray" />
-
-
-                            <LinearLayout
-                                android:id="@+id/ln_school"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_centerVertical="true"
-                                android:layout_toRightOf="@id/tv_school"
-                                android:orientation="horizontal">
-
-                                <TextView
-                                    style="@style/setting_text_style"
-                                    android:layout_width="0dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_weight="1"
-                                    android:text="白领/创业者/创始人\n 白领/创业者/创始人"
-                                    android:textColor="@color/black1" />
-
-                                <TextView
-                                    style="@style/setting_text_style"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_alignParentRight="true"
-                                    android:layout_centerVertical="true"
-                                    android:layout_marginRight="15dip"
-                                    android:drawablePadding="5dp"
-                                    android:drawableRight="@drawable/morex"
-                                    android:textColor="@android:color/darker_gray" />
-                            </LinearLayout>
-                        </RelativeLayout>
-
-                    </LinearLayout>
-                </android.support.v7.widget.CardView>
-
-
-                <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="20dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginTop="15dp"
-                    card_view:cardBackgroundColor="@android:color/white"
-                    card_view:cardCornerRadius="10dp"
-                    card_view:cardElevation="0dp">
-
-                    <LinearLayout
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical">
-
-                        <RelativeLayout
-                            android:layout_width="fill_parent"
-                            android:layout_height="45dp">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_centerVertical="true"
-                                android:layout_marginLeft="20dp"
-                                android:text="其他资料"
-                                android:textColor="@color/black"
-                                android:textSize="16dp" />
-                        </RelativeLayout>
-
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="0.1dp"
-                            android:background="@color/black" />
-
-                        <RelativeLayout
-                            android:layout_width="fill_parent"
-                            android:layout_height="55dp"
-                            android:background="@drawable/item_background_selector_nocorn">
-
-                                            <ImageView
-                                                android:layout_width="wrap_content"
-                                                android:layout_height="wrap_content"
-                                                android:layout_centerVertical="true"
-                                                android:layout_marginLeft="3dp"
-                                                android:src="@drawable/ic_mima" />
-
-                            <TextView
-                                android:id="@+id/tv_shenghuodidian0"
-                                style="@style/setting_text_style"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_centerVertical="true"
-                                android:layout_marginLeft="3dp"
-                                android:text="生活地点:"
-                                android:textColor="@android:color/darker_gray" />
-
-
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_centerVertical="true"
-                                android:layout_toRightOf="@id/tv_shenghuodidian0"
-                                android:orientation="horizontal">
-
-                                <TextView
-                                    android:id="@+id/tv_shenghuodidian"
-                                    style="@style/setting_text_style"
-                                    android:layout_width="0dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_weight="1"
-                                    android:text="宁和小区"
-                                    android:textColor="@color/black1" />
-
-                                <TextView
-                                    style="@style/setting_text_style"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_alignParentRight="true"
-                                    android:layout_centerVertical="true"
-                                    android:layout_marginRight="15dip"
-                                    android:drawablePadding="5dp"
-                                    android:drawableRight="@drawable/morex"
-                                    android:textColor="@android:color/darker_gray" />
-                            </LinearLayout>
-
-                        </RelativeLayout>
-
-                                     <View
-                                       android:layout_width="fill_parent"
-                                       android:layout_height="0.1dp"
-                                       android:background="@color/gray" />
-
-                        <RelativeLayout
-                            android:layout_width="fill_parent"
-                            android:layout_height="55dp"
-                            android:background="@drawable/item_background_selector_nocorn">
-
-                                            <ImageView
-                                                android:layout_width="wrap_content"
-                                                android:layout_height="wrap_content"
-                                                android:layout_centerVertical="true"
-                                                android:layout_marginLeft="3dp"
-                                                android:src="@drawable/ic_mima" />
-
-                            <TextView
-                                android:id="@+id/tv_gongzuodidian0"
-                                style="@style/setting_text_style"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_centerVertical="true"
-                                android:layout_marginLeft="3dp"
-                                android:text="工作地点:"
-                                android:textColor="@android:color/darker_gray" />
-
-
-                            <LinearLayout
-                                android:id="@+id/ln_gongzuodidian0"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_centerVertical="true"
-                                android:layout_toRightOf="@id/tv_gongzuodidian0"
-                                android:orientation="horizontal">
-
-                                <TextView
-                                    android:id="@+id/ln_gongzuodidian"
-                                    style="@style/setting_text_style"
-                                    android:layout_width="0dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_weight="1"
-                                    android:text="大宁商业广场"
-                                    android:textColor="@color/black1" />
-
-                                <TextView
-                                    style="@style/setting_text_style"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_alignParentRight="true"
-                                    android:layout_centerVertical="true"
-                                    android:layout_marginRight="15dip"
-                                    android:drawablePadding="5dp"
-                                    android:drawableRight="@drawable/morex"
-                                    android:textColor="@android:color/darker_gray" />
-                            </LinearLayout>
-                        </RelativeLayout>
-
-
-                        <RelativeLayout
-                            android:layout_width="fill_parent"
-                            android:layout_height="55dp"
-                            android:background="@drawable/item_background_selector_nocorn">
-
-                                            <ImageView
-                                                android:layout_width="wrap_content"
-                                                android:layout_height="wrap_content"
-                                                android:layout_centerVertical="true"
-                                                android:layout_marginLeft="3dp"
-                                                android:src="@drawable/ic_mima" />
-
-                            <TextView
-                                android:id="@+id/tv_changchumodi0"
-                                style="@style/setting_text_style"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_centerVertical="true"
-                                android:layout_marginLeft="3dp"
-                                android:text="常出没地:"
-                                android:textColor="@android:color/darker_gray" />
-
-
-                            <LinearLayout
-                                android:id="@+id/ln_changchumodi"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_centerVertical="true"
-                                android:layout_toRightOf="@id/tv_changchumodi0"
-                                android:orientation="horizontal">
-
-                                <TextView
-                                    style="@style/setting_text_style"
-                                    android:layout_width="0dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_weight="1"
-                                    android:text="上海、北京"
-                                    android:textColor="@color/black1" />
-
-                                <TextView
-                                    android:id="@+id/tv_changchumodi"
-                                    style="@style/setting_text_style"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_alignParentRight="true"
-                                    android:layout_centerVertical="true"
-                                    android:layout_marginRight="15dip"
-                                    android:drawablePadding="5dp"
-                                    android:drawableRight="@drawable/morex"
-                                    android:textColor="@android:color/darker_gray" />
-                            </LinearLayout>
-                        </RelativeLayout>
-
-                        <RelativeLayout
-                            android:layout_width="fill_parent"
-                            android:layout_height="55dp"
-                            android:background="@drawable/item_background_selector_nocorn">
-
-                                            <ImageView
-                                                android:layout_width="wrap_content"
-                                                android:layout_height="wrap_content"
-                                                android:layout_centerVertical="true"
-                                                android:layout_marginLeft="3dp"
-                                                android:src="@drawable/ic_mima" />
-
-                            <TextView
-                                android:id="@+id/tv_quguo_jingdian0"
-                                style="@style/setting_text_style"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_centerVertical="true"
-                                android:layout_marginLeft="3dp"
-                                android:text="去过景点:"
-                                android:textColor="@android:color/darker_gray" />
-
-
-                            <LinearLayout
-                                android:id="@+id/ln_quguo_jingdian"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_centerVertical="true"
-                                android:layout_toRightOf="@id/tv_quguo_jingdian0"
-                                android:orientation="horizontal">
-
-                                <TextView
-                                    android:id="@+id/tv_quguo_jingdian"
-                                    style="@style/setting_text_style"
-                                    android:layout_width="0dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_weight="1"
-                                    android:text="黄山、桂林、厦门"
-                                    android:textColor="@color/black1" />
-
-                                <TextView
-                                    style="@style/setting_text_style"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_alignParentRight="true"
-                                    android:layout_centerVertical="true"
-                                    android:layout_marginRight="15dip"
-                                    android:drawablePadding="5dp"
-                                    android:drawableRight="@drawable/morex"
-                                    android:textColor="@android:color/darker_gray" />
-                            </LinearLayout>
-                        </RelativeLayout>
-
-                    </LinearLayout>
-                </android.support.v7.widget.CardView>
-
-            </LinearLayout>
-
-        </ScrollView>
--->
-
+                android:layout_height="match_parent"
+                fresco:layout_behavior="@string/appbar_scrolling_view_behavior" />
+        </android.support.v4.widget.NestedScrollView>
     </android.support.design.widget.CoordinatorLayout>
 </LinearLayout>

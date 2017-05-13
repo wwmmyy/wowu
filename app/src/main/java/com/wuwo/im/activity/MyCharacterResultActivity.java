@@ -6,7 +6,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -15,22 +14,23 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.wuwo.im.bean.Characters;
 import com.wuwo.im.config.WowuApp;
+import com.wuwo.im.util.LogUtils;
 import com.wuwo.im.util.UtilsTool;
 import com.wuwo.im.view.RangeSeekBar;
 
 import java.lang.ref.WeakReference;
 
-import im.wuwo.com.wuwo.R;
+import im.imxianzhi.com.imxianzhi.R;
 
-public class MyCharacterResultActivity extends BaseLoadActivity  {
+public class MyCharacterResultActivity extends BaseLoadActivity {
 
-    private final String TAG="MyCharacterctivity";
-    RangeSeekBar rs_character,rs_character1,rs_character2,rs_character3;
+    private final String TAG = "MyCharacterctivity";
+    RangeSeekBar rs_character, rs_character1, rs_character2, rs_character3;
     public static final int LOAD_RECOMMEND_DATA = 1;
     private mHandlerWeak mtotalHandler;
     private ProgressDialog pg;
-    TextView  tv_user_typeintro, tv_user_typename,tv_user_result;
-
+    TextView tv_user_typeintro, tv_user_typename, tv_user_result;
+    SimpleDraweeView draweeView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,17 +43,20 @@ public class MyCharacterResultActivity extends BaseLoadActivity  {
         findViewById(R.id.tv_character_re_test).setOnClickListener(this);
         findViewById(R.id.return_back).setOnClickListener(this);
 
-         tv_user_typeintro = (TextView) findViewById(R.id.tv_user_typeintro);
+        tv_user_typeintro = (TextView) findViewById(R.id.tv_user_typeintro);
         tv_user_typename = (TextView) findViewById(R.id.tv_user_typename);
-        tv_user_result= (TextView) findViewById(R.id.tv_user_result);
+        tv_user_result = (TextView) findViewById(R.id.tv_user_result);
 
-        SimpleDraweeView draweeView = (SimpleDraweeView) findViewById(R.id.user_login_pic);
-        draweeView.setImageURI(Uri.parse(WowuApp.iconPath));//"http://www.gog.com.cn/pic/0/10/91/11/10911138_955870.jpg"
+        draweeView = (SimpleDraweeView) findViewById(R.id.user_login_pic);
+//       if(WowuApp.iconPath !=null ) draweeView.setImageURI(Uri.parse(WowuApp.iconPath));
 
-        rs_character= (RangeSeekBar) findViewById(R.id.rs_character);
-        rs_character1= (RangeSeekBar) findViewById(R.id.rs_character1);
-        rs_character2= (RangeSeekBar) findViewById(R.id.rs_character2);
-        rs_character3= (RangeSeekBar) findViewById(R.id.rs_character3);
+
+        //"http://www.gog.com.cn/pic/0/10/91/11/10911138_955870.jpg"
+
+        rs_character = (RangeSeekBar) findViewById(R.id.rs_character);
+        rs_character1 = (RangeSeekBar) findViewById(R.id.rs_character1);
+        rs_character2 = (RangeSeekBar) findViewById(R.id.rs_character2);
+        rs_character3 = (RangeSeekBar) findViewById(R.id.rs_character3);
         mtotalHandler = new mHandlerWeak(this);
 
         loadDataService.loadGetJsonRequestData(WowuApp.GetDispositionInfoURL, LOAD_RECOMMEND_DATA);
@@ -97,7 +100,7 @@ public class MyCharacterResultActivity extends BaseLoadActivity  {
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        Log.i("MyCharacterctivity", "：：" + response);
+                        LogUtils.i("MyCharacterctivity", "：：" + response);
 
 //                        {"PhotoUrl":"http://xzxj.oss-cn-shanghai.aliyuncs.com/celebrity/6cbeca3a-989f-4756-8b46-bc781a1d123a.jpg",
 //                                "Celebrity":"莎士比亚","CelebrityDescription":"英国文学史上最杰出的戏剧家","Name":"INFP","Title":"化解者",
@@ -120,7 +123,7 @@ public class MyCharacterResultActivity extends BaseLoadActivity  {
 
                         Message msg = new Message();
                         msg.what = DOWNLOADED_Contact;
-                        msg.obj=response;
+                        msg.obj = response;
                         mtotalHandler.sendMessage(msg);
                     }
                 }).start();
@@ -131,7 +134,7 @@ public class MyCharacterResultActivity extends BaseLoadActivity  {
     public static final int DOWNLOADED_Contact = 1;
     public static final int REFRESH_DATA = 2;
     //创建一个handler，内部完成处理消息方法
-    public Characters mCharacter=null;
+    public Characters mCharacter = null;
 
     private static class mHandlerWeak extends Handler {
         private WeakReference<MyCharacterResultActivity> activity = null;
@@ -150,52 +153,77 @@ public class MyCharacterResultActivity extends BaseLoadActivity  {
             switch (msg.what) {
                 case DOWNLOADED_Contact:
                     if (act != null) {
-                            if (act.pg != null && act.pg.isShowing()) act.pg.dismiss();
+                        if (act.pg != null && act.pg.isShowing()) act.pg.dismiss();
 /*                        {"PhotoUrl":"http://xzxj.oss-cn-shanghai.aliyuncs.com/celebrity/c6916880-fb12-4f1b-a510-51155e2622f4.jpg",
 "Celebrity":"甘地","CelebrityDescription":"印度民族解放运动的领导人","Name":"INFJ","Title":"劝告者",
 "Score":{"UserId":"637e5acb638f46f5873ec86f0b4b49ce","E":2,"I":3,"S":2,"N":3,"T":2,"F":3,"J":3,"P":2,"PropensityScore":4.0,
 "EI_PropensityScore":5.0,"SN_PropensityScore":4.0,"TF_PropensityScore":4.0,"JP_PropensityScore":-5.0,"PropensityDescription":"轻微","Id":"179555a5-b421-4c2b-ae57-d20ecb2d67d8"}}  */
 
 
-                        act.tv_user_typeintro.setText(act.mCharacter.getCelebrityDescription());//json.optString("CelebrityDescription")
-                        act.tv_user_typename.setText(act.mCharacter.getCelebrity());// json.optString("Celebrity")
-                        act.tv_user_result.setText(act.mCharacter.getScore().getPropensityScore()+"% "+act.mCharacter.getScore().getPropensityDescription() );//(new JSONObject(json.optString("Score"))).optString("PropensityDescription")
+                        if (act.mCharacter != null) {
 
-                        if(act.mCharacter.getScore().getEI_PropensityScore()>0){
-                            act.rs_character.setCharacter(0.5f, (float) (0.5f+act.mCharacter.getScore().getEI_PropensityScore()/100));
 
-                            ( (TextView) act.findViewById(R.id.tv_dec1_r)).setText(act.mCharacter.getScore().getEI_PropensityScore()+"% ");
-                        } else{
-                            act.rs_character.setCharacter((float) (0.5f+act.mCharacter.getScore().getEI_PropensityScore()/100),0.5f);
-                            ( (TextView) act.findViewById(R.id.tv_dec1_l)).setText(Math.abs(act.mCharacter.getScore().getEI_PropensityScore())+"% ");
+                           if(act.mCharacter.getPhotoUrl() !=null){
+                               act.draweeView.setImageURI(Uri.parse(act.mCharacter.getPhotoUrl()));
+                           }
+                            act.tv_user_typeintro.setText(act.mCharacter.getCelebrityDescription());//json.optString("CelebrityDescription")
+                            act.tv_user_typename.setText(act.mCharacter.getCelebrity());// json.optString("Celebrity")
+                            if (act.mCharacter.getScore() != null) {
+                                act.tv_user_result.setText(act.mCharacter.getScore().getPropensityScore() + "% " + act.mCharacter.getScore().getPropensityDescription());//(new JSONObject(json.optString("Score"))).optString("PropensityDescription")
+
+                                if (act.mCharacter.getScore().getEI_PropensityScore() > 0) {
+                                    act.rs_character.setCharacter(0.5f, (float) (0.5f + act.mCharacter.getScore().getEI_PropensityScore() / 100));
+
+                                    ((TextView) act.findViewById(R.id.tv_dec1_r)).setText(act.mCharacter.getScore().getEI_PropensityScore() + "% ");
+                                } else {
+                                    act.rs_character.setCharacter((float) (0.5f + act.mCharacter.getScore().getEI_PropensityScore() / 100), 0.5f);
+                                    ((TextView) act.findViewById(R.id.tv_dec1_l)).setText(Math.abs(act.mCharacter.getScore().getEI_PropensityScore()) + "% ");
+                                }
+
+                                if (act.mCharacter.getScore().getSN_PropensityScore() > 0) {
+                                    act.rs_character1.setCharacter(0.5f, (float) (0.5f + act.mCharacter.getScore().getSN_PropensityScore() / 100));
+                                    ((TextView) act.findViewById(R.id.tv_dec2_r)).setText(act.mCharacter.getScore().getSN_PropensityScore() + "% ");
+                                } else {
+                                    act.rs_character1.setCharacter((float) (0.5f + act.mCharacter.getScore().getSN_PropensityScore() / 100), 0.5f);
+                                    ((TextView) act.findViewById(R.id.tv_dec2_l)).setText(Math.abs(act.mCharacter.getScore().getSN_PropensityScore()) + "% ");
+                                }
+
+                                if (act.mCharacter.getScore().getTF_PropensityScore() > 0) {
+                                    act.rs_character2.setCharacter(0.5f, (float) (0.5f + act.mCharacter.getScore().getTF_PropensityScore() / 100));
+                                    ((TextView) act.findViewById(R.id.tv_dec3_r)).setText(act.mCharacter.getScore().getTF_PropensityScore() + "% ");
+                                } else {
+                                    act.rs_character2.setCharacter((float) (0.5f + act.mCharacter.getScore().getTF_PropensityScore() / 100), 0.5f);
+                                    ((TextView) act.findViewById(R.id.tv_dec3_l)).setText(Math.abs(act.mCharacter.getScore().getTF_PropensityScore()) + "% ");
+                                }
+
+
+                                if (act.mCharacter.getScore().getJP_PropensityScore() > 0) {
+                                    act.rs_character3.setCharacter(0.5f, (float) (0.5f + act.mCharacter.getScore().getJP_PropensityScore() / 100));
+                                    ((TextView) act.findViewById(R.id.tv_dec4_r)).setText(act.mCharacter.getScore().getJP_PropensityScore() + "% ");
+                                } else {
+                                    act.rs_character3.setCharacter((float) (0.5f + act.mCharacter.getScore().getJP_PropensityScore() / 100), 0.5f);
+                                    ((TextView) act.findViewById(R.id.tv_dec4_l)).setText(Math.abs(act.mCharacter.getScore().getJP_PropensityScore()) + "% ");
+                                }
+                            }else {
+//                            MyToast.show(act.mContext, "服务器返回值异常");
+                                act.rs_character.setCharacter(0.5f,0.5f );
+                                act.rs_character1.setCharacter(0.5f,0.5f );
+                                act.rs_character2.setCharacter(0.5f,0.5f );
+                                act.rs_character3.setCharacter(0.5f,0.5f );
+                            }
+                        } else {
+//                            MyToast.show(act.mContext, "服务器返回值异常");
+                            act.rs_character.setCharacter(0.5f,0.5f );
+                            ((TextView) act.findViewById(R.id.tv_dec1_r)).setText( " ");
+                            act.rs_character1.setCharacter(0.5f,0.5f );
+                            ((TextView) act.findViewById(R.id.tv_dec2_r)).setText( " ");
+                            act.rs_character2.setCharacter(0.5f,0.5f );
+                            ((TextView) act.findViewById(R.id.tv_dec3_r)).setText( " ");
+                            act.rs_character3.setCharacter(0.5f,0.5f );
+                            ((TextView) act.findViewById(R.id.tv_dec4_r)).setText( " ");
+
+
                         }
-
-                        if(act.mCharacter.getScore().getSN_PropensityScore()>0){
-                            act.rs_character1.setCharacter(0.5f, (float) (0.5f+act.mCharacter.getScore().getSN_PropensityScore()/100));
-                            ( (TextView) act.findViewById(R.id.tv_dec2_r)).setText(act.mCharacter.getScore().getSN_PropensityScore()+"% ");
-                        } else{
-                            act.rs_character1.setCharacter((float) (0.5f+act.mCharacter.getScore().getSN_PropensityScore()/100),0.5f);
-                            ( (TextView) act.findViewById(R.id.tv_dec2_l)).setText(Math.abs(act.mCharacter.getScore().getSN_PropensityScore())+"% ");
-                        }
-
-                        if(act.mCharacter.getScore().getTF_PropensityScore()>0){
-                            act.rs_character2.setCharacter(0.5f, (float) (0.5f+act.mCharacter.getScore().getTF_PropensityScore()/100));
-                            ( (TextView) act.findViewById(R.id.tv_dec3_r)).setText(act.mCharacter.getScore().getTF_PropensityScore()+"% ");
-                        } else{
-                            act.rs_character2.setCharacter((float) (0.5f+act.mCharacter.getScore().getTF_PropensityScore()/100),0.5f);
-                            ( (TextView) act.findViewById(R.id.tv_dec3_l)).setText(Math.abs(act.mCharacter.getScore().getTF_PropensityScore())+"% ");
-                        }
-
-
-                        if(act.mCharacter.getScore().getJP_PropensityScore()>0){
-                            act.rs_character3.setCharacter(0.5f, (float) (0.5f+act.mCharacter.getScore().getJP_PropensityScore()/100));
-                            ( (TextView) act.findViewById(R.id.tv_dec4_r)).setText(act.mCharacter.getScore().getJP_PropensityScore()+"% ");
-                        } else{
-                            act.rs_character3.setCharacter((float) (0.5f+act.mCharacter.getScore().getJP_PropensityScore()/100),0.5f);
-                            ( (TextView) act.findViewById(R.id.tv_dec4_l)).setText(Math.abs(act.mCharacter.getScore().getJP_PropensityScore())+"% ");
-                        }
-
-
 //                        try {
 //                                JSONObject json = new JSONObject(msg.obj.toString());
 //                                act.tv_user_typeintro.setText(json.optString("CelebrityDescription"));

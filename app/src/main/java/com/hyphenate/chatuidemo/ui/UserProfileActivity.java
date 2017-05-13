@@ -27,10 +27,11 @@ import com.hyphenate.chatuidemo.DemoHelper;
 import com.hyphenate.easeui.domain.EaseUser;
 import com.hyphenate.easeui.utils.EaseImageUtils;
 import com.hyphenate.easeui.utils.EaseUserUtils;
+import com.hyphenate.easeui.utils.SharedPreferencesUtil;
 
 import java.io.ByteArrayOutputStream;
 
-import im.wuwo.com.wuwo.R;
+import im.imxianzhi.com.imxianzhi.R;
 
 public class UserProfileActivity extends BaseActivity implements OnClickListener{
 	
@@ -79,13 +80,23 @@ public class UserProfileActivity extends BaseActivity implements OnClickListener
 		if(username != null){
     		if (username.equals(EMClient.getInstance().getCurrentUser())) {
 //    			tvUsername.setText(EMClient.getInstance().getCurrentUser());
-				tvUsername.setText(  EaseImageUtils.usersNickName.get(username) );//username
+
+//				tvUsername.setText(  EaseImageUtils.usersNickName.get(username) );//username
+				tvUsername.setText( SharedPreferencesUtil.getData(UserProfileActivity.this,SharedPreferencesUtil.usersNickName,username,"")+"" );;
+
+
 //    			EaseUserUtils.setUserNick(username, tvNickName);
-				EaseUserUtils.setUserNick(EaseImageUtils.usersNickName.get(username), tvNickName);
+//				EaseUserUtils.setUserNick(EaseImageUtils.usersNickName.get(username), tvNickName);
+				EaseUserUtils.setUserNick(SharedPreferencesUtil.getData(UserProfileActivity.this,SharedPreferencesUtil.usersNickName,username,"")+"", tvNickName);
                 EaseUserUtils.setUserAvatar(this, username, headAvatar);
     		} else {
-    			tvUsername.setText(  EaseImageUtils.usersNickName.get(username) );//username
-				EaseUserUtils.setUserNick(EaseImageUtils.usersNickName.get(username), tvNickName);
+//    			tvUsername.setText(  EaseImageUtils.usersNickName.get(username) );//username
+
+
+				tvUsername.setText(  SharedPreferencesUtil.getData(UserProfileActivity.this,SharedPreferencesUtil.usersNickName,username,"")+"" );//username
+//				EaseUserUtils.setUserNick(EaseImageUtils.usersNickName.get(username), tvNickName);
+
+				EaseUserUtils.setUserNick(SharedPreferencesUtil.getData(UserProfileActivity.this,SharedPreferencesUtil.usersNickName,username,"")+"", tvNickName);
 //    			EaseUserUtils.setUserNick(username, tvNickName);
     			EaseUserUtils.setUserAvatar(this, username, headAvatar);
     			asyncFetchUserInfo(username);

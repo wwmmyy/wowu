@@ -2,9 +2,8 @@ package com.wuwo.im.activity;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 
-import com.wuwo.im.util.Helper;
+import com.wuwo.im.util.LogUtils;
 
 /**
 *desc
@@ -44,9 +43,9 @@ public abstract class BaseActivity extends AppCompatActivity {  //
 
 
         super.onCreate(savedInstanceState);
-//      改变状态栏字体颜色
-        Helper.statusBarLightMode(BaseActivity.this);
-        Log.i("BaseActivity", "BaseActivity onCreate");
+//      改变状态栏字体颜色   此功能不成熟，暂时屏蔽
+//        Helper.statusBarLightMode(BaseActivity.this);
+        LogUtils.i("BaseActivity", "BaseActivity onCreate");
     }
 
 

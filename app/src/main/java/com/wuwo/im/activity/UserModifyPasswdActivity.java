@@ -13,7 +13,7 @@ import com.wuwo.im.util.MyToast;
 
 import org.json.JSONObject;
 
-import im.wuwo.com.wuwo.R;
+import im.imxianzhi.com.imxianzhi.R;
 
 public class UserModifyPasswdActivity extends BaseLoadActivity {
 

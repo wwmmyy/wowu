@@ -1,6 +1,7 @@
 package com.wuwo.im.activity;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
@@ -19,7 +20,6 @@ import android.os.Handler;
 import android.os.Message;
 import android.provider.MediaStore;
 import android.provider.MediaStore.MediaColumns;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
@@ -35,6 +35,7 @@ import com.facebook.drawee.view.SimpleDraweeView;
 import com.facebook.imagepipeline.core.ImagePipeline;
 import com.wuwo.im.config.WowuApp;
 import com.wuwo.im.util.FormFile;
+import com.wuwo.im.util.LogUtils;
 import com.wuwo.im.util.MyToast;
 import com.wuwo.im.util.SocketHttpRequester;
 import com.wuwo.im.util.UtilsTool;
@@ -44,7 +45,7 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
-import im.wuwo.com.wuwo.R;
+import im.imxianzhi.com.imxianzhi.R;
 /** 
 *desc OwnerInfoDetailActivity
 *@author 王明远
@@ -53,7 +54,7 @@ import im.wuwo.com.wuwo.R;
 */
 
 public class OwnerInfoDetailActivity extends BaseActivity implements OnClickListener {
-    Context mcontext = OwnerInfoDetailActivity.this;
+    Context mContext = OwnerInfoDetailActivity.this;
 //    in.srain.cube.image.ImageLoader imageLoader;//加载用户头像
     SharedPreferences mSettings;
     SimpleDraweeView usersetting_userpic;
@@ -68,11 +69,11 @@ public class OwnerInfoDetailActivity extends BaseActivity implements OnClickList
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_owner_detail);
-        mSettings = mcontext.getSharedPreferences(WowuApp.PREFERENCE_KEY,
+        mSettings = mContext.getSharedPreferences(WowuApp.PREFERENCE_KEY,
                 MODE_PRIVATE);
 
         //      加载用户头像
-//        imageLoader = ImageLoaderFactory.create(mcontext);
+//        imageLoader = ImageLoaderFactory.create(mContext);
 //        usersetting_userpic = (in.srain.cube.image.CircleCubeImageView) findViewById(R.id.usersetting_userpic);
 //        usersetting_userpic.loadImage(imageLoader, DistApp.userImagePath + mSettings.getString("userid", "") + ".jpg");// 设为缓存图片
 
@@ -177,7 +178,9 @@ public class OwnerInfoDetailActivity extends BaseActivity implements OnClickList
         dialog.onWindowAttributesChanged(wl);
         // 设置点击外围解散
         dialog.setCanceledOnTouchOutside(true);
-        dialog.show();
+        if(!((Activity) mContext).isFinishing()) {
+            dialog.show();
+        }
     }
 
     private static String requestURL = OkHttpUtils.serverAbsolutePath
@@ -214,11 +217,11 @@ public class OwnerInfoDetailActivity extends BaseActivity implements OnClickList
         // TODO Auto-generated method stub
         super.onActivityResult(requestCode, resultCode, data);
         String sdStatus = Environment.getExternalStorageState();
-        Log.i("获取到返回值结果", "获取到返回值结果");
+        LogUtils.i("获取到返回值结果", "获取到返回值结果");
         switch (requestCode) {
             case PHOTO_CAPTURE:
                 if (!sdStatus.equals(Environment.MEDIA_MOUNTED)) {
-                    Log.i("内存卡错误", "请检查您的内存卡");
+                    LogUtils.i("内存卡错误", "请检查您的内存卡");
                 } else {
                     clearOldDrable();
                     sendToServer();
@@ -362,7 +365,7 @@ public class OwnerInfoDetailActivity extends BaseActivity implements OnClickList
             switch (msg.what) {
                 case Loading:
 
-                    pg = UtilsTool.initProgressDialog(mcontext, "正在上传.....");
+                    pg = UtilsTool.initProgressDialog(mContext, "正在上传.....");
                     pg.show();
                     break;
 

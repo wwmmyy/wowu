@@ -30,7 +30,7 @@ import com.hyphenate.util.DateUtils;
 import java.util.Date;
 import java.util.List;
 
-import im.wuwo.com.wuwo.R;
+import im.imxianzhi.com.imxianzhi.R;
 
 public class GroupSearchMessageActivity extends BaseActivity implements OnClickListener{
     private ImageButton clearSearch;

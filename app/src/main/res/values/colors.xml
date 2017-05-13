@@ -3,7 +3,7 @@
     <color name="text_lgray">#808080</color>
     <color name="text_gray">#323232</color>
 
-    <color name="black">#ff646464</color>
+    <color name="black">#727272</color>
     <color name="tabcor">#B7C0C8</color>
     <color name="app_bg">#eeeeee</color>
     <color name="white">#ffffffff</color>
@@ -69,9 +69,9 @@
     <color name="deep_gray">#ff555555</color>
     <color name="back_color">#F4F5FA</color>
     <color name="gray_light">#f5f5f5</color>
-
+    <color name="mine_bg_selected">#d9d9d9</color>
     <!-- E3E3E3 -->
-    <color name="semi_transparent">#9f000000</color>
+    <color name="semi_transparent">#df000000</color>
     <color name="red_color">#ff0000</color>
     <color name="color_bai">#ffffffff</color>
     <color name="text_shadow_color">#66000000</color>
@@ -423,7 +423,7 @@
     <color name="bbutton_info_disabled_edge">#a546b8da</color>
 
 
-
+    <color name="seekbar_color">#2DBAA6</color>
     <!--<color name="colorPrimary">#125688</color>-->
     <!--<color name="colorPrimary">#2298ef</color>-->
     <color name="colorPrimary">#26BCB5</color>

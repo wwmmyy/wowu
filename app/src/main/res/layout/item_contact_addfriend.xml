@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:fresco="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:background="@drawable/item_background_selector_light"
     android:gravity="center_vertical"
     android:minHeight="80dp"
@@ -12,7 +12,7 @@
 
     <FrameLayout
         android:layout_width="wrap_content"
-        android:layout_height="fill_parent"
+        android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginLeft="5dp"
         android:gravity="center">
@@ -30,16 +30,16 @@
 
         <com.facebook.drawee.view.SimpleDraweeView
             android:id="@+id/news_label_pic"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="63dp"
+            android:layout_height="63dp"
             android:layout_centerInParent="true"
             android:layout_gravity="center"
-            fresco:placeholderImage="@drawable/ic_launcher"
-            fresco:progressBarAutoRotateInterval="2000"
-            fresco:progressBarImage="@drawable/con_progress_bar"
+            fresco:placeholderImage="@drawable/placeholder"
             fresco:progressBarImageScaleType="centerInside"
             fresco:roundedCornerRadius="12dp" />
-        <!--fresco:roundAsCircle="true"-->
+        <!--fresco:roundAsCircle="true"
+            fresco:progressBarAutoRotateInterval="2000"
+            fresco:progressBarImage="@drawable/con_progress_bar"-->
     </FrameLayout>
     <!-- android:gravity="center_vertical" -->
 

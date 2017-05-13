@@ -35,7 +35,7 @@ import com.hyphenate.chatuidemo.domain.InviteMessage.InviteMesageStatus;
 
 import java.util.List;
 
-import im.wuwo.com.wuwo.R;
+import im.imxianzhi.com.imxianzhi.R;
 
 public class NewFriendsMsgAdapter extends ArrayAdapter<InviteMessage> {
 

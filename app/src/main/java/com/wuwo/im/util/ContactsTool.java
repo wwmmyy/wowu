@@ -54,7 +54,7 @@ public class ContactsTool {
 
     public ArrayList<Contact> getPhoneContacts(Context mContext) {
 
-//        Log.i("ContactsTool","获取到的联系人列表为：：：：2000");
+//        LogUtils.i("ContactsTool","获取到的联系人列表为：：：：2000");
         ArrayList<Contact> mContacts = new ArrayList<Contact>();
         ContentResolver resolver = mContext.getContentResolver();
         // 获取手机联系人
@@ -97,7 +97,7 @@ public class ContactsTool {
                 mContacts.add(temp);
 
 
-//                Log.i("ContactsTool","获取到的联系人列表为：：：：2000"+contactName);
+//                LogUtils.i("ContactsTool","获取到的联系人列表为：：：：2000"+contactName);
             }
             phoneCursor.close();
 //            System.out.print("获取到的联系人列表为：：：："+mContactsNumber);

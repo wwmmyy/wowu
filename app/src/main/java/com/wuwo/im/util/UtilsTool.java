@@ -1,8 +1,10 @@
 package com.wuwo.im.util;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
@@ -20,12 +22,14 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.os.StatFs;
+import android.support.v7.app.AlertDialog;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 import android.util.Base64;
@@ -37,14 +41,28 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.facebook.drawee.backends.pipeline.Fresco;
+import com.facebook.drawee.interfaces.DraweeController;
+import com.facebook.drawee.view.SimpleDraweeView;
+import com.facebook.imagepipeline.common.ResizeOptions;
+import com.facebook.imagepipeline.request.ImageRequest;
+import com.facebook.imagepipeline.request.ImageRequestBuilder;
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonParser;
-import com.wuwo.im.activity.LoginChooseActivity;
+import com.squareup.okhttp.Request;
+import com.tencent.mm.sdk.modelmsg.SendMessageToWX;
+import com.tencent.mm.sdk.modelmsg.WXMediaMessage;
+import com.tencent.mm.sdk.openapi.IWXAPI;
+import com.wuwo.im.activity.UserPayActivity;
 import com.wuwo.im.config.WowuApp;
+import com.zhy.http.okhttp.OkHttpUtils;
+import com.zhy.http.okhttp.callback.BitmapCallback;
 import com.zhy.http.okhttp.service.LoadserverdataService;
 
 import org.json.JSONObject;
@@ -79,6 +97,8 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import im.imxianzhi.com.imxianzhi.R;
 
 public class UtilsTool {
     private static final String TAG = UtilsTool.class.getSimpleName();
@@ -172,7 +192,7 @@ public class UtilsTool {
             byte[] bs = enc.getBytes();
             digest.update(bs);
             md5 = byte2hex(digest.digest());
-            Log.i("md5", md5);
+            LogUtils.i("md5", md5);
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
         }
@@ -1368,7 +1388,7 @@ public class UtilsTool {
      * 发送消息到服务端，获取到服务器端返回的字符串
      *
      * @param params 请求参数
-     * @param encode 编码格式
+     * @param
      * @return
      * @throws Exception
      */
@@ -1600,8 +1620,7 @@ public class UtilsTool {
     }
 
 
-
-    public static void startActivity(Context context, Class<?> activity,boolean finish) {
+    public static void startActivity(Context context, Class<?> activity, boolean finish) {
         Intent intent = new Intent(context, activity);
 //        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
         context.startActivity(intent);
@@ -2282,14 +2301,14 @@ public class UtilsTool {
                 public void run() {
                     try {
                         JSONObject json = new JSONObject();
-                        json.put("Level" , 40);
-                        json.put("ShortMessage" ,"Android crash");
-                        json.put("FullMessage" ,toSaveString);
+                        json.put("Level", 40);
+                        json.put("ShortMessage", "Android crash");
+                        json.put("FullMessage", toSaveString);
                         new LoadserverdataService(null).loadPostJsonRequestData(WowuApp.JSON, WowuApp.LoggerWriteURL, json.toString(), 0);
-                        Log.i("发送异常给服务器：：1：", ":::::::" );
+                        LogUtils.i("发送异常给服务器：：1：", ":::::::");
                     } catch (Exception e) {
                         e.printStackTrace();
-                        Log.i("发送异常给服务器 异常：：：",  ":::::::");
+                        LogUtils.i("发送异常给服务器 异常：：：", ":::::::");
                     }
                 }
             }).start();
@@ -2406,13 +2425,13 @@ public class UtilsTool {
         byte[] bytes = bStream.toByteArray();
         string = Base64.encodeToString(bytes, Base64.DEFAULT);
 
-//        Log.i("获取到的图片大小为　２：：：：：",":　"+string);
+//        LogUtils.i("获取到的图片大小为　２：：：：：",":　"+string);
 //        saveStringToSD(string);
 
         return string;
     }
 
-    public static void saveStringToSD   (String toSaveString) {
+    public static void saveStringToSD(String toSaveString) {
 
         try {
             Writer info = new StringWriter();
@@ -2446,14 +2465,15 @@ public class UtilsTool {
 
     }
 
-
+    //    size kb
     public static String compressBitmap(Bitmap bitmap, float size) {
         String string = null;
 
 
-        Log.i("获取到的图片大小为　１：：：：：",":　"+getSizeOfBitmap(bitmap) );
+        LogUtils.i("获取到的图片大小为　１：：：：：", ":　" + getSizeOfBitmap(bitmap));
         if (bitmap == null || getSizeOfBitmap(bitmap) <= size) {
-            return null;//如果图片本身的大小已经小于这个大小了，就没必要进行压缩
+//            return null;//如果图片本身的大小已经小于这个大小了，就没必要进行压缩
+            return bitmaptoString(bitmap);
         }
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);//如果签名是png的话，则不管quality是多少，都不会进行质量的压缩
@@ -2469,7 +2489,7 @@ public class UtilsTool {
         byte[] bytes = baos.toByteArray();
         string = Base64.encodeToString(bytes, Base64.DEFAULT);
 
-        Log.i("获取到的图片大小为　２：：：：：",":　"+string.length());
+        LogUtils.i("获取到的图片大小为　２：：：：：", ":　" + string.length());
 
         return string;
     }
@@ -2499,11 +2519,12 @@ public class UtilsTool {
 
     /**
      * 隐藏键盘
+     *
      * @param mContext
      */
-    public static void hideSoftKeyboard(Activity mContext ) {
+    public static void hideSoftKeyboard(Activity mContext) {
         InputMethodManager inputMethodManager = (InputMethodManager) mContext.getSystemService(Context.INPUT_METHOD_SERVICE);
-        if ( mContext.getWindow().getAttributes().softInputMode != WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN) {
+        if (mContext.getWindow().getAttributes().softInputMode != WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN) {
             if (mContext.getCurrentFocus() != null)
                 inputMethodManager.hideSoftInputFromWindow(mContext.getCurrentFocus().getWindowToken(),
                         InputMethodManager.HIDE_NOT_ALWAYS);
@@ -2514,11 +2535,11 @@ public class UtilsTool {
     public static byte[] bmpToByteArray(final Bitmap bmp,
                                         final boolean needRecycle) {
         ByteArrayOutputStream output = new ByteArrayOutputStream();
-        int WX_THUMB_SIZE = 120;
+        int WX_THUMB_SIZE = 99;
         Bitmap thumbBmp = Bitmap.createScaledBitmap(bmp, WX_THUMB_SIZE, WX_THUMB_SIZE, true);
         bmp.recycle();
 
-        thumbBmp.compress(Bitmap.CompressFormat.PNG, 80, output);
+        thumbBmp.compress(Bitmap.CompressFormat.JPEG, 80, output);
         if (needRecycle) {
             thumbBmp.recycle();
         }
@@ -2530,4 +2551,223 @@ public class UtilsTool {
         }
         return result;
     }
+
+
+    public static void comPressPic(SimpleDraweeView portal_news_img, Uri imageUri, int width, int height) {
+        ImageRequest request = ImageRequestBuilder.newBuilderWithSource(imageUri)
+                .setResizeOptions(new ResizeOptions(width, height))
+                .build();
+
+        DraweeController controller = Fresco.newDraweeControllerBuilder()
+                .setUri(imageUri)
+                .setImageRequest(request)
+                .setTapToRetryEnabled(true)
+
+                .setOldController(portal_news_img.getController())
+                .build();
+
+        portal_news_img.setController(controller);
+    }
+
+
+    /**
+     * @param @param mContext
+     * @return void
+     * @throws
+     * @Title: showExitDialog
+     * @Description: 软件退出对话框
+     */
+    public void showExitDialog(Context mContext) {
+        final AlertDialog d = new AlertDialog.Builder(mContext, R.style.AppCompatAlertDialogStyle)
+                .setTitle("提示")
+//                .setCancelable(true)
+                .setMessage("确定退出程序吗？")
+                .setPositiveButton("确定",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+
+
+                            }
+                        })
+                .setNegativeButton("取消",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        })
+//                .setView(v)
+                .create();
+
+        // change color of positive button
+        d.setOnShowListener(new DialogInterface.OnShowListener() {
+            @Override
+            public void onShow(DialogInterface dialog) {
+                Button b = d.getButton(DialogInterface.BUTTON_POSITIVE);
+//                b.setTextColor(mContext.getResources().getColor(R.color.favorite_del));
+
+//                Button b2 = d.getButton(DialogInterface.BUTTON_NEGATIVE);
+//                b2.setTextColor(getResources().getColor(R.color.teal));
+            }
+        });
+        d.show();
+
+    }
+
+    public void showSetVipDialog(final Activity mContext) {
+//        购买会员畅享无限次的三观配，点击“确定”，前往购买。
+        showSetVipDialogInfo(mContext,null);
+
+    }
+
+
+    public void showSetVipDialogInfo(final Activity mContext,final String info) {
+        View view = mContext.getLayoutInflater().inflate(R.layout.dialog_sanguan_vip, null);
+        final Dialog dialog = new Dialog(mContext, R.style.transparentFrameWindowStyle);
+        dialog.setContentView(view, new ViewGroup.LayoutParams(android.view.ViewGroup.LayoutParams.FILL_PARENT,
+                android.view.ViewGroup.LayoutParams.WRAP_CONTENT));
+        Window window = dialog.getWindow();
+        if(info!=null){
+            TextView shareInfo = (TextView) view.findViewById(R.id.tv_share_info);
+            shareInfo.setText(info);
+        }
+        view.findViewById(R.id.tv_sanguan_vip_cancel).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View arg0) {
+                dialog.dismiss();
+            }
+        });
+        view.findViewById(R.id.tv_sanguan_vip_sure).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View arg0) {
+                dialog.dismiss();
+
+                Intent intent2 = new Intent();
+                intent2.setClass(mContext, UserPayActivity.class);
+                intent2.putExtra("isVip", false);
+                mContext.startActivityForResult(intent2, WowuApp.ALIPAY);
+                mContext.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+            }
+        });
+
+        // 设置显示动画
+        window.setWindowAnimations(R.style.main_menu_animstyle);
+        WindowManager.LayoutParams wl = window.getAttributes();
+        wl.x = 0;
+        wl.y = mContext.getWindowManager().getDefaultDisplay().getHeight();
+        // 以下这两句是为了保证按钮可以水平满屏
+        wl.width = ViewGroup.LayoutParams.MATCH_PARENT;
+        wl.height = ViewGroup.LayoutParams.MATCH_PARENT;//WRAP_CONTENT
+
+        // 设置显示位置
+        dialog.onWindowAttributesChanged(wl);
+        // 设置点击外围解散
+        dialog.setCanceledOnTouchOutside(true);
+        if(!((Activity) mContext).isFinishing()) {
+            dialog.show();
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+    public void wechatShare(final Context mContext, final IWXAPI wxApi, final int flag, final String id, String photoUrl, final String title,final String type) {
+//        photoUrl = "https://xzxj.oss-cn-shanghai.aliyuncs.com/dispositionnickname/b65a9b34-4ca0-418a-83d7-f028ec285f46.jpg";
+        OkHttpUtils
+                .get()//
+                .url(photoUrl)//
+                .build()//
+                .execute(new BitmapCallback() {
+                    @Override
+                    public void onError(Request request, Exception e) {
+                        startShareToWX(wxApi, flag, BitmapFactory.decodeResource(mContext.getResources(), R.drawable.icon), id, title,type);
+                        LogUtils.i(TAG, ":　" +"微信分享失败了");
+                    }
+
+                    @Override
+                    public void onResponse(Bitmap bitmap) {
+                        startShareToWX(wxApi, flag, bitmap, id, title,type);
+                    }
+                });
+
+    }
+/*
+    public Bitmap createBitmapThumbnail(Bitmap bitMap) {
+        int width = bitMap.getWidth();
+        int height = bitMap.getHeight();
+        // 设置想要的大小
+        int newWidth = 99;
+        int newHeight = 99;
+        // 计算缩放比例
+        float scaleWidth = ((float) newWidth) / width;
+        float scaleHeight = ((float) newHeight) / height;
+        // 取得想要缩放的matrix参数
+        Matrix matrix = new Matrix();
+        matrix.postScale(scaleWidth, scaleHeight);
+        // 得到新的图片
+        Bitmap newBitMap = Bitmap.createBitmap(bitMap, 0, 0, width, height,
+                matrix, true);
+        return newBitMap;
+    }*/
+
+    public void startShareToWX(IWXAPI wxApi, int flag, Bitmap thumb, String id, String title,String type) {
+        //       由于上面的接口无法用，暂时用这个代替
+        com.tencent.mm.sdk.modelmsg.WXWebpageObject webpage = new com.tencent.mm.sdk.modelmsg.WXWebpageObject();
+        webpage.webpageUrl = WowuApp.popShareURL + "?type="+type + "&id=" + id;
+//        http://weixin.imxianzhi.com/Share/Dialog?type=2&id=f9800e94-b2b9-434a-b603-b86adb39ea8b
+//                "http://weixin.imxianzhi.com/Share/UserInfo?userId=" + WowuApp.UserId + "&from=timeline&isappinstalled=1";//WowuApp.shareURL;
+        WXMediaMessage msg = new WXMediaMessage(webpage);
+        msg.title = title;//
+        msg.description = title;
+
+//        msg.description = "一起三观配，让我发现你的美，你人美心更美。#先知有三观配，我在先知先觉，先知号：" + WowuApp.XianZhiNumber;
+//          thumb = BitmapFactory.decodeResource(getResources(), R.drawable.icon);
+//        Bitmap thumb =find_share_f_ic7.getDrawingCache();
+
+        msg.thumbData =UtilsTool.bmpToByteArray(thumb, true);
+        SendMessageToWX.Req req = new SendMessageToWX.Req();
+        req.transaction = "transaction" + System.currentTimeMillis(); // transaction字段用于唯一标识一个请求
+        req.message = msg;
+        req.scene = flag;
+        wxApi.sendReq(req);
+    }
+
+
+
+
+
+
+    /**
+     * 获取软件版本号
+     *
+     * @param context
+     * @return
+     */
+    public String getVersionCode(Context context) {
+        String versionCode = "0";
+        try {
+            // 获取软件版本号，对应AndroidManifest.xml下android:versionCode
+            versionCode = context.getPackageManager().getPackageInfo(
+                    context.getPackageName(), 0).versionName;
+        } catch (PackageManager.NameNotFoundException e) {
+//            e.printStackTrace();
+            return versionCode;
+        }
+        return versionCode;
+    }
+
+
+
+
+
 }

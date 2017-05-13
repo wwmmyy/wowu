@@ -22,7 +22,7 @@ import com.wuwo.im.util.MyToast;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 
-import im.wuwo.com.wuwo.R;
+import im.imxianzhi.com.imxianzhi.R;
 
 /**
  * desc

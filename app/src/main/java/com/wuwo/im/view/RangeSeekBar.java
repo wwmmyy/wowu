@@ -6,15 +6,14 @@ import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import com.wuwo.im.util.LogUtils;
+import im.imxianzhi.com.imxianzhi.R;
 
 import java.util.List;
 import java.util.Locale;
 import java.util.Vector;
-
-import im.wuwo.com.wuwo.R;
 
 public class RangeSeekBar extends View {
 
@@ -24,8 +23,8 @@ public class RangeSeekBar extends View {
 	public static final int VERTICAL = 1;
 	
 	private static final int DEFAULT_THUMBS = 3;
-	private static final int DEFAULT_THUMB_WIDTH = 40;
-	private static final int DEFAULT_THUMB_HEIGHT = 40;
+	private static final int DEFAULT_THUMB_WIDTH = 20;
+	private static final int DEFAULT_THUMB_HEIGHT = 20;
 	private static final float DEFAULT_STEP = 0.5f;
 	
 	private RangeSeekBarListener listener;
@@ -69,12 +68,14 @@ public class RangeSeekBar extends View {
 		this.setFocusable(true);
 		this.setFocusableInTouchMode(true);
 		
-//		this.setBackgroundDrawable(getResources().getDrawable(R.drawable.rangeseekbar));
-		this.setBackgroundColor(getResources().getColor(R.color.white));
+		this.setBackgroundDrawable(getResources().getDrawable(R.drawable.rangeseekbar));
+//		this.setBackgroundColor(getResources().getColor(R.color.white));
+//		this.setBackgroundColor(getResources().getColor(R.color.text_unselected));
+
 		thumb = getResources().getDrawable(R.drawable.rangeseekbar_thumb);
         range = getResources().getDrawable(R.drawable.rangeseekbar_rangegradient);
         track = getResources().getDrawable(R.drawable.rangeseekbar_trackgradient);
-		
+//		track = getResources().getDrawable(R.drawable.rangeseekbar_rangegradient);
 		firstRun = true;
 		isSeeking = false;
 	}
@@ -146,7 +147,7 @@ public class RangeSeekBar extends View {
         setMeasuredDimension(viewWidth,viewHeight);
 
 
-		Log.d(TAG,"viewWidth ：：："+viewWidth);
+		//LogUtils.i(TAG,"viewWidth ：：："+viewWidth);
         // 
         thumbHalf = (orientation == VERTICAL) ? (thumbHeight/2) : (thumbWidth/2);
 //    	pixelRangeMin = 0 + thumbHalf;
@@ -194,7 +195,7 @@ public class RangeSeekBar extends View {
     		// Find thumb closest to event coordinate on screen touch
 	    	if(action == MotionEvent.ACTION_DOWN) {
 	    		currentThumb = getClosestThumb(coordinate);
-	    		Log.d(TAG,"Closest "+currentThumb);
+	    		//LogUtils.i(TAG,"Closest "+currentThumb);
 	    		lowLimit = getLowerThumbRangeLimit(currentThumb);
 	    		highLimit = getHigherThumbRangeLimit(currentThumb);
 	    	}
@@ -213,14 +214,14 @@ public class RangeSeekBar extends View {
     	    		highLimit = getHigherThumbRangeLimit(currentThumb);
     			} else
     				setThumbPos(currentThumb,lowLimit);
-				Log.d(TAG,"Setting low "+lowLimit);
+				//LogUtils.i(TAG,"Setting low "+lowLimit);
     		} else if(coordinate > highLimit) {
 				setThumbPos(currentThumb,highLimit);
-				Log.d(TAG,"Setting high "+highLimit);
+				//LogUtils.i(TAG,"Setting high "+highLimit);
 			} else {
 				coordinate = asStep(coordinate);
 				setThumbPos(currentThumb,coordinate);
-				Log.d(TAG,"Setting coordinate "+coordinate);
+				//LogUtils.i(TAG,"Setting coordinate "+coordinate);
 			}
 
     		float thumbValue = getThumbValue(currentThumb);
@@ -282,7 +283,7 @@ public class RangeSeekBar extends View {
 		float pixelRange = (pixelRangeMax - pixelRangeMin);
 		float stepScaleRange = (stepScaleMax - stepScaleMin);
 		float stepScaleValue = (((pixelValue - pixelRangeMin) * stepScaleRange) / pixelRange) + stepScaleMin;
-		Log.d(TAG,"scaleVal: "+stepScaleRange+" smin: "+stepScaleMin+" smax: "+stepScaleMax);
+		//LogUtils.i(TAG,"scaleVal: "+stepScaleRange+" smin: "+stepScaleMin+" smax: "+stepScaleMax);
 		return Math.round(stepScaleValue);
     }
     
@@ -292,7 +293,7 @@ public class RangeSeekBar extends View {
 		float pixelRange = (pixelRangeMax - pixelRangeMin);
 		float stepScaleRange = (stepScaleMax - stepScaleMin);
 		float pixelValue = (((stepScaleValue - stepScaleMin) * pixelRange) / stepScaleRange) + pixelRangeMin;
-		Log.d(TAG,"pixelVal: "+pixelValue+" smin: "+stepScaleMin+" smax: "+stepScaleMax);
+		//LogUtils.i(TAG,"pixelVal: "+pixelValue+" smin: "+stepScaleMin+" smax: "+stepScaleMax);
 		return pixelValue;
     }
     
@@ -319,7 +320,7 @@ public class RangeSeekBar extends View {
 	    			Thumb tht = thumbs.get(i);
 	    			if(tht.pos <= th.pos && tht.pos > limit) {
 	    				limit = tht.pos;
-	    				Log.d(TAG,"New low limit: "+limit+" i:"+i+" index: "+index);
+	    				//LogUtils.i(TAG,"New low limit: "+limit+" i:"+i+" index: "+index);
 	    			}
 				}
 	    	}
@@ -336,7 +337,7 @@ public class RangeSeekBar extends View {
 	    			Thumb tht = thumbs.get(i);
 	    			if(tht.pos >= th.pos && tht.pos < limit) {
 	    				limit = tht.pos;
-	    				Log.d(TAG,"New high limit: "+limit+" i:"+i+" index: "+index);
+	    				//LogUtils.i(TAG,"New high limit: "+limit+" i:"+i+" index: "+index);
 	    			}
 				}
 	    	}
@@ -351,7 +352,7 @@ public class RangeSeekBar extends View {
     		float lastPos = even/2;
     		for(int i = 0; i < thumbs.size(); i++) {
     			setThumbPos(i, asStep(lastPos));
-    			Log.d(TAG,"lp: "+lastPos);
+    			//LogUtils.i(TAG,"lp: "+lastPos);
     			lastPos += even;
     		}
     	}
@@ -387,7 +388,7 @@ public class RangeSeekBar extends View {
 				if(distance <= shortestDistance) {
 					shortestDistance = distance;
 					closest = i;
-					Log.d(TAG,"shDist: "+shortestDistance+" thumb i: "+closest);
+					//LogUtils.i(TAG,"shDist: "+shortestDistance+" thumb i: "+closest);
 				}
 	    	}
 		}
@@ -396,7 +397,7 @@ public class RangeSeekBar extends View {
 	
     private void drawGutter(Canvas canvas) {
     	if(track != null) {
-//    		Log.d(TAG,"gutterbg: "+gutterBackground.toString());
+//    		//LogUtils.i(TAG,"gutterbg: "+gutterBackground.toString());
     		Rect area1 = new Rect();
             area1.left = 0 + getPaddingLeft();
             area1.top = 0 + getPaddingTop();
@@ -405,7 +406,7 @@ public class RangeSeekBar extends View {
     		track.setBounds(area1);
     		track.draw(canvas);
 
-			Log.d(TAG,"gutterbg: "+area1.left +":::"+area1.right);
+			//LogUtils.i(TAG,"gutterbg: "+area1.left +":::"+area1.right);
     	}
     }
     
@@ -430,7 +431,7 @@ public class RangeSeekBar extends View {
 	    	// If we only have 1 thumb - choose to draw from 0 in scale
 	    	if(thumbs.size() == 1)
 	    		thLow = new Thumb();
-	    	Log.d(TAG,"l: "+thLow.pos+" h: "+thHigh.pos);
+	    	//LogUtils.i(TAG,"l: "+thLow.pos+" h: "+thHigh.pos);
 //			此处可以改变现实的初始值xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 //			thLow.pos=100;
 //			thHigh.pos=300;
@@ -467,6 +468,8 @@ public class RangeSeekBar extends View {
 
 	float characterLeft=0.05f;
 	float characterRight=0.901f;
+//	float characterLeft=0.5f;
+//	float characterRight=0.5f;
 	int currentCount=0;
 	private float getCharacterLeft() {
 		return characterLeft;
@@ -491,19 +494,19 @@ public class RangeSeekBar extends View {
     		
     		for(Thumb th : thumbs) {
     			Rect area1 = new Rect();
-    			Log.d(TAG,""+th.pos);
+    			//LogUtils.i(TAG,""+th.pos);
     			if(orientation == VERTICAL) {
     				area1.left = 0 + getPaddingLeft();
     	            area1.top = (int) ((th.pos - thumbHalf) + getPaddingTop());
     	            area1.right = getMeasuredWidth() - getPaddingRight();
     	            area1.bottom = (int) ((th.pos + thumbHalf) - getPaddingBottom());
-    	            Log.d(TAG,"th: "+th.pos);
+    	            //LogUtils.i(TAG,"th: "+th.pos);
 	    		} else {
 	    			area1.left = (int) ((th.pos - thumbHalf) + getPaddingLeft());
     	            area1.top = 0 + getPaddingTop();
     	            area1.right = (int) ((th.pos + thumbHalf) - getPaddingRight());
     	            area1.bottom = getMeasuredHeight() - getPaddingBottom();
-    	            Log.d(TAG,"th: "+area1.toString());
+    	            //LogUtils.i(TAG,"th: "+area1.toString());
 	    		}
 	            
     			if(thumb != null) {
@@ -527,15 +530,15 @@ public class RangeSeekBar extends View {
 
         if (specMode == MeasureSpec.EXACTLY) {
             // We were told how big to be
-        	Log.d(TAG,"measureWidth() EXACTLY");
+        	//LogUtils.i(TAG,"measureWidth() EXACTLY");
             result = specSize;
         } else {
             // Measure
-        	Log.d(TAG,"measureWidth() not EXACTLY");
+        	//LogUtils.i(TAG,"measureWidth() not EXACTLY");
         	result = specSize + getPaddingLeft() + getPaddingRight();
             if (specMode == MeasureSpec.AT_MOST) {
                 // Respect AT_MOST value if that was what is called for by measureSpec
-            	Log.d(TAG,"measureWidth() AT_MOST");
+            	//LogUtils.i(TAG,"measureWidth() AT_MOST");
                 result = Math.min(result, specSize);
                 // Add our thumbWidth to the equation if we're vertical
                 if(orientation == VERTICAL) {
@@ -560,15 +563,15 @@ public class RangeSeekBar extends View {
 
         if (specMode == MeasureSpec.EXACTLY) {
             // We were told how big to be
-        	Log.d(TAG,"measureHeight() EXACTLY");
+        	//LogUtils.i(TAG,"measureHeight() EXACTLY");
             result = specSize;
         } else {
             // Measure
-        	Log.d(TAG,"measureHeight() not EXACTLY");
+        	//LogUtils.i(TAG,"measureHeight() not EXACTLY");
         	result = specSize + getPaddingTop() + getPaddingBottom(); 
             if (specMode == MeasureSpec.AT_MOST) {
                 // Respect AT_MOST value if that was what is called for by measureSpec
-            	Log.d(TAG,"measureHeight() AT_MOST");
+            	//LogUtils.i(TAG,"measureHeight() AT_MOST");
                 result = Math.min(result, specSize);
                 // Add our thumbHeight to the equation if we're horizontal
                 if(orientation == HORIZONTAL) {

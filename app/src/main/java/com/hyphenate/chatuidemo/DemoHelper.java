@@ -36,7 +36,6 @@ import com.hyphenate.chatuidemo.domain.RobotUser;
 import com.hyphenate.chatuidemo.parse.UserProfileManager;
 import com.hyphenate.chatuidemo.receiver.CallReceiver;
 import com.hyphenate.chatuidemo.ui.ChatActivity;
-import com.hyphenate.chatuidemo.ui.MainActivity;
 import com.hyphenate.chatuidemo.ui.VideoCallActivity;
 import com.hyphenate.chatuidemo.ui.VoiceCallActivity;
 import com.hyphenate.chatuidemo.utils.PreferenceManager;
@@ -51,8 +50,10 @@ import com.hyphenate.easeui.model.EaseAtMessageHelper;
 import com.hyphenate.easeui.model.EaseNotifier;
 import com.hyphenate.easeui.model.EaseNotifier.EaseNotificationInfoProvider;
 import com.hyphenate.easeui.utils.EaseCommonUtils;
+import com.hyphenate.easeui.utils.LauncherBadgeHelper;
 import com.hyphenate.exceptions.HyphenateException;
 import com.hyphenate.util.EMLog;
+import com.wuwo.im.activity.MainActivity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -61,7 +62,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import im.wuwo.com.wuwo.R;
+import im.imxianzhi.com.imxianzhi.R;
 
 public class DemoHelper {
     /**
@@ -287,11 +288,13 @@ public class DemoHelper {
             @Override
             public int getSmallIcon(EMMessage message) {
               //you can update icon here
-                return 0;
+                return R.drawable.icon;
             }
             
             @Override
             public String getDisplayedText(EMMessage message) {
+
+                Log.d("通知", "init HuanXin Options");
             	// be used on notification bar, different text according the message type.
                 String ticker = EaseCommonUtils.getMessageDigest(message, appContext);
                 if(message.getType() == Type.TXT){
@@ -320,7 +323,15 @@ public class DemoHelper {
             
             @Override
             public Intent getLaunchIntent(EMMessage message) {
-            	// you can set what activity you want display when user click the notification
+
+                Log.d("通知", "启动的活动：："+EMClient.getInstance().chatManager().getUnreadMsgsCount());
+                try {
+                    LauncherBadgeHelper.setBadgeCount(appContext,EMClient.getInstance().chatManager().getUnreadMsgsCount());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                // you can set what activity you want display when user click the notification
                 Intent intent = new Intent(appContext, ChatActivity.class);
                 // open calling activity if there is call
                 if(isVideoCalling){

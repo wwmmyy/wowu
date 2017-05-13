@@ -2,6 +2,8 @@ package com.wuwo.im.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
@@ -9,11 +11,12 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.wuwo.im.config.WowuApp;
+import com.wuwo.im.util.LogUtils;
 import com.wuwo.im.util.MyToast;
 
 import org.json.JSONObject;
 
-import im.wuwo.com.wuwo.R;
+import im.imxianzhi.com.imxianzhi.R;
 
 /**
 *desc RegisterStepOneActivity
@@ -57,8 +60,6 @@ public class RegisterStepOneActivity extends BaseLoadActivity  {
         findViewById(R.id.user_register_tiaokuan).setOnClickListener(this);
 
 
-
-
         et_register_phone_num.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -78,21 +79,6 @@ public class RegisterStepOneActivity extends BaseLoadActivity  {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
             }
         });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     }
 
 
@@ -185,8 +171,29 @@ public class RegisterStepOneActivity extends BaseLoadActivity  {
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
     }
 
+
+    private final int LoadingError = 1;
+    private Handler mHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case LoadingError:
+                    MyToast.show(mContext,  msg.obj+"");
+                    break;
+            }
+            super.handleMessage(msg);
+        }
+    };
+
+
     @Override
     public void loadDataFailed(String response,int flag) {
-        MyToast.show(mContext,  response.toString()+".");
+//        MyToast.show(mContext,  response.toString()+".");
+//        MyToast.show(mContext,  "服务器处理异常");
+        Message msg = new Message();
+        msg.what = LoadingError;
+        msg.obj=response+";";
+        mHandler.sendMessage(msg);
+        LogUtils.i("RegisterStepOneActivity", "：：" + response);
     }
 }

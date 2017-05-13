@@ -14,7 +14,7 @@
 //
 //import com.wuwo.im.activity.LoginActivity;
 //
-//import im.wuwo.com.wuwo.R;
+//import im.imxianzhi.com.imxianzhi.R;
 //
 ///**
 // *

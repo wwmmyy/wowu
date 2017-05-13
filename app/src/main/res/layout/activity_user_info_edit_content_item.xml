@@ -7,6 +7,17 @@
     android:orientation="vertical">
     <!--android:background="@color/divider_list"-->
 
+    <!--android:scrollbarAlwaysDrawHorizontalTrack="true"
+        android:scrollbarStyle="outsideOverlay"
+        android:scrollbars="horizontal"
+        android:scrollbarSize="10dp"
+      android:scrollbarThumbHorizontal="@drawable/thumb_recycleview"-->
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/pullLoadMoreRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:paddingTop="5dp"
+        />
     <!--
         <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
             android:id="@+id/card_view0"
@@ -16,11 +27,23 @@
             android:layout_marginTop="10dp"
             card_view:cardCornerRadius="0dp"
             card_view:cardElevation="0dp">-->
+    <TextView
+        android:id="@+id/ln_geren_jieshao"
+        android:layout_width="match_parent"
+        android:minHeight="40dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="25dp"
+        android:layout_marginRight="15dp"
+        android:textSize="13sp"
+        android:gravity="center"
+        android:hint="这个人很懒，什么也没留下" />
 
-    <View
+
+<!--    <View
         android:layout_width="fill_parent"
-        android:layout_height="20dp"
-        android:background="@color/app_bg" />
+        android:layout_height="10dp"
+         />-->
+    <!--android:background="@color/app_bg"-->
 
     <LinearLayout
         android:layout_width="fill_parent"
@@ -35,7 +58,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="20dp"
                 android:text="会员资料"
-                android:textColor="@color/black"
+                android:textColor="@color/colorPrimary"
                 android:textSize="16dp" />
         </RelativeLayout>
 
@@ -58,6 +81,7 @@
                 android:id="@+id/tv_xianzhihao"
                 style="@style/user_info_detail_text_style"
                 android:layout_toRightOf="@id/ltv_xianzhihao"
+                android:textIsSelectable="true"
                 android:text="12345678" />
 
         </RelativeLayout>
@@ -125,9 +149,20 @@
                 style="@style/user_info_detail_text_style"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:visibility="gone"
                 android:layout_toRightOf="@id/ltv_xianzhi_huiyuan"
-                android:layout_weight="1"
-                android:text="VIP2" />
+                android:layout_weight="1"  />
+
+            <ImageView
+                android:id="@+id/iv_xianzhi_huiyuan"
+                style="@style/user_info_detail_text_style"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:src="@drawable/vip"   />
+
+
+
 
         </RelativeLayout>
 
@@ -144,10 +179,10 @@
             card_view:cardCornerRadius="0dp"
             card_view:cardElevation="0dp">-->
 
-    <View
+<!--    <View
         android:layout_width="fill_parent"
         android:layout_height="20dp"
-        android:background="@color/app_bg" />
+        android:background="@color/app_bg" />-->
 
     <LinearLayout
         android:layout_width="fill_parent"
@@ -162,7 +197,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="20dp"
                 android:text="基本资料"
-                android:textColor="@color/black"
+                android:textColor="@color/colorPrimary"
                 android:textSize="16dp" />
         </RelativeLayout>
 
@@ -201,6 +236,40 @@
                        android:background="@color/gray" />  -->
 
         <RelativeLayout
+            android:id="@+id/rt_beizhu"
+            style="@style/setting_text_style_title">
+
+            <!--                <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerVertical="true"
+                                android:layout_marginLeft="3dp"
+                                android:src="@drawable/ic_mima" />-->
+
+            <TextView
+                android:id="@+id/tv_beizhu0"
+                style="@style/setting_text_style"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="3dp"
+                android:text="备注:"
+                android:textColor="@android:color/darker_gray" />
+
+
+            <TextView
+                android:id="@+id/tv_beizhu"
+                style="@style/user_info_detail_text_style"
+                android:layout_alignTop="@+id/tv_beizhu0"
+                android:layout_toRightOf="@+id/tv_beizhu0"
+                android:hint="添加备注" />
+
+        </RelativeLayout>
+
+
+
+
+        <RelativeLayout
             android:id="@+id/rt_yingwen_nicheng"
             style="@style/setting_text_style_title">
 
@@ -226,8 +295,8 @@
                 android:id="@+id/ln_yingwen_nicheng"
                 style="@style/user_info_detail_text_style"
                 android:layout_alignTop="@+id/tv_yingwen_nicheng"
-                android:layout_toEndOf="@+id/tv_yingwen_nicheng"
-                android:text="暂无" />
+                android:layout_toRightOf="@+id/tv_yingwen_nicheng"
+                android:hint="暂未填写" />
 
         </RelativeLayout>
 
@@ -257,7 +326,7 @@
                 android:id="@+id/ln_birthday"
                 style="@style/user_info_detail_text_style"
                 android:layout_toRightOf="@id/tv_birthday"
-                android:text="暂无" />
+                android:hint="暂未填写" />
         </RelativeLayout>
 
 
@@ -286,7 +355,7 @@
                 android:id="@+id/ln_feeling"
                 style="@style/user_info_detail_text_style"
                 android:layout_toRightOf="@id/tv_feeling"
-                android:text="暂无" />
+                android:hint="暂未填写" />
         </RelativeLayout>
 
 
@@ -316,20 +385,21 @@
                 android:id="@+id/ln_jiaxiang"
                 style="@style/user_info_detail_text_style"
                 android:layout_toRightOf="@id/tv_jiaxiang"
-                android:text="暂无" />
+                android:hint="暂未填写" />
         </RelativeLayout>
 
-
+<!--
         <RelativeLayout
-            style="@style/setting_text_style_title"
+            android:background="@drawable/card_light"
+            android:layout_height="wrap_content"
             android:layout_width="fill_parent">
 
-            <!--                <ImageView
+            &lt;!&ndash;                <ImageView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_centerVertical="true"
                                 android:layout_marginLeft="3dp"
-                                android:src="@drawable/ic_mima" />-->
+                                android:src="@drawable/ic_mima" />&ndash;&gt;
 
             <TextView
                 android:id="@+id/tv_geren_jieshao"
@@ -345,8 +415,8 @@
                 android:id="@+id/ln_geren_jieshao"
                 style="@style/user_info_detail_text_style"
                 android:layout_toRightOf="@id/tv_geren_jieshao"
-                android:text="暂无" />
-        </RelativeLayout>
+                android:hint="暂未填写" />
+        </RelativeLayout>-->
 
 
 <!--        <RelativeLayout
@@ -368,7 +438,7 @@
                 android:id="@+id/ln_shenfenbiaoqian"
                 style="@style/user_info_detail_text_style"
                 android:layout_toRightOf="@id/tv_shenfenbiaoqian"
-                android:text="暂无" />
+                android:hint="暂未填写" />
         </RelativeLayout>-->
 
 
@@ -397,7 +467,7 @@
                 android:id="@+id/ln_zhiye"
                 style="@style/user_info_detail_text_style"
                 android:layout_toRightOf="@id/tv_zhiye"
-                android:text="暂无" />
+                android:hint="暂未填写" />
         </RelativeLayout>
 
 
@@ -425,7 +495,7 @@
                 android:id="@+id/ln_school"
                 style="@style/user_info_detail_text_style"
                 android:layout_toRightOf="@id/tv_school"
-                android:text="暂无" />
+                android:hint="暂未填写" />
         </RelativeLayout>
 
     </LinearLayout>
@@ -440,10 +510,10 @@
             card_view:cardBackgroundColor="@android:color/white"
             card_view:cardCornerRadius="0dp"
             card_view:cardElevation="0dp">-->
-    <View
+<!--    <View
         android:layout_width="fill_parent"
         android:layout_height="20dp"
-        android:background="@color/app_bg" />
+        android:background="@color/app_bg" />-->
 
     <LinearLayout
         android:layout_width="fill_parent"
@@ -459,7 +529,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="20dp"
                 android:text="其他资料"
-                android:textColor="@color/black"
+                android:textColor="@color/colorPrimary"
                 android:textSize="16dp" />
         </RelativeLayout>
 
@@ -489,7 +559,7 @@
                 android:id="@+id/tv_shenghuodidian"
                 style="@style/user_info_detail_text_style"
                 android:layout_toRightOf="@id/tv_shenghuodidian0"
-                android:text="暂无" />
+                android:hint="暂未填写" />
         </RelativeLayout>
 
         <!--             <View
@@ -522,7 +592,7 @@
                 android:id="@+id/tv_gongzuodidian"
                 style="@style/user_info_detail_text_style"
                 android:layout_toRightOf="@id/tv_gongzuodidian0"
-                android:text="暂无" />
+                android:hint="暂未填写" />
         </RelativeLayout>
 
 
@@ -551,7 +621,7 @@
                 android:id="@+id/ln_changchumodi"
                 style="@style/user_info_detail_text_style"
                 android:layout_toRightOf="@id/tv_changchumodi0"
-                android:text="暂无" />
+                android:hint="暂未填写" />
 
         </RelativeLayout>
 
@@ -573,7 +643,7 @@
                 android:id="@+id/tv_quguo_jingdian"
                 style="@style/user_info_detail_text_style"
                 android:layout_toRightOf="@id/tv_quguo_jingdian0"
-                android:text="暂无" />
+                android:hint="暂未填写" />
         </RelativeLayout>-->
 
     </LinearLayout>

@@ -6,7 +6,7 @@ import com.hyphenate.easeui.domain.EaseEmojiconGroupEntity;
 
 import java.util.Arrays;
 
-import im.wuwo.com.wuwo.R;
+import im.imxianzhi.com.imxianzhi.R;
 
 public class EmojiconExampleGroupData {
     

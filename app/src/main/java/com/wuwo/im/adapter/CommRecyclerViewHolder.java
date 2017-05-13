@@ -14,7 +14,7 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 *desc 
 *@author 王明远
 *@日期： 2016/2/3 17:07
-*@版权:Copyright 上海数慧系统有限公司  All rights reserved.
+*@版权:Copyright    All rights reserved.
 */
 
 public class CommRecyclerViewHolder extends RecyclerView.ViewHolder {

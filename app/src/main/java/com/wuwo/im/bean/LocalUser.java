@@ -65,6 +65,7 @@ public class LocalUser {
         private String UserId;
         private String Name;
         private String Disposition;
+        private String RemarkName;
         private String Description;
         private int Age;
         private int Gender;
@@ -73,6 +74,23 @@ public class LocalUser {
         private String PhotoUrl;
         private String EasemobId;
         private boolean IsVip;
+        private int VipType;
+
+        public int getVipType() {
+            return VipType;
+        }
+
+        public void setVipType(int vipType) {
+            VipType = vipType;
+        }
+
+        public String getRemarkName() {
+            return RemarkName;
+        }
+
+        public void setRemarkName(String remarkName) {
+            RemarkName = remarkName;
+        }
 
         public String getUserId() {
             return UserId;

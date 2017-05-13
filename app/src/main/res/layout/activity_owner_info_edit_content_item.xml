@@ -17,10 +17,41 @@
         card_view:cardCornerRadius="10dp"
         card_view:cardElevation="0dp">-->
 
-    <View
+
+<!--    <style name="owner_info_detail_text_style">
+    <item name="android:textSize">15.0sp</item>
+    <item name="android:textColor">@color/colorPrimary</item>
+    <item name="android:paddingLeft">20dip</item>
+    <item name="android:paddingTop">12dip</item>
+    <item name="android:paddingBottom">12dip</item>
+    <item name="android:layout_centerVertical">true</item>
+    <item name="android:drawableRight">@drawable/morex</item>
+    <item name="android:layout_width">0dip</item>
+    <item name="android:layout_height">wrap_content</item>
+    <item name="android:layout_weight">1</item>
+    <item name="android:layout_marginRight">12dp</item>
+    <item name="android:layout_marginLeft">6dp</item>
+    <item name="android:gravity">center_vertical|right</item>
+    <item name="android:drawablePadding">8dp</item>-->
+
+            <TextView
+                android:id="@+id/ln_geren_jieshao"
+                android:layout_width="match_parent"
+                android:minHeight="40dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="25dp"
+                android:layout_marginRight="15dp"
+                android:textSize="13sp"
+                android:gravity="center"
+                android:textColorHint="@color/black"
+                android:text="输入个人介绍" />
+
+
+<!--    <View
         android:layout_width="fill_parent"
-        android:layout_height="20dp"
-        android:background="@color/app_bg" />
+        android:layout_height="10dp"
+         />-->
+    <!--android:background="@color/app_bg"-->
 
     <LinearLayout
         android:layout_width="fill_parent"
@@ -35,7 +66,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="20dp"
                 android:text="会员资料"
-                android:textColor="@color/black"
+                android:textColor="@color/colorPrimary"
                 android:textSize="16dp" />
             <TextView
                 android:id="@+id/tv_huiyuan_info"
@@ -86,19 +117,28 @@
             <TextView
                 android:id="@+id/tv_xianzhi_huiyuan"
                 style="@style/user_info_detail_text_style"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_toRightOf="@id/ltv_xianzhi_huiyuan"
+                android:visibility="gone"
+                android:src="@drawable/no_vip"
                 android:layout_weight="1"  />
 
+            <ImageView
+                android:id="@+id/iv_xianzhi_huiyuan"
+                style="@style/user_info_detail_text_style"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:src="@drawable/vip"   />
         </RelativeLayout>
 
     </LinearLayout>
 
-    <View
+<!--    <View
         android:layout_width="fill_parent"
         android:layout_height="25dp"
-        android:background="@color/app_bg" />
+        android:background="@color/app_bg" />-->
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
@@ -115,7 +155,7 @@
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="20dp"
                     android:text="基本资料"
-                    android:textColor="@color/black"
+                    android:textColor="@color/colorPrimary"
                     android:textSize="16dp" />
 
                 <TextView
@@ -162,7 +202,7 @@
                         android:id="@+id/tv_zhongwen_nicheng1"
                         style="@style/owner_info_detail_text_style"
                         android:layout_toRightOf="@id/tv_zhongwen_nicheng"
-                        android:text="昵称" />
+                        android:hint="暂未填写" />
                 </LinearLayout>
 
             </RelativeLayout>
@@ -172,34 +212,43 @@
                            android:layout_height="0.1dp"
                            android:background="@color/gray" />  -->
 
-<!--            <RelativeLayout
-                android:id="@+id/rt_yingwen_nicheng"
-                style="@style/setting_text_style_title"
-                android:visibility="gone">
+            <RelativeLayout
+                android:id="@+id/rt_xingbie"
+                style="@style/setting_text_style_title" >
                 <TextView
-                    android:id="@+id/tv_yingwen_nicheng"
+                    android:id="@+id/tv_xingbie"
                     style="@style/setting_text_style"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="3dp"
-                    android:text="英文昵称:"
+                    android:text="性别:"
                     android:textColor="@android:color/darker_gray" />
 
 
                 <LinearLayout
+                    android:id="@+id/ln_xingbie_click"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_toRightOf="@id/tv_yingwen_nicheng"
+                    android:layout_toRightOf="@id/tv_xingbie"
+                    android:gravity="center_vertical|right"
                     android:orientation="horizontal">
+                    <ImageView
+                        android:id="@+id/iv_xingbie_info"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/man"/>
+                    <ImageView
+                        android:layout_marginRight="12dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/morex"/>
 
-                    <TextView
-                        android:id="@+id/ln_yingwen_nicheng"
-                        style="@style/owner_info_detail_text_style"
-                        android:text=" " />
+
                 </LinearLayout>
-            </RelativeLayout>-->
+            </RelativeLayout>
 
 
             <RelativeLayout
@@ -225,7 +274,7 @@
                     <TextView
                         android:id="@+id/ln_birthday"
                         style="@style/owner_info_detail_text_style"
-                        android:text="暂无" />
+                       android:hint="暂未填写" />
                 </LinearLayout>
             </RelativeLayout>
 
@@ -253,7 +302,7 @@
                     <TextView
                         android:id="@+id/ln_feeling"
                         style="@style/owner_info_detail_text_style"
-                        android:text="未婚" />
+                        android:hint="暂未填写" />
                 </LinearLayout>
             </RelativeLayout>
 
@@ -283,13 +332,13 @@
                     <TextView
                         android:id="@+id/ln_jiaxiang"
                         style="@style/owner_info_detail_text_style"
-                        android:text="暂无" />
+                       android:hint="暂未填写" />
                 </LinearLayout>
 
             </RelativeLayout>
 
 
-            <RelativeLayout
+        <!--    <RelativeLayout
                 style="@style/setting_text_style_title">
                 <TextView
                     android:id="@+id/tv_geren_jieshao"
@@ -316,7 +365,7 @@
                         android:text="这人很懒，什么都没写" />
                 </LinearLayout>
 
-            </RelativeLayout>
+            </RelativeLayout>-->
 
             <!--             <View
                            android:layout_width="fill_parent"
@@ -346,7 +395,7 @@
                     <TextView
                         android:id="@+id/ln_shenfenbiaoqian"
                         style="@style/owner_info_detail_text_style"
-                        android:text="暂无" />
+                       android:hint="暂未填写" />
                 </LinearLayout>
             </RelativeLayout>-->
 
@@ -401,7 +450,7 @@
                     <TextView
                         android:id="@+id/ln_school"
                         style="@style/owner_info_detail_text_style"
-                        android:text="" />
+                        android:hint="请输入你读过的大学"/>
                 </LinearLayout>
             </RelativeLayout>
 
@@ -420,10 +469,10 @@
         card_view:cardCornerRadius="10dp"
         card_view:cardElevation="0dp">-->
 
-    <View
+<!--    <View
         android:layout_width="fill_parent"
         android:layout_height="35dp"
-        android:background="@color/app_bg" />
+        android:background="@color/app_bg" />-->
 
 
         <LinearLayout
@@ -442,7 +491,7 @@
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="20dp"
                     android:text="其他资料"
-                    android:textColor="@color/black"
+                    android:textColor="@color/colorPrimary"
                     android:textSize="16dp" />
 
 
@@ -488,7 +537,7 @@
                     <TextView
                         android:id="@+id/tv_shenghuodidian"
                         style="@style/owner_info_detail_text_style"
-                        android:text="暂无" />
+                        android:text="暂未填写" />
                 </LinearLayout>
 
             </RelativeLayout>
@@ -524,7 +573,7 @@
                     <TextView
                         android:id="@+id/ln_gongzuodidian"
                         style="@style/owner_info_detail_text_style"
-                        android:text="暂无" />
+                       android:hint="暂未填写" />
                 </LinearLayout>
             </RelativeLayout>
 
@@ -553,7 +602,7 @@
                     <TextView
                         android:id="@+id/ln_changchumodi"
                         style="@style/owner_info_detail_text_style"
-                        android:text="暂无" />
+                       android:hint="暂未填写" />
                 </LinearLayout>
             </RelativeLayout>
 

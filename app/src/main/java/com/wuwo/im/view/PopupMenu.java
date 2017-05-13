@@ -9,7 +9,7 @@ import android.view.View.OnClickListener;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.PopupWindow;
 
-import im.wuwo.com.wuwo.R;
+import im.imxianzhi.com.imxianzhi.R;
 
 
 public class PopupMenu extends PopupWindow implements OnClickListener {

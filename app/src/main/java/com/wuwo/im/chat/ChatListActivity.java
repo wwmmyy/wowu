@@ -11,7 +11,7 @@
 //
 //import com.wuwo.im.activity.BaseActivity;
 //
-//import im.wuwo.com.wuwo.R;
+//import im.imxianzhi.com.imxianzhi.R;
 ///**
 //*desc 聊天的对象列表
 //*@author 王明远

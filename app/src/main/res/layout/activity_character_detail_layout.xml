@@ -1,0 +1,492 @@
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/root_layout"
+    android:fitsSystemWindows="true"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/app_bar_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <!--app:contentScrim="#46a8ba"-->
+        <android.support.design.widget.CollapsingToolbarLayout
+            android:id="@+id/collapsing_toolbar_layout"
+            android:layout_width="match_parent"
+            android:layout_height="165dp"
+            app:collapsedTitleTextAppearance="@style/ToolBarTitleText"
+            app:expandedTitleMarginEnd="48dp"
+            app:expandedTitleMarginStart="48dp"
+            app:expandedTitleTextAppearance="@style/TransparentText"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed">
+
+            <RelativeLayout
+                android:id="@+id/head_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/white"
+                app:layout_collapseMode="pin"
+                app:layout_collapseParallaxMultiplier="0.7">
+
+                <com.facebook.drawee.view.SimpleDraweeView
+                    android:id="@+id/news_label_pic"
+                    android:layout_width="match_parent"
+                    android:layout_height="120dp"
+                    app:placeholderImage="@drawable/placeholder_1"
+                    app:placeholderImageScaleType="center"
+                    app:progressBarImageScaleType="centerInside" />
+
+
+                <com.facebook.drawee.view.SimpleDraweeView
+                    android:id="@+id/news_head_pic"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_marginLeft="40dp"
+                    android:layout_marginTop="90dp"
+                    app:placeholderImage="@drawable/placeholder"
+                    app:placeholderImageScaleType="center"
+                    app:progressBarImageScaleType="centerInside"
+                    app:roundedCornerRadius="6dp" />
+
+
+                <!--                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentRight="true"
+                                    android:layout_alignParentTop="true"
+                                    android:background="@drawable/setting_bg"
+                                    android:paddingBottom="3dp"
+                                    android:paddingLeft="6dp"
+                                    android:paddingRight="6dp"
+                                    android:paddingTop="3dp"
+                                    android:text="设置"
+                                    android:textColor="#ffffff"
+                                    android:textSize="12sp" />-->
+
+                <LinearLayout
+                    android:id="@+id/ln_character_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/news_label_pic"
+                    android:layout_marginLeft="6dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_toRightOf="@id/news_head_pic"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tv_character_type"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="我的性格同类是："
+                        android:textColor="@color/gray" />
+
+                    <TextView
+                        android:id="@+id/tv_character_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="扎克.伯格" />
+                </LinearLayout>
+
+
+                <TextView
+                    android:id="@+id/tv_character_real_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/news_head_pic"
+                    android:layout_marginLeft="40dp"
+                    android:text="我是先哥" />
+
+            </RelativeLayout>
+            <!--
+               <LinearLayout
+                   android:id="@+id/head_layout"
+                   android:layout_width="match_parent"
+                   android:layout_height="match_parent"
+                   android:orientation="vertical"
+                   app:layout_collapseMode="pin"
+                   app:layout_collapseParallaxMultiplier="0.7">
+
+
+                                   <RelativeLayout
+                                       android:layout_width="match_parent"
+                                       android:layout_height="wrap_content"
+                                       android:layout_marginTop="50dp"
+                                       android:padding="20dp">
+
+                                       <LinearLayout
+                                           android:layout_width="wrap_content"
+                                           android:layout_height="wrap_content"
+                                           android:layout_alignParentLeft="true"
+                                           android:layout_centerVertical="true"
+                                           android:orientation="vertical">
+
+                                           <TextView
+                                               android:layout_width="wrap_content"
+                                               android:layout_height="wrap_content"
+                                               android:text="涩郎"
+                                               android:textColor="#ffffff"
+                                               android:textSize="16sp"
+                                               android:textStyle="bold"/>
+
+                                           <TextView
+                                               android:layout_width="wrap_content"
+                                               android:layout_height="wrap_content"
+                                               android:layout_marginTop="3dp"
+                                               android:text="Android开发工程师 @ 非著名程序员"
+                                               android:textColor="#ffffff"
+                                               android:textSize="13sp"
+                                               android:textStyle="bold"/>
+                                       </LinearLayout>
+
+                                       <ImageView
+                                           android:id="@+id/head_iv"
+                                           android:layout_width="50dp"
+                                           android:layout_height="50dp"
+                                           android:layout_alignParentRight="true"
+                                           android:layout_centerVertical="true"
+                                           android:scaleType="centerCrop"/>
+                                   </RelativeLayout>
+
+                                  <TextView
+                                       android:layout_width="match_parent"
+                                       android:layout_height="wrap_content"
+                                       android:layout_marginLeft="20dp"
+                                       android:layout_marginRight="40dp"
+                                       android:ellipsize="end"
+                                       android:maxLines="2"
+                                       android:text="关注我（微博@涩郎，微信公众号：非著名程序员），我与你闲扯技术大话，笑谈科技人生。以幽默诙谐的态度，面对乏味无聊的技术，用扯淡的方式，分享技术的内涵。谈的是技术，更是我们的人生。"
+                                       android:textColor="#ffffff"
+                                       android:textSize="12sp"/>-->
+
+
+            <!-- <RelativeLayout
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 android:layout_marginTop="10dp"
+                 android:padding="20dp">
+
+                 <LinearLayout
+                     android:id="@+id/one"
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                     android:layout_alignParentLeft="true"
+                     android:layout_centerVertical="true"
+                     android:orientation="vertical">
+
+                     <TextView
+                         android:layout_width="wrap_content"
+                         android:layout_height="wrap_content"
+                         android:text="分享"
+                         android:textColor="#ffffff"
+                         android:textSize="12sp"
+                         android:textStyle="bold"/>
+
+                     <TextView
+                         android:layout_width="wrap_content"
+                         android:layout_height="wrap_content"
+                         android:text="50篇"
+                         android:textColor="#ffffff"
+                         android:textSize="12sp"
+                         android:textStyle="bold"/>
+                 </LinearLayout>
+
+                 <LinearLayout
+                     android:id="@+id/two"
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                     android:layout_centerVertical="true"
+                     android:layout_marginLeft="10dp"
+                     android:layout_toRightOf="@id/one"
+                     android:orientation="vertical">
+
+                     <TextView
+                         android:layout_width="wrap_content"
+                         android:layout_height="wrap_content"
+                         android:text="获得收藏"
+                         android:textColor="#ffffff"
+                         android:textSize="12sp"
+                         android:textStyle="bold"/>
+
+                     <TextView
+                         android:layout_width="wrap_content"
+                         android:layout_height="wrap_content"
+                         android:text="3000次"
+                         android:textColor="#ffffff"
+                         android:textSize="12sp"
+                         android:textStyle="bold"/>
+                 </LinearLayout>
+
+                 <LinearLayout
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                     android:layout_centerVertical="true"
+                     android:layout_marginLeft="10dp"
+                     android:layout_toRightOf="@id/two"
+                     android:orientation="vertical">
+
+                     <TextView
+                         android:layout_width="wrap_content"
+                         android:layout_height="wrap_content"
+                         android:text="被阅读"
+                         android:textColor="#ffffff"
+                         android:textSize="12sp"
+                         android:textStyle="bold"/>
+
+                     <TextView
+                         android:layout_width="wrap_content"
+                         android:layout_height="wrap_content"
+                         android:text="60000次"
+                         android:textColor="#ffffff"
+                         android:textSize="12sp"
+                         android:textStyle="bold"/>
+                 </LinearLayout>
+
+                 <TextView
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                     android:layout_alignParentRight="true"
+                     android:layout_centerVertical="true"
+                     android:background="@drawable/setting_bg"
+                     android:paddingBottom="3dp"
+                     android:paddingLeft="6dp"
+                     android:paddingRight="6dp"
+                     android:paddingTop="3dp"
+                     android:text="设置"
+                     android:textColor="#ffffff"
+                     android:textSize="12sp"/>
+             </RelativeLayout>
+
+
+         </LinearLayout>
+-->
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                app:layout_collapseMode="pin"
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+                app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+        </android.support.design.widget.CollapsingToolbarLayout>
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:gravity="center"
+    android:orientation="horizontal"
+    android:background="@color/white"
+    android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/tv_user_info"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/mark"
+            android:drawablePadding="5dp"
+            android:text="INTJ策划者"
+            android:paddingBottom="8dp"
+            android:paddingTop="8dp"
+            android:textSize="15sp" />
+</LinearLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.1dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:background="@color/divider_color" />
+       <!-- <android.support.design.widget.TabLayout
+            android:id="@+id/toolbar_tab"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_gravity="bottom"
+            android:background="@color/white"
+            android:fillViewport="false"
+            android:textSize="16sp"
+            app:layout_scrollFlags="scroll"
+            app:tabIndicatorColor="@android:color/transparent"
+            app:tabIndicatorHeight="2.0dp"
+            app:tabSelectedTextColor="@color/best_luck_yellow"
+            app:tabTextAppearance="@style/MyTabLayoutTextAppearance"
+            app:tabTextColor="#ced0d3">
+
+
+            <android.support.design.widget.TabItem
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="类型描述" />
+
+            <android.support.design.widget.TabItem
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="性格强度" />
+
+            <android.support.design.widget.TabItem
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="性格谱" />
+        </android.support.design.widget.TabLayout>-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:background="@color/white"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tv_character_typeintro"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:paddingLeft="25dp"
+                android:paddingRight="25dp"
+                android:text="类型描述"
+                android:textColor="@color/text_dark_grey"
+                android:textSize="15sp" />
+
+            <View
+                android:layout_width="0.1dp"
+                android:layout_height="25dp"
+                android:background="@color/divider_color" />
+
+
+            <TextView
+                android:id="@+id/tv_character_qiangdu"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:paddingLeft="25dp"
+                android:paddingRight="25dp"
+                android:text="性格强度"
+                android:textColor="@color/best_luck_yellow"
+                android:textSize="15sp" />
+
+            <View
+                android:layout_width="0.1dp"
+                android:layout_height="25dp"
+                android:background="@color/divider_color" />
+
+
+            <TextView
+                android:id="@+id/tv_character_xinggepu"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:paddingLeft="25dp"
+                android:paddingRight="25dp"
+                android:text="性格谱"
+                android:textColor="@color/text_dark_grey"
+                android:textSize="15sp" />
+
+        </LinearLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.1dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:background="@color/divider_color" />
+
+    </android.support.design.widget.AppBarLayout>
+
+
+
+
+
+
+    <android.support.v4.widget.NestedScrollView
+        android:id="@+id/nsv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        android:scrollbars="none"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/main_vp_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+    </android.support.v4.widget.NestedScrollView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:layout_gravity="bottom"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:paddingBottom="10dp"
+        android:paddingTop="10dp"
+        app:layout_anchorGravity="top">
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tv_mycharacter_more_xinggp"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:drawableLeft="@drawable/mark"
+                android:drawablePadding="5dp"
+                android:gravity="center"
+                android:text="性格谱"
+                android:textColor="@android:color/darker_gray"
+                android:textSize="15sp" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="0.2dp"
+            android:layout_height="24dp"
+            android:background="@color/divider_color" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tv_mycharacter_moreronggr"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:drawableLeft="@drawable/mark"
+                android:drawablePadding="5dp"
+                android:gravity="center"
+                android:text="MBTI"
+                android:textColor="@android:color/darker_gray"
+                android:textSize="15sp" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="0.2dp"
+            android:layout_height="24dp"
+            android:background="@color/divider_color" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tv_mycharacter_ronggr"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:drawableLeft="@drawable/mark"
+                android:drawablePadding="5dp"
+                android:gravity="center"
+                android:text="荣格"
+                android:textColor="@android:color/darker_gray"
+                android:textSize="15sp" />
+        </LinearLayout>
+
+    </LinearLayout>
+</android.support.design.widget.CoordinatorLayout>

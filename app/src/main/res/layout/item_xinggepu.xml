@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:id="@+id/character_label_pic0"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            app:placeholderImage="@drawable/placeholder_1"
+            app:placeholderImageScaleType="fitXY"
+            app:progressBarImageScaleType="centerInside"
+            app:roundBottomLeft="false"
+            app:roundBottomRight="false"
+            app:roundTopLeft="true"
+            app:roundTopRight="true" />
+
+
+        <TextView
+            android:id="@+id/tv_character_pop_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:textColor="@color/black1"
+            android:paddingTop="10dp"
+            android:text="TE 外倾思维"
+            android:textSize="20sp" />
+
+
+        <TextView
+            android:id="@+id/tv_character_part0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:padding="5dp"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:scrollbars="vertical"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:lineSpacingMultiplier="1.2"
+            android:text="1外向型思维尽可能多的采用思维来处理外部世界外向型思维尽可能多的采用思维来处理外部世界外向型思维尽可能多的采用思维来处理外部世界外向型思维尽可能多的采用思维来处理外部世界"
+            android:textSize="14sp" />
+    </LinearLayout>
+</ScrollView>

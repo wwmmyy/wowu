@@ -4,6 +4,8 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="login_horizontal_margin">40dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
-
+    <dimen name="size_100">100dip</dimen>
+    <dimen name="padding_10">10.0dip</dimen>
     <dimen name="text_margin_10dp">10dp</dimen>
+    <dimen name="item_height">80dp</dimen>
 </resources>

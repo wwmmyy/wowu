@@ -1,69 +1,79 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg_top_title"
+    android:background="@drawable/whole_bg"
+    android:orientation="vertical"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
+    android:gravity="center"
     tools:context="com.wuwo.im.activity.LoginChooseActivity">
 
-    <!--android:background="@drawable/login_bg"-->
+    <!--android:background="@drawable/bg_top_title"  android:background="@drawable/login_bg"-->
+    <!--
+     <ImageView
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:layout_centerHorizontal="true"
+         android:layout_marginTop="30dp"
+         android:src="@drawable/logo_w" />
+     android:text="一阳指三观配\n人美，心更美"
+     android:textColor="@color/white"
+         android:lineSpacingExtra="10dp"
+         android:textSize="22sp"
+        android:layout_centerInParent="true"
+         android:paddingTop="40dp"
+         -->
 
- <ImageView
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_centerHorizontal="true"
-    android:src="@drawable/logo_w"
-     android:layout_marginTop="30dp"/>
-
+    <!--android:layout_width="234dp"-->
+    <!--android:layout_height="224dp"-->
     <TextView
         android:id="@+id/tv_welcome_choose"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingBottom="80dp"
-        android:paddingTop="40dp"
+        android:layout_width="200dp"
+        android:layout_height="192dp"
+        android:background="@drawable/lg_title_logo"
         android:layout_centerInParent="true"
-        android:text="一阳指三观配\n人美，心更美"
-        android:lineSpacingExtra="10dp"
-        android:textSize="22sp"
-        android:textColor="@color/white"/>
-
+        android:layout_marginTop="60dp"
+         />
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
 
     <TextView
         android:id="@+id/tv_welcome_register"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_welcome_choose"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/bt_border_choose_register_selector2"
         android:paddingBottom="10dp"
         android:paddingLeft="60dp"
         android:paddingRight="60dp"
         android:paddingTop="10dp"
         android:text="注册"
-        android:layout_below="@+id/tv_welcome_choose"
-        android:layout_centerHorizontal="true"
-        android:textColor="?attr/appbg"
-        android:background="@drawable/bt_border_choose_register_selector2"
-        android:textSize="20sp"
-        />
+        android:textSize="20sp" />
+    <!--android:textColor="?attr/appbg"-->
 
     <TextView
         android:id="@+id/tv_welcome_sure"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="登录"
-        android:paddingTop="10dp"
+        android:layout_below="@+id/tv_welcome_register"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="30dp"
+        android:background="@drawable/bt_border_choose_login_selector2"
         android:paddingBottom="10dp"
         android:paddingLeft="60dp"
         android:paddingRight="60dp"
-        android:layout_marginTop="30dp"
-        android:layout_below="@+id/tv_welcome_register"
-        android:layout_centerHorizontal="true"
+        android:paddingTop="10dp"
+        android:layout_marginBottom="50dp"
+        android:text="登录"
         android:textColor="@color/white"
-        android:background="@drawable/bt_border_choose_login_selector2"
-        android:textSize="20sp"
-        />
+        android:textSize="20sp" />
 
     <!--bt_border_charactertest_selector-->
     <!--android:textColor="@drawable/bt_textcolor_register_selector"  android:textColor="?attr/appbg"-->
 
-</RelativeLayout>
+</LinearLayout>

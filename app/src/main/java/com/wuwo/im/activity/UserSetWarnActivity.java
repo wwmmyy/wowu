@@ -1,6 +1,7 @@
 package com.wuwo.im.activity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -13,11 +14,15 @@ import com.hyphenate.chatuidemo.DemoHelper;
 import com.hyphenate.chatuidemo.DemoModel;
 import com.hyphenate.chatuidemo.ui.BlacklistActivity;
 import com.hyphenate.chatuidemo.ui.DiagnoseActivity;
-import com.hyphenate.chatuidemo.ui.OfflinePushNickActivity;
 import com.hyphenate.chatuidemo.ui.UserProfileActivity;
 import com.hyphenate.easeui.widget.EaseSwitchButton;
+import com.wuwo.im.config.WowuApp;
+import com.wuwo.im.util.DateTimePickerDialog;
+import com.wuwo.im.view.MaterialDialog;
 
-import im.wuwo.com.wuwo.R;
+import java.text.SimpleDateFormat;
+
+import im.imxianzhi.com.imxianzhi.R;
 
 public class UserSetWarnActivity extends BaseLoadActivity {
     TextView tv_set_pwd, top_title;
@@ -44,7 +49,7 @@ public class UserSetWarnActivity extends BaseLoadActivity {
     /**
      * line between sound and vibration
      */
-    private TextView textview1, textview2;
+    private TextView textview1, textview2,tv_locktime;
 
 //    private LinearLayout blacklistContainer;
 
@@ -80,21 +85,13 @@ public class UserSetWarnActivity extends BaseLoadActivity {
 //    private EaseSwitchButton switch_adaptive_video_encode;
     private DemoModel settingsModel;
     private EMOptions chatOptions;
-
-
-
-
-
-
-
-
-
+    private SharedPreferences settings;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_set_warn);
-
+        settings = this.getSharedPreferences(WowuApp.PREFERENCE_KEY, MODE_PRIVATE);
 
         top_title = (TextView) findViewById(R.id.top_title);
         top_title.setText("消息提醒");
@@ -133,6 +130,9 @@ public class UserSetWarnActivity extends BaseLoadActivity {
 
         textview1 = (TextView)  findViewById(R.id.textview1);
         textview2 = (TextView)  findViewById(R.id.textview2);
+        tv_locktime= (TextView)  findViewById(R.id.tv_locktime);
+        tv_locktime.setText( settings.getString("locktime","00:00--08：00"));
+
 
 //        blacklistContainer = (LinearLayout) getView().findViewById(R.id.ll_black_list);
 //        userProfileContainer = (LinearLayout) getView().findViewById(R.id.ll_user_profile);
@@ -324,7 +324,9 @@ public class UserSetWarnActivity extends BaseLoadActivity {
                 startActivity(new Intent(mContext, DiagnoseActivity.class));
                 break;
             case R.id.ll_set_push_nick:
-                startActivity(new Intent(mContext, OfflinePushNickActivity.class));
+//                startActivity(new Intent(mContext, OfflinePushNickActivity.class));
+//                MyToast.show(mContext,"后续升级");
+                  showTimeDialog();
                 break;
             case R.id.ll_user_profile:
                 startActivity(new Intent(mContext, UserProfileActivity.class).putExtra("setting", true)
@@ -354,7 +356,65 @@ public class UserSetWarnActivity extends BaseLoadActivity {
 
 
 
+    /**
+     * 添加日期
+     * @Title: showTimeDialog
+     * @Description: TODO
+     * @param
+     * @return void
+     * @throws
+     */
+    String StartTime="";
+    String EndTime="";
+    long dateStart;
+    long dateEnd;
+    public void showTimeDialog()
+    {
+        DateTimePickerDialog dialog  = null;
+//        if(addDate!=null){
+//            try {
+//                dialog  = new DateTimePickerDialog(this,  (new SimpleDateFormat("yyyy-MM-dd HH:mm")).parse(addDate+" "+new SimpleDateFormat("HH:mm").format(new Date())).getTime());
+//            } catch (ParseException e) {
+//                // TODO Auto-generated catch block
+//                e.printStackTrace();
+//            }}else{
+            dialog  = new DateTimePickerDialog(this, System.currentTimeMillis());
+//        }
+        dialog.setOnDateTimeSetListener(new DateTimePickerDialog.OnDateTimeSetListener()
+        {
+            @Override
+            public void OnDateTimeSet(MaterialDialog dialog, long date, long date1) {
+//                Toast.makeText(mContext, "您输入的日期是："+getStringDate(date,date1), Toast.LENGTH_LONG).show();
+                tv_locktime.setText(getStringDate(date,date1));
+                SharedPreferences.Editor editor = settings.edit();
+                editor.putString("locktime", tv_locktime.getText().toString()+"");
+                editor.commit();
 
+            }
+        });
+        dialog.show();
+        //Toast.makeText(mContext, date_selected, 1).show();
+    }
+
+
+    public   String getStringDate(Long date, long date1)
+    {
+        SimpleDateFormat formatter0 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+//        String dateString = formatter.format(date);
+
+        SimpleDateFormat formatter1 = new SimpleDateFormat("HH:mm");
+        String dateString1 = formatter1.format(date1);
+        String dateString = formatter1.format(date);
+
+
+        StartTime=formatter0.format(date);
+        EndTime=formatter0.format(date1);
+
+        return dateString+"--"+dateString1;
+//        return dateString+"--"+dateString1;
+
+    }
 
 
     @Override

@@ -42,15 +42,24 @@ public class UserInfoDetail implements Serializable {
      * Tag : null
      * CreateTime : 2016-06-19 08:07:42
      * Status : 1
+     * "Distance":"7.8km",
+     * RemarkName
+     * "Before":"1分钟",
+     * "LastActivity":null
      * Photos : [{"Url":"http://xzxj.oss-cn-shanghai.aliyuncs.com/user/35b5090b-aaf4-4c6d-b46f-e42073e11f4ex128.jpg","FullUrl":"http://xzxj.oss-cn-shanghai.aliyuncs.com/user/35b5090b-aaf4-4c6d-b46f-e42073e11f4e.jpg","Id":"dc3df506-e657-4643-bdbc-71b09e7b1afe","IsIcon":true}]
      * Icon : {"Url":"http://xzxj.oss-cn-shanghai.aliyuncs.com/user/35b5090b-aaf4-4c6d-b46f-e42073e11f4ex128.jpg","FullUrl":"http://xzxj.oss-cn-shanghai.aliyuncs.com/user/35b5090b-aaf4-4c6d-b46f-e42073e11f4e.jpg","Id":"dc3df506-e657-4643-bdbc-71b09e7b1afe","IsIcon":true}
-     */
+     * "LastActivity" : null,
+     * "CanUpdateGender" : true
+     * "InBlackList":false,
+     * "BlackId":null
+     * */
 
     private String Id;
     private String Name;
     private String PhoneNumber;
     private String EnglishName;
     private String Disposition;
+    private String DispositionId;
     private String EasemobId;
     private String Birthday;
     private int Age;
@@ -61,19 +70,43 @@ public class UserInfoDetail implements Serializable {
     private String Company;
     private String School;
     private String Home;
+    private String RemarkName;
     private String City;
     private String JobAddress;
     private String LifeAddress;
     private String DailyAddress;
     private String VisitedAttractions;
     private boolean IsVip;
-    private int VipLevel;
     private int Star;
     private String UserNumber;
     private boolean Foucs;
     private String Tag;
     private String CreateTime;
     private int Status;
+    private boolean InBlackList;
+    private String BlackId;
+    private String Distance;
+    private String Before;
+    private String  LastActivity;
+    private boolean  CanUpdateGender;
+    private int VipLevel;
+
+    public String getDispositionId() {
+        return DispositionId;
+    }
+
+    public void setDispositionId(String dispositionId) {
+        DispositionId = dispositionId;
+    }
+
+    public boolean isCanUpdateGender() {
+        return CanUpdateGender;
+    }
+
+    public void setCanUpdateGender(boolean canUpdateGender) {
+        CanUpdateGender = canUpdateGender;
+    }
+
     /**
      * Url : http://xzxj.oss-cn-shanghai.aliyuncs.com/user/35b5090b-aaf4-4c6d-b46f-e42073e11f4ex128.jpg
      * FullUrl : http://xzxj.oss-cn-shanghai.aliyuncs.com/user/35b5090b-aaf4-4c6d-b46f-e42073e11f4e.jpg
@@ -82,6 +115,23 @@ public class UserInfoDetail implements Serializable {
      */
 
     private IconBean Icon;
+
+    public boolean isInBlackList() {
+        return InBlackList;
+    }
+
+    public void setInBlackList(boolean inBlackList) {
+        InBlackList = inBlackList;
+    }
+
+    public String getBlackId() {
+        return BlackId;
+    }
+
+    public void setBlackId(String blackId) {
+        BlackId = blackId;
+    }
+
     /**
      * Url : http://xzxj.oss-cn-shanghai.aliyuncs.com/user/35b5090b-aaf4-4c6d-b46f-e42073e11f4ex128.jpg
      * FullUrl : http://xzxj.oss-cn-shanghai.aliyuncs.com/user/35b5090b-aaf4-4c6d-b46f-e42073e11f4e.jpg
@@ -211,6 +261,14 @@ public class UserInfoDetail implements Serializable {
         this.Home = Home;
     }
 
+    public String getRemarkName() {
+        return RemarkName;
+    }
+
+    public void setRemarkName(String remarkName) {
+        RemarkName = remarkName;
+    }
+
     public String getCity() {
         return City;
     }
@@ -329,6 +387,30 @@ public class UserInfoDetail implements Serializable {
 
     public void setPhotos(List<PhotosBean> Photos) {
         this.Photos = Photos;
+    }
+
+    public String getDistance() {
+        return Distance;
+    }
+
+    public void setDistance(String distance) {
+        Distance = distance;
+    }
+
+    public String getBefore() {
+        return Before;
+    }
+
+    public void setBefore(String before) {
+        Before = before;
+    }
+
+    public String getLastActivity() {
+        return LastActivity;
+    }
+
+    public void setLastActivity(String lastActivity) {
+        LastActivity = lastActivity;
     }
 
     public static class IconBean {

@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import com.wuwo.im.config.ExitApp;
 
-import im.wuwo.com.wuwo.R;
+import im.imxianzhi.com.imxianzhi.R;
 /** 
 *desc
 *@author 王明远
@@ -38,7 +38,7 @@ public class LoginChooseActivity extends BaseActivity implements View.OnClickLis
         findViewById(R.id.tv_welcome_sure).setOnClickListener(this);
         tv_welcome_choose = (TextView) this.findViewById(R.id.tv_welcome_choose);
         AlphaAnimation alp = new AlphaAnimation(0.0f, 1.0f);
-        alp.setDuration(4000);
+        alp.setDuration(2500);
         tv_welcome_choose.setAnimation(alp);
         alp.setAnimationListener(new Animation.AnimationListener() {
             public void onAnimationStart(Animation animation) {

@@ -40,7 +40,7 @@ import com.hyphenate.util.EMLog;
 
 import java.util.UUID;
 
-import im.wuwo.com.wuwo.R;
+import im.imxianzhi.com.imxianzhi.R;
 
 /**
  * 语音通话页面

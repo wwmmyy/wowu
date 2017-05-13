@@ -27,7 +27,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import im.wuwo.com.wuwo.BuildConfig;
 import com.hyphenate.chatuidemo.domain.VideoEntity;
 import com.hyphenate.chatuidemo.video.util.ImageCache;
 import com.hyphenate.chatuidemo.video.util.ImageResizer;
@@ -40,7 +39,8 @@ import com.hyphenate.util.TextFormater;
 import java.util.ArrayList;
 import java.util.List;
 
-import im.wuwo.com.wuwo.R;
+import im.imxianzhi.com.imxianzhi.BuildConfig;
+import im.imxianzhi.com.imxianzhi.R;
 
 public class ImageGridFragment extends Fragment implements OnItemClickListener {
 

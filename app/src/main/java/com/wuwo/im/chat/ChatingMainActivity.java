@@ -52,7 +52,7 @@
 //import java.util.Timer;
 //import java.util.TimerTask;
 //
-//import im.wuwo.com.wuwo.R;
+//import im.imxianzhi.com.imxianzhi.R;
 ///**
 //*desc 正在聊天的界面
 //*@author 王明远

@@ -1,0 +1,364 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:fresco="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+<!--    <TextView
+        android:id="@+id/tv_character_type_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:gravity="center"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="15dp"
+        android:text="INTJ策划者"/>-->
+
+
+
+    <GridLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="30dp"
+        android:columnCount="2"
+        android:rowCount="2">
+
+        <RelativeLayout
+            android:id="@+id/rt_part1"
+            android:layout_width="0dp"
+            android:layout_height="150dp"
+            android:layout_columnWeight="1"
+            android:layout_gravity="fill_horizontal"
+            android:background="@drawable/xgpbg">
+
+
+            <RelativeLayout
+                android:id="@+id/rt_part1_1"
+                android:layout_width="95dp"
+                android:layout_height="95dp"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"
+                android:background="@drawable/xgp1">
+
+                <TextView
+                    android:id="@+id/rt_part1_1_0"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentTop="true"
+                    android:gravity="center"
+                    android:padding="8dp"
+                    android:text="1" />
+
+
+                <TextView
+                    android:id="@+id/rt_part1_1_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:drawableTop="@drawable/mark"
+                    android:gravity="center"
+                    android:text="优点\nNI"
+                    android:textSize="15sp" />
+
+
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/rt_part1_0_0"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:drawableRight="@drawable/mark"
+                android:drawablePadding="5dp"
+                android:padding="3dp"
+                android:text="盲点" />
+
+            <RelativeLayout
+                android:id="@+id/rt_part1_0"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_above="@id/rt_part1_1"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:layout_toLeftOf="@id/rt_part1_1"
+                android:gravity="center"
+                android:paddingLeft="3dp"
+                android:paddingTop="3dp">
+
+                <TextView
+                    android:id="@+id/rt_part1_0_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:text="Ne" />
+
+
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/rt_part1_0_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_above="@id/rt_part1_1"
+                android:layout_toLeftOf="@id/rt_part1_1"
+                android:text="5" />
+
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rt_part2"
+            android:layout_width="0dp"
+            android:layout_height="150dp"
+            android:layout_columnWeight="1"
+            android:layout_gravity="fill_horizontal"
+            android:layout_marginLeft="6dp"
+            android:background="@drawable/xgpbg">
+
+            <RelativeLayout
+                android:id="@+id/rt_part2_1"
+                android:layout_width="95dp"
+                android:layout_height="95dp"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentLeft="true"
+                android:background="@drawable/xgp2">
+
+                <TextView
+                    android:id="@+id/rt_part2_1_0"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentTop="true"
+                    android:gravity="center"
+                    android:padding="8dp"
+                    android:text="2" />
+
+
+                <TextView
+                    android:id="@+id/rt_part2_1_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:gravity="center"
+                    android:text="创造点\nTe"
+                    android:drawableTop="@drawable/mark"
+                    android:textSize="15sp" />
+
+            </RelativeLayout>
+
+
+            <TextView
+                android:id="@+id/rt_part2_0_0"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentTop="true"
+                android:padding="3dp"
+                android:drawableLeft="@drawable/mark"
+                android:drawablePadding="5dp"
+                android:text="攻击点" />
+
+            <RelativeLayout
+                android:id="@+id/rt_part2_0"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_above="@id/rt_part2_1"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentTop="true"
+                android:layout_toRightOf="@id/rt_part2_1">
+
+                <TextView
+                    android:id="@+id/rt_part2_0_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:text="Ti" />
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/rt_part2_0_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_above="@id/rt_part2_1"
+                android:layout_toRightOf="@id/rt_part2_1"
+                android:text="6" />
+
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rt_part3"
+            android:layout_width="0dp"
+            android:layout_height="150dp"
+            android:layout_columnWeight="1"
+            android:layout_gravity="fill_horizontal"
+            android:layout_marginTop="6dp"
+            android:background="@drawable/xgpbg">
+
+
+            <RelativeLayout
+                android:id="@+id/rt_part3_1"
+                android:layout_width="95dp"
+                android:layout_height="95dp"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentTop="true"
+                android:background="@drawable/xgp3">
+
+                <TextView
+                    android:id="@+id/rt_part3_1_0"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentLeft="true"
+                    android:gravity="center"
+                    android:padding="8dp"
+                    android:text="4" />
+
+
+                <TextView
+                    android:id="@+id/rt_part3_1_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:drawableBottom="@drawable/mark"
+                    android:gravity="center"
+                    android:text="Se\n充电点"
+                    android:textSize="15sp" />
+
+            </RelativeLayout>
+
+
+            <TextView
+                android:id="@+id/rt_part3_0_0"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentLeft="true"
+                android:layout_centerInParent="true"
+                android:drawableRight="@drawable/mark"
+                android:drawablePadding="5dp"
+                android:padding="3dp"
+                android:text="缺点" />
+
+
+            <TextView
+                android:id="@+id/rt_part3_0_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/rt_part3_1"
+                android:layout_toLeftOf="@id/rt_part3_1"
+                android:text="8" />
+
+
+            <RelativeLayout
+                android:id="@+id/rt_part3_0"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@id/rt_part3_1"
+                android:layout_toLeftOf="@id/rt_part3_1">
+
+                <TextView
+                    android:id="@+id/rt_part3_0_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:text="Si" />
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rt_part4"
+            android:layout_width="0dp"
+            android:layout_height="150dp"
+            android:layout_columnWeight="1"
+            android:layout_gravity="fill_horizontal"
+            android:layout_marginLeft="6dp"
+            android:layout_marginTop="6dp"
+            android:background="@drawable/xgpbg">
+
+            <RelativeLayout
+                android:id="@+id/rt_part4_1"
+                android:layout_width="95dp"
+                android:layout_height="95dp"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:background="@drawable/xgp4">
+
+                <TextView
+                    android:id="@+id/rt_part4_1_0"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentRight="true"
+                    android:gravity="center"
+                    android:padding="8dp"
+                    android:text="3" />
+
+
+                <TextView
+                    android:id="@+id/rt_part4_1_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:gravity="center"
+                    android:text="Fi\n激活点"
+                    android:drawableBottom="@drawable/mark"
+                    android:textSize="15sp" />
+
+            </RelativeLayout>
+
+
+            <TextView
+                android:id="@+id/rt_part4_0_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/rt_part4_1"
+                android:layout_toRightOf="@id/rt_part4_1"
+                android:text="7" />
+
+            <TextView
+                android:id="@+id/rt_part4_0_0"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"
+                android:padding="3dp"
+                android:drawableLeft="@drawable/mark"
+                android:drawablePadding="5dp"
+                android:text="痛点" />
+
+
+            <RelativeLayout
+                android:id="@+id/rt_part4_0"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"
+                android:layout_below="@id/rt_part4_1"
+                android:layout_toRightOf="@id/rt_part4_1">
+
+                <TextView
+                    android:id="@+id/rt_part4_0_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:text="Fe" />
+            </RelativeLayout>
+
+
+        </RelativeLayout>
+
+    </GridLayout>
+
+
+</LinearLayout>

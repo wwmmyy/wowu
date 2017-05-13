@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="fill_parent"
+    android:background="#00000000"
+    android:gravity="center|bottom"
+    android:orientation="vertical"
+    android:padding="5dip">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1.0" />
+
+    <RelativeLayout
+        android:id="@+id/rt_character_history"
+        android:layout_width="fill_parent"
+        android:layout_height="45dp"
+        android:background="@drawable/open_gallery_selector"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center"
+            android:layout_marginLeft="15dp"
+            android:text="取消关注"
+            android:textColor="@color/red_color"
+            android:textSize="17sp"></TextView>
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:id="@+id/rt_character_retest"
+        android:layout_width="fill_parent"
+        android:layout_height="50dp"
+        android:background="@drawable/open_gallery_selector"
+        android:layout_marginTop="-5dp"
+        android:orientation="horizontal">
+        <!--android:background="@drawable/open_middle_selector"-->
+
+        <View
+            android:id="@+id/rt_v_line"
+            android:layout_width="match_parent"
+            android:layout_height="0.1dp"
+            android:background="@color/divider_color" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center"
+            android:layout_marginLeft="15dp"
+            android:text="拉黑"
+            android:textColor="@color/name_blue"
+            android:textSize="18sp"></TextView>
+        <!--android:textColor="@color/red"-->
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rt_character_share"
+        android:layout_width="fill_parent"
+        android:layout_height="50dp"
+        android:background="@drawable/open_gallery_selector"
+        android:layout_marginTop="-5dp"
+        android:orientation="horizontal">
+        <!--android:background="@drawable/open_camera_selector"-->
+
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.1dp"
+            android:background="@color/divider_color" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center"
+            android:layout_marginLeft="15dp"
+            android:text="举报"
+            android:textColor="@color/name_blue"
+            android:textSize="18sp"></TextView>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_marginBottom="5dip"
+        android:layout_marginTop="15dip"
+        android:background="@drawable/open_cancel_selector"
+        android:orientation="horizontal"
+        android:paddingBottom="5dip"
+        android:paddingTop="5dip">
+
+
+        <Button
+            android:id="@+id/home_member_cancel"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical"
+            android:background="@null"
+            android:gravity="center"
+            android:text="取消"
+            android:textColor="@color/name_blue"
+            android:textSize="18sp" />
+
+    </RelativeLayout>
+
+</LinearLayout>

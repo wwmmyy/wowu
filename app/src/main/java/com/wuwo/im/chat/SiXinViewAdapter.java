@@ -10,7 +10,7 @@
 //
 //import java.util.List;
 //
-//import im.wuwo.com.wuwo.R;
+//import im.imxianzhi.com.imxianzhi.R;
 //
 //public class SiXinViewAdapter extends BaseAdapter {
 //

@@ -12,7 +12,7 @@
 //
 //import com.wuwo.im.activity.BaseActivity;
 //
-//import im.wuwo.com.wuwo.R;
+//import im.imxianzhi.com.imxianzhi.R;
 //
 //public class NotificationActivity extends BaseActivity {
 //    Context mContext = NotificationActivity.this;
@@ -21,7 +21,7 @@
 //                super.onCreate(savedInstanceState);
 //                requestWindowFeature(Window.FEATURE_NO_TITLE);
 //                setContentView(R.layout.chatting_im_notification);
-//                Log.i("MainActivity", "thread id is "+Thread.currentThread().getName());
+//                LogUtils.i("MainActivity", "thread id is "+Thread.currentThread().getName());
 ///*//                启动服务通知
 //                Intent intent = new Intent(this,XMPPService.class);
 //                startService(intent);*/

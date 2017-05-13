@@ -1,18 +1,21 @@
 package com.wuwo.im.activity;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -20,7 +23,6 @@ import android.os.Message;
 import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -28,13 +30,16 @@ import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.facebook.imagepipeline.core.ImagePipeline;
+import com.hyphenate.util.DeviceUuidFactory;
 import com.wuwo.im.config.WowuApp;
+import com.wuwo.im.util.LogUtils;
 import com.wuwo.im.util.MyToast;
+import com.wuwo.im.util.PhotoCropCallBack;
+import com.wuwo.im.util.SysPhotoCropper;
 import com.wuwo.im.util.UtilsTool;
 import com.zhy.http.okhttp.OkHttpUtils;
 
@@ -43,7 +48,7 @@ import org.json.JSONObject;
 
 import java.io.File;
 
-import im.wuwo.com.wuwo.R;
+import im.imxianzhi.com.imxianzhi.R;
 
 /**
  * 添加头像和性别
@@ -63,6 +68,8 @@ public class RegisterStepFourActivity extends BaseLoadActivity {
     private Uri uri;
     private RadioGroup user_register_rg_gender;
     private TextView register_finish;
+    private SysPhotoCropper sysPhotoCropper;
+    private boolean hasPic = false;//用于标记是否选择头像上传
 
     //    private LoadserverdataService loadDataService;
     @Override
@@ -83,10 +90,9 @@ public class RegisterStepFourActivity extends BaseLoadActivity {
         findViewById(R.id.top_title).setVisibility(View.GONE);
 
 
-
 //        uri = Uri.parse(WowuApp.userImagePath + mSettings.getString("userid", "") + ".jpg");
         usersetting_userpic = (SimpleDraweeView) findViewById(R.id.usersetting_userpic);
-        usersetting_userpic .setOnClickListener(this);
+        usersetting_userpic.setOnClickListener(this);
 //        usersetting_userpic.setImageURI(Uri.parse(WowuApp.userImagePath + mSettings.getString("userid", "") + ".jpg"));
 
         user_register_rg_gender.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
@@ -94,14 +100,14 @@ public class RegisterStepFourActivity extends BaseLoadActivity {
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 //checkId就是当前选中的RadioButton
                 if (R.id.user_register_rb_gender1 == checkedId) {
-                    WowuApp.Gender = 1;
-                } else {
                     WowuApp.Gender = 0;
+                } else {
+                    WowuApp.Gender = 1;
                 }
             }
         });
 
-        register_finish= (TextView)findViewById(R.id.register_finish);
+        register_finish = (TextView) findViewById(R.id.register_finish);
         register_finish.setOnClickListener(this);
         register_finish.getBackground().setAlpha(50);//0~255透明度值
         register_finish.setTextColor(register_finish.getTextColors().withAlpha(50));
@@ -109,20 +115,43 @@ public class RegisterStepFourActivity extends BaseLoadActivity {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             }
+
             @Override
             public void afterTextChanged(Editable s) {
-                if(user_register_nicheng.getText().toString().equals("")){
+                if (user_register_nicheng.getText().toString().equals("")) {
                     register_finish.getBackground().setAlpha(50);//0~255透明度值
                     register_finish.setTextColor(register_finish.getTextColors().withAlpha(50));
-                }else{
+                } else {
                     register_finish.getBackground().setAlpha(255);//0~255透明度值
                     register_finish.setTextColor(register_finish.getTextColors().withAlpha(255));
                 }
             }
+
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
             }
         });
+
+        sysPhotoCropper = new SysPhotoCropper(this, 150, new PhotoCropCallBack() {
+            @Override
+            public void onFailed(String message) {
+                MyToast.show(mContext, "选择图片失败");
+            }
+
+            @Override
+            public void onPhotoCropped(Uri uri) {
+
+                imageUri = uri;
+                Message msg2 = new Message();
+                msg2.what = ADD_ATTACHMENT;
+                mHandler.sendMessage(msg2);
+
+
+                hasPic = true;
+
+            }
+        });
+
     }
 
     @Override
@@ -137,30 +166,52 @@ public class RegisterStepFourActivity extends BaseLoadActivity {
                 break;
             case R.id.register_finish:
 
+                if (user_register_nicheng.getText().toString().equals("")) {
+                    MyToast.show(mContext, "请填写个人昵称");
+                    break;
+                }
+
                 WowuApp.Name = user_register_nicheng.getText().toString();
+                if (hasPic) {
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Message msg = new Message();
+                            msg.what = Loading;
+                            mHandler.sendMessage(msg);
+                            try {
+                                JSONObject json = new JSONObject();
+                                json.put("PhoneNumber", WowuApp.PhoneNumber);
+                                json.put("SmsValidateCode", WowuApp.SmsValidateCode);
+                                json.put("Platform", "android");
+                                json.put("Name", WowuApp.Name);
+                                json.put("Gender", WowuApp.Gender);
+                                json.put("Password", WowuApp.Password);
 
-                Message msg = new Message();
-                msg.what = Loading;
-                mHandler.sendMessage(msg);
 
-                        try {
-                            JSONObject json = new JSONObject();
-                            json.put("PhoneNumber", WowuApp.PhoneNumber);
-                            json.put("SmsValidateCode", WowuApp.SmsValidateCode);
-                            json.put("Platform", "android");
-                            json.put("Name", WowuApp.Name);
-                            json.put("Gender", WowuApp.Gender);
-                            json.put("Password",WowuApp.Password);
+                                json.put("PhoneModel", "Android");//手机型号，如Android
+                                json.put("PhoneVersion", android.os.Build.VERSION.RELEASE);//手机操作系统版本
+                                json.put("DeviceVersion", android.os.Build.MODEL);//设备版本
+                                DeviceUuidFactory tempdevice = new DeviceUuidFactory(mContext);
+                                json.put("DeviceUUID", tempdevice.getDeviceUuid());//设备唯一标识
+                                json.put("Version", getVersionCode(mContext));//APP版本号
+
 //                            if (WowuApp.picPath != null) {
 //                                json.put("Photo", UtilsTool.bitmaptoString(UtilsTool.loadCompressedBitmap(WowuApp.picPath, 80, 80)));//BitmapFactory.decodeFile(picPath)
 //                            }
-                            Log.i("图像存放的路径为：：：","：："+imageUri.getPath());
-                            json.put("Photo",UtilsTool.bitmaptoString(BitmapFactory.decodeFile(imageUri.getPath()) ) ); //   UtilsTool.bitmaptoString(photo)　　  UtilsTool.compressBitmap(photo,13)
+                                LogUtils.i("图像存放的路径为：：：", "：：" + imageUri.getPath());
+                                json.put("Photo", UtilsTool.bitmaptoString(BitmapFactory.decodeFile(getRealFilePath(imageUri)))); //   UtilsTool.bitmaptoString(photo)　　  UtilsTool.compressBitmap(photo,13) imageUri.getPath()
 
-                            loadDataService.loadPostJsonRequestData(WowuApp.JSON, WowuApp.RegisterURL, json.toString(), 0);
-                        } catch (Exception e) {
-                            e.printStackTrace();
+                                loadDataService.loadPostJsonRequestData(WowuApp.JSON, WowuApp.RegisterURL, json.toString(), 0);
+
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
                         }
+                    }).start();
+                } else {
+                    MyToast.show(mContext, "头像不能为空，请选择上传头像");
+                }
                 break;
 
         }
@@ -190,21 +241,30 @@ public class RegisterStepFourActivity extends BaseLoadActivity {
             public void onClick(View arg0) {
                 // TODO 自动生成的方法存根
 //                openCamera();
-                Intent intentFromCapture = new Intent(
-                        MediaStore.ACTION_IMAGE_CAPTURE);
-                // 判断存储卡是否可以用，可用进行存储
-                String state = Environment
-                        .getExternalStorageState();
-                if (state.equals(Environment.MEDIA_MOUNTED)) {
-                    File path = Environment
-                            .getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM);
-                    File file = new File(path, IMAGE_FILE_NAME);
-                    intentFromCapture.putExtra(
-                            MediaStore.EXTRA_OUTPUT,
-                            Uri.fromFile(file));
+
+//                .2
+//                Intent intentFromCapture = new Intent(
+//                        MediaStore.ACTION_IMAGE_CAPTURE);
+//                // 判断存储卡是否可以用，可用进行存储
+//                String state = Environment
+//                        .getExternalStorageState();
+//                if (state.equals(Environment.MEDIA_MOUNTED)) {
+//                    File path = Environment
+//                            .getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM);
+//                    File file = new File(path, IMAGE_FILE_NAME);
+//                    intentFromCapture.putExtra(
+//                            MediaStore.EXTRA_OUTPUT,
+//                            Uri.fromFile(file));
+//                }
+//                startActivityForResult(intentFromCapture, CAMERA_REQUEST_CODE);
+
+
+                sysPhotoCropper.cropForCamera();
+
+
+                if(!((Activity) mContext).isFinishing()) {
+                    dialog.dismiss();
                 }
-                startActivityForResult(intentFromCapture, CAMERA_REQUEST_CODE);
-                dialog.dismiss();
             }
         });
 
@@ -213,29 +273,24 @@ public class RegisterStepFourActivity extends BaseLoadActivity {
         view.findViewById(R.id.userimg_select_pic).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
-//                Intent intent = new Intent();
-//                //       这个是调用android内置的intent，来过滤图片文件 ，同时也可以过滤其他的
-//                intent.setType("image/*");
-//                intent.setAction(Intent.ACTION_GET_CONTENT);
-//                startActivityForResult(intent, PHOTO_SELECT);
 
-//                Intent intent = new Intent(Intent.ACTION_PICK,android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-//                intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,"image/*");
-//                intent.addCategory(Intent.CATEGORY_OPENABLE);
-
-
-                Intent intentFromGallery = new Intent();
-                if (Build.VERSION.SDK_INT < 19) {
-                    intentFromGallery = new Intent(Intent.ACTION_GET_CONTENT);
-                    intentFromGallery.setType("image/*");
-                } else {
-                    intentFromGallery = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                }
 
 //                Intent intentFromGallery = new Intent();
-//                intentFromGallery.setType("image/*"); // 设置文件类型
-//                intentFromGallery.setAction(Intent.ACTION_GET_CONTENT);
-                startActivityForResult(intentFromGallery, IMAGE_REQUEST_CODE);
+//                if (Build.VERSION.SDK_INT < 19) {
+//                    intentFromGallery = new Intent(Intent.ACTION_GET_CONTENT);
+//                    intentFromGallery.setType("image/*");
+//                } else {
+//                    intentFromGallery = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+//                }
+//
+////                Intent intentFromGallery = new Intent();
+////                intentFromGallery.setType("image/*"); // 设置文件类型
+////                intentFromGallery.setAction(Intent.ACTION_GET_CONTENT);
+//                startActivityForResult(intentFromGallery, IMAGE_REQUEST_CODE);
+
+
+                sysPhotoCropper.cropForGallery();
+
 
                 dialog.dismiss();
             }
@@ -257,7 +312,7 @@ public class RegisterStepFourActivity extends BaseLoadActivity {
         dialog.show();
     }
 
-    private static String requestURL = OkHttpUtils.serverAbsolutePath + "/mobile/updateUserImg!upUserImg.action";
+    //    private static String requestURL = OkHttpUtils.serverAbsolutePath + "/mobile/updateUserImg!upUserImg.action";
     private String picPath = null;
     private static final int PHOTO_SELECT = 110;
 
@@ -287,7 +342,7 @@ public class RegisterStepFourActivity extends BaseLoadActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
-        // 结果码不等于取消时候
+/*        // 结果码不等于取消时候
         if (resultCode != RESULT_CANCELED) {
             switch (requestCode) {
                 case IMAGE_REQUEST_CODE :
@@ -314,19 +369,23 @@ public class RegisterStepFourActivity extends BaseLoadActivity {
                     }
                     break;
             }
-        }
+        }*/
 
 
+        super.onActivityResult(requestCode, resultCode, data);
+
+
+        sysPhotoCropper.handlerOnActivtyResult(requestCode, resultCode, data);
 
 
         // TODO Auto-generated method stub
-        super.onActivityResult(requestCode, resultCode, data);
+
 //        String sdStatus = Environment.getExternalStorageState();
-//        Log.i("获取到返回值结果", "获取到返回值结果");
+//        LogUtils.i("获取到返回值结果", "获取到返回值结果");
 //        switch (requestCode) {
 //            case PHOTO_CAPTURE:
 //                if (!sdStatus.equals(Environment.MEDIA_MOUNTED)) {
-//                    Log.i("内存卡错误", "请检查您的内存卡");
+//                    LogUtils.i("内存卡错误", "请检查您的内存卡");
 //                } else {
 //                    clearOldDrable();
 //                    sendToServer();
@@ -375,12 +434,38 @@ public class RegisterStepFourActivity extends BaseLoadActivity {
     }
 
 
+    private String getRealFilePath(Uri selectedImage) {
+        String[] filePathColumn = {MediaStore.Images.Media.DATA};
+        Cursor cursor = getContentResolver().query(selectedImage, filePathColumn, null, null, null);
+        String photoPath = "";
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                //int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+                int columnIndex = cursor.getColumnIndexOrThrow(filePathColumn[0]);
+                photoPath = cursor.getString(columnIndex);
+            }
+
+        } else {
+            if (selectedImage != null) {
+                String tmpPath = selectedImage.getPath();
+                if (tmpPath != null && (tmpPath.endsWith(".jpg") || tmpPath.endsWith(".png") || tmpPath.endsWith(".gif") || tmpPath.endsWith(".jpeg"))) {
+                    photoPath = tmpPath;
+                }
+            }
+        }
+        if (cursor != null) cursor.close();
+        return photoPath;
+    }
 
 
-    /** 头像名称 */
+    /**
+     * 头像名称
+     */
     private static final String IMAGE_FILE_NAME = "image.jpg";
 
-    /** 请求码 */
+    /**
+     * 请求码
+     */
     private static final int IMAGE_REQUEST_CODE = 0;
     private static final int CAMERA_REQUEST_CODE = 1;
     private static final int RESULT_REQUEST_CODE = 2;
@@ -412,26 +497,17 @@ public class RegisterStepFourActivity extends BaseLoadActivity {
      *
      * @param
      */
-    Bitmap photo=null;
+    Bitmap photo = null;
+
     private void getImageToView(Intent data) {
         Bundle extras = data.getExtras();
         if (extras != null) {
-              photo = extras.getParcelable("data");
+            photo = extras.getParcelable("data");
 
             Drawable drawable = new BitmapDrawable(this.getResources(), photo);
             usersetting_userpic.setImageDrawable(drawable);
         }
     }
-
-
-
-
-
-
-
-
-
-
 
 
     /**
@@ -523,6 +599,8 @@ public class RegisterStepFourActivity extends BaseLoadActivity {
     private final int Loading = 1;
     private final int END = 2;
     private final int PICSHOW = 3;
+    private final int ADD_ATTACHMENT = 4;
+
 
     /**
      * 上传到服务器是加载进度框
@@ -541,10 +619,11 @@ public class RegisterStepFourActivity extends BaseLoadActivity {
 //                    clearOldDrable();
 //                    Drawable drawable = new BitmapDrawable(UtilsTool.loadCompressedBitmap(picPath, 80, 80));
 //                    usersetting_userpic.setImageDrawable(drawable);
-                   if(pg!=null) pg.dismiss();
+                    if (pg != null) pg.dismiss();
 //                    MyToast.show(getApplicationContext(), "修改成功", Toast.LENGTH_LONG);
 
                     Intent temp = new Intent(mContext, CharacterChooseActivity.class);
+                    temp.putExtra("registerMode", true);
                     startActivity(temp);
                     overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                     break;
@@ -556,6 +635,11 @@ public class RegisterStepFourActivity extends BaseLoadActivity {
                     imageUri = Uri.fromFile(photo);
                     usersetting_userpic.setImageURI(imageUri);
                     break;
+                case ADD_ATTACHMENT:
+                    clearOldDrable();
+                    usersetting_userpic.setImageURI(imageUri);
+                    break;
+
             }
             super.handleMessage(msg);
         }
@@ -563,8 +647,8 @@ public class RegisterStepFourActivity extends BaseLoadActivity {
 
     @Override
     public void loadServerData(String response, int flag) {
-        MyToast.show(mContext, "返回的结果为：：：：" + response);
-        Log.i("返回的结果为", response.toString());
+//        MyToast.show(mContext, "返回的结果为：：：：" + response);
+        LogUtils.i("返回的结果为", response.toString());
 
 //        temp2 = new Intent(mContext, RegisterStepThreeActivity.class);
 //        mContext.startActivity(temp2);
@@ -572,14 +656,13 @@ public class RegisterStepFourActivity extends BaseLoadActivity {
 //        temp2 = new Intent(mContext, RegisterStepThreeActivity.class);
 //        mContext.startActivity(temp2);
 //        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-
 
 
 //        {"token":"380a389909944158bb050ea4126e94e85b521129eb8547409a91ece5f75a360f","easemobId":"8ed631fa-3565-11e6-988d-59e695f37b1d"}
 
         try {
-            JSONObject responseJson=new JSONObject(response);
-            OkHttpUtils.token= responseJson.optString("token");
+            JSONObject responseJson = new JSONObject(response);
+            OkHttpUtils.token = responseJson.optString("token");
 
             Message msg2 = new Message();
             msg2.what = END;
@@ -591,9 +674,28 @@ public class RegisterStepFourActivity extends BaseLoadActivity {
     }
 
     @Override
-    public void loadDataFailed(String request,int flag) {
-        MyToast.show(mContext, "返回值失败" + request.toString());
-        Log.i("返回值失败", request.toString());
+    public void loadDataFailed(String request, int flag) {
+        MyToast.show(mContext, request.toString() + ";");
+        LogUtils.i("返回值失败", request.toString());
         pg.dismiss();
+    }
+
+    /**
+     * 获取软件版本号
+     *
+     * @param context
+     * @return
+     */
+    public String getVersionCode(Context context) {
+        String versionCode = "0";
+        try {
+            // 获取软件版本号，对应AndroidManifest.xml下android:versionCode
+            versionCode = context.getPackageManager().getPackageInfo(
+                    context.getPackageName(), 0).versionName;
+        } catch (PackageManager.NameNotFoundException e) {
+//            e.printStackTrace();
+            return versionCode;
+        }
+        return versionCode;
     }
 }

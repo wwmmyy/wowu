@@ -20,28 +20,34 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.view.Window;
 import android.widget.DatePicker;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.facebook.imagepipeline.core.ImagePipeline;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.hyphenate.chatuidemo.db.DemoDBManager;
 import com.hyphenate.chatuidemo.db.UserDao;
 import com.hyphenate.easeui.ui.EaseShowBigImageActivity;
+import com.hyphenate.easeui.widget.EaseAlertDialog;
 import com.wuwo.im.adapter.CommRecyclerAdapter;
 import com.wuwo.im.adapter.CommRecyclerViewHolder;
 import com.wuwo.im.adapter.PicAdapter;
 import com.wuwo.im.bean.UserInfoDetail;
 import com.wuwo.im.config.ExitApp;
 import com.wuwo.im.config.WowuApp;
+import com.wuwo.im.util.LogUtils;
 import com.wuwo.im.util.MyToast;
+import com.wuwo.im.util.PhotoCropCallBack;
+import com.wuwo.im.util.SysPhotoCropper;
 import com.wuwo.im.util.UtilsTool;
 import com.wuwo.im.view.SearchView;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.service.LoadserverdataService;
-import com.zhy.http.okhttp.service.loadServerDataListener;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -52,7 +58,7 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-import im.wuwo.com.wuwo.R;
+import im.imxianzhi.com.imxianzhi.R;
 
 /**
  * desc OwnerInfoEditActivity
@@ -63,37 +69,35 @@ import im.wuwo.com.wuwo.R;
  */
 
 public class OwnerInfoEditActivity extends BaseLoadActivity implements
-        DatePickerDialog.OnDateSetListener, View.OnClickListener, loadServerDataListener, PicAdapter.OnItemClickLitener {
-    LoadserverdataService loadDataService;
-    Context mContext = null;
+        DatePickerDialog.OnDateSetListener, PicAdapter.OnItemClickLitener {
+    private LoadserverdataService loadDataService;
+    private Context mContext = null;
 
-    Gson gson = new GsonBuilder().create();
-    SharedPreferences mSettings;
-    SharedPreferences.Editor editor;
+    private Gson gson = new GsonBuilder().create();
+    private SharedPreferences mSettings;
+    private SharedPreferences.Editor editor;
     private RecyclerView mPicRecyclerView;
     private int mCount = 0;
     //    ArrayList<UserInfoDetail> meeting_userlist = new ArrayList<UserInfoDetail>(); //记录所有的最新消息
     private SearchView search_view;
     private String searchinfo;
     //    CommRecyclerAdapter userPicAdapter;
-    PicAdapter userPicAdapter;
-
-    mHandlerWeak mtotalHandler;
-
+    private PicAdapter userPicAdapter;
+    private mHandlerWeak mtotalHandler;
     private SharedPreferences settings;
+    private UserInfoDetail mUserDetail = new UserInfoDetail();
+    private ArrayList<UserInfoDetail> mUserDetailList = new ArrayList<UserInfoDetail>(); //记录所有的最新消息
+    private ArrayList<UserInfoDetail.PhotosBean> removedList = new ArrayList<UserInfoDetail.PhotosBean>(); //记录所有的最新消息
+    private RecyclerView rlist_view_content;
+    private CommRecyclerAdapter contentRAdapter;
+    private SimpleDraweeView user_pic;
+    private SysPhotoCropper sysPhotoCropper;
+    private TextView rt_tixing;
 
-    UserInfoDetail mUserDetail = new UserInfoDetail();
-    ArrayList<UserInfoDetail> mUserDetailList = new ArrayList<UserInfoDetail>(); //记录所有的最新消息
-    ArrayList<UserInfoDetail.PhotosBean> removedList = new ArrayList<UserInfoDetail.PhotosBean>(); //记录所有的最新消息
-
-
-    RecyclerView rlist_view_content;
-    CommRecyclerAdapter contentRAdapter;
-    SimpleDraweeView user_pic;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
+//        requestWindowFeature(Window.FEATURE_NO_TITLE);
         super.onCreate(savedInstanceState);
         mContext = this;
         loadDataService = new LoadserverdataService(this);
@@ -131,6 +135,10 @@ public class OwnerInfoEditActivity extends BaseLoadActivity implements
         linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
         mPicRecyclerView.setLayoutManager(linearLayoutManager);
         mtotalHandler = new mHandlerWeak(this);
+        rt_tixing = (TextView) findViewById(R.id.rt_tixing);
+
+
+
 
         loadData();
 
@@ -139,6 +147,14 @@ public class OwnerInfoEditActivity extends BaseLoadActivity implements
         mlinearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         rlist_view_content.setLayoutManager(mlinearLayoutManager);
         rlist_view_content.setVerticalScrollBarEnabled(true);
+
+
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        layoutManager.setSmoothScrollbarEnabled(true);
+        layoutManager.setAutoMeasureEnabled(true);
+        rlist_view_content.setLayoutManager(layoutManager);
+        rlist_view_content.setHasFixedSize(true);
+        rlist_view_content.setNestedScrollingEnabled(false);
 
 //        initTopPicAdapter();
 
@@ -151,6 +167,26 @@ public class OwnerInfoEditActivity extends BaseLoadActivity implements
         initContentAdapter();
         rlist_view_content.setAdapter(contentRAdapter);
         mPicRecyclerView.setAdapter(userPicAdapter);
+
+
+        sysPhotoCropper = new SysPhotoCropper(this, new PhotoCropCallBack() {
+            @Override
+            public void onFailed(String message) {
+               MyToast.show(mContext,"选择图片失败");
+            }
+
+            @Override
+            public void onPhotoCropped(Uri uri) {
+
+                imageUri=uri;
+                Message msg = new Message();
+                msg.what = ADD_ATTACHMENT;
+                msg.obj = getRealFilePath(imageUri);
+                LogUtils.i("OwnerInfoEditActivity2", msg.obj + "");
+                mtotalHandler.sendMessage(msg);
+
+            }
+        });
     }
 
 
@@ -158,14 +194,13 @@ public class OwnerInfoEditActivity extends BaseLoadActivity implements
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.return_back:
-                this.finish();
-                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                onBackPressed();
                 break;
 
             case R.id.tx_top_right:
                 pd = UtilsTool.initProgressDialog(mContext, "请稍后...");
                 pd.show();
-
+                changed=false;
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
@@ -176,8 +211,8 @@ public class OwnerInfoEditActivity extends BaseLoadActivity implements
             case R.id.user_pic://点击展示头像
 
 
-                if (((UserInfoDetail.PhotosBean) userPicAdapter.getList().get(currentPosition)).getLocalPath() != null) {
-//                Log.i("为什么不显示呢，本地", "：：" + ((UserInfoDetail.PhotosBean) userPicAdapter.getList().get(position)).getLocalPath());
+                if (currentPosition != -1 && ((UserInfoDetail.PhotosBean) userPicAdapter.getList().get(currentPosition)).getLocalPath() != null) {
+//                //LogUtils.i("为什么不显示呢，本地", "：：" + ((UserInfoDetail.PhotosBean) userPicAdapter.getList().get(position)).getLocalPath());
                     Intent intent = new Intent(mContext, EaseShowBigImageActivity.class);
                     File file = new File(((UserInfoDetail.PhotosBean) userPicAdapter.getList().get(currentPosition)).getLocalPath());
                     if (file.exists()) {
@@ -186,7 +221,7 @@ public class OwnerInfoEditActivity extends BaseLoadActivity implements
                     }
                     mContext.startActivity(intent);
                     overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-                }else{
+                } else {
 
                     ArrayList<String> tempimageUrls = new ArrayList<String>();
                     if (currentPosition == -1) {//说明没有换过头像
@@ -240,7 +275,16 @@ public class OwnerInfoEditActivity extends BaseLoadActivity implements
     public static final int DOWNLOADED_LocalUser = 0;
     public static final int DOWNLOADED_ERROR = 1;
     public static final int REFERSH_DATA = 2;
+    public static final int UPLOAD_SUCCESS = 5;
     public static final int ADD_ATTACHMENT = 1000;
+    public static final int UPDATE_SEX = 21;
+
+    /**
+     * 请求码
+     */
+    private static final int IMAGE_REQUEST_CODE = 0;
+    private static final int CAMERA_REQUEST_CODE = 1;
+    private static final int RESULT_REQUEST_CODE = 2;
 
     @Override
     public void loadServerData(final String response, int flag) {
@@ -263,11 +307,16 @@ public class OwnerInfoEditActivity extends BaseLoadActivity implements
 //                                    e.printStackTrace();
                     Message msg = new Message();
                     msg.what = DOWNLOADED_ERROR;
+                    msg.obj="服务器返回值异常";
                     mtotalHandler.sendMessage(msg);
                 }
                 break;
             case R.id.tx_top_right:
 //                MyToast.show(mContext, "修改成功");
+
+                Message msg = new Message();
+                msg.what = UPLOAD_SUCCESS;
+                mtotalHandler.sendMessage(msg);
                 if (pd != null) {
                     pd.dismiss();
                 }
@@ -276,6 +325,13 @@ public class OwnerInfoEditActivity extends BaseLoadActivity implements
                 editor.putString("iconPath", WowuApp.iconPath);
                 editor.commit();
                 break;
+            case UPDATE_SEX:
+                Message msg2 = new Message();
+                msg2.what = DOWNLOADED_ERROR;
+                msg2.obj=response+";";
+                mtotalHandler.sendMessage(msg2);
+                break;
+
         }
     }
 
@@ -285,13 +341,20 @@ public class OwnerInfoEditActivity extends BaseLoadActivity implements
             case LOAD_DATA:
                 Message msg = new Message();
                 msg.what = DOWNLOADED_ERROR;
+                msg.obj = "服务器返回数据异常";
                 mtotalHandler.sendMessage(msg);
                 break;
             case R.id.tx_top_right:
-                MyToast.show(mContext, response);
+                MyToast.show(mContext, response + ".");
                 if (pd != null) {
                     pd.dismiss();
                 }
+                break;
+            case UPDATE_SEX:
+                Message msg2 = new Message();
+                msg2.what = DOWNLOADED_ERROR;
+                msg2.obj=response+";";
+                mtotalHandler.sendMessage(msg2);
                 break;
         }
     }
@@ -299,12 +362,19 @@ public class OwnerInfoEditActivity extends BaseLoadActivity implements
     @Override
     public void onItemClick(View view, int position) {
         if (position == userPicAdapter.getList().size()) {
-            addAttachment();
+            if (userPicAdapter.getList().size() < 8) {
+                changed = true;
+//                addAttachment();
+                sysPhotoCropper.cropForGallery(System.currentTimeMillis()+".jpg");
+            } else {
+                MyToast.show(mContext, "最多只能上传八张图片");
+            }
+
         } else {
 
 
             if (((UserInfoDetail.PhotosBean) userPicAdapter.getList().get(position)).getLocalPath() != null) {
-//                Log.i("为什么不显示呢，本地", "：：" + ((UserInfoDetail.PhotosBean) userPicAdapter.getList().get(position)).getLocalPath());
+//                //LogUtils.i("为什么不显示呢，本地", "：：" + ((UserInfoDetail.PhotosBean) userPicAdapter.getList().get(position)).getLocalPath());
                 Intent intent = new Intent(mContext, EaseShowBigImageActivity.class);
                 File file = new File(((UserInfoDetail.PhotosBean) userPicAdapter.getList().get(position)).getLocalPath());
                 if (file.exists()) {
@@ -320,8 +390,10 @@ public class OwnerInfoEditActivity extends BaseLoadActivity implements
                     tempimageUrls.add(((UserInfoDetail.PhotosBean) userPicAdapter.getList().get(i)).getFullUrl());
                 }
                 imageBrower(position, tempimageUrls);*/
-                currentPosition=position;
-                user_pic.setImageURI(Uri.parse(((UserInfoDetail.PhotosBean) userPicAdapter.getList().get(position)).getFullUrl()));
+                currentPosition = position;
+                if( userPicAdapter.getList().get(position).getFullUrl()!=null){
+                    user_pic.setImageURI(Uri.parse(((UserInfoDetail.PhotosBean) userPicAdapter.getList().get(position)).getFullUrl()));
+                }
             }
         }
     }
@@ -343,10 +415,14 @@ public class OwnerInfoEditActivity extends BaseLoadActivity implements
 
 
     protected void onBubbleClick(Context context, String url, String name) {
-//        Log.i("为什么不显示呢，你麻痹", "：：" + WowuApp.tempPicPath + name + "." + UtilsTool.getFileType(url));
+//        //LogUtils.i("为什么不显示呢，你麻痹", "：：" + WowuApp.tempPicPath + name + "." + UtilsTool.getFileType(url));
 
+        File dir = new File(WowuApp.tempPicPath);
+        if (dir.exists() == false) {
+            boolean br = dir.mkdirs();
+        }
         Intent intent = new Intent(context, EaseShowBigImageActivity.class);
-        File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + WowuApp.tempPicPath + name + "." + UtilsTool.getFileType(url));
+        File file = new File(WowuApp.tempPicPath + name + "." + UtilsTool.getFileType(url));//Environment.getExternalStorageDirectory().getAbsolutePath() +
         if (file.exists()) {
             Uri uri = Uri.fromFile(file);
             intent.putExtra("uri", uri);
@@ -414,7 +490,8 @@ public class OwnerInfoEditActivity extends BaseLoadActivity implements
         }
 
         try {
-            startActivityForResult(Intent.createChooser(intentFromGallery, "请选择要上传的图片"), ADD_ATTACHMENT);
+//            startActivityForResult(Intent.createChooser(intentFromGallery, "请选择要上传的图片"), ADD_ATTACHMENT);
+            startActivityForResult(intentFromGallery, IMAGE_REQUEST_CODE);
         } catch (android.content.ActivityNotFoundException ex) {
             Toast.makeText(this, "无法选择文件，请先安装文件管理器", Toast.LENGTH_SHORT).show();
         }
@@ -449,7 +526,7 @@ public class OwnerInfoEditActivity extends BaseLoadActivity implements
                     act.userPicAdapter.setData(act.getUserInfoDetail().getPhotos());
                     act.contentRAdapter.setData(act.mUserDetailList);
 
-                    if (act.mUserDetailList != null && act.mUserDetailList.size() > 0) {
+                    if (act.mUserDetailList != null && act.mUserDetailList.size() > 0 && act.mUserDetailList.get(0).getIcon() !=null && act.mUserDetailList.get(0).getIcon().getUrl()!=null) {
                         act.user_pic.setImageURI(Uri.parse(act.mUserDetailList.get(0).getIcon().getUrl()));
                     }
 
@@ -458,13 +535,21 @@ public class OwnerInfoEditActivity extends BaseLoadActivity implements
 
                     break;
                 case ADD_ATTACHMENT:
+                    act.clearOldDrable();
                     UserInfoDetail.PhotosBean temp = new UserInfoDetail.PhotosBean();
                     temp.setLocalPath(msg.obj + "");
                     act.userPicAdapter.addItem(temp);
                     break;
+                case DOWNLOADED_ERROR:
+                    MyToast.show(act, msg.obj+"");
                 case REFERSH_DATA:
                     act.contentRAdapter.notifyDataSetChanged();
                     break;
+
+                case UPLOAD_SUCCESS:
+                    MyToast.show(act, "修改成功");
+                    break;
+
             }
         }
     }
@@ -486,16 +571,16 @@ public class OwnerInfoEditActivity extends BaseLoadActivity implements
     }
 
 
-//    public static final int ln_yingwen_nicheng = 100;
+    //    public static final int ln_yingwen_nicheng = 100;
     public static final int tv_zhongwen_nicheng1 = 101;
     public static final int ln_geren_jieshao = 102;
-//    public static final int ln_shenfenbiaoqian = 103;
+    //    public static final int ln_shenfenbiaoqian = 103;
     public static final int ln_zhiye = 104;
     public static final int ln_school = 105;
     public static final int tv_shenghuodidian = 106;
     public static final int ln_gongzuodidian = 107;
     public static final int ln_changchumodi = 108;
-//    public static final int tv_quguo_jingdian = 109;
+    //    public static final int tv_quguo_jingdian = 109;
     public static final int ln_jiaxiang = 110;
 
 
@@ -504,43 +589,88 @@ public class OwnerInfoEditActivity extends BaseLoadActivity implements
             @Override
             public void convert(CommRecyclerViewHolder viewHolder, UserInfoDetail mainMessage) {
 
-                int temp_huiyuan=0;
-                if( mainMessage.getUserNumber()!=null){
+                int temp_huiyuan = 0;
+                if (mainMessage.getUserNumber() != null) {
                     temp_huiyuan++;
-                    viewHolder.setText(R.id.tv_xianzhihao, mainMessage.getUserNumber());}
+                    viewHolder.setText(R.id.tv_xianzhihao, mainMessage.getUserNumber());
+                }
 
-                if( mainMessage.isIsVip()){
+                if (mainMessage.isIsVip()) {
                     temp_huiyuan++;
-                    viewHolder.setText(R.id.tv_xianzhi_huiyuan, "会员用户");}
+//                    viewHolder.getView(R.id.tv_xianzhi_huiyuan).setVisibility(View.GONE);
+//                    viewHolder.getView(R.id.iv_xianzhi_huiyuan).setVisibility(View.VISIBLE);
 
-                viewHolder.setText(R.id.tv_huiyuan_info,temp_huiyuan+"/2");
+                   if( mainMessage.getVipLevel()==5 ){
+                       ((ImageView)viewHolder.getView(R.id.iv_xianzhi_huiyuan)).setImageResource(R.drawable.svip);
+                   }else{
+                       ((ImageView)viewHolder.getView(R.id.iv_xianzhi_huiyuan)).setImageResource(R.drawable.vip);
+                   }
+
+                }else{
+                    temp_huiyuan++;
+//                    viewHolder.setText(R.id.tv_xianzhi_huiyuan, "普通用户");
+//                    viewHolder.getView(R.id.tv_xianzhi_huiyuan).setVisibility(View.VISIBLE);
+//                    viewHolder.getView(R.id.iv_xianzhi_huiyuan).setVisibility(View.GONE);
+                    ((ImageView)viewHolder.getView(R.id.iv_xianzhi_huiyuan)).setImageResource(R.drawable.no_vip);
+                }
+
+                viewHolder.setText(R.id.tv_huiyuan_info, temp_huiyuan + "/2");
 
 
-                int temp_jiben=0;
-                if( mainMessage.getName()!=null){
+                int temp_jiben = 0;
+                if (mainMessage.getName() != null) {
                     temp_jiben++;
-                    viewHolder.setText(R.id.tv_zhongwen_nicheng1, mainMessage.getName());}
+                    viewHolder.setText(R.id.tv_zhongwen_nicheng1, mainMessage.getName());
+                }
 
 
-                if(  mainMessage.getBirthday()!=null){
+                if (mainMessage.getBirthday() != null) {
                     temp_jiben++;
-                    viewHolder.setText(R.id.ln_birthday, mainMessage.getBirthday() + "");}
+                    viewHolder.setText(R.id.ln_birthday, mainMessage.getBirthday() + "");
+                }
 
-                if(mainMessage.getHome()!=null){
+                if (mainMessage.getHome() != null) {
                     temp_jiben++;
-                    viewHolder.setText(R.id.ln_jiaxiang, mainMessage.getHome());}
+                    viewHolder.setText(R.id.ln_jiaxiang, mainMessage.getHome());
+                }
 
-                if( mainMessage.getDescription()!=null){
+                if (mainMessage.getDescription() != null) {
                     temp_jiben++;
-                    viewHolder.setText(R.id.ln_geren_jieshao, mainMessage.getDescription());}
+                    viewHolder.setText(R.id.ln_geren_jieshao, mainMessage.getDescription());
+                }
 
-                if( mainMessage.getJob()!=null){
+                if (mainMessage.getJob() != null) {
                     temp_jiben++;
-                    viewHolder.setText(R.id.ln_zhiye, mainMessage.getJob() + "");}
+                    viewHolder.setText(R.id.ln_zhiye, mainMessage.getJob() + "");
+                }
 
-                if( mainMessage.getSchool()!=null){
+                if (mainMessage.getSchool() != null) {
                     temp_jiben++;
-                    viewHolder.setText(R.id.ln_school, mainMessage.getSchool());}
+                    viewHolder.setText(R.id.ln_school, mainMessage.getSchool());
+                }
+
+
+
+//                ImageView  iv_xingbie_info
+
+
+                if (mainMessage.getGender() == 0) {  //说明是nv的
+                    ((ImageView)viewHolder.getView(R.id.iv_xingbie_info)).setImageResource(R.drawable.woman);
+                }else{
+                    ((ImageView)viewHolder.getView(R.id.iv_xingbie_info)).setImageResource(R.drawable.man);
+                }
+
+               final boolean temp_CanUpdate=mainMessage.isCanUpdateGender();
+                viewHolder.getView(R.id.iv_xingbie_info).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+//                      if(temp_CanUpdate){
+                          showGenderDialog();
+//                      }else{
+//                          MyToast.show(mContext,"性别只可以更改一次");
+//                      }
+                    }
+                });
 
 
 //                @"保密", @"单身",@"恋爱中", @"已婚", @"同性",
@@ -561,23 +691,30 @@ public class OwnerInfoEditActivity extends BaseLoadActivity implements
                         viewHolder.setText(R.id.ln_feeling, "同性");
                         break;
                 }
-                if( mainMessage.getMaritalStatus()!=0){
-                    temp_jiben++;}
 
-                viewHolder.setText(R.id.tv_jiben_info,temp_jiben+"/7");
 
-                int temp_qita=0;
-                if( mainMessage.getLifeAddress()!=null){
-                    temp_qita++;
-                    viewHolder.setText(R.id.tv_shenghuodidian, mainMessage.getLifeAddress());}
-                if( mainMessage.getJobAddress()!=null){
-                    temp_qita++;
-                    viewHolder.setText(R.id.ln_gongzuodidian, mainMessage.getJobAddress());}
-                if( mainMessage.getDailyAddress()!=null){
-                    temp_qita++;
-                    viewHolder.setText(R.id.ln_changchumodi, mainMessage.getDailyAddress());}
+                if (mainMessage.getMaritalStatus() != 0) {
+                    temp_jiben++;
+                }
 
-                viewHolder.setText(R.id.tv_qita_info,temp_qita+"/3");
+
+                viewHolder.setText(R.id.tv_jiben_info, temp_jiben + "/7");
+
+                int temp_qita = 0;
+                if (mainMessage.getLifeAddress() != null) {
+                    temp_qita++;
+                    viewHolder.setText(R.id.tv_shenghuodidian, mainMessage.getLifeAddress());
+                }
+                if (mainMessage.getJobAddress() != null) {
+                    temp_qita++;
+                    viewHolder.setText(R.id.ln_gongzuodidian, mainMessage.getJobAddress());
+                }
+                if (mainMessage.getDailyAddress() != null) {
+                    temp_qita++;
+                    viewHolder.setText(R.id.ln_changchumodi, mainMessage.getDailyAddress());
+                }
+
+                viewHolder.setText(R.id.tv_qita_info, temp_qita + "/3");
 
 
                 final String description = mainMessage.getDescription();
@@ -589,7 +726,7 @@ public class OwnerInfoEditActivity extends BaseLoadActivity implements
                 final String jobAddress = mainMessage.getJobAddress();
                 final String lifeAddress = mainMessage.getLifeAddress();
                 final String dailyAddress = mainMessage.getDailyAddress();
-                final String visitedAttractions = mainMessage.getVisitedAttractions();
+//                final String visitedAttractions = mainMessage.getVisitedAttractions();
                 final String Home = mainMessage.getHome();
 
                 viewHolder.getView(R.id.ln_feeling).setOnClickListener(new View.OnClickListener() {
@@ -747,11 +884,15 @@ public class OwnerInfoEditActivity extends BaseLoadActivity implements
                     @Override
                     public void onClick(View v) {
                         showDatePickerDialog();
-
                     }
                 });
 
-
+                //说明已经填写完善
+                if(temp_huiyuan ==2 && temp_jiben==7 && temp_qita==3){
+                    rt_tixing.setVisibility(View.GONE);
+                }else{
+                    rt_tixing.setVisibility(View.VISIBLE);
+                }
             }
 
             @Override
@@ -760,6 +901,29 @@ public class OwnerInfoEditActivity extends BaseLoadActivity implements
             }
         };
         return null;
+    }
+
+
+    /**
+     * 当用户修改后，退出时弹出改对话框
+     */
+    private boolean changed = false;
+
+    public void showAlertDialog() {
+        new EaseAlertDialog(mContext, null, "确定放弃编辑吗？", null, new EaseAlertDialog.AlertDialogUser() {
+            @Override
+            public void onResult(boolean confirmed, Bundle bundle) {
+                if (confirmed) {
+                    Bundle bundle2 = new Bundle();
+                    bundle2.putBoolean("changed", changed);//给 bundle 写入数据
+                    Intent mIntent = new Intent();
+                    mIntent.putExtras(bundle2);
+                    setResult(RESULT_OK, mIntent);
+                    OwnerInfoEditActivity.this.finish();
+                    overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                }
+            }
+        }, true).show();
     }
 
 
@@ -786,53 +950,98 @@ public class OwnerInfoEditActivity extends BaseLoadActivity implements
     }
 
 
+    public void showGenderDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+        builder.setTitle("选择性别");
+
+        String[] dialogItems = new String[]{"女", "男"};
+        builder.setItems(dialogItems, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+                mUserDetail.setGender(which);
+                mUserDetailList.remove(0);
+                mUserDetailList.add(mUserDetail);
+
+
+//                modifyXingbie(which);
+
+                Message msg = new Message();
+                msg.what = REFERSH_DATA;
+                mtotalHandler.sendMessage(msg);
+            }
+        });
+
+        builder.create().show();
+    }
+
+    private void modifyXingbie(int which) {
+
+      ;
+        try {
+            JSONObject json = new JSONObject();
+            json.put("userId", WowuApp.UserId );// WowuApp.UserId
+            loadDataService.loadPostJsonRequestData(WowuApp.JSON, WowuApp. UpdateGenderURL+"?gender="+which, json.toString(), UPDATE_SEX);//
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+/*
+//        if (resultCode == RESULT_OK) {
+        if (resultCode == RESULT_OK && requestCode == ADD_ATTACHMENT && null != data) {
+            changed = true;
+            Uri selectedImage = data.getData();
+            String photoPath = getRealFilePath(selectedImage);
 
-        if (resultCode == RESULT_OK) {
-            if (requestCode == ADD_ATTACHMENT && null != data) {
-                Uri selectedImage = data.getData();
-                String[] filePathColumn = {MediaStore.Images.Media.DATA};
-                Cursor cursor = getContentResolver().query(selectedImage, filePathColumn, null, null, null);
-                String photoPath = "";
-                if (cursor != null) {
-                    if (cursor.moveToFirst()) {
-                        //int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-                        int columnIndex = cursor.getColumnIndexOrThrow(filePathColumn[0]);
-                        photoPath = cursor.getString(columnIndex);
-                    }
+            Message msg = new Message();
+            msg.what = ADD_ATTACHMENT;
+            msg.obj = photoPath;
+            mtotalHandler.sendMessage(msg);
 
-                } else {
-                    if (selectedImage != null) {
-                        String tmpPath = selectedImage.getPath();
-                        if (tmpPath != null && (tmpPath.endsWith(".jpg") || tmpPath.endsWith(".png") || tmpPath.endsWith(".gif") || tmpPath.endsWith(".jpeg"))) {
-                            photoPath = tmpPath;
-                        }
-                    }
-                }
-                 if(cursor!=null)cursor.close();
-
-                Message msg = new Message();
-                msg.what = ADD_ATTACHMENT;
-                msg.obj = photoPath;
-                mtotalHandler.sendMessage(msg);
-
-            }
         }
 
 
+        // 结果码不等于取消时候
+        if (resultCode != RESULT_CANCELED) {
+            changed = true;
+            switch (requestCode) {
+                case IMAGE_REQUEST_CODE:
+                    String path = getRealFilePath(data.getData());
+                    String b = path.substring(path.lastIndexOf("/") + 1, path.length());
+                    File dir = new File(WowuApp.userImagePath);
+                    if (dir.exists() == false) {
+                        boolean br = dir.mkdirs();
+                    }
+                    imageUri = Uri.fromFile(new File(WowuApp.userImagePath, b));
+//                    LogUtils.i("OwnerInfoEditActivity名称",WowuApp.userImagePath+b);
+                    startPhotoZoom(data.getData());
+                    break;
+                case RESULT_REQUEST_CODE: // 图片缩放完成后
+                    if (data != null) {
+//                        getImageToView(data);
+                        clearOldDrable();
+//                        usersetting_userpic.setImageURI(imageUri);
+
+                        Message msg = new Message();
+                        msg.what = ADD_ATTACHMENT;
+                        msg.obj = getRealFilePath(imageUri);
+                        LogUtils.i("OwnerInfoEditActivity2", msg.obj + "");
+                        mtotalHandler.sendMessage(msg);
+                    }
+                    break;
+            }
+        }*/
 
 
-
-
-
-
-
-
-
+        sysPhotoCropper.handlerOnActivtyResult(requestCode, resultCode, data);
 
         if (data != null && data.getExtras() != null && resultCode == RESULT_OK) {
+            changed = true;
             Bundle b = data.getExtras(); //data为B中回传的Intent
             Message msg = new Message();
             msg.what = REFERSH_DATA;
@@ -848,7 +1057,7 @@ public class OwnerInfoEditActivity extends BaseLoadActivity implements
 
                     break;*/
                 case tv_zhongwen_nicheng1:
-                    MyToast.show(mContext, b.getString("info"));
+                    //   MyToast.show(mContext, b.getString("info"));
 
                     mUserDetail.setName(b.getString("info"));
                     mUserDetailList.remove(0);
@@ -856,7 +1065,7 @@ public class OwnerInfoEditActivity extends BaseLoadActivity implements
                     mtotalHandler.sendMessage(msg);
                     break;
                 case ln_geren_jieshao:
-                    MyToast.show(mContext, b.getString("info"));
+                    //     MyToast.show(mContext, b.getString("info"));
 
                     mUserDetail.setDescription(b.getString("info"));
                     mUserDetailList.remove(0);
@@ -873,7 +1082,7 @@ public class OwnerInfoEditActivity extends BaseLoadActivity implements
                     break;*/
 
                 case ln_zhiye:
-                    MyToast.show(mContext, b.getString("info"));
+                    //    MyToast.show(mContext, b.getString("info"));
 
                     mUserDetail.setJob(b.getString("info"));
                     mUserDetailList.remove(0);
@@ -882,7 +1091,7 @@ public class OwnerInfoEditActivity extends BaseLoadActivity implements
                     break;
 
                 case ln_school:
-                    MyToast.show(mContext, b.getString("info"));
+                    //   MyToast.show(mContext, b.getString("info"));
 
                     mUserDetail.setSchool(b.getString("info"));
                     mUserDetailList.remove(0);
@@ -891,7 +1100,7 @@ public class OwnerInfoEditActivity extends BaseLoadActivity implements
                     break;
 
                 case tv_shenghuodidian:
-                    MyToast.show(mContext, b.getString("info"));
+                    //    MyToast.show(mContext, b.getString("info"));
 
                     mUserDetail.setLifeAddress(b.getString("info"));
                     mUserDetailList.remove(0);
@@ -899,7 +1108,7 @@ public class OwnerInfoEditActivity extends BaseLoadActivity implements
                     mtotalHandler.sendMessage(msg);
                     break;
                 case ln_gongzuodidian:
-                    MyToast.show(mContext, b.getString("info"));
+                   // MyToast.show(mContext, b.getString("info"));
 
                     mUserDetail.setJobAddress(b.getString("info"));
                     mUserDetailList.remove(0);
@@ -907,7 +1116,7 @@ public class OwnerInfoEditActivity extends BaseLoadActivity implements
                     mtotalHandler.sendMessage(msg);
                     break;
                 case ln_changchumodi:
-                    MyToast.show(mContext, b.getString("info"));
+                    //   MyToast.show(mContext, b.getString("info"));
 
                     mUserDetail.setDailyAddress(b.getString("info"));
                     mUserDetailList.remove(0);
@@ -923,7 +1132,7 @@ public class OwnerInfoEditActivity extends BaseLoadActivity implements
                     mtotalHandler.sendMessage(msg);
                     break;*/
                 case ln_jiaxiang:
-                    MyToast.show(mContext, b.getString("info"));
+                    //   MyToast.show(mContext, b.getString("info"));
                     mUserDetail.setHome(b.getString("info"));
                     mUserDetailList.remove(0);
                     mUserDetailList.add(mUserDetail);
@@ -933,11 +1142,79 @@ public class OwnerInfoEditActivity extends BaseLoadActivity implements
             }
         }
 
-
 //        MyToast.show(mContext,"获取到了返回值");
 
+    }
+
+    private String getRealFilePath(Uri selectedImage) {
+        String[] filePathColumn = {MediaStore.Images.Media.DATA};
+        Cursor cursor = getContentResolver().query(selectedImage, filePathColumn, null, null, null);
+        String photoPath = "";
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                //int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+                int columnIndex = cursor.getColumnIndexOrThrow(filePathColumn[0]);
+                photoPath = cursor.getString(columnIndex);
+            }
+
+        } else {
+            if (selectedImage != null) {
+                String tmpPath = selectedImage.getPath();
+                if (tmpPath != null && (tmpPath.endsWith(".jpg") || tmpPath.endsWith(".png") || tmpPath.endsWith(".gif") || tmpPath.endsWith(".jpeg"))) {
+                    photoPath = tmpPath;
+                }
+            }
+        }
+        if (cursor != null) cursor.close();
+        return photoPath;
+    }
+
+
+    Uri imageUri = Uri.fromFile(new File(Environment.getExternalStorageDirectory(), "image.jpg"));
+
+    /**
+     * @param
+     * @return void
+     * @throws
+     * @Title: clearOldDrable
+     * @Description: 删除过时的缓存
+     */
+    public void clearOldDrable() {
+//        imageLoader.getImageProvider().clearDiskCache();
+//        imageLoader.getImageProvider().clearMemoryCache();
+//        imageLoader.getImageProvider().flushFileCache();
+
+        ImagePipeline imagePipeline = Fresco.getImagePipeline();
+        imagePipeline.evictFromMemoryCache(imageUri);
+        imagePipeline.evictFromDiskCache(imageUri);
+        imagePipeline.evictFromCache(imageUri);
 
     }
+
+    /**
+     * 裁剪图片方法实现
+     *
+     * @param uri
+     */
+    public void startPhotoZoom(Uri uri) {
+        Intent intent = new Intent("com.android.camera.action.CROP");
+        intent.setDataAndType(uri, "image/*");
+        // 设置裁剪
+        intent.putExtra("crop", "true");
+        // aspectX aspectY 是宽高的比例
+        intent.putExtra("aspectX", 1);
+        intent.putExtra("aspectY", 1);
+        // outputX outputY 是裁剪图片宽高
+        intent.putExtra("outputX", 500);
+        intent.putExtra("outputY", 500);
+
+
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
+        intent.putExtra("outputFormat", "JPEG");// 返回格式
+        intent.putExtra("return-data", true);
+        startActivityForResult(intent, RESULT_REQUEST_CODE);
+    }
+
 
     private ProgressDialog pd;
 
@@ -975,13 +1252,13 @@ public class OwnerInfoEditActivity extends BaseLoadActivity implements
             json.put("JobAddress", mUserDetail.getJobAddress());
             json.put("LifeAddress", mUserDetail.getLifeAddress());
             json.put("DailyAddress", mUserDetail.getDailyAddress());
-
+            json.put("Gender", mUserDetail.getGender());
             json.put("userId", WowuApp.UserId);
-            json.put("lon", settings.getString("latitude", ""));
-            json.put("lat", settings.getString("longitude", ""));
+            json.put("lon", settings.getString("latitude", "31.196542"));
+            json.put("lat", settings.getString("longitude","121.716733"));
 
 
-//            Log.i("上传到服务器的用户编辑资料为0：：：：：", json.toString());
+//            //LogUtils.i("上传到服务器的用户编辑资料为0：：：：：", json.toString());
 
 //
             if (userPicAdapter.getList() != null && userPicAdapter.getList().size() > 0) {
@@ -1007,7 +1284,7 @@ public class OwnerInfoEditActivity extends BaseLoadActivity implements
 
             }
 
-//            Log.i("上传到服务器的用户编辑资料为：：：：：", json.toString());
+//            //LogUtils.i("上传到服务器的用户编辑资料为：：：：：", json.toString());
 //            UtilsTool.saveStringToSD(json.toString());
             loadDataService.loadPostJsonRequestData(WowuApp.JSON, WowuApp.UpdateUserInfoURL, json.toString(), R.id.tx_top_right);
 
@@ -1018,20 +1295,34 @@ public class OwnerInfoEditActivity extends BaseLoadActivity implements
 
     @Override
     public void onBackPressed() {
-        finish();
-//        overridePendingTransition(0, R.anim.slide_out_to_left);
-        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+
+        if (changed) {
+            showAlertDialog();
+        } else {
+
+            Bundle bundle = new Bundle();
+            bundle.putBoolean("changed", changed);//给 bundle 写入数据
+            Intent mIntent = new Intent();
+            mIntent.putExtras(bundle);
+            setResult(RESULT_OK, mIntent);
+            this.finish();
+            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+        }
     }
 
 
     public void showDatePickerDialog() {
         final Calendar c = Calendar.getInstance();
-        int year = c.get(Calendar.YEAR);
+        int year = c.get(Calendar.YEAR)-16;
         int month = c.get(Calendar.MONTH);
         int day = c.get(Calendar.DAY_OF_MONTH);
 
-        // Create a new instance of DatePickerDialog and return it
+
+        // Create a new instance of DatePickerDialog and return itl
         DatePickerDialog datePickerDialog = new DatePickerDialog(this, this, year, month, day);
+        c.set(year,month,day);
+//        datePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis()-16*365*24*3600*1000l);  //设置日期最大值
+        datePickerDialog.getDatePicker().setMaxDate(c.getTimeInMillis()); 
         datePickerDialog.show();
     }
 
@@ -1039,7 +1330,7 @@ public class OwnerInfoEditActivity extends BaseLoadActivity implements
     public void onDateSet(DatePicker view, int year, int month, int day) {
         Message msg = new Message();
         msg.what = REFERSH_DATA;
-        mUserDetail.setBirthday(year + " " + month + " " + day);
+        mUserDetail.setBirthday(year + " " + (month+1) + " " + day);
         mUserDetailList.remove(0);
         mUserDetailList.add(mUserDetail);
         mtotalHandler.sendMessage(msg);

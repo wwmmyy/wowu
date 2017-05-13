@@ -27,7 +27,7 @@ import com.hyphenate.chat.EMGroup;
 import com.hyphenate.chat.EMGroupInfo;
 import com.hyphenate.exceptions.HyphenateException;
 
-import im.wuwo.com.wuwo.R;
+import im.imxianzhi.com.imxianzhi.R;
 
 public class GroupSimpleDetailActivity extends BaseActivity {
 	private Button btn_add_group;

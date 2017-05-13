@@ -63,21 +63,20 @@
 
         <com.facebook.drawee.view.SimpleDraweeView
             android:id="@+id/user_login_pic"
-            android:layout_width="95dp"
-            android:layout_height="95dp"
+            android:layout_width="90dp"
+            android:layout_height="90dp"
             android:layout_below="@id/rt_top"
             android:layout_centerHorizontal="true"
             android:layout_centerInParent="true"
             android:layout_centerVertical="true"
             android:layout_marginTop="10dp"
-            dist:placeholderImage="@drawable/icon"
-            dist:roundAsCircle="true"
-          />
-<!--        dist:progressBarAutoRotateInterval="2000"
-        dist:progressBarImage="@drawable/con_progress_bar"
-        dist:progressBarImageScaleType="centerInside"
-           dist:roundingBorderColor="@color/white"
-            dist:roundingBorderWidth="2dp"-->
+            dist:placeholderImage="@drawable/placeholder"
+            dist:roundAsCircle="true" />
+        <!--        dist:progressBarAutoRotateInterval="2000"
+                dist:progressBarImage="@drawable/con_progress_bar"
+                dist:progressBarImageScaleType="centerInside"
+                   dist:roundingBorderColor="@color/white"
+                    dist:roundingBorderWidth="2dp"-->
 
         <TextView
             android:id="@+id/tv_user_typename"
@@ -89,7 +88,7 @@
             android:singleLine="true"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="@color/white"
-            android:textSize="22sp" />
+            android:textSize="20sp" />
 
         <TextView
             android:id="@+id/tv_user_typeintro"
@@ -97,6 +96,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/tv_user_typename"
             android:layout_centerHorizontal="true"
+            android:layout_marginBottom="15dp"
             android:layout_marginTop="8dp"
             android:gravity="center"
             android:textColor="@color/white"
@@ -122,7 +122,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="6dp"
-            android:text="72% 明显"
+            android:text=" "
             android:textColor="@color/colorPrimary"
             android:textSize="17sp"
             android:textStyle="bold" />
@@ -133,19 +133,18 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="260dp"
+        android:layout_height="275dp"
+        android:layout_marginTop="@dimen/activity_horizontal_margin"
         android:background="@color/app_bg"
         android:gravity="center"
-        android:layout_marginTop="@dimen/activity_horizontal_margin"
-         android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
         android:paddingRight="@dimen/activity_horizontal_margin">
-
 
 
         <LinearLayout
             android:id="@+id/ll_character1"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
+            android:layout_height="50dp"
             android:layout_marginTop="15dp"
             android:gravity="center"
             android:orientation="horizontal">
@@ -170,15 +169,15 @@
                 android:text="I 内向 "
                 android:textSize="16sp" />
         </LinearLayout>
+
         <LinearLayout
             android:id="@+id/ll_character1_dec"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
+            android:layout_height="50dp"
             android:layout_below="@id/ll_character1"
+            android:layout_marginTop="-50dp"
             android:gravity="center"
-            android:layout_marginTop="-40dp"
-            android:orientation="horizontal"
-            >
+            android:orientation="horizontal">
             <!--android:paddingTop="@dimen/activity_vertical_margin"-->
 
             <TextView
@@ -206,9 +205,9 @@
         <LinearLayout
             android:id="@+id/ll_character2"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_marginTop="20dp"
+            android:layout_height="50dp"
             android:layout_below="@id/ll_character1"
+            android:layout_marginTop="15dp"
             android:gravity="center"
             android:orientation="horizontal">
 
@@ -232,12 +231,13 @@
                 android:text="N 直觉"
                 android:textSize="16sp" />
         </LinearLayout>
+
         <LinearLayout
             android:id="@+id/ll_character2_dec"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
+            android:layout_height="50dp"
             android:layout_below="@id/ll_character2"
-            android:layout_marginTop="-40dp"
+            android:layout_marginTop="-50dp"
             android:gravity="center"
             android:orientation="horizontal">
 
@@ -263,13 +263,12 @@
         </LinearLayout>
 
 
-
         <LinearLayout
             android:id="@+id/ll_character3"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_marginTop="20dp"
+            android:layout_height="50dp"
             android:layout_below="@id/ll_character2"
+            android:layout_marginTop="15dp"
             android:gravity="center"
             android:orientation="horizontal">
 
@@ -293,12 +292,13 @@
                 android:text="F 情感"
                 android:textSize="16sp" />
         </LinearLayout>
+
         <LinearLayout
             android:id="@+id/ll_character3_dec"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_marginTop="-40dp"
+            android:layout_height="50dp"
             android:layout_below="@id/ll_character3"
+            android:layout_marginTop="-50dp"
             android:gravity="center"
             android:orientation="horizontal">
 
@@ -324,13 +324,12 @@
         </LinearLayout>
 
 
-
         <LinearLayout
             android:id="@+id/ll_character4"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_marginTop="20dp"
+            android:layout_height="50dp"
             android:layout_below="@id/ll_character3"
+            android:layout_marginTop="15dp"
             android:gravity="center"
             android:orientation="horizontal">
 
@@ -354,12 +353,13 @@
                 android:text="P 知觉"
                 android:textSize="16sp" />
         </LinearLayout>
+
         <LinearLayout
             android:id="@+id/ll_character4_dec"
-            android:layout_marginTop="-40dp"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
+            android:layout_height="50dp"
             android:layout_below="@id/ll_character4"
+            android:layout_marginTop="-50dp"
             android:gravity="center"
             android:orientation="horizontal">
 
@@ -386,11 +386,11 @@
 
 
         <View
-            android:layout_width="2dp"
+            android:layout_width="3dp"
             android:layout_height="match_parent"
             android:layout_centerInParent="true"
-            android:background="@color/red_color"
-            android:src="@drawable/mate_blue3" />
+            android:visibility="gone"
+            android:background="@color/red_color" />
 
     </RelativeLayout>
 

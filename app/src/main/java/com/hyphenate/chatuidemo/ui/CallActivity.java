@@ -22,7 +22,7 @@ import com.hyphenate.media.EMOppositeSurfaceView;
 import com.hyphenate.util.EMLog;
 import com.hyphenate.util.NetUtils;
 
-import im.wuwo.com.wuwo.R;
+import im.imxianzhi.com.imxianzhi.R;
 
 public class CallActivity extends BaseActivity {
     protected final int MSG_CALL_MAKE_VIDEO = 0;

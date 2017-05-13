@@ -13,7 +13,7 @@ import com.wuwo.im.bean.newsMessage;
 
 import java.util.List;
 
-import im.wuwo.com.wuwo.R;
+import im.imxianzhi.com.imxianzhi.R;
 
 /**
  * Created by WuXiaolong on 2015/7/2.

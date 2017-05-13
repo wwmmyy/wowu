@@ -51,7 +51,6 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
-                android:visibility="gone"
                 android:orientation="vertical"
                 android:padding="10dp" >
 
@@ -59,14 +58,17 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:src="@drawable/refresh"/>
+                    />
+                <!--android:src="@drawable/refresh"-->
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
+                    android:padding="15dp"
                     android:gravity="center_horizontal"
-                    android:text="暂无内容" />
+                    android:text="暂无内容"
+                    android:textSize="17sp"/>
             </LinearLayout>
 
         </RelativeLayout>

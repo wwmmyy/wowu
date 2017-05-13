@@ -14,7 +14,7 @@ import com.wuwo.im.util.LogUtils;
 *desc BaseFragment
 *@author 王明远
 *created at 2015/12/21 10:17
- * 上海数慧系统有限公司
+ *
 */
 public abstract class BaseAppFragment extends Fragment {
 

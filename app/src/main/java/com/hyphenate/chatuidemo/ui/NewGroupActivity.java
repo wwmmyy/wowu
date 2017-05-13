@@ -31,7 +31,7 @@ import com.hyphenate.chat.EMGroupManager.EMGroupStyle;
 import com.hyphenate.easeui.widget.EaseAlertDialog;
 import com.hyphenate.exceptions.HyphenateException;
 
-import im.wuwo.com.wuwo.R;
+import im.imxianzhi.com.imxianzhi.R;
 
 public class NewGroupActivity extends BaseActivity {
 	private EditText groupNameEditText;

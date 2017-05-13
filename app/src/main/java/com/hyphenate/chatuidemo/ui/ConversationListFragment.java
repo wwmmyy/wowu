@@ -10,7 +10,6 @@ import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.easemob.redpacketui.RedPacketConstant;
 import com.hyphenate.chat.EMClient;
@@ -24,7 +23,7 @@ import com.hyphenate.easeui.widget.EaseConversationList.EaseConversationListHelp
 import com.hyphenate.exceptions.HyphenateException;
 import com.hyphenate.util.NetUtils;
 
-import im.wuwo.com.wuwo.R;
+import im.imxianzhi.com.imxianzhi.R;
 
 public class ConversationListFragment extends EaseConversationListFragment{
 
@@ -49,10 +48,20 @@ public class ConversationListFragment extends EaseConversationListFragment{
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 EMConversation conversation = conversationListView.getItem(position);
                 String username = conversation.getUserName();
-                if (username.equals(EMClient.getInstance().getCurrentUser()))
-                    Toast.makeText(getActivity(), R.string.Cant_chat_with_yourself, Toast.LENGTH_SHORT).show();
-                else {
+//                if (username.equals(EMClient.getInstance().getCurrentUser()))
+//                    Toast.makeText(getActivity(), R.string.Cant_chat_with_yourself, Toast.LENGTH_SHORT).show();
+//                else {
                     // start chat acitivity
+
+                ;
+
+
+//                Gson temp=new Gson();
+//                LogUtils.i("会话列表", "：" +  temp.toJson(conversationListView.getConversations()));
+
+
+
+
                     Intent intent = new Intent(getActivity(), ChatActivity.class);
                     if(conversation.isGroup()){
                         if(conversation.getType() == EMConversationType.ChatRoom){
@@ -67,7 +76,7 @@ public class ConversationListFragment extends EaseConversationListFragment{
                     intent.putExtra(Constant.EXTRA_USER_ID, username);
                     startActivity(intent);
                     getActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-                }
+//                }
             }
         });
         conversationListView.setConversationListHelper(new EaseConversationListHelper() {

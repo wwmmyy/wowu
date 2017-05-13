@@ -13,7 +13,7 @@ import android.widget.RelativeLayout;
 import com.wuwo.im.config.WowuApp;
 import com.wuwo.im.view.MyScrollLayout;
 
-import im.wuwo.com.wuwo.R;
+import im.imxianzhi.com.imxianzhi.R;
 /** 
 *desc WelcomeActivity
 *@author 王明远

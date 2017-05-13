@@ -15,7 +15,6 @@ import android.os.Handler;
 import android.os.Message;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -23,6 +22,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,6 +34,7 @@ import com.facebook.drawee.generic.GenericDraweeHierarchy;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.hyphenate.EMCallBack;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMCmdMessageBody;
 import com.hyphenate.chat.EMGroup;
@@ -45,18 +46,19 @@ import com.hyphenate.chatuidemo.domain.EmojiconExampleGroupData;
 import com.hyphenate.chatuidemo.domain.RobotUser;
 import com.hyphenate.chatuidemo.widget.ChatRowVoiceCall;
 import com.hyphenate.easeui.EaseConstant;
-import com.hyphenate.easeui.ui.EaseChatFragment;
-import com.hyphenate.easeui.ui.EaseChatFragment.EaseChatFragmentHelper;
 import com.hyphenate.easeui.widget.chatrow.EaseChatRow;
 import com.hyphenate.easeui.widget.chatrow.EaseCustomChatRowProvider;
 import com.hyphenate.easeui.widget.emojicon.EaseEmojiconMenu;
 import com.hyphenate.exceptions.HyphenateException;
+import com.hyphenate.util.DateUtils;
 import com.hyphenate.util.EasyUtils;
 import com.hyphenate.util.PathUtil;
+import com.wuwo.im.activity.MainActivity;
 import com.wuwo.im.activity.UserInfoEditActivity;
 import com.wuwo.im.bean.LocalUser;
 import com.wuwo.im.bean.SanGuan;
 import com.wuwo.im.config.WowuApp;
+import com.wuwo.im.util.LogUtils;
 import com.wuwo.im.util.MyToast;
 import com.wuwo.im.util.UtilsTool;
 import com.zhy.http.okhttp.service.LoadserverdataService;
@@ -70,9 +72,9 @@ import java.lang.ref.WeakReference;
 import java.util.List;
 import java.util.Map;
 
-import im.wuwo.com.wuwo.R;
+import im.imxianzhi.com.imxianzhi.R;
 
-public class ChatFragment extends EaseChatFragment implements EaseChatFragmentHelper, loadServerDataListener {
+public class ChatFragment extends EaseChatFragment implements EaseChatFragment.EaseChatFragmentHelper, loadServerDataListener {
 
     // constant start from 11 to avoid conflict with constant in base class
     private static final int ITEM_VIDEO = 11;
@@ -137,12 +139,16 @@ public class ChatFragment extends EaseChatFragment implements EaseChatFragmentHe
 
             @Override
             public void onClick(View v) {
-                if (EasyUtils.isSingleActivity(getActivity())) {
-                    Intent intent = new Intent(getActivity(), MainActivity.class);
-                    startActivity(intent);
+                try {
+                    if (EasyUtils.isSingleActivity(getActivity())) {
+                        Intent intent = new Intent(getActivity(), MainActivity.class);
+                        startActivity(intent);
+                    }
+                    getActivity().finish();
+                    getActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
-                getActivity().finish();
-                getActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
 
             }
         });
@@ -153,23 +159,104 @@ public class ChatFragment extends EaseChatFragment implements EaseChatFragmentHe
 
 //        toChatUsername
 
-//
+/*
+
+        EMClient.getInstance().chatManager().addMessageListener(new EMMessageListener() {
+            @Override
+            public void onMessageReceived(List<EMMessage> messages) {
+                // notify new message
+                for (EMMessage message : messages) {
+                    DemoHelper.getInstance().getNotifier().onNewMsg(message);
+                }
+            }
+
+            @Override
+            public void onCmdMessageReceived(List<EMMessage> messages) {
+                for (EMMessage message : messages) {
+                    EMCmdMessageBody cmdMsgBody = (EMCmdMessageBody) message.getBody();
+                    final String action = cmdMsgBody.action();//get the action user defined in command message
+                    if (action.equals(RedPacketConstant.REFRESH_GROUP_RED_PACKET_ACTION) && message.getChatType() == EMMessage.ChatType.GroupChat) {
+                        RedPacketUtil.receiveRedPacketAckMessage(message);
+                    }
+
+                    Toast.makeText(getActivity(), "本功能后续完善111：", Toast.LENGTH_SHORT).show();
+                    if (action.equals("REVOKE_FLAG")) {
+                        try {
+                            String msgId = message.getStringAttribute("msgId");
+                            Toast.makeText(getActivity(), "本功能后续完善2：" + msgId, Toast.LENGTH_SHORT).show();
+//                            EMConversation conversation = EMClient.getInstance().chatManager().getConversation(message.getFrom());
+//                            --删除消息来表示撤回--
+                            conversation.removeMessage(msgId);
+                            // 如果需要，可以插入一条“XXX回撤一条消息”
+                        } catch (Exception e) {
+                            // TODO Auto-generated catch block
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onMessageReadAckReceived(List<EMMessage> messages) {
+            }
+
+            @Override
+            public void onMessageDeliveryAckReceived(List<EMMessage> message) {
+            }
+
+            @Override
+            public void onMessageChanged(EMMessage message, Object change) {
+            }
+        });
+*/
+
+
+/*
+        EMChatManager.getInstance().registerEventListener(new EMEventListener() {
+
+            @Override
+            public void onEvent(EMNotifierEvent event) {
+                switch (event.getEvent()) {
+                    case EventNewCMDMessage: // CMD消息
+                    {
+                        EMMessage message = (EMMessage) event.getData();
+                        CmdMessageBody cmdMsgBody = (CmdMessageBody) message.getBody();
+                        String action = cmdMsgBody.action;//获取自定义action
+                        if(action.equals("REVOKE_FLAG")){
+                            try {
+                                String msgId = message.getStringAttribute("msgId");
+                                EMConversation conversation = EMChatManager.getInstance().getConversation(message.getFrom());
+                                --删除消息来表示撤回--
+                                conversation.removeMessage(msgId);
+                                // 如果需要，可以插入一条“XXX回撤一条消息”
+                            } catch (EaseMobException e) {
+                                // TODO Auto-generated catch block
+                                e.printStackTrace();
+                            }
+                        }
+                        break;
+                    }
+                    default:
+                        break;
+                }
+            }
+        }, new EMNotifierEvent.Event[] { EMNotifierEvent.Event.EventNewCMDMessage});*/
+
 
         titleBar.getRight_image_user().setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent2 = new Intent(getActivity(), UserInfoEditActivity.class);
-                LocalUser.DataBean temp=new LocalUser.DataBean();
+                LocalUser.DataBean temp = new LocalUser.DataBean();
                 temp.setUserId((toChatUsername != null && !toChatUsername.equals("")) == true ? toChatUsername : chatUserId);
-                if(mSanGuan!=null){
+                if (mSanGuan != null) {
                     temp.setPhotoUrl(mSanGuan.getUserPhotoUrl2());
                 }
-                intent2.putExtra("localUser",temp);
+                intent2.putExtra("localUser", temp);
                 startActivity(intent2);
                 getActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
             }
         });
-
 
 
         ((EaseEmojiconMenu) inputMenu.getEmojiconMenu()).addEmojiconGroup(EmojiconExampleGroupData.getData());
@@ -218,7 +305,15 @@ public class ChatFragment extends EaseChatFragment implements EaseChatFragmentHe
             public void onClick(View v) {
 
                 if (mSanGuan != null && mSanGuan.getTitle() != null) { //说明起始加载三观配内容成功
-                    showSanguanPickDialog();
+//                    showSanguanPickDialog();
+                    if (mSanGuan.getSuccessfully() != 2) {
+                        showSanguanPickDialog();
+                    } else {
+//                        MyToast.show(getActivity(), "普通会员每天只可配对三次");
+                        UtilsTool temp = new UtilsTool();
+                        temp.showSetVipDialog(getActivity());
+                    }
+
                 } else {
 
                     pd = UtilsTool.initProgressDialog(getActivity(), "请稍后...");
@@ -244,7 +339,7 @@ public class ChatFragment extends EaseChatFragment implements EaseChatFragmentHe
                     json.put("userId", mchatUserId);
                     loadDataService.loadPostJsonRequestData(WowuApp.JSON, WowuApp.MatchURL + "?userId=" + mchatUserId, json.toString(), SANGUAN_PICK0);
 
-                    Log.i("ChatFragment::", WowuApp.MatchURL + "?userId=" + mchatUserId + "toChatUsername::" + toChatUsername);
+                    LogUtils.i("ChatFragment::", WowuApp.MatchURL + "?userId=" + mchatUserId + "toChatUsername::" + toChatUsername);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -277,13 +372,21 @@ public class ChatFragment extends EaseChatFragment implements EaseChatFragmentHe
 
         TextView tv_sanguan_user1 = (TextView) view.findViewById(com.hyphenate.easeui.R.id.tv_sanguan_user1);
         TextView tv_sanguan_user2 = (TextView) view.findViewById(com.hyphenate.easeui.R.id.tv_sanguan_user2);
-        tv_sanguan_user2.setText(getActivity().getSharedPreferences(WowuApp.PREFERENCE_KEY, getActivity().MODE_PRIVATE).getString("Name", "http://#"));
+        tv_sanguan_user1.setText(getActivity().getSharedPreferences(WowuApp.PREFERENCE_KEY, getActivity().MODE_PRIVATE).getString("Name", "http://#"));
         if (mSanGuan != null) {
-            tv_sanguan_user1.setText(mSanGuan.getUserName2());
+            tv_sanguan_user1.setText(mSanGuan.getUserName1());
+            tv_sanguan_user2.setText(mSanGuan.getUserName2());
+        }
+
+        ImageView iv_link = (ImageView) view.findViewById(com.hyphenate.easeui.R.id.iv_link);
+        if (mSanGuan.getUserGender2() == 1) {
+            iv_link.setImageResource(R.drawable.btn_sanguanpei_blue);
+        } else {
+//            act.iv_sanguan_pick.setImageResource(R.drawable.mate_red);
         }
 
 
-        TextView genderm = (TextView) view.findViewById(com.hyphenate.easeui.R.id.tvage_gender1_male);
+        TextView genderm1 = (TextView) view.findViewById(com.hyphenate.easeui.R.id.tvage_gender1_male);
 //        TextView genderw = (TextView) view.findViewById(com.hyphenate.easeui.R.id.tvage_gender1_female);
 //        if (mSanGuan.getUserGender2() == 0) {
 //            genderm.setVisibility(View.VISIBLE);
@@ -295,7 +398,7 @@ public class ChatFragment extends EaseChatFragment implements EaseChatFragmentHe
 //            genderw.setText(mSanGuan.getUserAge2() + "");
 //        }
 
-        genderm.setText(mSanGuan.getUserAge2() + " | " + mSanGuan.getUserDisposition2());
+        genderm1.setText(mSanGuan.getUserAge1() == 0 ? mSanGuan.getUserDisposition1() : mSanGuan.getUserAge1() + " | " + mSanGuan.getUserDisposition1());
 
         TextView genderm2 = (TextView) view.findViewById(com.hyphenate.easeui.R.id.tvage_gender2_male);
 //        TextView genderw2 = (TextView) view.findViewById(com.hyphenate.easeui.R.id.tvage_gender2_female);
@@ -309,19 +412,19 @@ public class ChatFragment extends EaseChatFragment implements EaseChatFragmentHe
 //            genderw2.setText(mSanGuan.getUserAge1() + "");
 //        }
 
-        genderm2.setText(mSanGuan.getUserAge1() + " | " + mSanGuan.getUserDisposition1());
+        genderm2.setText(mSanGuan.getUserAge2() == 0 ? mSanGuan.getUserDisposition2() : mSanGuan.getUserAge2() + " | " + mSanGuan.getUserDisposition2());
 
 
 /*        TextView genderm1 = (TextView) view.findViewById(com.hyphenate.easeui.R.id.tvage_gender2_male);
         TextView genderw1 = (TextView) view.findViewById(com.hyphenate.easeui.R.id.tvage_gender2_female);
-        if (getActivity().getSharedPreferences(WowuApp.PREFERENCE_KEY, getActivity().MODE_PRIVATE).getInt("Gender", 0) == 0) {
+        if (mContext.getSharedPreferences(WowuApp.PREFERENCE_KEY, mContext.MODE_PRIVATE).getInt("Gender", 0) == 0) {
             genderm1.setVisibility(View.VISIBLE);
             genderw1.setVisibility(View.GONE);
-            genderm1.setText(getActivity().getSharedPreferences(WowuApp.PREFERENCE_KEY, getActivity().MODE_PRIVATE).getInt("Gender", 0) + "");
+            genderm1.setText(mContext.getSharedPreferences(WowuApp.PREFERENCE_KEY, mContext.MODE_PRIVATE).getInt("Gender", 0) + "");
         } else {
             genderm1.setVisibility(View.GONE);
             genderw1.setVisibility(View.VISIBLE);
-            genderw1.setText(getActivity().getSharedPreferences(WowuApp.PREFERENCE_KEY, getActivity().MODE_PRIVATE).getInt("Gender", 0) + "");
+            genderw1.setText(mContext.getSharedPreferences(WowuApp.PREFERENCE_KEY, mContext.MODE_PRIVATE).getInt("Gender", 0) + "");
         }*/
 
         TextView tv_sanguan_result = (TextView) view.findViewById(com.hyphenate.easeui.R.id.tv_sanguan_result);
@@ -333,7 +436,7 @@ public class ChatFragment extends EaseChatFragment implements EaseChatFragmentHe
             tv_sanguan_shuoming.setText(mSanGuan.getDescription());
 
 
-            SimpleDraweeView draweeView = (SimpleDraweeView) view.findViewById(com.hyphenate.easeui.R.id.sdv_sanguan_pic2 );
+            SimpleDraweeView draweeView1 = (SimpleDraweeView) view.findViewById(com.hyphenate.easeui.R.id.sdv_sanguan_pic1);
 //        if (toChatUsername != null && EaseImageUtils.usersPhotoUrl.get(toChatUsername) != null) {
 //            draweeView.setImageURI(Uri.parse(EaseImageUtils.usersPhotoUrl.get(toChatUsername)));//"http://w messageList.getItem(0).getTo()
 //        } else if (iconPath != null) {
@@ -341,24 +444,28 @@ public class ChatFragment extends EaseChatFragment implements EaseChatFragmentHe
 //        }
 
 
-            draweeView.setImageURI(Uri.parse(mSanGuan.getUserPhotoUrl1()));
-            SimpleDraweeView draweeView2 = (SimpleDraweeView) view.findViewById(com.hyphenate.easeui.R.id.sdv_sanguan_pic1);
-//        draweeView2.setImageURI(Uri.parse( EaseImageUtils.usersPhotoUrl.get( getActivity().getSharedPreferences(WowuApp.PREFERENCE_KEY,getActivity().MODE_PRIVATE).getString("UserId", "http://#"))));//"http://w messageList.getItem(0).getFrom() WowuApp.UserId EMClient.getInstance().getCurrentUser()
+            if (mSanGuan.getUserPhotoUrl1() != null && Uri.parse(mSanGuan.getUserPhotoUrl1()) != null) {
+                draweeView1.setImageURI(Uri.parse(mSanGuan.getUserPhotoUrl1()));
+            }
+            SimpleDraweeView draweeView2 = (SimpleDraweeView) view.findViewById(com.hyphenate.easeui.R.id.sdv_sanguan_pic2);
+//        draweeView2.setImageURI(Uri.parse( EaseImageUtils.usersPhotoUrl.get( mContext.getSharedPreferences(WowuApp.PREFERENCE_KEY,mContext.MODE_PRIVATE).getString("UserId", "http://#"))));//"http://w messageList.getItem(0).getFrom() WowuApp.UserId EMClient.getInstance().getCurrentUser()
 //        draweeView2.setImageURI(Uri.parse(WowuApp.iconPath));
-            draweeView2.setImageURI(Uri.parse(mSanGuan.getUserPhotoUrl2()));
-            GenericDraweeHierarchy hierarchy2 = draweeView.getHierarchy();
-            GenericDraweeHierarchy hierarchy1 = draweeView2.getHierarchy();
+            if (mSanGuan.getUserPhotoUrl2() != null) {
+                draweeView2.setImageURI(Uri.parse(mSanGuan.getUserPhotoUrl2()));
+            }
+            GenericDraweeHierarchy hierarchy1 = draweeView1.getHierarchy();
+            GenericDraweeHierarchy hierarchy2 = draweeView2.getHierarchy();
 
             if (mSanGuan.getUserGender1() == 1) {
-                hierarchy1.setControllerOverlay(getResources().getDrawable(R.drawable.overlay_male));
+                hierarchy1.setControllerOverlay(getResources().getDrawable(R.drawable.overlay_male1));
             } else {
-                hierarchy1.setControllerOverlay(getResources().getDrawable(R.drawable.overlay_fmale));
+                hierarchy1.setControllerOverlay(getResources().getDrawable(R.drawable.overlay_fmale1));
             }
 
             if (mSanGuan.getUserGender2() == 1) {
-                hierarchy2.setControllerOverlay(getResources().getDrawable(R.drawable.overlay_male));
+                hierarchy2.setControllerOverlay(getResources().getDrawable(R.drawable.overlay_male1));
             } else {
-                hierarchy2.setControllerOverlay(getResources().getDrawable(R.drawable.overlay_fmale));
+                hierarchy2.setControllerOverlay(getResources().getDrawable(R.drawable.overlay_fmale1));
             }
         }
 
@@ -376,7 +483,9 @@ public class ChatFragment extends EaseChatFragment implements EaseChatFragmentHe
         dialog.onWindowAttributesChanged(wl);
         // 设置点击外围解散
         dialog.setCanceledOnTouchOutside(true);
-        dialog.show();
+        if(!((Activity) getActivity()).isFinishing()) {
+            dialog.show();
+        }
     }
 
 
@@ -413,12 +522,82 @@ public class ChatFragment extends EaseChatFragment implements EaseChatFragmentHe
                     break;
 
                 case ContextMenuActivity.RESULT_CODE_FORWARD: // forward
-                    Intent intent = new Intent(getActivity(), ForwardMessageActivity.class);
-                    intent.putExtra("forward_msg_id", contextMenuMessage.getMsgId());
-                    startActivity(intent);
-                    getActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-                    break;
+//                    Intent intent = new Intent(getActivity(), ForwardMessageActivity.class);
+//                    intent.putExtra("forward_msg_id", contextMenuMessage.getMsgId());
+//                    startActivity(intent);
+//                    getActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+//                    conversation.getExtField()
 
+                    if( ! contextMenuMessage.getFrom().equals(WowuApp.UserId)){
+                        Message msg = new Message();
+                        msg.what = CANNOT_BACK;
+                        mtotalHandler.sendMessage(msg);
+//                        return;
+                        break;
+
+                    }else if(System.currentTimeMillis()- contextMenuMessage.getMsgTime() > 300*1000L ){//超过两分钟就无法撤回了DateUtils.isCloseEnough(System.currentTimeMillis(), contextMenuMessage.getMsgTime())
+                        Message msg = new Message();
+                        msg.what = CANNOT_BACK_OUTOFTIME;
+                        mtotalHandler.sendMessage(msg);
+//                        return;
+                        break;
+                    }
+
+
+
+//
+//                    EMMessage cmdMsg = EMMessage.createSendMessage(EMMessage.Type.CMD);
+//                    String action = "REVOKE_FLAG";
+//                    EMCmdMessageBody cmdBody = new EMCmdMessageBody(action);
+//// 设置消息body
+//                    cmdMsg.addBody(cmdBody);
+//// 设置要发给谁，用户username或者群聊groupid
+//                    cmdMsg.setReceipt(toChatUsername);
+//// 通过扩展字段添加要撤回消息的id
+//                    cmdMsg.setAttribute("msgId", contextMenuMessage.getMsgId());
+//                    EMClient.getInstance().chatManager().sendMessage(cmdMsg);
+//
+////                    sendMessage(cmdMsg);
+//
+//                    cmdMsg.setMessageStatusCallback(new EMCallBack() {
+//                        @Override
+//                        public void onSuccess() {
+//                            LogUtils.i("ChatFragment :::", "::onSuccess" + contextMenuMessage.getFrom() + ":" + contextMenuMessage.getUserName());
+//
+//                            Message msg = new Message();
+//                            msg.what = BCAK_SUCCESS;
+//                            mtotalHandler.sendMessage(msg);
+//                        }
+//
+//                        @Override
+//                        public void onError(int i, String s) {
+//                            LogUtils.i("ChatFragment :::", "::onError");
+//                        }
+//
+//                        @Override
+//                        public void onProgress(int i, String s) {
+//                        }
+//                    });
+//
+//                    conversation.removeMessage(contextMenuMessage.getMsgId());
+////创建一条文本消息，content为消息文字内容，toChatUsername为对方用户或者群聊的id，后文皆是如此
+////                    EMMessage message = EMMessage.createTxtSendMessage("对方撤回了一条消息", toChatUsername);
+////                    EMClient.getInstance().chatManager().sendMessage(message);
+                    conversation.removeMessage(contextMenuMessage.getMsgId());
+                    EMMessage message3 = EMMessage.createTxtSendMessage(" ", toChatUsername);
+                    message3.setAttribute("action","REVOKE_FLAG");
+                    message3.setAttribute("msgId",contextMenuMessage.getMsgId());
+//                    conversation.insertMessage(message3);
+                    EMClient.getInstance().chatManager().sendMessage(message3);
+
+
+//                    EMMessage message2 = EMMessage.createTxtSendMessage("你撤回了一条消息", toChatUsername);
+//                    message2.setStatus(EMMessage.Status.SUCCESS);
+//                    conversation.insertMessage(message2);
+
+                    messageList.refresh();
+
+                    break;
                 default:
                     break;
             }
@@ -467,6 +646,52 @@ public class ChatFragment extends EaseChatFragment implements EaseChatFragmentHe
         }
 
     }
+
+    @Override
+    public void onCmdMessageReceived(List<EMMessage> messages) {
+
+//        Toast.makeText(getActivity(), "SHOUDAOLE：", Toast.LENGTH_SHORT).show();
+
+
+        LogUtils.i("ChatFragment :::", "::接收到了。呵呵哈哈哈或或或或或或");
+
+//        for (EMMessage message : messages) {
+//            EMCmdMessageBody cmdMsgBody = (EMCmdMessageBody) message.getBody();
+//            String action = cmdMsgBody.action();//get user defined action
+//            if (action.equals(RedPacketConstant.REFRESH_GROUP_RED_PACKET_ACTION) && message.getChatType() == EMMessage.ChatType.GroupChat) {
+//                RedPacketUtil.receiveRedPacketAckMessage(message);
+//                messageList.refresh();
+//            }
+//
+//
+////            Toast.makeText(getActivity(), "本功能后续完善111：", Toast.LENGTH_SHORT).show();
+//            if (action.equals("REVOKE_FLAG")) {
+//                try {
+//                    String msgId = message.getStringAttribute("msgId");
+//
+//                    LogUtils.i("ChatFragment :::", "::接收到了" + msgId);
+////                Toast.makeText(getActivity(), "本功能后续完善2：" + msgId, Toast.LENGTH_SHORT).show();
+////                EMConversation conversation = EMClient.getInstance().chatManager().getConversation(message.getFrom());
+////                            --删除消息来表示撤回--
+//                    conversation.removeMessage(msgId);
+//
+//                    EMMessage message2 = EMMessage.createTxtSendMessage("对方撤回了一条消息", toChatUsername);
+//                    message2.setStatus(EMMessage.Status.SUCCESS);
+//
+//                    conversation.insertMessage(message2);
+//
+//                    messageList.refresh();
+//                    // 如果需要，可以插入一条“XXX回撤一条消息”
+//                } catch (Exception e) {
+//                    // TODO Auto-generated catch block
+//                    e.printStackTrace();
+//                }
+//            }
+//        }
+
+        super.onCmdMessageReceived(messages);
+    }
+
 
     @Override
     public void onSetMessageAttributes(EMMessage message) {
@@ -528,19 +753,6 @@ public class ChatFragment extends EaseChatFragment implements EaseChatFragmentHe
     }
 
     @Override
-    public void onCmdMessageReceived(List<EMMessage> messages) {
-        for (EMMessage message : messages) {
-            EMCmdMessageBody cmdMsgBody = (EMCmdMessageBody) message.getBody();
-            String action = cmdMsgBody.action();//get user defined action
-            if (action.equals(RedPacketConstant.REFRESH_GROUP_RED_PACKET_ACTION) && message.getChatType() == EMMessage.ChatType.GroupChat) {
-                RedPacketUtil.receiveRedPacketAckMessage(message);
-                messageList.refresh();
-            }
-        }
-        super.onCmdMessageReceived(messages);
-    }
-
-    @Override
     public void onMessageBubbleLongClick(EMMessage message) {
         // no message forward when in chat room
         startActivityForResult((new Intent(getActivity(), ContextMenuActivity.class)).putExtra("message", message)
@@ -597,7 +809,7 @@ public class ChatFragment extends EaseChatFragment implements EaseChatFragmentHe
      */
     protected void startVoiceCall() {
         if (!EMClient.getInstance().isConnected()) {
-            Toast.makeText(getActivity(), R.string.not_connect_to_server,  Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), R.string.not_connect_to_server, Toast.LENGTH_SHORT).show();
         } else {
             startActivity(new Intent(getActivity(), VoiceCallActivity.class).putExtra("username", toChatUsername)
                     .putExtra("isComingCall", false));
@@ -612,7 +824,7 @@ public class ChatFragment extends EaseChatFragment implements EaseChatFragmentHe
      */
     protected void startVideoCall() {
         if (!EMClient.getInstance().isConnected())
-            Toast.makeText(getActivity(), R.string.not_connect_to_server,  Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), R.string.not_connect_to_server, Toast.LENGTH_SHORT).show();
         else {
             startActivity(new Intent(getActivity(), VideoCallActivity.class).putExtra("username", toChatUsername)
                     .putExtra("isComingCall", false));
@@ -635,6 +847,12 @@ public class ChatFragment extends EaseChatFragment implements EaseChatFragmentHe
     mHandlerWeak mtotalHandler;
     public static final int DOWNLOADED = 2;
     public static final int DOWNLOADED_INIT = 1;
+    public static final int CANNOT_BACK = 5;
+    public static final int BCAK_SUCCESS = 6;
+    public static final int CANNOT_BACK_OUTOFTIME = 7;
+
+
+
     private static class mHandlerWeak extends Handler {
         private WeakReference<ChatFragment> activity = null;
 
@@ -652,21 +870,51 @@ public class ChatFragment extends EaseChatFragment implements EaseChatFragmentHe
             switch (msg.what) {
                 // 正在下载
                 case DOWNLOADED:
-                    act.showSanguanPickDialog();
-                    act.titleBar.getRight_image_user().setImageURI(Uri.parse(act.mSanGuan.getUserPhotoUrl2()));
+//                    act.showSanguanPickDialog();
+
+                    if (act != null && act.mSanGuan != null) {
+                        if (act.mSanGuan.getSuccessfully() != 2) {
+                            act.showSanguanPickDialog();
+                        } else {
+//                            MyToast.show(act.getActivity(), "普通会员每天只可配对三次");
+                            UtilsTool temp = new UtilsTool();
+                            temp.showSetVipDialog(act.getActivity());
+                        }
+                    } else {
+                        MyToast.show(act.getActivity(), "获取失败，请重试");
+                    }
+
+
+                    if (act.mSanGuan.getUserPhotoUrl2() != null) {
+                        act.titleBar.getRight_image_user().setImageURI(Uri.parse(act.mSanGuan.getUserPhotoUrl2()));
+                    }
 
 
                     break;
                 case DOWNLOADED_INIT:
-                    act.titleBar.getRight_image_user().setImageURI(Uri.parse(act.mSanGuan.getUserPhotoUrl2()));
+                    if (act.mSanGuan.getUserPhotoUrl2() != null) {
+                        act.titleBar.getRight_image_user().setImageURI(Uri.parse(act.mSanGuan.getUserPhotoUrl2()));
+                    }
 
-                    if(act.mSanGuan.getUserGender2()==0){
+                    if (act.mSanGuan.getUserGender2() == 0) {
                         act.iv_sanguan_pick.setImageResource(R.drawable.mate_red3);
-                    }else{
+                    } else {
                         act.iv_sanguan_pick.setImageResource(R.drawable.mate_blue3);
                     }
 
                     break;
+                case CANNOT_BACK:
+                    MyToast.show(act.getActivity(), "不可撤回对方发的消息");
+                    break;
+                case CANNOT_BACK_OUTOFTIME:
+                    MyToast.show(act.getActivity(), "发送好过5分钟的消息不能被撤回");
+                    break;
+
+                case BCAK_SUCCESS:
+                    MyToast.show(act.getActivity(), "撤回消息成功");
+                    break;
+
+
             }
         }
     }
@@ -674,7 +922,7 @@ public class ChatFragment extends EaseChatFragment implements EaseChatFragmentHe
     @Override
     public void loadServerData(final String response, int flag) {
 
-        Log.i("ChatFragment :::", "::" + response);
+        LogUtils.i("ChatFragment :::", "::" + response);
 
         Gson gson = new GsonBuilder().create();
 //        ::{"Id":"dcae97ff67114b609980d1df61726051","Name":"maggie","PhoneNumber":"18321730153","EnglishName":null,
@@ -712,7 +960,7 @@ public class ChatFragment extends EaseChatFragment implements EaseChatFragmentHe
                     }.getType();
                     mSanGuan = gson.fromJson(response, type);
                 }
-                Log.i("ChatFragment:w:", response + ":::::=" + toChatUsername);
+                LogUtils.i("ChatFragment:w:", response + ":::::=" + toChatUsername);
                 Message msg = new Message();
                 msg.what = DOWNLOADED_INIT;
                 mtotalHandler.sendMessage(msg);
@@ -728,7 +976,7 @@ public class ChatFragment extends EaseChatFragment implements EaseChatFragmentHe
                     }.getType();
                     mSanGuan = gson.fromJson(response, type);
                 }
-                Log.i("ChatFragment:w:", response + ":::::=" + toChatUsername);
+                LogUtils.i("ChatFragment:w:", response + ":::::=" + toChatUsername);
 
                 Message msg2 = new Message();
                 msg2.what = DOWNLOADED;
@@ -739,7 +987,7 @@ public class ChatFragment extends EaseChatFragment implements EaseChatFragmentHe
 
     @Override
     public void loadDataFailed(String response, int flag) {
-        MyToast.show(getActivity(), response + ".");
+//        MyToast.show(getActivity(), response + ".");
         if (pd != null) {
             pd.dismiss();
         }

@@ -6,7 +6,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import im.wuwo.com.wuwo.R;
+import im.imxianzhi.com.imxianzhi.R;
 
 public class OwnerInfoUpdateTextActivity extends BaseActivity implements View.OnClickListener {
     TextView tv_item_title, tv_item_sure;

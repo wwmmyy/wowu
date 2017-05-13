@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="im.wuwo.com.wuwo">
-
+    package="im.imxianzhi.com.imxianzhi">
+    <!-- im.imxianzhi.com.imxianzhi -->
     <uses-sdk android:minSdkVersion="15" />
     <!-- 这个权限用于进行网络定位 -->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
@@ -54,6 +54,7 @@
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <!-- GCM required, remember replace "com.hyphenate.chatuidemo" to your own package -->
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+    <uses-permission android:name="android.permission.GET_TASKS" />
 
     <permission
         android:name="com.hyphenate.chatuidemo.permission.C2D_MESSAGE"
@@ -66,20 +67,25 @@
         android:protectionLevel="signature" />
 
     <uses-permission android:name="com.hyphenate.chatuidemo.permission.MIPUSH_RECEIVE" />
+    <uses-permission android:name="android.permission.GET_TASKS" />
 
     <application
         android:name="com.wuwo.im.config.WowuApp"
         android:allowBackup="true"
-        android:icon="@drawable/icon0"
+        android:icon="@drawable/icon_new"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
+        <!-- android:icon="@drawable/icon0" -->
+
         <activity
             android:name="com.wuwo.im.activity.LoadingActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -90,21 +96,25 @@
             android:label="@string/title_activity_register" />
         <activity
             android:name="com.wuwo.im.activity.RegisterStepFourActivity"
-            android:label="@string/title_activity_register" > er>
-        </activity>
+            android:label="@string/title_activity_register" />
         <activity
             android:name="com.wuwo.im.activity.MainActivity"
-            android:launchMode="singleTask" />
-        <activity android:name="com.wuwo.im.chat.ChatingMainActivity" />
+            android:launchMode="singleTask"
+            android:windowSoftInputMode="stateHidden|stateAlwaysHidden" />
+        <!-- android:windowSoftInputMode="stateHidden|stateAlwaysHidden" -->
+        <!--
+            <activity android:name="com.wuwo.im.chat.ChatingMainActivity" />
         <activity android:name="com.wuwo.im.chat.ChatedActivty" />
         <activity android:name="com.wuwo.im.chat.NotificationActivity" />
         <activity android:name="com.wuwo.im.chat.ChatListActivity" />
-        <activity android:name="com.wuwo.im.activity.CharacterChooseActivity"
-            android:theme="@style/MyStatusbarStyle"/>
+        -->
+        <activity
+            android:name="com.wuwo.im.activity.CharacterChooseActivity"
+            android:theme="@style/MyStatusbarStyle" />
         <activity android:name="com.wuwo.im.activity.CharacterTestActivity" />
-        <activity android:name="com.wuwo.im.activity.CharacterTResultActivity"
-            android:theme="@style/MyFullscreenStyle">
-        </activity>
+        <activity
+            android:name="com.wuwo.im.activity.CharacterTResultActivity"
+            android:theme="@style/MyFullscreenStyle" />
         <activity android:name="com.wuwo.im.activity.OwnerInfoDetailActivity" />
         <activity android:name="com.wuwo.im.activity.FromContractsActivity" />
         <activity
@@ -112,12 +122,13 @@
             android:screenOrientation="portrait" />
         <activity
             android:name="com.wuwo.im.activity.FeedbackActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|stateAlwaysHidden" />
         <activity
             android:name="com.wuwo.im.activity.LoginChooseActivity"
             android:launchMode="singleTask"
-            android:theme="@style/MyFullscreenStyle"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/MyFullscreenStyle" />
         <activity
             android:name="com.wuwo.im.activity.RegisterPolicyActivity"
             android:screenOrientation="portrait" />
@@ -129,25 +140,32 @@
             android:screenOrientation="portrait" />
         <activity
             android:name="com.wuwo.im.activity.UserInfoEditActivity"
-            android:theme="@style/MyFullscreenStyle"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/MyFullscreenStyle" />
         <activity
             android:name="com.wuwo.im.activity.AddFriendActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
             android:name="com.wuwo.im.activity.OwnerInfoEditActivity"
-            android:theme="@style/MyFullscreenStyle"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/MyFullscreenStyle" />
         <activity
             android:name="com.wuwo.im.activity.MyCharacterResultActivity"
-            android:theme="@style/MyStatusbarStyle"
+            android:screenOrientation="portrait"
+            android:theme="@style/MyStatusbarStyle" />
+        <activity
+            android:name="com.wuwo.im.activity.ImageLocalAlbumActivity"
             android:screenOrientation="portrait" />
+        <activity
+            android:name="com.wuwo.im.activity.ImageLocalAlbumDetailActivity"
+            android:screenOrientation="portrait" />
+
         <!-- meta-data需要写在application中 -->
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
-            android:value="QCRiSw0lTUKhc4LtWl2iBInKBAikYyPh" />
-        <!-- 地图定位服务 -->
+            android:value="5vZUlWD5lXRGkMjeSgxLDqg6UaRBH3C9" />
+        <!-- 地图定位服务 QCRiSw0lTUKhc4LtWl2iBInKBAikYyPh -->
         <service
             android:name="com.baidu.location.f"
             android:enabled="true"
@@ -156,17 +174,23 @@
                 <action android:name="com.baidu.location.service_v2.2" />
             </intent-filter>
         </service>
-        <service
-            android:name="com.wuwo.im.service.LocationService"
+        <!--
+            <service
+            android:name="com.wuwo.im.service.MyLocationService"
             android:enabled="true"
             android:process=":remote" />
+        -->
 
-        <activity
+
+        <!--
+            <8
             android:name="com.hyphenate.chatuidemo.ui.MainActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@style/horizontal_slide"
             android:windowSoftInputMode="adjustPan" />
+        -->
+
 
         <!-- 开屏页 -->
         <activity
@@ -183,11 +207,14 @@
         </activity>
 
         <!-- 登陆 -->
-        <activity
+        <!--
+            <activity
             android:name="com.hyphenate.chatuidemo.ui.LoginActivity"
             android:screenOrientation="portrait"
             android:theme="@style/horizontal_slide"
             android:windowSoftInputMode="adjustResize|stateVisible" />
+        -->
+
 
         <!-- 注册 -->
         <activity
@@ -203,12 +230,14 @@
             android:theme="@style/horizontal_slide2"
             android:windowSoftInputMode="adjustResize" />
         <!-- 聊天页面 -->
-        <activity
+        <!--
+            <activity
             android:name="com.hyphenate.applib.ui.ChatActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:theme="@style/horizontal_slide"
             android:windowSoftInputMode="adjustResize" />
+        -->
         <!-- 添加好友 -->
         <activity
             android:name="com.hyphenate.chatuidemo.ui.AddContactActivity"
@@ -597,8 +626,27 @@
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
         <activity android:name="com.wuwo.im.activity.ShareToContractsActivity" />
         <activity android:name="com.wuwo.im.activity.ShareToContractBySmsActivity" />
-        <activity android:name="com.wuwo.im.activity.PhotoViewImagePagerActivity"
-            android:theme="@style/MyFullscreenStyle"/>
-        <activity android:name="com.wuwo.im.activity.WebviewDetailActivity"></activity>
+        <activity
+            android:name="com.wuwo.im.activity.PhotoViewImagePagerActivity"
+            android:theme="@style/MyFullscreenStyle" />
+        <activity android:name="com.wuwo.im.activity.WebviewDetailActivity" />
+
+        <provider
+            android:name="com.net.grandcentrix.tray.provider.TrayContentProvider"
+            android:authorities="im.imxianzhi.com.imxianzhi.tray"
+            android:exported="false"
+            android:multiprocess="false" />
+
+        <activity android:name="com.wuwo.im.activity.VisitedMeUsersActivity" />
+        <activity android:name="com.wuwo.im.activity.BlackUserActivity" />
+        <activity android:name="com.wuwo.im.activity.CharacterTestHistoryActivity" />
+        <activity android:name="com.wuwo.im.activity.CharacterDetailActivity"  android:theme="@style/MyFullscreenStyle" />
+        <activity android:name="com.wuwo.im.activity.ShareCharacterReportActivity" />
+        <activity android:name="com.wuwo.im.activity.CharacterPuPopActivity"
+            android:theme="@android:style/Theme.Translucent"></activity>
+        <activity android:name="com.wuwo.im.activity.UserJuBaoActivity"></activity>
+
+        <activity android:name="com.wuwo.im.activity.CharacterTestHistoryNewActivity" />
     </application>
+
 </manifest>
